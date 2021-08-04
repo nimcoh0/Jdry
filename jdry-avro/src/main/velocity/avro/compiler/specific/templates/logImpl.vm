@@ -1,0 +1,38 @@
+#if ($protocol.getNamespace())
+package $this.mangle($protocol.getNamespace());
+#end
+import java.util.function.Function;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.ConfigurationSource;
+import org.apache.logging.log4j.core.config.Configurator;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import org.apache.logging.log4j.MarkerManager;
+
+@org.apache.avro.specific.AvroGenerated
+public class $this.mangle($protocol.getName())LogImpl {
+
+    private static Logger logger = LogManager.getLogger($this.mangle($protocol.getName())LogImpl.class);
+
+    public void org_auto_tests_exception(String exception){
+
+        LogManager.getLogger().log(Level.ERROR,exception);
+    }
+
+    public void org_auto_tests_softautoLoggerLog(String level,String log, String clazz){
+
+        LogManager.getLogger(clazz).log(Level.getLevel(level),log);
+    }
+
+    public void org_auto_tests_log(String level,String marker,String log, String clazz){
+
+        LogManager.getLogger(clazz).log(Level.getLevel(level),MarkerManager.getMarker(marker),log);
+    }
+
+    public void org_auto_tests_logError(String level,String marker,String log, String clazz,String ex){
+
+        LogManager.getLogger(clazz).log(Level.getLevel(level),MarkerManager.getMarker(marker),log+"\n"+ex);
+    }
+}

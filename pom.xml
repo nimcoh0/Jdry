@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.softauto</groupId>
+    <artifactId>jdry</artifactId>
+    <packaging>pom</packaging>
+    <version>beta-1.0</version>
+    <modules>
+        <module>jdry-tester</module>
+        <module>jdry-grpc</module>
+        <module>jdry-core</module>
+        <module>jdry-plugin</module>
+        <module>jdry-listener</module>
+        <module>jdry-kryo-serialization</module>
+        <module>jdry-loader</module>
+        <module>jdry-injector</module>
+        <module>jdry-avro</module>
+        <module>jdry-annotations</module>
+        <module>jdry-annotation-discovery</module>
+        <module>jdry-jaxrs</module>
+        <module>jdry-jvmTool</module>
+        <module>jdry-logger</module>
+        <module>jdry-socket</module>
+        <module>jdry-maven-plugin</module>
+        <module>jdry-socket-annotations</module>
+        <module>jdry-jaxrs-annotations</module>
+
+    </modules>
+
+    <properties>
+        <jackson-core>2.11.1</jackson-core>
+        <jackson-dataformat-yaml>2.11.1</jackson-dataformat-yaml>
+        <jackson-datatype-jdk8>2.11.1</jackson-datatype-jdk8>
+        <io.grpc>1.18.0</io.grpc>
+        <avro>1.10.0</avro>
+        <log4j>1.2.17</log4j>
+        <log4j2>2.14.1</log4j2>
+        <io.grpc>1.18.0</io.grpc>
+        <commons-jexl3>3.0</commons-jexl3>
+        <validation-api>2.0.0.Final</validation-api>
+        <javax.el-api>3.0.0</javax.el-api>
+        <snakeyaml>1.27</snakeyaml>
+        <javax.el>2.2.6</javax.el>
+        <jdry-core>beta-1.0</jdry-core>
+        <jdry-plugin>beta-1.0</jdry-plugin>
+        <jdry-grpc>beta-1.0</jdry-grpc>
+        <jdry-avro>beta-1.0</jdry-avro>
+        <jdry-listener>beta-1.0</jdry-listener>
+        <jdry-logger>beta-1.0</jdry-logger>
+        <commons-codec>1.13</commons-codec>
+        <jdry-annotations>beta-1.0</jdry-annotations>
+        <jdry-annotation-discovery>beta-1.0</jdry-annotation-discovery>
+        <avro-ipc-netty>1.9.1</avro-ipc-netty>
+        <jdry-socket-annotations>beta-1.0</jdry-socket-annotations>
+        <log4j-api>2.14.1</log4j-api>
+        <log4j-core>2.14.1</log4j-core>
+        <jdry-injector>beta-1.0</jdry-injector>
+        <jdry-kryo-serialization>beta-1.0</jdry-kryo-serialization>
+        <jdry-jvmTool>beta-1.0</jdry-jvmTool>
+        <aspectjweaver>1.9.6</aspectjweaver>
+        <aspectjrt>1.9.6</aspectjrt>
+        <aspectjtools>1.9.6</aspectjtools>
+        <com.sun.tools.attach>1.8.0_jdk8u131-b11</com.sun.tools.attach>
+        <reflections>0.9.12</reflections>
+        <kryo>5.1.1</kryo>
+        <kryo-serializers>0.45</kryo-serializers>
+        <joda-time>2.10.10</joda-time>
+        <jna-platform>5.6.0</jna-platform>
+        <jna>5.6.0</jna>
+        <jdry-jaxrs-annotations>beta-1.0</jdry-jaxrs-annotations>
+        <javax.ws.rs-api>2.0</javax.ws.rs-api>
+        <jersey-media-multipart>2.25.1</jersey-media-multipart>
+        <jersey-client>2.25.1</jersey-client>
+        <jersey-common>2.25.1</jersey-common>
+        <jersey-hk2>2.25.1</jersey-hk2>
+        <jersey-media-json-jackson>2.25.1</jersey-media-json-jackson>
+        <jakarta.xml.bind-api>3.0.0</jakarta.xml.bind-api>
+        <avro-tools>1.10.2</avro-tools>
+        <maven-invoker-plugin>3.2.2</maven-invoker-plugin>
+        <maven-invoker>2.2</maven-invoker>
+        <maven-core>3.8.1</maven-core>
+        <maven-plugin-annotations>3.5</maven-plugin-annotations>
+        <version.roaster>2.22.3.Final</version.roaster>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-stub</artifactId>
+            <version>${io.grpc}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson-core}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-core}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j2}</version>
+
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-jexl3</artifactId>
+            <version>${commons-jexl3}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation-api}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+            <version>${javax.el-api}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>${javax.el}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+        </plugins>
+        <pluginManagement>
+            <plugins>
+
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                        <encoding>UTF-8</encoding>
+                        <generatedTestSourcesDirectory>target/generated-test-sources/test-annotations</generatedTestSourcesDirectory>
+                        <generatedSourcesDirectory>target/generated-sources</generatedSourcesDirectory>
+                        <compilerArgument>-parameters</compilerArgument>
+                        <compilerArgs>
+                            <arg>-XDignore.symbol.file</arg>
+                        </compilerArgs>
+                        <fork>true</fork>
+                    </configuration>
+
+                    <executions>
+                        <execution>
+
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                        </execution>
+
+                    </executions>
+                </plugin>
+
+
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>

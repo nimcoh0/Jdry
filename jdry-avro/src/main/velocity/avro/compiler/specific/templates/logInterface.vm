@@ -1,0 +1,37 @@
+#if ($protocol.getNamespace())
+package $this.mangle($protocol.getNamespace());
+#end
+
+#if ($protocol.getDoc())
+/** $protocol.getDoc() */
+#end
+#foreach ($annotation in $this.javaAnnotations($protocol))
+@$annotation
+#end
+@org.apache.avro.specific.AvroGenerated
+public interface $this.mangle($protocol.getName())Log {
+public static final org.apache.avro.Protocol PROTOCOL = org.apache.avro.Protocol.parse("{\"protocol\":\"ListenerServiceLog\",\"namespace\":\"tests.infrastructure\",\"version\":\"1.0\",\"types\":[{\"type\":\"external\",\"name\":\"Level\",\"namespace\":\"java.util.logging\",\"fields\":[]},{\"type\":\"external\",\"name\":\"String\",\"namespace\":\"java.lang\",\"fields\":[]},{\"type\":\"external\",\"name\":\"Object\",\"namespace\":\"java.lang\",\"fields\":[]},{\"type\":\"external\",\"name\":\"Level\",\"namespace\":\"org.apache.logging.log4j\",\"fields\":[]},{\"type\":\"external\",\"name\":\"Marker\",\"namespace\":\"org.apache.logging.log4j\",\"fields\":[]},{\"type\":\"external\",\"name\":\"Message\",\"namespace\":\"org.apache.logging.log4j.message\",\"fields\":[]},{\"type\":\"external\",\"name\":\"Throwable\",\"namespace\":\"java.lang\",\"fields\":[]},{\"type\":\"external\",\"name\":\"Class\",\"namespace\":\"java.lang\",\"fields\":[]}],\"messages\":{\"org_auto_tests_exception\":{\"transceiver\":\"RPC\",\"namespace\":\"org.auto.tests\",\"type\":\"LISTENER\",\"content\":\"logger.error(exception);\",\"request\":[{\"name\":\"exception\",\"type\":\"java.lang.String\"}],\"response\":\"null\"},\"org_auto_tests_softautoLoggerLog\":{\"transceiver\":\"RPC\",\"namespace\":\"org.auto.tests\",\"type\":\"LISTENER\",\"content\":\"logger.info(log);\",\"request\":[{\"name\":\"log\",\"type\":\"java.lang.String\"},{\"name\":\"clazz\",\"type\":\"java.lang.String\"},{\"name\":\"level\",\"type\":\"java.lang.String\"}],\"response\":\"null\"},\"org_auto_tests_log\":{\"transceiver\":\"RPC\",\"namespace\":\"org.auto.tests\",\"type\":\"LISTENER\",\"content\":\"logger.info(log);\",\"request\":[{\"name\":\"level\",\"type\":\"java.lang.String\"},{\"name\":\"marker\",\"type\":\"java.lang.String\"},{\"name\":\"log\",\"type\":\"java.lang.String\"},{\"name\":\"clazz\",\"type\":\"java.lang.String\"}],\"response\":\"null\"},\"org_auto_tests_logError\":{\"transceiver\":\"RPC\",\"namespace\":\"org.auto.tests\",\"type\":\"LISTENER\",\"content\":\"logger.info(log);\",\"request\":[{\"name\":\"level\",\"type\":\"java.lang.String\"},{\"name\":\"marker\",\"type\":\"java.lang.String\"},{\"name\":\"log\",\"type\":\"java.lang.String\"},{\"name\":\"clazz\",\"type\":\"java.lang.String\"},{\"name\":\"ex\",\"type\":\"java.lang.String\"}],\"response\":\"null\"}}}");
+
+    void org_auto_tests_exception(String exception);
+
+    void org_auto_tests_softautoLoggerLog(String level,String log, String clazz);
+
+    void org_auto_tests_log(String level,String marker,String log, String clazz);
+
+    void org_auto_tests_logError(String level,String marker,String log, String clazz,String ex);
+
+  @SuppressWarnings("all")
+  public interface Callback extends ListenerServiceLog {
+    public static final org.apache.avro.Protocol PROTOCOL = ListenerServiceLog.PROTOCOL;
+
+
+      void org_auto_tests_exception(String exception, org.softauto.core.CallFuture<Void> callback) throws java.io.IOException;
+
+      void org_auto_tests_softautoLoggerLog(String level,String log, String clazz, org.softauto.core.CallFuture<Void> callback) throws java.io.IOException;
+
+      void org_auto_tests_log(String level,String marker,String log, String clazz,org.softauto.core.CallFuture<Void> callback) throws java.io.IOException;
+
+      void org_auto_tests_logError(String level,String marker,String log, String clazz, String ex,org.softauto.core.CallFuture<Void> callback) throws java.io.IOException;
+  }
+
+}
