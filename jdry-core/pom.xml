@@ -80,6 +80,11 @@
             <version>2.11.3</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro-ipc</artifactId>
+            <version>1.10.0</version>
+        </dependency>
 
     </dependencies>
 

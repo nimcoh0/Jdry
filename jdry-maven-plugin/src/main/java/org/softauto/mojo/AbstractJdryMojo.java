@@ -158,7 +158,7 @@ public abstract class AbstractJdryMojo extends AbstractMojo {
      *
      * @parameter property="templateDirectory"
      */
-    protected String templateDirectory = "/avro/compiler/specific/templates/";
+    protected String templateDirectory = "";
 
     /**
      * The qualified names of classes which the plugin will look up, instantiate
@@ -168,6 +168,12 @@ public abstract class AbstractJdryMojo extends AbstractMojo {
      * @parameter property="velocityToolsClassesNames"
      */
     protected String[] velocityToolsClassesNames = new String[0];
+
+    /**
+     * list of velocity resources . can be jar , file
+     * @parameter property="velocityResources"
+     */
+    protected String velocityResources = "";
 
     /**
      * The createOptionalGetters parameter enables generating the getOptional...

@@ -44,6 +44,9 @@ public interface $this.mangle($protocol.getName()) {
 #foreach ($annotation in $this.javaAnnotations($message))
   @$annotation
 #end
+#foreach ($p in $message.getRequest().getFields())##
+#if($p.schema().isGeneric())<${this.javaUnbox($p.schema(),false)}>#end#if($foreach.hasNext)#end##
+#end
   #if ($message.isOneWay())void #else ${this.javaUnbox($response, true)}#end
  ${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
@@ -83,6 +86,9 @@ ${this.mangle($error.getFullName())}##
 #end
      * @throws java.io.IOException The async call could not be completed.
      */
+#foreach ($p in $message.getRequest().getFields())##
+#if($p.schema().isGeneric())<${this.javaUnbox($p.schema(),false)}>#end#if($foreach.hasNext)#end##
+#end
     void ${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
 #*      *#${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.hasNext), #end

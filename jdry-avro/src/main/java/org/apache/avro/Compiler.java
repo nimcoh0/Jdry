@@ -15,6 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/*
+ * this class base on avro plugin ,and wa modify by jdry project
+ */
 package org.apache.avro;
 
 import org.apache.avro.data.TimeConversions;
@@ -31,6 +34,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.util.*;
 
@@ -101,6 +107,15 @@ public class Compiler {
   private List<Object> additionalVelocityTools = Collections.emptyList();
   String template;
   String name;
+  String velocityResources ;
+
+  public String getVelocityResources() {
+    return velocityResources;
+  }
+
+  public void setVelocityResources(String velocityResources) {
+    this.velocityResources = velocityResources;
+  }
 
   /*
    * Used in the record.vm template.
@@ -136,7 +151,7 @@ public class Compiler {
     this.protocol = protocol;
   }
 
-  public Compiler(Protocol protocol,String template,String name) {
+  public Compiler(Protocol protocol, String template, String name) {
     this();
     // enqueue all types
     for (Schema s : protocol.getTypes()) {
@@ -161,8 +176,8 @@ public class Compiler {
    * "/avro-tests/target/classes/org/compiler/specific/templates/"
    */
   public Compiler() {
-    this.templateDir = System.getProperty("org.apache.avro.specific.templates",
-        "avro/compiler/specific/templates/");
+    //this.templateDir = System.getProperty("org.apache.avro.specific.templates",
+     //   "avro/compiler/specific/templates/");
     initializeVelocity();
     initializeSpecificData();
   }
@@ -355,20 +370,23 @@ public class Compiler {
 
     // These properties tell Velocity to use its own classpath-based
     // loader, then drop down to check the root and the current folder
-    velocityEngine.addProperty("resource.loaders", "class, file");
+    velocityEngine.addProperty(RuntimeConstants.RESOURCE_LOADER, "classpath, file, jar");
+    //velocityEngine.addProperty("resource.loader", "class, file, jar");
     //velocityEngine.addProperty("resource.loader.class.class",
        // "org.apache.velocity.runtime.resource.loader.VelocityEngine");
     velocityEngine.addProperty("resource.loader.file.class",
         "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
+    velocityEngine.addProperty("jar.resource.loader.class",
+            "org.apache.velocity.runtime.resource.loader.JarResourceLoader");
     velocityEngine.addProperty("resource.loader.file.path", "/, .");
     velocityEngine.setProperty("runtime.strict_mode.enable", true);
-    velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+    //velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
     velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
     // Set whitespace gobbling to Backward Compatible (BC)
     // https://velocity.apache.org/engine/2.0/developer-guide.html#space-gobbling
     velocityEngine.setProperty("parser.space_gobbling", "bc");
     velocityEngine.setProperty("template.provide.scope.control", "true");
-
+   // velocityEngine.init();
   }
 
   private void initializeSpecificData() {
@@ -557,48 +575,6 @@ public class Compiler {
   }
 
 
-
-  /** Generate output under dst, unless existing file is newer than src. */
-  public void compileImplToDestination(File src, File dst) throws IOException {
-    for (Schema schema : queue) {
-      if(schema.getType() != (Schema.Type.EXTERNAL) && schema.getType() != (Schema.Type.GENERIC)) {
-        OutputFile o = compile(schema);
-        o.writeToDestination(src, dst);
-      }
-    }
-    if (protocol != null) {
-      compileImpl(protocol).writeToDestination(src, dst);
-    }
-  }
-
-
-  public void compileLogInterfaceToDestination(File src, File dst) throws IOException {
-    for (Schema schema : queue) {
-      if(schema.getType() != (Schema.Type.EXTERNAL) && schema.getType() != (Schema.Type.GENERIC)) {
-        OutputFile o = compile(schema);
-        o.writeToDestination(src, dst);
-      }
-    }
-    if (protocol != null) {
-      compileLogInterface(protocol).writeToDestination(src, dst);
-    }
-  }
-
-  public void compileLogImplToDestination(File src, File dst) throws IOException {
-    for (Schema schema : queue) {
-      if(schema.getType() != (Schema.Type.EXTERNAL) && schema.getType() != (Schema.Type.GENERIC)) {
-        OutputFile o = compile(schema);
-        o.writeToDestination(src, dst);
-      }
-    }
-    if (protocol != null) {
-      compileLogImpl(protocol).writeToDestination(src, dst);
-    }
-  }
-
-
-
-
   /** Generate output under dst, unless existing file is newer than src. */
   public void compileToDestination(File src, File dst) throws IOException {
     for (Schema schema : queue) {
@@ -669,65 +645,47 @@ public class Compiler {
     return outputFile;
   }
 
-  OutputFile compileLogInterface(Protocol protocol) {
-    protocol = addStringType(protocol); // annotate protocol as needed
-    VelocityContext context = new VelocityContext();
-    context.put("protocol", protocol);
-    context.put("this", this);
-    for (Object velocityTool : additionalVelocityTools) {
-      String toolName = velocityTool.getClass().getSimpleName().toLowerCase();
-      context.put(toolName, velocityTool);
-    }
-    String out = renderTemplate(templateDir + "logInterface.vm", context);
 
-    OutputFile outputFile = new OutputFile();
-    String mangledName = mangle(protocol.getName())+"Log";
-    outputFile.path = makePath(mangledName, mangle(protocol.getNamespace()));
-    outputFile.contents = out;
-    outputFile.outputCharacterEncoding = outputCharacterEncoding;
-    return outputFile;
+
+
+  public static void addURL(String path)  {
+    try{
+    URLClassLoader sysloader = (URLClassLoader)ClassLoader.getSystemClassLoader();
+      URL u = new File(path).toURL();
+    Class[] parameters = new Class[]{URL.class};
+    Class sysclass = URLClassLoader.class;
+     Method method = sysclass.getDeclaredMethod("addURL",parameters);
+      method.setAccessible(true);
+      method.invoke(sysloader,new Object[]{ u });
+    } catch (Throwable t) {
+      t.printStackTrace();
+    }
   }
 
-  OutputFile compileImpl(Protocol protocol) {
-    protocol = addStringType(protocol); // annotate protocol as needed
-    VelocityContext context = new VelocityContext();
-    context.put("protocol", protocol);
-    context.put("this", this);
-    for (Object velocityTool : additionalVelocityTools) {
-      String toolName = velocityTool.getClass().getSimpleName().toLowerCase();
-      context.put(toolName, velocityTool);
+  private boolean isAbsolute(String path){
+    File file = new File(path);
+    if (file.isAbsolute()) {
+      return true;
     }
-    String out = renderTemplate(templateDir + "protocolImpl.vm", context);
-
-    OutputFile outputFile = new OutputFile();
-    String mangledName = mangle(protocol.getName())+"Impl";
-    outputFile.path = makePath(mangledName, mangle(protocol.getNamespace()));
-    outputFile.contents = out;
-    outputFile.outputCharacterEncoding = outputCharacterEncoding;
-    return outputFile;
+    return false;
   }
 
-  OutputFile compileLogImpl(Protocol protocol) {
-    protocol = addStringType(protocol); // annotate protocol as needed
-    VelocityContext context = new VelocityContext();
-    context.put("protocol", protocol);
-    context.put("this", this);
-    for (Object velocityTool : additionalVelocityTools) {
-      String toolName = velocityTool.getClass().getSimpleName().toLowerCase();
-      context.put(toolName, velocityTool);
+  private void setVelocityResources(){
+    if(!velocityResources.isEmpty()){
+      String[] resources = velocityResources.split(",");
+      List<String> jars = new ArrayList<>();
+      for(String resource  : resources){
+        if(resource.startsWith("jar")){
+          jars.add(resource);
+        }else {
+          if(isAbsolute(resource)) {
+            addURL(resource);
+          }
+         }
+      }
+      velocityEngine.addProperty("jar.resource.loader.path", jars);
     }
-    String out = renderTemplate(templateDir + "logImpl.vm", context);
-
-    OutputFile outputFile = new OutputFile();
-    String mangledName = mangle(protocol.getName())+"LogImpl";
-    outputFile.path = makePath(mangledName, mangle(protocol.getNamespace()));
-    outputFile.contents = out;
-    outputFile.outputCharacterEncoding = outputCharacterEncoding;
-    return outputFile;
   }
-
-
-
 
   public OutputFile compile(Protocol protocol,String template,String name) {
     protocol = addStringType(protocol); // annotate protocol as needed
@@ -738,6 +696,7 @@ public class Compiler {
       String toolName = velocityTool.getClass().getSimpleName().toLowerCase();
       context.put(toolName, velocityTool);
     }
+    setVelocityResources();
     String out = renderTemplate(templateDir + template, context);
 
     OutputFile outputFile = new OutputFile();
@@ -1057,14 +1016,14 @@ public class Compiler {
     return javaUnbox(schema, false);
   }
 
-
+/*
   public String javaUnVar(String var){
     if(var.startsWith("${")) {
       return var.substring(2, var.length() - 1);
     }
     return var;
   }
-
+*/
   /**
    * Utility for template use. Returns the unboxed java type for a Schema
    * including the void type.
@@ -1104,6 +1063,7 @@ public class Compiler {
     return null;
   }
 
+  /*
   public Schema primitiveTypeMap(Schema t){
     switch(t.getName()){
       case "Integer": return Schema.create(Schema.Type.INT);
@@ -1121,7 +1081,7 @@ public class Compiler {
     return schema.getName().toLowerCase().substring(schema.getName().lastIndexOf(".")+1);
 
   }
-
+*/
   /**
    * Utility for template use. Return a string with a given number of spaces to be
    * used for indentation purposes.

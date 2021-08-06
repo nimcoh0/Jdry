@@ -30,7 +30,7 @@
 
     <artifactId>jdry-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
-    <name>jdry Avro Maven Plugin</name>
+    <name>Jdry Avro Maven Plugin</name>
     <description>Maven plugin for jdry-Avro  Specific API Compilers</description>
 
     <properties>

@@ -84,6 +84,7 @@ public class ProtocolMojo extends AbstractJdryMojo {
         compiler.setCreateSetters(this.createSetters);
         compiler.setAdditionalVelocityTools(this.instantiateAdditionalVelocityTools());
         compiler.setEnableDecimalLogicalType(this.enableDecimalLogicalType);
+        compiler.setVelocityResources(velocityResources);
 
         try {
             URLClassLoader classLoader = this.createClassLoader();
