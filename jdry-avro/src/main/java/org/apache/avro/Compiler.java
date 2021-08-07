@@ -758,7 +758,7 @@ public class Compiler {
     switch (schema.getType()) {
     case RECORD:
       validateRecordForCompilation(schema);
-      output = renderTemplate(templateDir + "compiler/specific/templates/record.vm", context);
+      output = renderTemplate(templateDir + "record.vm", context);
       break;
     case EXTERNAL:
         validateRecordForCompilation(schema);
@@ -769,10 +769,10 @@ public class Compiler {
         output = renderTemplate(templateDir + "record.vm", context);
         break;
     case ENUM:
-      output = renderTemplate(templateDir + "compiler/specific/templates/enum.vm", context);
+      output = renderTemplate(templateDir + "enum.vm", context);
       break;
     case FIXED:
-      output = renderTemplate(templateDir + "compiler/specific/templates/fixed.vm", context);
+      output = renderTemplate(templateDir + "fixed.vm", context);
       break;
     case BOOLEAN:
     case NULL:

@@ -100,12 +100,14 @@ public class Protocol extends JsonProperties {
 
     public String getResponseTypeForCallBack(){
       switch (this.getResponse().getName()){
-        case "boolean": return "Boolean";
         case "null" : return "Void";
         case "void" : return "Void";
         case "int"  : return "Integer";
+        case "bytes" : return "Byte[]";
         default: if(this.getResponse().isPrimitive()){
-          return this.getResponse().getName();
+          String name = this.getResponse().getName();
+          String str = name.substring(0, 1).toUpperCase() + name.substring(1);
+          return str;
         }else {
           return  this.getResponse().getFullName();
         }

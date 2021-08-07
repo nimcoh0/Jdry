@@ -99,7 +99,7 @@ public class ProtocolMojo extends AbstractJdryMojo {
             throw new IOException(var12);
         }
         if(schema != null && outputName != null){
-            if(schema.toString().contains(protocol.getName())){
+            if(schema.toString().toLowerCase().contains(protocol.getName().toLowerCase())){
                 compiler.setOutputCharacterEncoding(project.getProperties().getProperty("project.build.sourceEncoding"));
                 compiler.compileProtocolToDestination(src, outputDirectory, template, outputName);
             }
