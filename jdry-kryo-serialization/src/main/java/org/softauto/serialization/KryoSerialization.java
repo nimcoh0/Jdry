@@ -1,8 +1,10 @@
 package org.softauto.serialization;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.SerializerFactory;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.esotericsoftware.kryo.serializers.CompatibleFieldSerializer;
 import com.esotericsoftware.kryo.util.DefaultInstantiatorStrategy;
 import com.sun.xml.internal.ws.encoding.soap.SerializationException;
 import de.javakaffee.kryoserializers.*;
@@ -15,6 +17,7 @@ import org.joda.time.DateTime;
 import org.objenesis.strategy.StdInstantiatorStrategy;
 import org.softauto.core.AbstractSerialization;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationHandler;
@@ -44,6 +47,11 @@ public class KryoSerialization extends AbstractSerialization {
     private KryoSerialization(){
         kryo = new Kryo();
         kryo.setRegistrationRequired(false);
+        kryo.setReferences(false);
+        //CompatibleFieldSerializer.CompatibleFieldSerializerConfig config = new CompatibleFieldSerializer.CompatibleFieldSerializerConfig();
+        //config.setChunkedEncoding(true);
+        //config.setReadUnknownFieldData(true);
+        //kryo.setDefaultSerializer(new SerializerFactory.CompatibleFieldSerializerFactory(config));
         kryo.setInstantiatorStrategy(new DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
         addSerializers();
     }
@@ -55,9 +63,11 @@ public class KryoSerialization extends AbstractSerialization {
         Output output = null;
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream(4096);
-            output = new Output(new ObjectOutputStream(outputStream));
+            //output = new Output(new ObjectOutputStream(outputStream));
+            output = new Output(outputStream);
             serialize(obj, output);
             byte[] data =  output.toBytes();
+            //byte[] data =  outputStream.toByteArray();
             return data;
 
         }finally {
@@ -86,7 +96,8 @@ public class KryoSerialization extends AbstractSerialization {
             if (objectData == null) {
                 throw new IllegalArgumentException("The byte[] must not be null");
             }
-            input = new Input(objectData);
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(objectData);
+            input = new Input(byteArrayInputStream, (int) objectData.length);
             Object object = deserialize(input);
             return (T) object;
         } finally {
@@ -168,13 +179,13 @@ public class KryoSerialization extends AbstractSerialization {
 // wicket
         //kryo.register( MiniMap.class, new MiniMapSerializer() );
 // guava ImmutableList, ImmutableSet, ImmutableMap, ImmutableMultimap, ImmutableTable, ReverseList, UnmodifiableNavigableSet
-        ImmutableListSerializer.registerSerializers( kryo );
-        ImmutableSetSerializer.registerSerializers( kryo );
-        ImmutableMapSerializer.registerSerializers( kryo );
-        ImmutableMultimapSerializer.registerSerializers( kryo );
-        ImmutableTableSerializer.registerSerializers( kryo );
-        ReverseListSerializer.registerSerializers( kryo );
-        UnmodifiableNavigableSetSerializer.registerSerializers( kryo );
+        //ImmutableListSerializer.registerSerializers( kryo );
+        //ImmutableSetSerializer.registerSerializers( kryo );
+        //ImmutableMapSerializer.registerSerializers( kryo );
+        //ImmutableMultimapSerializer.registerSerializers( kryo );
+        //ImmutableTableSerializer.registerSerializers( kryo );
+        //ReverseListSerializer.registerSerializers( kryo );
+        //UnmodifiableNavigableSetSerializer.registerSerializers( kryo );
 // guava ArrayListMultimap, HashMultimap, LinkedHashMultimap, LinkedListMultimap, TreeMultimap, ArrayTable, HashBasedTable, TreeBasedTable
         ArrayListMultimapSerializer.registerSerializers( kryo );
         HashMultimapSerializer.registerSerializers( kryo );
