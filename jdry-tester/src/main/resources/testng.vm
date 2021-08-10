@@ -41,7 +41,7 @@ public class AbstractTester {
             listeners = Client.create(tests.infrastructure.ListenerService.class);
             asyncListeners = Client.create(tests.infrastructure.ListenerService.Callback.class);
             ListenerInit.getInstance().loadConfiguration().initilize().register().startLifeCycle();
-           //Log.set(LEVEL_TRACE);
+            Log.set(LEVEL_TRACE);
            loadPlugins();
         }catch (Exception e){
             logger.error("fail start listener ",e);
