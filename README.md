@@ -130,7 +130,7 @@ Example test :
 		      }  
             };  
 		      lock.await(10, TimeUnit.MINUTES);  
-    	      future.getForceWait(30000);  //execute the Async and at the end wait 3 sec to the flow on the SUT to finish
+    	      future.get();  //execute the Async
     	      //execute Sync method for verify 
 		      EventStatus eventStatus = tests.org_pack_processor_db_DBService_loadEventStatus(Integer.valueOf(ref.get()[0].toString()),String.valueOf(ref.get()[1]));  
 		      Assert.assertTrue(eventStatus.getEventStatus() > 0);  
