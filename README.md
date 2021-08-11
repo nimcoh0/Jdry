@@ -102,7 +102,6 @@ and your SUT jar to the lib folder
 
     <your tester project path>\target\test-classes> java  -cp "..\..\lib\*;" org.testng.TestNG <path to the testng xml >UserTests.xml  
 
-# Helper classes
 
 # How To Use It
 
