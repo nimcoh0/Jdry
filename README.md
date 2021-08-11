@@ -42,6 +42,7 @@ Jdry works as client server architecture . it uses the SUT code impl as the buil
 to be examine or update and can serve as verify point or data set . method annotated as ExportForTesting are serve as proxy at the Tester so no impl is needed . any java type can be Serialize so the proxy  methods are serve as is without the need of Protobuf like solutions  
 
 # Getting Started
+download the project and run "mvn clean install" 
 
 Jdry build of two parts  SUT - the developing application &  Tester - the test project
 
