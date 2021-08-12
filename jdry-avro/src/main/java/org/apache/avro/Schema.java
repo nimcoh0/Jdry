@@ -181,6 +181,13 @@ public abstract class Schema extends JsonProperties implements Serializable {
   }
 
 
+  public String getGenericComponent(){
+    if(this.getName().contains("<")) {
+     return this.getName().substring(this.getName().indexOf("<")+1, this.getName().lastIndexOf(">") );
+    }
+    return this.getName();
+
+  }
 
   @Override
   public void addProp(String name, String value) {

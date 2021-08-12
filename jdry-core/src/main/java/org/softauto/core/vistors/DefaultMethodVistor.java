@@ -1,5 +1,6 @@
 package org.softauto.core.vistors;
 
+import com.sun.tools.javac.code.Symbol;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.softauto.core.AbstractMessage;
@@ -7,7 +8,6 @@ import org.softauto.core.ClassTypeAnalyzer;
 import org.softauto.core.vistors.builders.ClazzBuilder;
 import org.softauto.core.vistors.builders.MessageBuilder;
 import org.softauto.core.vistors.builders.TypeBuilder;
-
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
 import java.util.ArrayList;
@@ -81,7 +81,13 @@ public  class DefaultMethodVistor implements ElementVisitor {
     public Object visitVariable(VariableElement e, Object o) {
         if (!AbstractMessage.isIgnore(e)) {
             addRequest(e);
-            if (e.asType().getKind().equals(TypeKind.TYPEVAR)) {
+
+            if(((Symbol)e).asType().allparams().size() > 0){
+                if(((Symbol)e).asType().allparams().get(0).tsym.getKind().equals(ElementKind.TYPE_PARAMETER)){
+                    typeBuilder.addType(e.asType().toString(),"generic");
+                }
+            }else
+            if (e.asType().getKind().equals(TypeKind.TYPEVAR) ) {
                 typeBuilder.addType(e.asType().toString(),"generic");
             } else {
                 typeBuilder.addType(e.asType().toString(),"external");
@@ -89,6 +95,9 @@ public  class DefaultMethodVistor implements ElementVisitor {
         }
         return o;
     }
+
+
+
 
     @Override
     public Object visitExecutable(ExecutableElement e, Object o) {
@@ -147,7 +156,12 @@ public  class DefaultMethodVistor implements ElementVisitor {
         }else {
             messageBuilder.setResponse(e.getReturnType().toString());
         }
-        typeBuilder.addType(messageBuilder.getResponse(),"external");
+
+        if (e.getReturnType().getKind().equals(TypeKind.TYPEVAR) ) {
+            typeBuilder.addType(e.getReturnType().toString(),"generic");
+        } else {
+            typeBuilder.addType(e.getReturnType().toString(),"external");
+        }
      }
 
 

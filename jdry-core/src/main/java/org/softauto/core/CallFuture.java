@@ -148,7 +148,8 @@ public class CallFuture<T> implements Future<T> {
 
   @Override
   public T get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
-    if (latch.await(timeout, unit)) {
+    Thread.sleep(timeout);
+      if (latch.await(timeout, unit)) {
       if (error != null) {
         throw new ExecutionException(error);
       }
@@ -156,6 +157,15 @@ public class CallFuture<T> implements Future<T> {
     } else {
       throw new TimeoutException();
     }
+  }
+
+  public T getForceWait(long timeout) throws InterruptedException, ExecutionException, TimeoutException {
+    Thread.sleep(timeout);
+    latch.await();
+    if (error != null) {
+      throw new ExecutionException(error);
+    }
+    return result;
   }
 
   /**
