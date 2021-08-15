@@ -85,6 +85,8 @@ public  class DefaultMethodVistor implements ElementVisitor {
             if(((Symbol)e).asType().allparams().size() > 0){
                 if(((Symbol)e).asType().allparams().get(0).tsym.getKind().equals(ElementKind.TYPE_PARAMETER)){
                     typeBuilder.addType(e.asType().toString(),"generic");
+                }else {
+                    typeBuilder.addType(e.asType().toString(),"external");
                 }
             }else
             if (e.asType().getKind().equals(TypeKind.TYPEVAR) ) {
