@@ -168,6 +168,17 @@ public class CallFuture<T> implements Future<T> {
     return result;
   }
 
+  public T getWaitForProcessToFinish(String process) throws InterruptedException, ExecutionException, TimeoutException {
+    //org.softauto.listener.ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceImpl", this);
+
+
+    latch.await();
+    if (error != null) {
+      throw new ExecutionException(error);
+    }
+    return result;
+  }
+
   /**
    * Waits for the CallFuture to complete without returning the result.
    * 
