@@ -128,6 +128,8 @@ public abstract class Schema extends JsonProperties implements Serializable {
     this.type = type;
   }
 
+
+
   /** Create a schema for a primitive type. */
   public static Schema create(Type type) {
     switch (type) {
@@ -274,6 +276,8 @@ public abstract class Schema extends JsonProperties implements Serializable {
   public Type getType() {
     return type;
   }
+
+
 
   public void setType(Type t){
     type = t;
@@ -508,6 +512,16 @@ public abstract class Schema extends JsonProperties implements Serializable {
     }
     return false;
   }
+
+  public boolean isExternal(){
+    if(this.getType().equals("external")){
+      return true;
+    }
+    return false;
+  }
+
+
+
 
   /** Returns true if this record is an union type containing null. */
   public boolean isNullable() {
