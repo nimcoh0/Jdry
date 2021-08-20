@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.apache.avro.Protocol;
-import org.apache.avro.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.softauto.annotations.DefaultValue;
 import org.softauto.jvm.HeapHelper;
@@ -535,28 +534,6 @@ public class Utils {
         ((Throwable)e).printStackTrace(printWriter);
         printWriter.flush();
         return writer.toString();
-    }
-
-    public static boolean isSchemaType(String t){
-        Schema.Type[] types = Schema.Type.values();
-        String  tt =  t.startsWith("java") ? t.substring(t.lastIndexOf(".") + 1): t;
-        for(Schema.Type type : types){
-            if(tt.toLowerCase().equals(type.getName().toLowerCase())){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static String getSchemaType(String t){
-        Schema.Type[] types = Schema.Type.values();
-        String tt = t.startsWith("java") ? t.substring(t.lastIndexOf(".")+1) : t;
-        for(Schema.Type type : types){
-            if(tt.toLowerCase().equals(type.getName().toLowerCase())){
-                return type.getName();
-            }
-        }
-        return t;
     }
 
 }

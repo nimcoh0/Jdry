@@ -1,8 +1,6 @@
 package org.softauto.grpc.schema;
 
-import com.sun.tools.javac.code.Type;
 import org.softauto.core.AbstractMessage;
-import org.softauto.core.Utils;
 
 import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
@@ -73,7 +71,6 @@ public  class ListenerDataVistor implements ElementVisitor {
             if (e.asType().getKind().equals(TypeKind.TYPEVAR)) {
                 types.add(getType(e.asType().toString(),"generic"));
             } else {
-                if(!Utils.isSchemaType(e.asType().toString()))
                 types.add(getType(e.asType().toString(),"external"));
             }
         }
@@ -105,9 +102,7 @@ public  class ListenerDataVistor implements ElementVisitor {
     }
 
     public void visitReturnType(ExecutableElement e) {
-        message.put("response", Utils.getSchemaType(e.getReturnType().toString()));
-       // if(!Utils.isSchemaType(e.asType().toString()))
-        if(!Utils.isSchemaType(((Type.MethodType)e.asType()).getReturnType().toString()))
+        message.put("response", e.getReturnType().toString());
         types.add(getType(e.getReturnType().toString(),"external"));
     }
 
@@ -121,7 +116,7 @@ public  class ListenerDataVistor implements ElementVisitor {
     public List<HashMap<String,Object>> addRequest(VariableElement e){
         HashMap<String,Object> req = new HashMap<>();
         req.put("name",e.getSimpleName().toString());
-        req.put("type",Utils.getSchemaType(e.asType().toString()));
+        req.put("type",e.asType().toString());
         request.add(req);
         return request;
     }

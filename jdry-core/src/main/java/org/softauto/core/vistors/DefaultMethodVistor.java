@@ -1,13 +1,10 @@
 package org.softauto.core.vistors;
 
 import com.sun.tools.javac.code.Symbol;
-import com.sun.tools.javac.code.Type;
-import org.apache.avro.Schema;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
 import org.softauto.core.AbstractMessage;
 import org.softauto.core.ClassTypeAnalyzer;
-import org.softauto.core.Utils;
 import org.softauto.core.vistors.builders.ClazzBuilder;
 import org.softauto.core.vistors.builders.MessageBuilder;
 import org.softauto.core.vistors.builders.TypeBuilder;
@@ -89,16 +86,12 @@ public  class DefaultMethodVistor implements ElementVisitor {
                 if(((Symbol)e).asType().allparams().get(0).tsym.getKind().equals(ElementKind.TYPE_PARAMETER)){
                     typeBuilder.addType(e.asType().toString(),"generic");
                 }else {
-                    if(!Utils.isSchemaType(e.asType().toString()))
-                    //typeBuilder.addType(e.asType().toString(),Utils.getSchemaType(e.asType().toString()));
                     typeBuilder.addType(e.asType().toString(),"external");
                 }
             }else
             if (e.asType().getKind().equals(TypeKind.TYPEVAR) ) {
                 typeBuilder.addType(e.asType().toString(),"generic");
             } else {
-                if(!Utils.isSchemaType(e.asType().toString()))
-                //typeBuilder.addType(e.asType().toString(),Utils.getSchemaType(e.asType().toString()));
                 typeBuilder.addType(e.asType().toString(),"external");
             }
         }
@@ -162,17 +155,13 @@ public  class DefaultMethodVistor implements ElementVisitor {
     public void visitReturnType(ExecutableElement e) {
         if(ElementUtils.isConstructor(e)){
             messageBuilder.setResponse(clazzBuilder.getFullClassName());
-            typeBuilder.addType(clazzBuilder.getFullClassName(),"external");
         }else {
-            messageBuilder.setResponse(Utils.getSchemaType(e.getReturnType().toString()));
-            if(!Utils.isSchemaType(((Type.MethodType)e.asType()).getReturnType().toString()))
-            typeBuilder.addType(Utils.getSchemaType(e.getReturnType().toString()),"external");
+            messageBuilder.setResponse(e.getReturnType().toString());
         }
 
         if (e.getReturnType().getKind().equals(TypeKind.TYPEVAR) ) {
             typeBuilder.addType(e.getReturnType().toString(),"generic");
         } else {
-            if(!Utils.isSchemaType(((Type.MethodType)e.asType()).getReturnType().toString()))
             typeBuilder.addType(e.getReturnType().toString(),"external");
         }
      }
@@ -185,9 +174,9 @@ public  class DefaultMethodVistor implements ElementVisitor {
 
     public void addRequest(VariableElement e){
             if(ElementUtils.hasDefault(e)){
-                messageBuilder.addRequest(e.getSimpleName().toString(),Utils.getSchemaType(e.asType().toString()),ElementUtils.getDefault(e));
+                messageBuilder.addRequest(e.getSimpleName().toString(),e.asType().toString(),ElementUtils.getDefault(e));
             }else {
-                messageBuilder.addRequest(e.getSimpleName().toString(), Utils.getSchemaType(e.asType().toString()), null);
+                messageBuilder.addRequest(e.getSimpleName().toString(), e.asType().toString(), null);
             }
 
     }
