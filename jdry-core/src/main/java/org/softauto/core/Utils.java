@@ -237,6 +237,9 @@ public class Utils {
         return c;
     }
 
+
+
+
     /**
      * get remote class using URLClassLoader
      * @param path
@@ -557,6 +560,22 @@ public class Utils {
             }
         }
         return t;
+    }
+
+    public static void addToClasspath(String f) {
+        try {
+            URLClassLoader classLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+            String path = f.substring(0,f.lastIndexOf("/"));
+            String fileName = f.substring(f.lastIndexOf("/")+1);
+            addURL(new File(path).toURL(),classLoader);
+            File file = new File(classLoader.getResource(fileName).getFile());
+            //URL url = file.toURI().toURL();
+            //Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+            //method.setAccessible(true);
+            //method.invoke(classLoader, url);
+        } catch (Exception e) {
+            throw new RuntimeException("Unexpected exception", e);
+        }
     }
 
 }

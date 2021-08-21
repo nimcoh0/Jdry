@@ -13,7 +13,7 @@ import org.apache.logging.log4j.Logger;
 @$annotation
 #end
 @org.apache.avro.specific.AvroGenerated
-public class $this.mangle($protocol.getName())Impl {
+public class $this.mangle($protocol.getName())Impl implements $this.mangle($protocol.getName()){
 
     private static Logger logger = LogManager.getLogger($this.mangle($protocol.getName())Impl.class);
 
