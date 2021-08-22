@@ -2038,6 +2038,8 @@ public abstract class Schema extends JsonProperties implements Serializable {
           return true;
     case GENERIC:
         return true;
+    case OBJECT:
+        return true;
     case STRING:
     case BYTES:
     case ENUM:

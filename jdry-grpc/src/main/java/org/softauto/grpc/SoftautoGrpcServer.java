@@ -41,6 +41,7 @@ import java.util.logging.Logger;
  */
 public abstract class SoftautoGrpcServer {
 
+
   private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(SoftautoGrpcServer.class);
   protected SoftautoGrpcServer() {
 
@@ -64,10 +65,14 @@ public abstract class SoftautoGrpcServer {
     for (Method method : iface.getMethods()) {
       Protocol.Message msg = messages.get(method.getName());
       // setup a method handler only if corresponding message exists in avro protocol.
-      if (msg != null && msg.getProp("transceiver").equals("RPC")) {
+      String transceiver = getTransceiver(msg);
+      String fullClassName = getFullClassName(msg,method);
+      if (msg != null && transceiver.equals("RPC")) {
           try {
-           UnaryMethodHandler methodHandler = msg.isOneWay() ? new OneWayUnaryMethodHandler( method,((HashMap)msg.getObjectProp("class")).get("fullClassName").toString(),msg)
-                    : new UnaryMethodHandler( method,((HashMap)msg.getObjectProp("class")).get("fullClassName").toString(),msg);
+            UnaryMethodHandler methodHandler = null;
+            methodHandler = msg.isOneWay() ? new OneWayUnaryMethodHandler(method, fullClassName, msg)
+                      : new UnaryMethodHandler(method, fullClassName, msg);
+
             serviceDefinitionBuilder.addMethod(
                     serviceDescriptor.getMethod(method.getName(), MethodDescriptor.MethodType.UNARY),
                     ServerCalls.asyncUnaryCall(methodHandler));
@@ -79,6 +84,22 @@ public abstract class SoftautoGrpcServer {
     }
     return serviceDefinitionBuilder.build();
   }
+
+ private static String getTransceiver(Protocol.Message msg){
+   if(msg.hasProp("transceiver")){
+     return msg.getProp("transceiver");
+   }
+   return "RPC";
+ }
+
+ private static String getFullClassName(Protocol.Message msg,Method method){
+   if(msg.hasProp("class")){
+     return ((HashMap) msg.getObjectProp("class")).get("fullClassName").toString();
+   }else {
+     String fqmn = method.getName().replace("_",".");
+     return fqmn.substring(0,fqmn.lastIndexOf("."));
+    }
+ }
 
   protected static class UnaryMethodHandler implements ServerCalls.UnaryMethod<Object[], Object> {
 
@@ -96,9 +117,9 @@ public abstract class SoftautoGrpcServer {
     public void invoke(Object[] request, StreamObserver<Object> responseObserver) {
       Object methodResponse = null;
       try {
-        Object serviceImpl = Utils.getClassInstance(fullClassName,msg,request,method);
-        if(!msg.getProp("type").equals("constructor")) {
-          Method m = Utils.getMethod(serviceImpl, msg.getProp("method"), method.getParameterTypes());
+        Object serviceImpl = Utils.getClassInstance(fullClassName, msg, request, method);
+        if(!msg.hasProp("type") || !msg.getProp("type").equals("constructor")) {
+          Method m = Utils.getMethod(serviceImpl, method.getName(), method.getParameterTypes());
           logger.debug("invoking " + method);
           m.setAccessible(true);
           if (Modifier.isStatic(m.getModifiers())) {
@@ -141,6 +162,7 @@ public abstract class SoftautoGrpcServer {
       this.msg = msg;
     }
 
+
     @Override
     public void invoke(Object[] request, StreamObserver<Object> responseObserver) {
       // first respond back with a fixed void response in order for call to be
@@ -151,8 +173,8 @@ public abstract class SoftautoGrpcServer {
 
       // process the rpc request
       try {
-        Object serviceImpl = Utils.getClassInstance(fullClassName,msg,request,method);
-        if(!msg.getProp("type").equals("constructor")) {
+          Object serviceImpl = Utils.getClassInstance(fullClassName, msg, request, method);
+          if(!msg.hasProp("type") || !msg.getProp("type").equals("constructor")) {
           Method m = Utils.getMethod(serviceImpl, msg.getProp("method"), method.getParameterTypes());
           logger.debug("invoking " + method);
           m.setAccessible(true);

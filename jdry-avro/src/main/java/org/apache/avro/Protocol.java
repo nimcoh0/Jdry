@@ -153,6 +153,15 @@ public class Protocol extends JsonProperties {
       }
     }
 
+    public boolean hasProp(String name) {
+       if (getObjectProp(name) != null) {
+          return true;
+        }
+       return false;
+    }
+
+
+
     void toJson(JsonGenerator gen) throws IOException {
       gen.writeStartObject();
       if (doc != null)

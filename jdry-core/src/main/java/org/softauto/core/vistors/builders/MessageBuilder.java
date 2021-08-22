@@ -87,7 +87,11 @@ public class MessageBuilder {
             req.put("name",key);
             req.put("type",type);
             if(value != null){
-                req.put("default",value);
+                if(((HashMap)value).size()> 1){
+                    req.put("default", value);
+                }else {
+                    req.put("default", ((HashMap) value).get("value"));
+                }
             }
             request.add(req);
             return this;

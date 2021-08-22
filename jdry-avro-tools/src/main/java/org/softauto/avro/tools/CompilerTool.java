@@ -101,6 +101,6 @@ public class CompilerTool implements Tool {
 
     @Override
     public String getShortDescription() {
-        return "Generates Java code for the given schema.";
+        return "Generates Java code for the given protocol.";
     }
 }

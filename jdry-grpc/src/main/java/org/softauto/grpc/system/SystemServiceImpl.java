@@ -121,7 +121,7 @@ public class SystemServiceImpl {
         try {
             RpcProviderImpl.getInstance().initilizeSerializer();
             loadPlugins();
-            InjectorInit.getInstance().initilize().register();
+            //InjectorInit.getInstance().initilize().register();
             loadHeapHelper();
             setConnection(true);
             logger.info("Injector Load successfully ");

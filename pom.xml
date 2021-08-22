@@ -16,7 +16,7 @@
         <module>jdry-listener</module>
         <module>jdry-kryo-serialization</module>
         <module>jdry-loader</module>
-        <module>jdry-injector</module>
+        <!--module>jdry-injector</module-->
         <module>jdry-avro</module>
         <module>jdry-avro-tools</module>
         <module>jdry-annotations</module>
@@ -28,6 +28,7 @@
         <module>jdry-maven-plugin</module>
         <module>jdry-socket-annotations</module>
         <module>jdry-jaxrs-annotations</module>
+
 
     </modules>
 

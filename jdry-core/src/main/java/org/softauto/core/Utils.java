@@ -7,6 +7,7 @@ import org.apache.avro.Protocol;
 import org.apache.avro.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.softauto.annotations.DefaultValue;
+import org.softauto.injector.Injector;
 import org.softauto.jvm.HeapHelper;
 import org.yaml.snakeyaml.Yaml;
 
@@ -19,6 +20,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Utils {
@@ -53,8 +55,62 @@ public class Utils {
         try {
 
             Class klass = findClass(fullClassName);
-            if(!msg.getProp("type").equals("static")) {
-                if (klass != null && msg.getProp("type").equals("method")) {
+            if(!msg.hasProp("type") || !msg.getProp("type").equals("static")) {
+                if (klass != null && msg.hasProp("type") && msg.getProp("type").equals("method")) {
+                    Object[] objects = HeapHelper.getInstances(klass);
+                    if (objects != null)
+                        objs = Arrays.asList(objects);
+                }
+                if (objs != null && objs.size() > 0) {
+                    return objs.get(0);
+                } else {
+                    logger.debug("instance not found for class " + fullClassName + " inject...");
+                    //AbstractInjector injector = (AbstractInjector) ServiceLocator.getInstance().getService("INJECTOR");
+                    //if (injector == null) {
+                     //   logger.error("no injector found");
+                     //   new Exception("no injector found ");
+                    //}
+                    ClassType initialize = getClassType(msg);
+                    Object[] result = null;
+                    if (msg.hasProp("type")  && msg.getProp("type").equals("constructor")) {
+                        result = Injector.inject(fullClassName,initialize,getConstructorDefaultValues(klass),method.getParameterTypes());
+                        //injector.UpdateClassDescriptorArgsValues(fullClassName, request);
+                    } else {
+                        result = Injector.inject(fullClassName,initialize,request,method.getParameterTypes());
+                        //injector.UpdateClassDescriptorArgsValues(fullClassName, getConstructorDefaultValues(klass));
+                    }
+
+
+                   // Object[] result = Injector.inject(fullClassName,initialize,request,method.getParameterTypes());
+                    return result[0];
+                }
+            }else {
+                return  klass;
+            }
+        }catch (Exception e){
+            logger.error("fail get Class Instances "+ fullClassName,e);
+        }
+        return null;
+    }
+
+    private static ClassType getClassType(Protocol.Message msg){
+        String initialize = null;
+        if(msg.hasProp("class")) {
+            initialize = ((HashMap) msg.getObjectProp("class")).get("initialize").toString();
+        }else {
+            return ClassType.INITIALIZE_NO_PARAM;
+        }
+        return ClassType.fromString(initialize);
+    }
+
+    /*
+    public static Object getClassInstance(String fullClassName,Protocol.Message msg,Object[] request,Method method){
+        List<Object>  objs = null;
+        try {
+
+            Class klass = findClass(fullClassName);
+            if(!msg.hasProp("type") || !msg.getProp("type").equals("static")) {
+                if (klass != null && msg.hasProp("type") && msg.getProp("type").equals("method")) {
                     Object[] objects = HeapHelper.getInstances(klass);
                     if (objects != null)
                         objs = Arrays.asList(objects);
@@ -85,6 +141,8 @@ public class Utils {
         }
         return null;
     }
+    */
+
 
     /**
      * get class by currentThread
