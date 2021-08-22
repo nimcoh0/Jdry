@@ -20,12 +20,7 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-plugin</artifactId>
-            <version>${jdry-plugin}</version>
 
-        </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-grpc</artifactId>
@@ -42,11 +37,7 @@
             <artifactId>jdry-listener</artifactId>
             <version>${jdry-listener}</version>
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-logger</artifactId>
-            <version>${jdry-logger}</version>
-        </dependency>
+
     </dependencies>
 
     <build>

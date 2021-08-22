@@ -12,7 +12,7 @@
         <module>jdry-tester</module>
         <module>jdry-grpc</module>
         <module>jdry-core</module>
-        <module>jdry-plugin</module>
+        <!--module>jdry-plugin</module-->
         <module>jdry-listener</module>
         <module>jdry-kryo-serialization</module>
         <module>jdry-loader</module>
@@ -22,8 +22,8 @@
         <module>jdry-annotations</module>
         <module>jdry-annotation-discovery</module>
         <module>jdry-jaxrs</module>
-        <module>jdry-jvmTool</module>
-        <module>jdry-logger</module>
+        <!--module>jdry-jvmTool</module-->
+        <!--module>jdry-logger</module-->
         <module>jdry-socket</module>
         <module>jdry-maven-plugin</module>
         <module>jdry-socket-annotations</module>

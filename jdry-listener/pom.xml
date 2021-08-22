@@ -18,12 +18,7 @@
             <version>${jdry-grpc}</version>
 
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-plugin</artifactId>
-            <version>${jdry-plugin}</version>
 
-        </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-core</artifactId>
@@ -31,11 +26,7 @@
 
         </dependency>
 
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-logger</artifactId>
-            <version>${jdry-logger}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>

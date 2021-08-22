@@ -17,11 +17,7 @@
             <version>${jdry-annotations}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-plugin</artifactId>
-            <version>${jdry-plugin}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-core</artifactId>
@@ -32,18 +28,9 @@
             <artifactId>jdry-avro</artifactId>
             <version>${jdry-avro}</version>
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-logger</artifactId>
-            <version>${jdry-logger}</version>
-        </dependency>
 
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-injector</artifactId>
-            <version>${jdry-injector}</version>
-            <scope>compile</scope>
-        </dependency>
+
+
 
         <dependency>
             <groupId>org.softauto</groupId>
@@ -56,12 +43,7 @@
             <artifactId>jdry-kryo-serialization</artifactId>
             <version>${jdry-kryo-serialization}</version>
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-jvmTool</artifactId>
-            <version>${jdry-jvmTool}</version>
-            <scope>compile</scope>
-        </dependency>
+
     </dependencies>
 
     <build>

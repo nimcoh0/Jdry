@@ -19,23 +19,14 @@
             <version>beta-1.0</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-jvmTool</artifactId>
-            <version>beta-1.0</version>
-            <scope>compile</scope>
-        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
             <version>2.11.1</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-logger</artifactId>
-            <version>beta-1.0</version>
-        </dependency>
+
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-annotations</artifactId>
@@ -85,7 +76,23 @@
             <artifactId>avro-ipc</artifactId>
             <version>1.10.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.sun</groupId>
+            <artifactId>tools</artifactId>
+            <version>1.8.0_161</version>
+            <scope>system</scope>
+            <systemPath>${java.home}/../lib/tools.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna-platform</artifactId>
+            <version>${jna-platform}</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>${jna}</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -34,11 +34,7 @@
             <artifactId>joda-time</artifactId>
             <version>${joda-time}</version>
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-logger</artifactId>
-            <version>${jdry-logger}</version>
-        </dependency>
+
 
     </dependencies>
 

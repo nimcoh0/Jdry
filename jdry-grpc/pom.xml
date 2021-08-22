@@ -24,24 +24,14 @@
             <version>beta-1.0</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-injector</artifactId>
-            <version>beta-1.0</version>
-            <scope>compile</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-kryo-serialization</artifactId>
             <version>beta-1.0</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-plugin</artifactId>
-            <version>beta-1.0</version>
-            <scope>compile</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-annotations</artifactId>
@@ -49,11 +39,7 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-logger</artifactId>
-            <version>beta-1.0</version>
-        </dependency>
+
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>

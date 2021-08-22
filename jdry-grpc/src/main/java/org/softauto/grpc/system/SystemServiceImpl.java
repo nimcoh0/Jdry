@@ -8,7 +8,6 @@ import org.apache.logging.log4j.MarkerManager;
 import org.softauto.core.Configuration;
 import org.softauto.core.Context;
 import org.softauto.grpc.RpcProviderImpl;
-import org.softauto.injector.InjectorInit;
 import org.softauto.jvm.HeapHelper;
 import org.softauto.logger.Log4j2Utils;
 import org.softauto.logger.LogManager;

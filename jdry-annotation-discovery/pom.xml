@@ -18,11 +18,7 @@
             <version>1.0-rc6</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-logger</artifactId>
-            <version>beta-1.0</version>
-        </dependency>
+
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-annotations</artifactId>
@@ -31,7 +27,7 @@
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
-            <artifactId>jdry-plugin</artifactId>
+            <artifactId>jdry-core</artifactId>
             <version>beta-1.0</version>
 
         </dependency>
