@@ -68,12 +68,12 @@
             <artifactId>avro-tools</artifactId>
             <version>1.10.2</version>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>org.softauto</groupId>
             <artifactId>package_processor</artifactId>
             <version>1.0</version>
 
-        </dependency>
+        </dependency-->
     </dependencies>
 
     <build>
