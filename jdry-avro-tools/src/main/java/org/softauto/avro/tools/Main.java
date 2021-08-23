@@ -18,7 +18,7 @@ public class Main {
 
     Main() {
         tools = new TreeMap<>();
-        for (Tool tool : new Tool[] { new CompilerTool(),new GrpcSendTool(), new GrpcReceiveTool()}) {
+        for (Tool tool : new Tool[] { new CompilerTool(),new SendTool(), new GrpcReceiveTool()}) {
             Tool prev = tools.put(tool.getName(), tool);
             if (prev != null) {
                 throw new AssertionError("Two tools with identical names: " + tool + ", " + prev);
