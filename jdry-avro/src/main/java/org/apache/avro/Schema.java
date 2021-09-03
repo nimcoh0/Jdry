@@ -32,6 +32,7 @@ import org.apache.avro.util.internal.JacksonUtils;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * An abstract data type base on Avro.
@@ -119,6 +120,7 @@ public abstract class Schema extends JsonProperties implements Serializable {
     }
 
   };
+
 
   private Type type;
   private LogicalType logicalType = null;
@@ -341,6 +343,8 @@ public abstract class Schema extends JsonProperties implements Serializable {
   public void setName(String name) {
     type.setName(name);
   }
+
+
 
   /**
    * If this is a record, enum, or fixed, returns its docstring, if available.
@@ -581,7 +585,7 @@ public abstract class Schema extends JsonProperties implements Serializable {
      */
     public static final Object NULL_DEFAULT_VALUE = new Object();
 
-    private final String name; // name of the field.
+    private String name; // name of the field.
     private int position = -1;
     private final Schema schema;
     private final String doc;
@@ -652,7 +656,9 @@ public abstract class Schema extends JsonProperties implements Serializable {
       return name;
     }
 
-    ;
+    public void setName(String name){
+      this.name = name;
+    }
 
     /**
      * The position of this field within the record.
@@ -752,15 +758,22 @@ public abstract class Schema extends JsonProperties implements Serializable {
 
   }
 
+
+
   static class Name {
     private final String name;
     private final String space;
     private final String full;
 
+
     public Name(String name, String space) {
       if (name == null) { // anonymous
         this.name = this.space = this.full = null;
         return;
+      }
+      String oldname = name;
+      if(name.contains("<")){
+        name = name.substring(0,name.indexOf("<"));
       }
       int lastDot = name.lastIndexOf('.');
       if (lastDot < 0) { // unqualified name
@@ -772,7 +785,11 @@ public abstract class Schema extends JsonProperties implements Serializable {
       if ("".equals(space))
         space = null;
       this.space = space;
-      this.full = (this.space == null) ? this.name : this.space + "." + this.name;
+      if(oldname.contains("<")){
+        this.full = oldname;
+      }else {
+        this.full = (this.space == null) ? this.name : this.space + "." + this.name;
+      }
     }
 
     @Override
@@ -796,8 +813,19 @@ public abstract class Schema extends JsonProperties implements Serializable {
     }
 
     public void writeName(Names names, JsonGenerator gen) throws IOException {
-      if (name != null)
-        gen.writeStringField("name", name);
+      AtomicReference<String> ref = new AtomicReference();
+      ref.set(name);
+      names.forEach((k,v)->{
+        if(k.name.equals(name)){
+          if(!(k.space +"."+ k.name).equals(k.full)){
+            String n = k.full.replace(k.space+".","");
+            ref.set(n);
+          }
+        }
+      });
+      String n = ref.get();
+      if (n != null)
+        gen.writeStringField("name", n);
       if (space != null) {
         if (!space.equals(names.space()))
           gen.writeStringField("namespace", space);
@@ -1090,7 +1118,7 @@ public abstract class Schema extends JsonProperties implements Serializable {
     }
   }
 
-  private static class ExternalSchema extends NamedSchema {
+  public static class ExternalSchema extends NamedSchema {
     private List<Field> fields;
     private Map<String, Field> fieldMap;
     private final boolean isError;
@@ -1929,8 +1957,17 @@ public abstract class Schema extends JsonProperties implements Serializable {
   static class Names extends LinkedHashMap<Name, Schema> {
     private static final long serialVersionUID = 1L;
     private String space; // default namespace
+    private String fullName;
 
     public Names() {
+    }
+
+    public String getSchemaFullName() {
+      return fullName;
+    }
+
+    public void setFullName(String fullName) {
+      this.fullName = fullName;
     }
 
     public Names(String space) {
@@ -2116,7 +2153,8 @@ public abstract class Schema extends JsonProperties implements Serializable {
         if (space == null)
           space = names.space();
         name = new Name(getRequiredText(schema, "name", "No name in schema"), space);
-        names.space(name.space); // set default namespace
+        names.space(name.space);
+        names.setFullName(name.full);
       }
       if(type.equals("generic")){
         name = new Name(getRequiredText(schema, "name", "No name in schema"), "");

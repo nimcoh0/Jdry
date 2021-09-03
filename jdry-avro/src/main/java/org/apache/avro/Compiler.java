@@ -696,7 +696,7 @@ public class Compiler {
       String toolName = velocityTool.getClass().getSimpleName().toLowerCase();
       context.put(toolName, velocityTool);
     }
-    setVelocityResources();
+    //setVelocityResources();
     String out = renderTemplate(templateDir + template, context);
 
     OutputFile outputFile = new OutputFile();
@@ -934,6 +934,25 @@ public class Compiler {
     return javaType(schema, true);
   }
 
+  public String javaTypeName(Schema schema){
+    if(schema.getType().getName().equals("generic")){
+      return schema.getName();
+    }
+    return mangle(schema.getName());
+  }
+
+  public String javaTypeNamespace(Schema schema){
+    if(schema.getType().getName().equals("generic")){
+      return schema.getName();
+    }
+    return mangle(schema.getNamespace());
+  }
+
+  public String capitalizeFirstLetter(String str){
+    return str.toUpperCase().charAt(0)+str.substring(1,str.length());
+  }
+
+
   private String javaType(Schema schema, boolean checkConvertedLogicalType) {
     if (checkConvertedLogicalType) {
       String convertedLogicalType = getConvertedLogicalType(schema);
@@ -943,8 +962,9 @@ public class Compiler {
     }
 
     switch (schema.getType()) {
-    case RECORD:
     case EXTERNAL:
+        return mangle(schema.getFullName());
+    case RECORD:
     case GENERIC:
     case ENUM:
     case FIXED:

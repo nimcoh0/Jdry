@@ -29,6 +29,8 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.model.fileset.FileSet;
 import org.apache.maven.shared.model.fileset.util.FileSetManager;
 import org.apache.avro.Compiler;
+
+import javax.lang.model.element.Modifier;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -38,6 +40,9 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+
+import static javax.lang.model.element.Modifier.STATIC;
 
 
 /**
@@ -379,7 +384,12 @@ public abstract class AbstractJdryMojo extends AbstractMojo {
         for (String velocityToolClassName : velocityToolsClassesNames) {
             try {
                 Class klass = Class.forName(velocityToolClassName);
-                velocityTools.add(klass.newInstance());
+                Integer modifier = klass.getModifiers();
+                if(modifier.equals(STATIC)){
+                    velocityTools.add(klass);
+                }else{
+                    velocityTools.add(klass.newInstance());
+                }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

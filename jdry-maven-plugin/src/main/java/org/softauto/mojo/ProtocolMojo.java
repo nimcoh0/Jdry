@@ -24,6 +24,8 @@ import org.apache.avro.Protocol;
 import org.apache.avro.generic.GenericData;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.avro.Compiler;
+import org.softauto.core.Utils;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -75,6 +77,10 @@ public class ProtocolMojo extends AbstractJdryMojo {
         File src = new File(sourceDirectory, filename);
         Protocol protocol = Protocol.parse(src);
         Compiler compiler = new Compiler(protocol);
+        for(String jar : classpath){
+                Utils.addJarToClasspath(jar);
+        }
+
         compiler.setTemplateDir(this.templateDirectory);
         compiler.setStringType(GenericData.StringType.valueOf(this.stringType));
         compiler.setFieldVisibility(this.getFieldVisibility());

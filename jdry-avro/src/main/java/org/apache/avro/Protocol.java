@@ -26,6 +26,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A set of messages forming an application protocol base on Avro .
@@ -325,6 +326,10 @@ public class Protocol extends JsonProperties {
   public Collection<Schema> getTypes() {
     return types.values();
   }
+
+
+
+
 
   /** Returns the named type. */
   public Schema getType(String name) {

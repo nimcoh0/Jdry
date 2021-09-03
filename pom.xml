@@ -28,6 +28,8 @@
         <module>jdry-maven-plugin</module>
         <module>jdry-socket-annotations</module>
         <module>jdry-jaxrs-annotations</module>
+        <module>jdry-cucumber</module>
+        <module>jdry-testng</module>
 
 
     </modules>

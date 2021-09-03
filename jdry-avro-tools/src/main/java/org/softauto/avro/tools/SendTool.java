@@ -30,10 +30,10 @@ public class SendTool implements Tool {
 
             if (arguments.size() >= 10) {
                 System.err.println(
-                        "Usage: -host <host> -port <port> [-protocol protocol] -protocol_file <protocol file> -message_name <message name> (-data d | -file f)");
+                        "Usage: -host <host> -port <port> [-transceiver transceiver] -protocol_file <protocol file> -message_name <message name> (-data d | -file f)");
                 System.err.println(" host           - receiver host ");
                 System.err.println(" port           - receiver port ");
-                System.err.println(" protocol       - any transceiver define in the classpath . default is GRPC ");
+                System.err.println(" transceiver    - any transceiver define in the classpath . default is GRPC ");
                 System.err.println(" protocol_file  - protocol json file ");
                 System.err.println(" message_name   - message name ");
                 System.err.println(" data           - JSON-encoded request parameters. ");
@@ -66,8 +66,8 @@ public class SendTool implements Tool {
                 args.remove(arg - 1);
             }
 
-            if (args.contains("-protocol")) {
-                arg = args.indexOf("-protocol") + 1;
+            if (args.contains("-transceiver")) {
+                arg = args.indexOf("-transceiver") + 1;
                 transceiver = Optional.of(args.get(arg).toString());
                 args.remove(arg);
                 args.remove(arg - 1);

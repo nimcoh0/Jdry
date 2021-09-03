@@ -620,13 +620,13 @@ public class Utils {
         return t;
     }
 
-    public static void addToClasspath(String f) {
+    public static void addJarToClasspath(String f) {
         try {
             URLClassLoader classLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
-            String path = f.substring(0,f.lastIndexOf("/"));
-            String fileName = f.substring(f.lastIndexOf("/")+1);
-            addURL(new File(path).toURL(),classLoader);
-            File file = new File(classLoader.getResource(fileName).getFile());
+           // String path = f.substring(0,f.lastIndexOf("/"));
+           // String fileName = f.substring(f.lastIndexOf("/")+1);
+            addURL(new File(f).toURL(),classLoader);
+            //File file = new File(classLoader.getResource(fileName).getFile());
             //URL url = file.toURI().toURL();
             //Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
             //method.setAccessible(true);
