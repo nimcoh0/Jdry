@@ -952,6 +952,13 @@ public class Compiler {
     return mangle(schema.getNamespace());
   }
 
+  public String getBasicTypeName(String name){
+    if(name.contains("<")) {
+      return name.substring(0, name.indexOf("<"));
+    }
+    return name;
+  }
+
   public String capitalizeFirstLetter(String str){
     return str.toUpperCase().charAt(0)+str.substring(1,str.length());
   }

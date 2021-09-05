@@ -14,6 +14,10 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.lang.reflect.Field;
 import org.softauto.core.Utils;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 #if ($protocol.getDoc())
 /** $protocol.getDoc() */
@@ -54,28 +58,24 @@ public class $this.mangle($protocol.getName())CucumberImpl  {
 #end
 #if(!$name.contains("_result"))
 #foreach ($p in $message.getRequest().getFields())##
-#if(!$cucumber.isSupportedType($p.schema().getType()))##
 #set ($varName = $cucumber.getVarName($p.name()))
 $p.setName($varName)
 @ParameterType(".*")
 public ${this.javaUnbox($p.schema(),false)} $varName (String $varName)throws Exception{
-#if($p.schema().isPrimitive())
-   return ${this.capitalizeFirstLetter($p.schema().getName())}.valueOf($varName);
-#else
-  if(Utils.isJson($varName)){
-        return new ObjectMapper().readValue($varName, ${this.javaTypeNamespace($p.schema())}.${this.javaTypeName($p.schema())}.class);
+if(Utils.isJson($varName)){
+      return new ObjectMapper().readValue($varName, ${this.getBasicTypeName(${this.javaUnbox($p.schema(),false)})}.class);
+}
+      ExpressionParser parser = new SpelExpressionParser();
+      StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
+      Expression exp2 = parser.parseExpression($varName);
+      ${this.javaUnbox($p.schema(),false)} result = (${this.javaUnbox($p.schema(),false)}) exp2.getValue(itemContext,${this.getBasicTypeName(${this.javaUnbox($p.schema(),false)})}.class);
+
+return result;
   }
 
-   Field[] allFields = this.getClass().getDeclaredFields();
-      for(Field field : allFields){
-          if(field.getName().equals($varName)){
-              return (${this.javaUnbox($p.schema(),false)}) field.get(this);
-          }
-      }
-  return null;
-   #end
-  }
-#end #if($foreach.hasNext)#end
+public ${this.javaUnbox($p.schema(),false)} $varName;
+
+#if($foreach.hasNext)#end
 #end
 #else
 #foreach ($p in $message.getRequest().getFields())##

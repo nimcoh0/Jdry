@@ -55,12 +55,12 @@ $p.setName($varName)
 @ParameterType(".*")
 public ${this.javaUnbox($p.schema(),false)} $varName (String $varName)throws Exception{
 if(Utils.isJson($varName)){
-      return new ObjectMapper().readValue($varName, ${this.javaUnbox($p.schema(),false)}.class);
+      return new ObjectMapper().readValue($varName, ${this.getBasicTypeName(${this.javaUnbox($p.schema(),false)})}.class);
 }
       ExpressionParser parser = new SpelExpressionParser();
       StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
       Expression exp2 = parser.parseExpression($varName);
-      ${this.javaUnbox($p.schema(),false)} result = (${this.javaUnbox($p.schema(),false)}) exp2.getValue(itemContext,${this.javaUnbox($p.schema(),false)}.class);
+      ${this.javaUnbox($p.schema(),false)} result = (${this.javaUnbox($p.schema(),false)}) exp2.getValue(itemContext,${this.getBasicTypeName(${this.javaUnbox($p.schema(),false)})}.class);
 
 return result;
 }
@@ -122,12 +122,12 @@ $p.setName($varName)
 @ParameterType(".*")
 public ${this.javaUnbox($p.schema(),false)} $varName (String $varName)throws Exception{
 if(Utils.isJson($varName)){
-      return new ObjectMapper().readValue($varName, ${this.javaUnbox($p.schema(),false)}.class);
+      return new ObjectMapper().readValue($varName, ${this.getBasicTypeName(${this.javaUnbox($p.schema(),false)})}.class);
 }
       ExpressionParser parser = new SpelExpressionParser();
       StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
       Expression exp2 = parser.parseExpression($varName);
-      ${this.javaUnbox($p.schema(),false)} result = (${this.javaUnbox($p.schema(),false)}) exp2.getValue(itemContext,${this.javaUnbox($p.schema(),false)}.class);
+      ${this.javaUnbox($p.schema(),false)} result = (${this.javaUnbox($p.schema(),false)}) exp2.getValue(itemContext,${this.getBasicTypeName(${this.javaUnbox($p.schema(),false)})}.class);
 
 return result;
 }
@@ -137,7 +137,7 @@ public ${this.javaUnbox($p.schema(),false)} $varName;
 
 @Given("async ${this.mangle($name)} ##
 #foreach ($p in $message.getRequest().getFields())##
-{$p.schema().getName()} {$p.name()}#if($foreach.hasNext),#end
+{$p.name()}#if($foreach.hasNext),#end
 #end##
 ")
 public ##
