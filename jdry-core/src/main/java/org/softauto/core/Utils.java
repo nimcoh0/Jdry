@@ -2,7 +2,10 @@ package org.softauto.core;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.apache.avro.Protocol;
 import org.apache.avro.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -22,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import static java.util.Objects.isNull;
 
 public class Utils {
 
@@ -635,5 +640,37 @@ public class Utils {
             throw new RuntimeException("Unexpected exception", e);
         }
     }
+    public static boolean isJson(Object object)
+    {
+        return (object instanceof JsonArray || object instanceof JsonObject);
+    }
+
+    public static boolean isJson(String json)
+    {
+        return (isJsonArray(json) || isJsonObject(json));
+    }
+
+    public static boolean isJsonArray(String json)
+    {
+        try {
+        return new ObjectMapper().readTree(json).getNodeType().equals(JsonNodeType.ARRAY);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean isJsonObject(String json)
+    {
+        try {
+            return new ObjectMapper().readTree(json).getNodeType().equals(JsonNodeType.OBJECT);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+
 
 }

@@ -27,7 +27,7 @@ import static com.esotericsoftware.minlog.Log.*;
 @org.apache.avro.specific.AvroGenerated
 public class CucumberAbstractTester {
 
-    private static final Logger logger = LogManager.getLogger(AbstractTester.class);
+    private static final Logger logger = LogManager.getLogger(CucumberAbstractTester.class);
 
     public StepService tests;
     public StepService.Callback asyncTests;
@@ -35,8 +35,8 @@ public class CucumberAbstractTester {
     public ListenerService.Callback asyncListeners;
     public ObjectMapper objectMapper = new ObjectMapper();
 
-    @Before
-    public void start(){
+
+    public CucumberAbstractTester(){
         try {
             tests =  Client.create(tests.infrastructure.StepService.class);
             asyncTests =  Client.create(tests.infrastructure.StepService.Callback.class);
@@ -45,19 +45,20 @@ public class CucumberAbstractTester {
             ListenerInit.getInstance().loadConfiguration().initilize().register().startLifeCycle();
             Log.set(LEVEL_TRACE);
            loadPlugins();
+           testStart();
         }catch (Exception e){
             logger.error("fail start listener ",e);
         }
     }
 
-   @BeforeStep
-   public void testStart(io.cucumber.java.Scenario scenario){
-        ListenerInit.getInstance().startTest(scenario.getName());
+
+   public void testStart(){
+        ListenerInit.getInstance().startTest("bb");
         //ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceImpl",ListenerInit.getInstance().getListenerServiceImpl());
         org.softauto.logger.LogManager.setStatus(true);
    }
 
-    @AfterStep
+
     public void endTest(io.cucumber.java.Scenario scenario){
         org.softauto.logger.LogManager.setStatus(false);
         ListenerInit.getInstance().endTest(scenario.getName());
@@ -65,7 +66,7 @@ public class CucumberAbstractTester {
 
     }
 
-    @After
+
     public void finalize() {
         try {
             ListenerInit.getInstance().shutdown();

@@ -20,6 +20,10 @@
  */
 package org.apache.avro;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.apache.avro.data.TimeConversions;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.specific.SpecificData;
@@ -1003,6 +1007,21 @@ public class Compiler {
       throw new RuntimeException("Unknown type: " + schema);
     }
   }
+
+  public String typeToName(String type){
+    if(type != null && !type.isEmpty()) {
+      String tmp =  type.replace(".", "_").replace("<", "_").replace(">", "_");
+      if(tmp.contains("_")){
+        return tmp;
+      }else {
+        return "_"+tmp;
+      }
+    }
+    return type;
+  }
+
+
+
 
   private String getConvertedLogicalType(Schema schema) {
     if (enableDecimalLogicalType || !(schema.getLogicalType() instanceof LogicalTypes.Decimal)) {

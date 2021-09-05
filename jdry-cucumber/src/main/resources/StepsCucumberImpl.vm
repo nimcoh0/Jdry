@@ -9,6 +9,15 @@ import io.cucumber.java.en.Given;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.ParameterType;
 import org.softauto.core.CallFuture;
+import org.softauto.core.Utils;
+import java.lang.reflect.Field;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 #if ($protocol.getDoc())
 /** $protocol.getDoc() */
@@ -17,7 +26,7 @@ import org.softauto.core.CallFuture;
 @$annotation
 #end
 @org.apache.avro.specific.AvroGenerated
-public class $this.mangle($protocol.getName())CucumberImpl extends AbstractTester implements $this.mangle($protocol.getName()){
+public class $this.mangle($protocol.getName())CucumberImpl extends CucumberAbstractTester implements $this.mangle($protocol.getName()){
 
     private static Logger logger = LogManager.getLogger($this.mangle($protocol.getName())CucumberImpl.class);
 
@@ -27,6 +36,7 @@ public class $this.mangle($protocol.getName())CucumberImpl extends AbstractTeste
 #set ($name = $e.getKey())
 #set ($message = $e.getValue())
 #set ($response = $message.getResponse())
+#set ($typeToNameVar = $cucumber.getVarName($this.typeToName(${this.javaUnbox($response, true)})))
   /**
 #if ($message.getDoc())
    * $this.escapeForJavadoc($message.getDoc())
@@ -40,23 +50,32 @@ public class $this.mangle($protocol.getName())CucumberImpl extends AbstractTeste
   @$annotation
 #end
 #foreach ($p in $message.getRequest().getFields())##
-#if(!$cucumber.isSupportedType($p.schema().getType()))##
 #set ($varName = $cucumber.getVarName($p.name()))
 $p.setName($varName)
 @ParameterType(".*")
 public ${this.javaUnbox($p.schema(),false)} $varName (String $varName)throws Exception{
-#if($p.schema().isPrimitive())
-      return ${this.capitalizeFirstLetter($p.schema().getName())}.valueOf($varName);
-#else
-      return new ObjectMapper().readValue($varName, ${this.javaTypeNamespace($p.schema())}.${this.javaTypeName($p.schema())}.class);
-#end
+if(Utils.isJson($varName)){
+      return new ObjectMapper().readValue($varName, ${this.javaUnbox($p.schema(),false)}.class);
 }
-#end #if($foreach.hasNext)#end
+      ExpressionParser parser = new SpelExpressionParser();
+      StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
+      Expression exp2 = parser.parseExpression($varName);
+      ${this.javaUnbox($p.schema(),false)} result = (${this.javaUnbox($p.schema(),false)}) exp2.getValue(itemContext,${this.javaUnbox($p.schema(),false)}.class);
+
+return result;
+}
+public ${this.javaUnbox($p.schema(),false)} $varName;
+#if($foreach.hasNext)#end
 #end
-@Given("sync ${this.mangle($name)} ##
+
+#if (${this.javaUnbox($response, true)} != "void" )
+public ${this.javaUnbox($response, true)} $typeToNameVar;
+#end
+
+@Given("sync_${this.mangle($name)} ##
 #foreach ($p in $message.getRequest().getFields())##
-#if($cucumber.isSupportedType($p.schema().getType())) {$p.schema().getName()} #else {$p.name()} #end #if ($foreach.hasNext), #end
-#end ##
+ {$p.name()}#if($foreach.hasNext),#end
+#end##
 ")
 public ##
 #foreach ($p in $message.getRequest().getFields())##
@@ -76,24 +95,50 @@ ${this.mangle($error.getFullName())}##
 #end##    (one way)
 {
 #if (${this.javaUnbox($response, true)} != "void" )
-    return ##
+    $typeToNameVar = ##
 #end
 tests.${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
 #*      *#${this.mangle($p.name())}#if ($foreach.hasNext), #end
 #end
 );
+#if (${this.javaUnbox($response, true)} != "void" )
+    return $typeToNameVar;
+#end
 }
-#set ($varName = $cucumber.getVarName("future"))
+#set ($varNameFuture = $cucumber.getVarName("future"))
 @ParameterType(".*")
-public CallFuture $varName (String $varName)throws Exception{
-   return new ObjectMapper().readValue($varName, CallFuture.class);
+public CallFuture $varNameFuture (String $varNameFuture)throws Exception{
+   return new CallFuture<$message.getResponseTypeForCallBack()>();
 }
+#set ($typeToNameVar = $cucumber.getVarName($this.typeToName(${this.javaUnbox($response, true)})))
+#if (${this.javaUnbox($response, true)} != "void" )
+$message.getResponseTypeForCallBack() $typeToNameVar;
+#end
+
+#foreach ($p in $message.getRequest().getFields())##
+#set ($varName = $cucumber.getVarName($p.name()))
+$p.setName($varName)
+@ParameterType(".*")
+public ${this.javaUnbox($p.schema(),false)} $varName (String $varName)throws Exception{
+if(Utils.isJson($varName)){
+      return new ObjectMapper().readValue($varName, ${this.javaUnbox($p.schema(),false)}.class);
+}
+      ExpressionParser parser = new SpelExpressionParser();
+      StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
+      Expression exp2 = parser.parseExpression($varName);
+      ${this.javaUnbox($p.schema(),false)} result = (${this.javaUnbox($p.schema(),false)}) exp2.getValue(itemContext,${this.javaUnbox($p.schema(),false)}.class);
+
+return result;
+}
+public ${this.javaUnbox($p.schema(),false)} $varName;
+#if($foreach.hasNext)#end
+#end
 
 @Given("async ${this.mangle($name)} ##
 #foreach ($p in $message.getRequest().getFields())##
-#if($cucumber.isSupportedType($p.schema().getType())) {$p.schema().getName()} #else {$p.name()} #end #if ($foreach.hasNext), #end
-#end ##
+{$p.schema().getName()} {$p.name()}#if($foreach.hasNext),#end
+#end##
 ")
 public ##
 #foreach ($p in $message.getRequest().getFields())##
@@ -103,7 +148,7 @@ void async_${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
 #*      *#${this.javaUnbox($p.schema(), false)} $p.name()#if ($foreach.hasNext), #end
 #end
-#if($message.getRequest().getFields().size()>0),#end CallFuture<$message.getResponseTypeForCallBack()> $varName##
+#if($message.getRequest().getFields().size()>0),#end CallFuture<$message.getResponseTypeForCallBack()> $varNameFuture##
 )throws Exception #if (! $message.isOneWay() && $message.getErrors().getTypes().size() > 1)
  throws ##
 ## The first error is always "string", so we skip it.
@@ -117,7 +162,7 @@ ${this.mangle($error.getFullName())}##
 #foreach ($p in $message.getRequest().getFields())##
 #*      *#${this.mangle($p.name())}#if ($foreach.hasNext), #end
 #end
-#if($message.getRequest().getFields().size()>0),#end $varName);
+#if($message.getRequest().getFields().size()>0),#end $varNameFuture);
 }
 
 #end## (requests)
