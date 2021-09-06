@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 import io.cucumber.java.en.When;
+import io.cucumber.java.en.Then;
+import org.testng.Assert;
 
 #if ($protocol.getDoc())
 /** $protocol.getDoc() */
@@ -33,6 +35,13 @@ public class $this.mangle($protocol.getName())CucumberImpl extends CucumberAbstr
     private static Logger logger = LogManager.getLogger($this.mangle($protocol.getName())CucumberImpl.class);
 
 
+public boolean getResult (String result){
+ ExpressionParser parser = new SpelExpressionParser();
+ StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
+ Expression exp2 = parser.parseExpression(result);
+ boolean res = (java.lang.Boolean) exp2.getValue(itemContext,Boolean.class);
+ return res;
+}
 
 #foreach ($e in $protocol.getMessages().entrySet())
 #set ($name = $e.getKey())
@@ -72,6 +81,12 @@ public ${this.javaUnbox($p.schema(),false)} $varName;
 
 #if (${this.javaUnbox($response, true)} != "void" )
 public ${this.javaUnbox($response, true)} $typeToNameVar;
+
+@Then("result of $typeToNameVar should be {string} {string}")
+public void validate_${typeToNameVar}(String operator ,String expected){
+    boolean result = getResult("${typeToNameVar}"+" "+ operator + " " + expected);
+    Assert.assertTrue(result);
+}
 #end
 
 @Given("sync_${this.mangle($name)} ##
@@ -137,11 +152,19 @@ public ${this.javaUnbox($p.schema(),false)} $varName;
 #if($foreach.hasNext)#end
 #end
 
+#set ($resultVarName = $cucumber.getVarName(${this.mangle($name)}))
 CallFuture<$message.getResponseTypeForCallBack()> $varNameFuture;
+$message.getResponseTypeForCallBack() async_${resultVarName}_result;
+
+@Then("result of ${resultVarName} should be {string} {string}")
+public void validate_${resultVarName}_result (String operator ,String expected){
+    boolean result = getResult("async_${resultVarName}_result"+" "+ operator + " " + expected);
+    Assert.assertTrue(result);
+}
 
 @When("got ${this.mangle($name)} result")
-public $message.getResponseTypeForCallBack() get${this.capitalizeFirstLetter($varNameFuture)}() throws ExecutionException, InterruptedException{
-        return ${varNameFuture}.get();
+public void get${this.capitalizeFirstLetter($varNameFuture)}() throws ExecutionException, InterruptedException{
+        async_${resultVarName}_result =  ${varNameFuture}.get();
 }
 
 @Given("async ${this.mangle($name)} ##

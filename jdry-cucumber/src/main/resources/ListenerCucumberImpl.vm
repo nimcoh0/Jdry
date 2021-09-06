@@ -18,6 +18,8 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+import io.cucumber.java.en.Then;
+import org.junit.Assert;
 
 #if ($protocol.getDoc())
 /** $protocol.getDoc() */
@@ -29,6 +31,14 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 public class $this.mangle($protocol.getName())CucumberImpl  {
 
     private static Logger logger = LogManager.getLogger($this.mangle($protocol.getName())CucumberImpl.class);
+
+public boolean getResult (String result){
+ ExpressionParser parser = new SpelExpressionParser();
+ StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
+ Expression exp2 = parser.parseExpression(result);
+ boolean res = (java.lang.Boolean) exp2.getValue(itemContext,Boolean.class);
+ return res;
+}
 
     public $this.mangle($protocol.getName())CucumberImpl(){
           try {
@@ -79,7 +89,14 @@ public ${this.javaUnbox($p.schema(),false)} $varName;
 #end
 #else
 #foreach ($p in $message.getRequest().getFields())##
-      ${this.javaUnbox($p.schema(), false)}  ${this.mangle($name)}_$p.name()  ;
+ public  ${this.javaUnbox($p.schema(), false)}  ${this.mangle($name)}_$p.name()  ;
+
+@Then("result of ${this.mangle($name)}_$p.name() should be {string} {string}")
+public void validate_${this.mangle($name)}_$p.name()(String operator ,String expected){
+    boolean result = getResult("${this.mangle($name)}_$p.name()"+" "+ operator + " " + expected);
+    Assert.assertTrue(result);
+}
+
 #end ##
 #end
 @When("${this.mangle($name)}##
