@@ -18,6 +18,8 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.ExecutionException;
+import io.cucumber.java.en.When;
 
 #if ($protocol.getDoc())
 /** $protocol.getDoc() */
@@ -135,6 +137,13 @@ public ${this.javaUnbox($p.schema(),false)} $varName;
 #if($foreach.hasNext)#end
 #end
 
+CallFuture<$message.getResponseTypeForCallBack()> $varNameFuture;
+
+@When("got ${this.mangle($name)} result")
+public $message.getResponseTypeForCallBack() get${this.capitalizeFirstLetter($varNameFuture)}() throws ExecutionException, InterruptedException{
+        return ${varNameFuture}.get();
+}
+
 @Given("async ${this.mangle($name)} ##
 #foreach ($p in $message.getRequest().getFields())##
 {$p.name()}#if($foreach.hasNext),#end
@@ -148,7 +157,6 @@ void async_${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
 #*      *#${this.javaUnbox($p.schema(), false)} $p.name()#if ($foreach.hasNext), #end
 #end
-#if($message.getRequest().getFields().size()>0),#end CallFuture<$message.getResponseTypeForCallBack()> $varNameFuture##
 )throws Exception #if (! $message.isOneWay() && $message.getErrors().getTypes().size() > 1)
  throws ##
 ## The first error is always "string", so we skip it.
@@ -158,6 +166,7 @@ ${this.mangle($error.getFullName())}##
 #end##    (error list)
 #end##    (one way)
 {
+$varNameFuture = new CallFuture<>();
 #*      *#asyncTests.${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
 #*      *#${this.mangle($p.name())}#if ($foreach.hasNext), #end

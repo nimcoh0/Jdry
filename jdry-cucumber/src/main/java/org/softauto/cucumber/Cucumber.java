@@ -25,12 +25,5 @@ public class Cucumber {
     }
 
 
-    public static boolean isSupportedType(String type){
-        if(CucumberTypesParameter.fromString(type) != null){
-            return true;
-        }
-        return false;
-    }
-
 
 }
