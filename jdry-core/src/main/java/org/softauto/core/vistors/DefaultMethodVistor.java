@@ -5,6 +5,7 @@ import com.sun.tools.javac.code.Type;
 import org.apache.avro.Schema;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
 import org.jboss.forge.roaster.model.source.MethodSource;
+import org.softauto.annotations.ExposedForTesting;
 import org.softauto.core.AbstractMessage;
 import org.softauto.core.ClassTypeAnalyzer;
 import org.softauto.core.Utils;
@@ -118,14 +119,15 @@ public  class DefaultMethodVistor implements ElementVisitor {
         clazzBuilder.setInitialize(new ClassTypeAnalyzer(ElementUtils.getClass(element.getEnclosingElement())).getClassType());
         if(modifiers.contains(STATIC)){
             messageBuilder.setType("static");
-        }else
+        }else if(ElementUtils.isConstructor(e)){
+                    messageBuilder.setType("constructor").setMethod(className.substring(className.lastIndexOf(".")+1));
+                }else {
+                    messageBuilder.setType("method");
+                }
 
-        if(ElementUtils.isConstructor(e)){
-            messageBuilder.setType("constructor").setMethod(className.substring(className.lastIndexOf(".")+1));
-        }else {
-            messageBuilder.setType("method");
+        if(element.getAnnotation(ExposedForTesting.class).description() !=null && !element.getAnnotation(ExposedForTesting.class).description().isEmpty()){
+            messageBuilder.setDescription(element.getAnnotation(ExposedForTesting.class).description());
         }
-
         visitMessageKey(e);
         visitReturnType(e);
         clazzBuilder.setConstructorRequest(getConstructorDefaultValues(e.getEnclosingElement()));

@@ -32,13 +32,27 @@ public class $this.mangle($protocol.getName())CucumberImpl  {
 
     private static Logger logger = LogManager.getLogger($this.mangle($protocol.getName())CucumberImpl.class);
 
-public boolean getResult (String result){
- ExpressionParser parser = new SpelExpressionParser();
- StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
- Expression exp2 = parser.parseExpression(result);
- boolean res = (java.lang.Boolean) exp2.getValue(itemContext,Boolean.class);
- return res;
-}
+    public boolean getResult (String result){
+         ExpressionParser parser = new SpelExpressionParser();
+         StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
+         Expression exp2 = parser.parseExpression(result);
+         boolean res = (java.lang.Boolean) exp2.getValue(itemContext,Boolean.class);
+         return res;
+    }
+
+    public void setResult (String exp,Object value){
+        ExpressionParser parser = new SpelExpressionParser();
+        StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
+        parser.parseExpression(exp).setValue(itemContext,value);
+    }
+
+
+    public Object evulExp(String exp){
+        ExpressionParser parser = new SpelExpressionParser();
+        StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
+        Expression exp2 = parser.parseExpression(exp);
+        return exp2.getValue(itemContext);
+    }
 
     public $this.mangle($protocol.getName())CucumberImpl(){
           try {
@@ -83,15 +97,18 @@ if(Utils.isJson($varName)){
 return result;
   }
 
-public ${this.javaUnbox($p.schema(),false)} $varName;
+public ${this.javaUnbox($p.schema(),false)} ${varName}Value;
 
 #if($foreach.hasNext)#end
 #end
 #else
 #foreach ($p in $message.getRequest().getFields())##
  public  ${this.javaUnbox($p.schema(), false)}  ${this.mangle($name)}_$p.name()  ;
-
-@Then("result of ${this.mangle($name)}_$p.name() should be {string} {string}")
+#if($message.hasDescription())
+@Then("$cucumber.getVarName("result of $message.getDescription() for $p.name()")  should be {string} {string}")
+#else
+@Then("result of $cucumber.getShoreVarName(${this.mangle($name)}) for $p.name() should be {string} {string}")
+#end
 public void validate_${this.mangle($name)}_$p.name()(String operator ,String expected){
     boolean result = getResult("${this.mangle($name)}_$p.name()"+" "+ operator + " " + expected);
     Assert.assertTrue(result);
@@ -99,11 +116,13 @@ public void validate_${this.mangle($name)}_$p.name()(String operator ,String exp
 
 #end ##
 #end
-@When("${this.mangle($name)}##
-#if(!$name.contains("_result"))
-#foreach ($p in $message.getRequest().getFields())##
-{$p.name()}#if($foreach.hasNext),#end
-#end##
+#if($message.hasDescription())
+@When("$cucumber.getVarName("got $message.getDescription() result")##
+#else
+@When("got $cucumber.getShoreVarName(${this.mangle($name)}) result##
+#end
+#if(!$name.contains("_result"))##
+ set exps {string} with values {string}##
 #end
 ")
 public ##
@@ -112,9 +131,7 @@ public ##
 #end
 java.lang.Object[] ${this.mangle($name)}(##
 #if(!$name.contains("_result"))
-#foreach ($p in $message.getRequest().getFields())##
-#*      *#${this.javaUnbox($p.schema(), false)} $p.name()#if ($foreach.hasNext), #end
-#end
+String exps ,String values##
 #end
 )#if (! $message.isOneWay() && $message.getErrors().getTypes().size() > 1)
  throws ##
@@ -132,10 +149,19 @@ try {
         @Override
         public ${this.javaUnbox($response, true)} ${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
-${this.javaUnbox($p.schema(), false)} new$p.name()#if ($foreach.hasNext), #end
+${this.javaUnbox($p.schema(), false)} $p.name()#if ($foreach.hasNext), #end
 #end ##
 ) {
 #if (${this.javaUnbox($response, true)} != "void" )
+#foreach ($p in $message.getRequest().getFields())
+        ${p.name()}Value = $p.name();
+#end
+        String[] _exps = exps.split(",");
+        String[] _values = values.split(",");
+        for(int i=0;i<_exps.length;i++){
+            Object v = evulExp(_values[i]);
+            setResult(_exps[i],v);
+        }
         lock.countDown();
         return new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
@@ -145,11 +171,11 @@ $p.name()#if ($foreach.hasNext), #end
          };
 #else
 #foreach ($p in $message.getRequest().getFields())##
-        ${this.mangle($name)}_$p.name()  = new$p.name() ;
+        ${this.mangle($name)}_$p.name()  = $p.name() ;
 #end##
         ref.set(new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
-new$p.name()#if ($foreach.hasNext), #end
+$p.name()#if ($foreach.hasNext), #end
 #end ##
 });
         lock.countDown();

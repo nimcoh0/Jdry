@@ -161,7 +161,16 @@ public class Protocol extends JsonProperties {
        return false;
     }
 
+    public boolean  hasDescription(){
+      if(this.hasProp("description")){
+        return true;
+      }
+      return false;
+    }
 
+    public String getDescription(){
+      return this.getProp("description");
+    }
 
     void toJson(JsonGenerator gen) throws IOException {
       gen.writeStartObject();

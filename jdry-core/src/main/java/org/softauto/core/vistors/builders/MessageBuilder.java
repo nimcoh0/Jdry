@@ -21,10 +21,20 @@ public class MessageBuilder {
         String method;
         String type;
         String transceiver;
+        String description;
 
         public Builder(){
             request = new ArrayList<>();
             clazz = new HashMap<>();
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
         }
 
         public String getTransceiver() {
@@ -116,6 +126,7 @@ public class MessageBuilder {
             message.put("method",method);
             message.put("transceiver", transceiver);
             message.put("type", type);
+            message.put("description",description);
             return message;
         }
     }

@@ -43,6 +43,17 @@ public boolean getResult (String result){
  return res;
 }
 
+
+    public Object evulExp(String exp){
+        ExpressionParser parser = new SpelExpressionParser();
+        StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
+        Expression exp2 = parser.parseExpression(exp);
+        return exp2.getValue(itemContext);
+    }
+
+
+
+
 #foreach ($e in $protocol.getMessages().entrySet())
 #set ($name = $e.getKey())
 #set ($message = $e.getValue())
@@ -82,16 +93,45 @@ public ${this.javaUnbox($p.schema(),false)} $varName;
 #if (${this.javaUnbox($response, true)} != "void" )
 public ${this.javaUnbox($response, true)} $typeToNameVar;
 
-@Then("result of $typeToNameVar should be {string} {string}")
-public void validate_${typeToNameVar}(String operator ,String expected){
-    boolean result = getResult("${typeToNameVar}"+" "+ operator + " " + expected);
+#set ($exp = $cucumber.getVarName("exp"))
+#set ($operator = $cucumber.getVarName("operator"))
+#set ($expected = $cucumber.getVarName("expected"))
+
+@ParameterType(".*")
+public String $exp (String $exp)throws Exception{
+    return $exp;
+}
+@ParameterType(".*")
+public String $operator (String $operator)throws Exception{
+    return $operator;
+}
+@ParameterType(".*")
+public Object $expected (String $expected)throws Exception{
+      ExpressionParser parser = new SpelExpressionParser();
+      StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
+      Expression exp2 = parser.parseExpression($expected);
+      Object result = exp2.getValue(itemContext);
+
+return result;
+}
+#if($message.hasDescription())
+@Then("$cucumber.getVarName("result of $message.getDescription() should be") {$exp} {$operator} {$expected}")
+#else
+@Then("result of $cucumber.getShoreVarName(${this.mangle($name)}) should be {$exp} {$operator} {$expected}")
+#end
+public void validate_${typeToNameVar}(String $exp, String $operator ,Object $expected){
+    Object o =  evulExp($exp);
+    boolean result = getResult(o+" "+ $operator + " " + $expected);
     Assert.assertTrue(result);
 }
 #end
-
-@Given("sync_${this.mangle($name)} ##
+#if($message.hasDescription())
+@Given("$cucumber.getVarName($message.getDescription()) ##
+#else
+@Given("$cucumber.getShoreVarName(${this.mangle($name)}) ##
+#end
 #foreach ($p in $message.getRequest().getFields())##
- {$p.name()}#if($foreach.hasNext),#end
+ with $p.name() {$p.name()}#if($foreach.hasNext) and #end
 #end##
 ")
 public ##
@@ -156,22 +196,34 @@ public ${this.javaUnbox($p.schema(),false)} $varName;
 CallFuture<$message.getResponseTypeForCallBack()> $varNameFuture;
 $message.getResponseTypeForCallBack() async_${resultVarName}_result;
 
-@Then("result of ${resultVarName} should be {string} {string}")
+#if($message.hasDescription())
+@Then("$cucumber.getVarName("result of $message.getDescription() should be") {string} {string}")
+#else
+@Then("result of $cucumber.getShoreVarName(${this.mangle($name)})  should be {string} {string}")
+#end
 public void validate_${resultVarName}_result (String operator ,String expected){
     boolean result = getResult("async_${resultVarName}_result"+" "+ operator + " " + expected);
     Assert.assertTrue(result);
 }
 
-@When("got ${this.mangle($name)} result")
+#if($message.hasDescription())
+@When("$cucumber.getVarName("got $message.getDescription() result")")
+#else
+@When("got $cucumber.getShoreVarName(${this.mangle($name)}) result")
+#end
 public void get${this.capitalizeFirstLetter($varNameFuture)}() throws ExecutionException, InterruptedException{
         async_${resultVarName}_result =  ${varNameFuture}.get();
 }
 
-@Given("async ${this.mangle($name)} ##
+#if($message.hasDescription())
+@Given("$cucumber.getVarName($message.getDescription()) ##
+#else
+@Given("$cucumber.getShoreVarName(${this.mangle($name)}) ##
+#end
 #foreach ($p in $message.getRequest().getFields())##
-{$p.name()}#if($foreach.hasNext),#end
+with $p.name() {$p.name()}#if($foreach.hasNext) and #end
 #end##
-")
+ #async")
 public ##
 #foreach ($p in $message.getRequest().getFields())##
 #if($p.schema().isGeneric())<${this.javaUnbox($p.schema(),false)}>#end#if($foreach.hasNext)#end ##

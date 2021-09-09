@@ -1,6 +1,7 @@
 package org.softauto.grpc.schema;
 
 import com.sun.tools.javac.code.Type;
+import org.softauto.annotations.ListenerForTesting;
 import org.softauto.core.AbstractMessage;
 import org.softauto.core.Utils;
 
@@ -93,7 +94,9 @@ public  class ListenerResultVistor implements ElementVisitor {
         namespace = e.getEnclosingElement().toString();
         method = e.getSimpleName().toString();
         message.put("transceiver", protocol);
-
+        if(e.getAnnotation(ListenerForTesting.class).description() !=null && !e.getAnnotation(ListenerForTesting.class).description().isEmpty()){
+            message.put("description", e.getAnnotation(ListenerForTesting.class).description());
+        }
         visitReturnType(e);
         for (int i = 0; i <  e.getParameters().size(); i++) {
             VariableElement param = e.getParameters().get(i);

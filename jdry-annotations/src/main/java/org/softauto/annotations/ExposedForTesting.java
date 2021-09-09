@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD,ElementType.CONSTRUCTOR})
 @Retention(RetentionPolicy.SOURCE)
 public @interface ExposedForTesting {
-
+        String description() default "";
 }
