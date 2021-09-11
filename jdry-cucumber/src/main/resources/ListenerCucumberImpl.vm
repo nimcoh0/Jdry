@@ -28,9 +28,19 @@ import org.junit.Assert;
 @$annotation
 #end
 @org.apache.avro.specific.AvroGenerated
-public class $this.mangle($protocol.getName())CucumberImpl  {
+public class $this.mangle($protocol.getName())CucumberImpl  extends CucumberAbstractTester{
 
     private static Logger logger = LogManager.getLogger($this.mangle($protocol.getName())CucumberImpl.class);
+
+    public $this.mangle($protocol.getName())CucumberImpl(){
+          try {
+             if( Class.forName("org.softauto.listener.ListenerObserver", false, this.getClass().getClassLoader())!= null){
+                 org.softauto.listener.ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceCucumberImpl", this);
+             }
+         }catch (Exception e){
+           // e.printStackTrace();
+         }
+    }
 
     public boolean getResult (String result){
          ExpressionParser parser = new SpelExpressionParser();
@@ -54,15 +64,21 @@ public class $this.mangle($protocol.getName())CucumberImpl  {
         return exp2.getValue(itemContext);
     }
 
-    public $this.mangle($protocol.getName())CucumberImpl(){
-          try {
-             if( Class.forName("org.softauto.listener.ListenerObserver", false, this.getClass().getClassLoader())!= null){
-                 org.softauto.listener.ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceCucumberImpl", this);
-             }
-         }catch (Exception e){
-           // e.printStackTrace();
-         }
-    }
+ #set ($exp = $cucumber.getVarName("exp"))
+
+
+ @ParameterType(".*")
+ public String $exp (String $exp) throws Exception{
+     return $exp;
+ }
+
+
+@Then("validate result of {$exp}")
+public void validate(String $exp){
+    boolean result = getResult($exp);
+    Assert.assertTrue(result);
+}
+
 
 #foreach ($e in $protocol.getMessages().entrySet())
 #set ($name = $e.getKey())
@@ -84,6 +100,7 @@ public class $this.mangle($protocol.getName())CucumberImpl  {
 #foreach ($p in $message.getRequest().getFields())##
 #set ($varName = $cucumber.getVarName($p.name()))
 $p.setName($varName)
+$cucumber.addVarName($varName)
 @ParameterType(".*")
 public ${this.javaUnbox($p.schema(),false)} $varName (String $varName)throws Exception{
 if(Utils.isJson($varName)){
@@ -103,26 +120,29 @@ public ${this.javaUnbox($p.schema(),false)} ${varName}Value;
 #end
 #else
 #foreach ($p in $message.getRequest().getFields())##
- public  ${this.javaUnbox($p.schema(), false)}  ${this.mangle($name)}_$p.name()  ;
-#if($message.hasDescription())
-@Then("$cucumber.getVarName("result of $message.getDescription() for $p.name()")  should be {string} {string}")
-#else
-@Then("result of $cucumber.getShoreVarName(${this.mangle($name)}) for $p.name() should be {string} {string}")
-#end
-public void validate_${this.mangle($name)}_$p.name()(String operator ,String expected){
-    boolean result = getResult("${this.mangle($name)}_$p.name()"+" "+ operator + " " + expected);
-    Assert.assertTrue(result);
-}
-
+ public  ${this.javaUnbox($p.schema(), false)}  $cucumber.getShortVarName(${this.mangle($name)})_$p.name()  ;
 #end ##
 #end
+#set ($exps = $cucumber.getVarName("exps"))
+#set ($values = $cucumber.getVarName("values"))
+
+#if(!$name.contains("_result"))##
+@ParameterType(".*")
+ public String $exps (String $exps) throws Exception{
+     return $exps;
+ }
+ @ParameterType(".*")
+ public String $values (String $values) throws Exception{
+        return $values;
+ }
+#end
 #if($message.hasDescription())
-@When("$cucumber.getVarName("got $message.getDescription() result")##
+@When("$message.getDescription()##
 #else
-@When("got $cucumber.getShoreVarName(${this.mangle($name)}) result##
+@When("got $cucumber.getVarName(${this.mangle($name)}) result##
 #end
 #if(!$name.contains("_result"))##
- set exps {string} with values {string}##
+ set  {$exps} with {$values}##
 #end
 ")
 public ##
@@ -131,7 +151,7 @@ public ##
 #end
 java.lang.Object[] ${this.mangle($name)}(##
 #if(!$name.contains("_result"))
-String exps ,String values##
+String $exps ,String $values##
 #end
 )#if (! $message.isOneWay() && $message.getErrors().getTypes().size() > 1)
  throws ##
@@ -156,8 +176,8 @@ ${this.javaUnbox($p.schema(), false)} $p.name()#if ($foreach.hasNext), #end
 #foreach ($p in $message.getRequest().getFields())
         ${p.name()}Value = $p.name();
 #end
-        String[] _exps = exps.split(",");
-        String[] _values = values.split(",");
+        String[] _exps = ${exps}.split(",");
+        String[] _values = ${values}.split(",");
         for(int i=0;i<_exps.length;i++){
             Object v = evulExp(_values[i]);
             setResult(_exps[i],v);
@@ -171,7 +191,7 @@ $p.name()#if ($foreach.hasNext), #end
          };
 #else
 #foreach ($p in $message.getRequest().getFields())##
-        ${this.mangle($name)}_$p.name()  = $p.name() ;
+        $cucumber.getShortVarName(${this.mangle($name)})_$p.name()  = $p.name() ;
 #end##
         ref.set(new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##

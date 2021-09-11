@@ -23,6 +23,7 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import org.testng.Assert;
 
+
 #if ($protocol.getDoc())
 /** $protocol.getDoc() */
 #end
@@ -30,18 +31,18 @@ import org.testng.Assert;
 @$annotation
 #end
 @org.apache.avro.specific.AvroGenerated
-public class $this.mangle($protocol.getName())CucumberImpl extends CucumberAbstractTester implements $this.mangle($protocol.getName()){
+public class $this.mangle($protocol.getName())CucumberImpl extends CucumberAbstractTester {
 
     private static Logger logger = LogManager.getLogger($this.mangle($protocol.getName())CucumberImpl.class);
 
 
-public boolean getResult (String result){
- ExpressionParser parser = new SpelExpressionParser();
- StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
- Expression exp2 = parser.parseExpression(result);
- boolean res = (java.lang.Boolean) exp2.getValue(itemContext,Boolean.class);
- return res;
-}
+    public boolean getResult (String result){
+         ExpressionParser parser = new SpelExpressionParser();
+         StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
+         Expression exp2 = parser.parseExpression(result);
+         boolean res = (java.lang.Boolean) exp2.getValue(itemContext,Boolean.class);
+         return res;
+    }
 
 
     public Object evulExp(String exp){
@@ -51,14 +52,43 @@ public boolean getResult (String result){
         return exp2.getValue(itemContext);
     }
 
+#set ($exp = $cucumber.getVarName("exp"))
+#set ($future = $cucumber.getVarName("future"))
 
+@ParameterType(".*")
+public String $exp (String $exp) throws Exception{
+    return $exp;
+}
+
+
+@ParameterType(".*")
+public Object $future (String $future) throws Exception{
+      ExpressionParser parser = new SpelExpressionParser();
+      StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
+      Expression exp2 = parser.parseExpression("get"+future.toUpperCase().charAt(0)+future.substring(1,future.length())+"()");
+      return exp2.getValue(itemContext);
+}
+
+
+
+@Then("validate result of {$exp}")
+public void validate(String $exp){
+    boolean result = getResult($exp);
+    Assert.assertTrue(result);
+}
+
+@Then("validate result of {$exp} {$future} #async")
+public void asyncValidate (String $exp ,Object $future) throws ExecutionException, InterruptedException{
+    boolean result = getResult($exp);
+    Assert.assertTrue(result);
+}
 
 
 #foreach ($e in $protocol.getMessages().entrySet())
 #set ($name = $e.getKey())
 #set ($message = $e.getValue())
 #set ($response = $message.getResponse())
-#set ($typeToNameVar = $cucumber.getVarName($this.typeToName(${this.javaUnbox($response, true)})))
+#set ($typeVarName = $cucumber.getVarName(${this.javaUnbox($response, true)}))
   /**
 #if ($message.getDoc())
    * $this.escapeForJavadoc($message.getDoc())
@@ -74,6 +104,7 @@ public boolean getResult (String result){
 #foreach ($p in $message.getRequest().getFields())##
 #set ($varName = $cucumber.getVarName($p.name()))
 $p.setName($varName)
+$cucumber.addVarName($varName)
 @ParameterType(".*")
 public ${this.javaUnbox($p.schema(),false)} $varName (String $varName)throws Exception{
 if(Utils.isJson($varName)){
@@ -91,48 +122,16 @@ public ${this.javaUnbox($p.schema(),false)} $varName;
 #end
 
 #if (${this.javaUnbox($response, true)} != "void" )
-public ${this.javaUnbox($response, true)} $typeToNameVar;
-
-#set ($exp = $cucumber.getVarName("exp"))
-#set ($operator = $cucumber.getVarName("operator"))
-#set ($expected = $cucumber.getVarName("expected"))
-
-@ParameterType(".*")
-public String $exp (String $exp)throws Exception{
-    return $exp;
-}
-@ParameterType(".*")
-public String $operator (String $operator)throws Exception{
-    return $operator;
-}
-@ParameterType(".*")
-public Object $expected (String $expected)throws Exception{
-      ExpressionParser parser = new SpelExpressionParser();
-      StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
-      Expression exp2 = parser.parseExpression($expected);
-      Object result = exp2.getValue(itemContext);
-
-return result;
-}
-#if($message.hasDescription())
-@Then("$cucumber.getVarName("result of $message.getDescription() should be") {$exp} {$operator} {$expected}")
-#else
-@Then("result of $cucumber.getShoreVarName(${this.mangle($name)}) should be {$exp} {$operator} {$expected}")
-#end
-public void validate_${typeToNameVar}(String $exp, String $operator ,Object $expected){
-    Object o =  evulExp($exp);
-    boolean result = getResult(o+" "+ $operator + " " + $expected);
-    Assert.assertTrue(result);
-}
+public ${this.javaUnbox($response, true)} $typeVarName;
 #end
 #if($message.hasDescription())
-@Given("$cucumber.getVarName($message.getDescription()) ##
+@Given("$cucumber.buildDescription($message.getDescription())##
 #else
-@Given("$cucumber.getShoreVarName(${this.mangle($name)}) ##
-#end
+@Given("$cucumber.getVarName(${this.mangle($name)}) ##
 #foreach ($p in $message.getRequest().getFields())##
  with $p.name() {$p.name()}#if($foreach.hasNext) and #end
 #end##
+#end
 ")
 public ##
 #foreach ($p in $message.getRequest().getFields())##
@@ -152,7 +151,7 @@ ${this.mangle($error.getFullName())}##
 #end##    (one way)
 {
 #if (${this.javaUnbox($response, true)} != "void" )
-    $typeToNameVar = ##
+    $typeVarName = ##
 #end
 tests.${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
@@ -160,7 +159,7 @@ tests.${this.mangle($name)}(##
 #end
 );
 #if (${this.javaUnbox($response, true)} != "void" )
-    return $typeToNameVar;
+    return $typeVarName;
 #end
 }
 #set ($varNameFuture = $cucumber.getVarName("future"))
@@ -168,14 +167,15 @@ tests.${this.mangle($name)}(##
 public CallFuture $varNameFuture (String $varNameFuture)throws Exception{
    return new CallFuture<$message.getResponseTypeForCallBack()>();
 }
-#set ($typeToNameVar = $cucumber.getVarName($this.typeToName(${this.javaUnbox($response, true)})))
+#set ($typeVarName = $cucumber.getVarName(${this.javaUnbox($response, true)}))
 #if (${this.javaUnbox($response, true)} != "void" )
-$message.getResponseTypeForCallBack() $typeToNameVar;
+$message.getResponseTypeForCallBack() $typeVarName;
 #end
 
 #foreach ($p in $message.getRequest().getFields())##
 #set ($varName = $cucumber.getVarName($p.name()))
 $p.setName($varName)
+$cucumber.addVarName($varName)
 @ParameterType(".*")
 public ${this.javaUnbox($p.schema(),false)} $varName (String $varName)throws Exception{
 if(Utils.isJson($varName)){
@@ -196,33 +196,20 @@ public ${this.javaUnbox($p.schema(),false)} $varName;
 CallFuture<$message.getResponseTypeForCallBack()> $varNameFuture;
 $message.getResponseTypeForCallBack() async_${resultVarName}_result;
 
-#if($message.hasDescription())
-@Then("$cucumber.getVarName("result of $message.getDescription() should be") {string} {string}")
-#else
-@Then("result of $cucumber.getShoreVarName(${this.mangle($name)})  should be {string} {string}")
-#end
-public void validate_${resultVarName}_result (String operator ,String expected){
-    boolean result = getResult("async_${resultVarName}_result"+" "+ operator + " " + expected);
-    Assert.assertTrue(result);
-}
 
-#if($message.hasDescription())
-@When("$cucumber.getVarName("got $message.getDescription() result")")
-#else
-@When("got $cucumber.getShoreVarName(${this.mangle($name)}) result")
-#end
-public void get${this.capitalizeFirstLetter($varNameFuture)}() throws ExecutionException, InterruptedException{
+public $message.getResponseTypeForCallBack() get${this.capitalizeFirstLetter($varNameFuture)}() throws ExecutionException, InterruptedException{
         async_${resultVarName}_result =  ${varNameFuture}.get();
+        return async_${resultVarName}_result;
 }
 
 #if($message.hasDescription())
-@Given("$cucumber.getVarName($message.getDescription()) ##
+@Given("$cucumber.buildDescription($message.getDescription())##
 #else
-@Given("$cucumber.getShoreVarName(${this.mangle($name)}) ##
-#end
+@Given("$cucumber.getVarName(${this.mangle($name)}) ##
 #foreach ($p in $message.getRequest().getFields())##
 with $p.name() {$p.name()}#if($foreach.hasNext) and #end
 #end##
+#end
  #async")
 public ##
 #foreach ($p in $message.getRequest().getFields())##

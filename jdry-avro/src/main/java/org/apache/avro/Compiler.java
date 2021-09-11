@@ -1015,17 +1015,7 @@ public class Compiler {
     }
   }
 
-  public String typeToName(String type){
-    if(type != null && !type.isEmpty()) {
-      String tmp =  type.replace(".", "_").replace("<", "_").replace(">", "_");
-      if(tmp.contains("_")){
-        return tmp;
-      }else {
-        return "_"+tmp;
-      }
-    }
-    return type;
-  }
+
 
 
 

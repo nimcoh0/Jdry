@@ -23,6 +23,9 @@ import java.time.format.DateTimeFormatter;
 import org.softauto.core.Utils;
 import com.esotericsoftware.minlog.Log;
 import static com.esotericsoftware.minlog.Log.*;
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 @org.apache.avro.specific.AvroGenerated
 public class CucumberAbstractTester {
@@ -36,6 +39,7 @@ public class CucumberAbstractTester {
     public ObjectMapper objectMapper = new ObjectMapper();
 
 
+
     public CucumberAbstractTester(){
         try {
             tests =  Client.create(tests.infrastructure.StepService.class);
@@ -44,12 +48,13 @@ public class CucumberAbstractTester {
             asyncListeners = Client.create(tests.infrastructure.ListenerService.Callback.class);
             ListenerInit.getInstance().loadConfiguration().initilize().register().startLifeCycle();
             Log.set(LEVEL_TRACE);
-           loadPlugins();
-           testStart();
+            loadPlugins();
+            testStart();
         }catch (Exception e){
             logger.error("fail start listener ",e);
         }
     }
+
 
 
    public void testStart(){

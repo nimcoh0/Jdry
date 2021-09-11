@@ -27,7 +27,17 @@
             <artifactId>spring-expression</artifactId>
             <version>3.0.1.RELEASE</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+            <version>2.11.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-core</artifactId>
+            <version>beta-1.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
