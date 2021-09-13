@@ -20,6 +20,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import io.cucumber.java.en.Then;
 import org.junit.Assert;
+import java.util.List;
 
 #if ($protocol.getDoc())
 /** $protocol.getDoc() */
@@ -37,45 +38,43 @@ public class $this.mangle($protocol.getName())CucumberImpl  extends CucumberAbst
              if( Class.forName("org.softauto.listener.ListenerObserver", false, this.getClass().getClassLoader())!= null){
                  org.softauto.listener.ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceCucumberImpl", this);
              }
+             registerGlueClass(this);
          }catch (Exception e){
            // e.printStackTrace();
          }
     }
 
-    public boolean getResult (String result){
-         ExpressionParser parser = new SpelExpressionParser();
-         StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
-         Expression exp2 = parser.parseExpression(result);
-         boolean res = (java.lang.Boolean) exp2.getValue(itemContext,Boolean.class);
-         return res;
-    }
 
-    public void setResult (String exp,Object value){
-        ExpressionParser parser = new SpelExpressionParser();
-        StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
-        parser.parseExpression(exp).setValue(itemContext,value);
-    }
-
-
-    public Object evulExp(String exp){
-        ExpressionParser parser = new SpelExpressionParser();
-        StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
-        Expression exp2 = parser.parseExpression(exp);
-        return exp2.getValue(itemContext);
-    }
 
  #set ($exp = $cucumber.getVarName("exp"))
-
+#set ($operator = $cucumber.getVarName("operator"))
+#set ($expected = $cucumber.getVarName("expected"))
 
  @ParameterType(".*")
  public String $exp (String $exp) throws Exception{
      return $exp;
  }
 
+@ParameterType(".*")
+public String $operator (String $operator)throws Exception{
+       return $operator;
+}
+@ParameterType(".*")
+public Object $expected (String $expected)throws Exception{
+      ExpressionParser parser = new SpelExpressionParser();
+      StandardEvaluationContext itemContext = getContext($expected);
+       if(itemContext == null){
+          itemContext = new StandardEvaluationContext(this);
+       }
+      Expression exp2 = parser.parseExpression($expected);
+      Object result = exp2.getValue(itemContext);
 
-@Then("validate result of {$exp}")
-public void validate(String $exp){
-    boolean result = getResult($exp);
+return result;
+}
+
+@Then("validate listener result of {$exp} {$operator} {$expected}")
+public void validate(String $exp,String $operator,Object $expected)throws Exception{
+    boolean result = getResult($exp + " "+ $operator + " "+ $expected);
     Assert.assertTrue(result);
 }
 
@@ -107,7 +106,10 @@ if(Utils.isJson($varName)){
       return new ObjectMapper().readValue($varName, ${this.getBasicTypeName(${this.javaUnbox($p.schema(),false)})}.class);
 }
       ExpressionParser parser = new SpelExpressionParser();
-      StandardEvaluationContext itemContext = new StandardEvaluationContext(this);
+      StandardEvaluationContext itemContext = getContext($varName);
+      if(itemContext == null){
+          itemContext = new StandardEvaluationContext(this);
+      }
       Expression exp2 = parser.parseExpression($varName);
       ${this.javaUnbox($p.schema(),false)} result = (${this.javaUnbox($p.schema(),false)}) exp2.getValue(itemContext,${this.getBasicTypeName(${this.javaUnbox($p.schema(),false)})}.class);
 

@@ -2,6 +2,7 @@ package org.softauto.cucumber;
 
 import org.apache.commons.lang3.StringUtils;
 import java.util.*;
+import io.cucumber.java.*;
 
 public class Cucumber {
 

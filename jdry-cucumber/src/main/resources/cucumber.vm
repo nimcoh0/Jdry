@@ -26,33 +26,51 @@ import static com.esotericsoftware.minlog.Log.*;
 import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 @org.apache.avro.specific.AvroGenerated
 public class CucumberAbstractTester {
 
     private static final Logger logger = LogManager.getLogger(CucumberAbstractTester.class);
-
-    public StepService tests;
-    public StepService.Callback asyncTests;
-    public ListenerService listeners;
-    public ListenerService.Callback asyncListeners;
+    static boolean initialize = false;
+    public static StepService tests;
+    public static StepService.Callback asyncTests;
+    public static ListenerService listeners;
+    public static ListenerService.Callback asyncListeners;
     public ObjectMapper objectMapper = new ObjectMapper();
+    public static List<Object> glueClassList = new ArrayList<>();
 
 
 
     public CucumberAbstractTester(){
         try {
+        if(!initialize){
+            initialize = true;
             tests =  Client.create(tests.infrastructure.StepService.class);
             asyncTests =  Client.create(tests.infrastructure.StepService.Callback.class);
             listeners = Client.create(tests.infrastructure.ListenerService.class);
             asyncListeners = Client.create(tests.infrastructure.ListenerService.Callback.class);
             ListenerInit.getInstance().loadConfiguration().initilize().register().startLifeCycle();
-            Log.set(LEVEL_TRACE);
+            //Log.set(LEVEL_TRACE);
             loadPlugins();
             testStart();
+            }
         }catch (Exception e){
             logger.error("fail start listener ",e);
         }
+    }
+
+    public static void registerGlueClass(Object obj){
+        glueClassList.add(obj);
+    }
+
+    public static List<Object> getGlueClassList() {
+        return glueClassList;
     }
 
 
@@ -93,5 +111,53 @@ public class CucumberAbstractTester {
             logger.error("fail to load plugins  ",e);
         }
     }
+
+    public StandardEvaluationContext getContext(String exp){
+            StandardEvaluationContext itemContext = null;
+            String item = null;
+            if(exp.contains(".")) {
+               item = exp.substring(0, exp.indexOf("."));
+            }else{
+              item = exp;
+            }
+            List<Object> objects = getGlueClassList();
+            for(Object o: objects){
+                if(Utils.hasField(o.getClass(),item)){
+                    return new StandardEvaluationContext(o);
+                }
+            }
+            return itemContext;
+        }
+
+            public boolean getResult (String result)throws Exception{
+                 ExpressionParser parser = new SpelExpressionParser();
+                 StandardEvaluationContext itemContext = getContext(result);
+                 if(itemContext == null){
+                    throw new Exception("fail to evul " + result );
+                  }
+                 Expression exp2 = parser.parseExpression(result);
+                 boolean res = (java.lang.Boolean) exp2.getValue(itemContext,Boolean.class);
+                 return res;
+            }
+
+            public void setResult (String exp,Object value){
+                ExpressionParser parser = new SpelExpressionParser();
+                StandardEvaluationContext itemContext = getContext(exp);
+                if(itemContext == null){
+                   return;
+                }
+                parser.parseExpression(exp).setValue(itemContext,value);
+            }
+
+
+            public Object evulExp(String exp){
+                ExpressionParser parser = new SpelExpressionParser();
+                StandardEvaluationContext itemContext = getContext(exp);
+                if(itemContext == null){
+                    return exp;
+                 }
+                Expression exp2 = parser.parseExpression(exp);
+                return exp2.getValue(itemContext);
+            }
 
 }

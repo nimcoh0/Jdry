@@ -17,6 +17,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.Inet4Address;
 import java.net.URL;
@@ -671,6 +672,14 @@ public class Utils {
     }
 
 
-
+    public static boolean hasField(Class clazz, String fieldName){
+        Field[] fields = clazz.getFields();
+        for(Field field : fields){
+            if(field.getName().equals(fieldName)){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
