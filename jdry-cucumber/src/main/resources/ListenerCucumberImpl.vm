@@ -103,7 +103,7 @@ $cucumber.addVarName($varName)
 @ParameterType(".*")
 public ${this.javaUnbox($p.schema(),false)} $varName (String $varName)throws Exception{
 if(Utils.isJson($varName)){
-      return new ObjectMapper().readValue($varName, ${this.getBasicTypeName(${this.javaUnbox($p.schema(),false)})}.class);
+      return new ObjectMapper().readValue($varName, ${this.getOwnerTypeName(${this.javaUnbox($p.schema(),false)})}.class);
 }
       ExpressionParser parser = new SpelExpressionParser();
       StandardEvaluationContext itemContext = getContext($varName);
@@ -111,7 +111,7 @@ if(Utils.isJson($varName)){
           itemContext = new StandardEvaluationContext(this);
       }
       Expression exp2 = parser.parseExpression($varName);
-      ${this.javaUnbox($p.schema(),false)} result = (${this.javaUnbox($p.schema(),false)}) exp2.getValue(itemContext,${this.getBasicTypeName(${this.javaUnbox($p.schema(),false)})}.class);
+      ${this.javaUnbox($p.schema(),false)} result = (${this.javaUnbox($p.schema(),false)}) exp2.getValue(itemContext,${this.getOwnerTypeName(${this.javaUnbox($p.schema(),false)})}.class);
 
 return result;
   }
