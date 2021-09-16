@@ -8,6 +8,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.apache.avro.Protocol;
 import org.apache.avro.Schema;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.softauto.annotations.DefaultValue;
 import org.softauto.injector.Injector;
@@ -16,9 +17,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.net.Inet4Address;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -682,4 +681,24 @@ public class Utils {
         return false;
     }
 
+    /*
+    public static String getActualTypeArgumentName(String str) throws Exception {
+        if(str.contains("<")){
+            return  StringUtils.substringBetween(str, "<", ">");
+        }
+        return str;
+    }
+
+
+     */
+    public static String getActualTypeArgumentName(Object obj) throws Exception {
+        if(obj instanceof List) {
+            Type type = ((List)obj).get(0).getClass().getFields()[0].getGenericType();
+            if (type instanceof ParameterizedType) {
+                ParameterizedType pt = (ParameterizedType) type;
+                return pt.getTypeName();
+            }
+        }
+        return obj.toString();
+    }
 }

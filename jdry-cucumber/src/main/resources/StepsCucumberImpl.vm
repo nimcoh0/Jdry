@@ -22,7 +22,9 @@ import java.util.concurrent.ExecutionException;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import org.testng.Assert;
-
+import io.cucumber.datatable.DataTable;
+import java.util.Map;
+import java.util.*;
 
 #if ($protocol.getDoc())
 /** $protocol.getDoc() */
@@ -120,7 +122,7 @@ $cucumber.addVarName($varName)
 @ParameterType(".*")
 public ${this.javaUnbox($p.schema(),false)} $varName (String $varName)throws Exception{
 if(Utils.isJson($varName)){
-      return new ObjectMapper().readValue($varName, ${this.getBasicTypeName(${this.javaUnbox($p.schema(),false)})}.class);
+      return new ObjectMapper().readValue($varName, ${this.getOwnerTypeName(${this.javaUnbox($p.schema(),false)})}.class);
 }
       ExpressionParser parser = new SpelExpressionParser();
       StandardEvaluationContext itemContext = getContext($varName);
@@ -128,11 +130,11 @@ if(Utils.isJson($varName)){
           itemContext = new StandardEvaluationContext(this);
        }
       Expression exp2 = parser.parseExpression($varName);
-      ${this.javaUnbox($p.schema(),false)} result = (${this.javaUnbox($p.schema(),false)}) exp2.getValue(itemContext,${this.getBasicTypeName(${this.javaUnbox($p.schema(),false)})}.class);
+      ${this.javaUnbox($p.schema(),false)} result = (${this.javaUnbox($p.schema(),false)}) exp2.getValue(itemContext,${this.getOwnerTypeName(${this.javaUnbox($p.schema(),false)})}.class);
 
 return result;
 }
-public ${this.javaUnbox($p.schema(),false)} $varName;
+//public ${this.javaUnbox($p.schema(),false)} $varName;
 #if($foreach.hasNext)#end
 #end
 
@@ -177,6 +179,36 @@ tests.${this.mangle($name)}(##
     return $typeVarName;
 #end
 }
+
+
+
+#if ($message.getRequest().getFields().size() > 0)
+#foreach ($p in $message.getRequest().getFields())##
+#set ($objectVarName = $cucumber.getVarName(${this.getBasicTypeName("${p.name()}List")}))
+#if(!$cucumber.isPrimitive(${this.javaUnbox($p.schema(), false)}))
+#if(!$cucumber.hasObjectName(${this.getBasicTypeName(${this.javaUnbox($p.schema(), false)})}))
+$cucumber.addObjectName(${this.getBasicTypeName(${this.javaUnbox($p.schema(), false)})},$objectVarName)
+public List<${this.getBasicTypeName(${this.javaUnbox($p.schema(), false)})}> $objectVarName;
+     @Given("a list of ${this.javaUnbox($p.schema(), false)}")
+     public List<${this.getBasicTypeName(${this.javaUnbox($p.schema(), false)})}> create_$cucumber.fqmnToString(${this.javaUnbox($p.schema(), false)}) (DataTable table){
+     try{
+        List<Map<String, String>> map = table.asMaps(String.class, String.class);
+        String json = new ObjectMapper().writeValueAsString(map);
+        ${this.getBasicTypeName(${this.javaUnbox($p.schema(), false)})}[] res = new ObjectMapper().readValue(json, ${this.getBasicTypeName(${this.javaUnbox($p.schema(), false)})}[].class);
+        $objectVarName = Arrays.asList(res);
+     }catch (Exception e){
+        e.printStackTrace();
+     }
+     return   $objectVarName;
+     }
+
+#end
+#end
+#if($foreach.hasNext)#end
+#end##
+#end
+
+
 #set ($varNameFuture = $cucumber.getVarName("future"))
 @ParameterType(".*")
 public CallFuture $varNameFuture (String $varNameFuture)throws Exception{
@@ -194,7 +226,7 @@ $cucumber.addVarName($varName)
 @ParameterType(".*")
 public ${this.javaUnbox($p.schema(),false)} $varName (String $varName)throws Exception{
 if(Utils.isJson($varName)){
-      return new ObjectMapper().readValue($varName, ${this.getBasicTypeName(${this.javaUnbox($p.schema(),false)})}.class);
+      return new ObjectMapper().readValue($varName, ${this.getOwnerTypeName(${this.javaUnbox($p.schema(),false)})}.class);
 }
       ExpressionParser parser = new SpelExpressionParser();
       StandardEvaluationContext itemContext = getContext($varName);
@@ -206,7 +238,7 @@ if(Utils.isJson($varName)){
 
 return result;
 }
-public ${this.javaUnbox($p.schema(),false)} $varName;
+//public ${this.javaUnbox($p.schema(),false)} $varName;
 #if($foreach.hasNext)#end
 #end
 

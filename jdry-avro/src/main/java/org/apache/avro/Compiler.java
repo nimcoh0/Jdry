@@ -952,9 +952,18 @@ public class Compiler {
     return mangle(schema.getNamespace());
   }
 
+  public String getOwnerTypeName(String name){
+    if(name.contains("<")) {
+      int i = name.split(">").length;
+      return name.substring(0,name.indexOf("<"));
+    }
+    return name;
+  }
+
   public String getBasicTypeName(String name){
     if(name.contains("<")) {
-      return name.substring(0, name.indexOf("<"));
+       int i = name.split(">").length;
+       return name.substring(name.lastIndexOf("<")+1,name.length()-i);
     }
     return name;
   }
