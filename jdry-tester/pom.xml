@@ -19,8 +19,18 @@
             <version>${jdry-core}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-local</artifactId>
+            <version>${jdry-local}</version>
 
+        </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-logger</artifactId>
+            <version>${jdry-local}</version>
 
+        </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-grpc</artifactId>

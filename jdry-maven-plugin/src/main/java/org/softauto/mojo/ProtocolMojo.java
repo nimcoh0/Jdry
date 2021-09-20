@@ -24,6 +24,7 @@ import org.apache.avro.Protocol;
 import org.apache.avro.generic.GenericData;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.avro.Compiler;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.softauto.core.Utils;
 
 import java.io.File;
@@ -53,7 +54,7 @@ public class ProtocolMojo extends AbstractJdryMojo {
      *
      * @parameter
      */
-    private String[] includes = new String[] { "**/*.avpr" };
+    protected String[] includes = new String[] { "**/*.avpr" };
 
     /**
      * A set of Ant-like inclusion patterns used to select files from the source
@@ -64,15 +65,19 @@ public class ProtocolMojo extends AbstractJdryMojo {
      */
     private String[] testIncludes = new String[] { "**/*.avpr" };
 
-    private static void addSoftwareLibrary(File file) {
-        try {
-            Method method = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
-            method.setAccessible(true);
-            method.invoke(ClassLoader.getSystemClassLoader(), new Object[]{file.toURI().toURL()});
-        }catch (Exception e){
-            e.printStackTrace();
+    @Override
+    protected void compileFiles(String[] files, File sourceDir, File outDir) throws MojoExecutionException {
+        for (String filename : files) {
+            try {
+                // Need to register custom logical type factories before schema compilation.
+                loadLogicalTypesFactories();
+                doCompile(filename, sourceDir, outDir);
+            } catch (IOException e) {
+                throw new MojoExecutionException("Error compiling protocol file " + filename + " to " + outDir, e);
+            }
         }
     }
+
     protected void doCompile(String filename, File sourceDirectory, File outputDirectory) throws IOException {
         File src = new File(sourceDirectory, filename);
         Protocol protocol = Protocol.parse(src);
@@ -104,16 +109,8 @@ public class ProtocolMojo extends AbstractJdryMojo {
         } catch (ClassNotFoundException | DependencyResolutionRequiredException var12) {
             throw new IOException(var12);
         }
-        if(schema != null && outputName != null){
-            if(schema.toString().toLowerCase().contains(protocol.getName().toLowerCase())){
-                compiler.setOutputCharacterEncoding(project.getProperties().getProperty("project.build.sourceEncoding"));
-                compiler.compileProtocolToDestination(src, outputDirectory, template, outputName);
-            }
-        }else {
             compiler.setOutputCharacterEncoding(project.getProperties().getProperty("project.build.sourceEncoding"));
-            compiler.compileProtocolToDestination(src, outputDirectory, template, protocol.getName());
-        }
-
+            compiler.compileProtocolToDestination(src, outputDirectory, template, outputName == null ? protocol.getName():outputName);
     }
 
     @Override

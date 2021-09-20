@@ -112,6 +112,7 @@ public class Compiler {
   String template;
   String name;
   String velocityResources ;
+  String[] resources;
 
   public String getVelocityResources() {
     return velocityResources;
@@ -184,6 +185,14 @@ public class Compiler {
      //   "avro/compiler/specific/templates/");
     initializeVelocity();
     initializeSpecificData();
+  }
+
+  public String[] getResources() {
+    return resources;
+  }
+
+  public void setResources(String[] resources) {
+    this.resources = resources;
   }
 
   /**
@@ -580,6 +589,11 @@ public class Compiler {
 
 
   /** Generate output under dst, unless existing file is newer than src. */
+  public void compileToDestination(File dst,String template,String name,String namespace) throws IOException {
+    generate(template,name,namespace).writeToDestination(dst);
+  }
+
+  /** Generate output under dst, unless existing file is newer than src. */
   public void compileToDestination(File src, File dst) throws IOException {
     for (Schema schema : queue) {
       if(schema.getType() != (Schema.Type.EXTERNAL) && schema.getType() != (Schema.Type.GENERIC)) {
@@ -710,6 +724,27 @@ public class Compiler {
     outputFile.outputCharacterEncoding = outputCharacterEncoding;
     return outputFile;
   }
+
+  public OutputFile generate(String template,String name,String namespace) {
+    VelocityContext context = new VelocityContext();
+    context.put("this", this);
+    for (Object velocityTool : additionalVelocityTools) {
+      String toolName = velocityTool.getClass().getSimpleName().toLowerCase();
+      context.put(toolName, velocityTool);
+    }
+    //setVelocityResources();
+    String out = renderTemplate(templateDir + template, context);
+
+    OutputFile outputFile = new OutputFile();
+    String mangledName = mangle(name);
+    outputFile.path = makePath(mangledName, mangle(namespace));
+    outputFile.contents = out;
+    outputFile.outputCharacterEncoding = outputCharacterEncoding;
+    return outputFile;
+  }
+
+
+
 
   // package private for testing purposes
   String makePath(String name, String space) {

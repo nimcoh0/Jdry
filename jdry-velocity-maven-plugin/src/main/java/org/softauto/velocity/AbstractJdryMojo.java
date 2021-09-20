@@ -18,7 +18,7 @@
         this class base on avro plugin ,and wa modify by jdry project
 */
 
-package org.softauto.mojo;
+package org.softauto.velocity;
 
 
 import org.apache.avro.LogicalTypes;
@@ -40,7 +40,6 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import static javax.lang.model.element.Modifier.STATIC;
 
@@ -55,29 +54,12 @@ import static javax.lang.model.element.Modifier.STATIC;
  */
 public abstract class AbstractJdryMojo extends AbstractMojo {
 
-    /**
-     * The source directory of avro files. This directory is added to the classpath
-     * at schema compiling time. All files can therefore be referenced as classpath
-     * resources following the directory structure under the source directory.
-     *
-     * @parameter property="sourceDirectory"
-     *            default-value="${basedir}/src/main/avro"
-     */
-    private File sourceDirectory;
 
     /**
      * @parameter property="outputDirectory"
      *            default-value="${project.build.directory}/generated-sources/avro"
      */
     private File outputDirectory;
-
-
-
-    /**
-     * @parameter property="testFile"
-     *            default-value="${basedir}/src/resources/schema/StepService.avpr"
-     */
-    public File[] testFiles;
 
 
     /**
@@ -96,18 +78,6 @@ public abstract class AbstractJdryMojo extends AbstractMojo {
 
 
     /**
-     * @parameter property="sourceDirectory"
-     *            default-value="${basedir}/src/test/avro"
-     */
-    private File testSourceDirectory;
-
-    /**
-     * @parameter property="outputDirectory"
-     *            default-value="${project.build.directory}/generated-test-sources/avro"
-     */
-    private File testOutputDirectory;
-
-    /**
      * The field visibility indicator for the fields of the generated class, as
      * string values of SpecificCompiler.FieldVisibility. The text is case
      * insensitive.
@@ -116,14 +86,6 @@ public abstract class AbstractJdryMojo extends AbstractMojo {
      */
     private String fieldVisibility;
 
-    /**
-     * A list of files or directories that should be compiled first thus making them
-     * importable by subsequently compiled schemas. Note that imported files should
-     * not reference each other.
-     *
-     * @parameter
-     */
-    protected String[] imports;
 
     /**
      * A set of Ant-like exclusion patterns used to prevent certain files from being
@@ -133,13 +95,6 @@ public abstract class AbstractJdryMojo extends AbstractMojo {
      */
     protected String[] excludes = new String[0];
 
-    /**
-     * A set of Ant-like exclusion patterns used to prevent certain files from being
-     * processed. By default, this set is empty such that no files are excluded.
-     *
-     * @parameter
-     */
-    protected String[] testExcludes = new String[0];
 
     /**
      * The Java type to use for Avro strings. May be one of CharSequence, String or
@@ -243,7 +198,12 @@ public abstract class AbstractJdryMojo extends AbstractMojo {
      */
     protected String[] classpath = new String[0];
 
-
+    /**
+     * A set of namespace
+     *
+     * @parameter property="namespace"
+     */
+    protected String namespace = "";
 
     /**
      * The current Maven project.
@@ -261,78 +221,12 @@ public abstract class AbstractJdryMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
-        boolean hasSourceDir = null != sourceDirectory && sourceDirectory.isDirectory();
-        boolean hasImports = null != imports;
-        boolean hasTestDir = null != testSourceDirectory && testSourceDirectory.isDirectory();
-        if (!hasSourceDir && !hasTestDir) {
-            throw new MojoExecutionException("neither sourceDirectory: " + sourceDirectory + " or testSourceDirectory: "
-                    + testSourceDirectory + " are directories");
-        }
-
-        if (hasImports) {
-            for (String importedFile : imports) {
-                File file = new File(importedFile);
-                if (file.isDirectory()) {
-                    String[] includedFiles = getIncludedFiles(file.getAbsolutePath(), excludes, getIncludes());
-                    getLog().info("Importing Directory: " + file.getAbsolutePath());
-                    getLog().debug("Importing Directory Files: " + Arrays.toString(includedFiles));
-                    compileFiles(includedFiles, file, outputDirectory);
-                } else if (file.isFile()) {
-                    getLog().info("Importing File: " + file.getAbsolutePath());
-                    compileFiles(new String[] { file.getName() }, file.getParentFile(), outputDirectory);
-                }
-            }
-        }
-
-        if (hasSourceDir) {
-            String[] includedFiles = getIncludedFiles(sourceDirectory.getAbsolutePath(), excludes, getIncludes());
-            compileFiles(includedFiles, sourceDirectory, outputDirectory);
-        }
-
-        if (hasImports || hasSourceDir) {
-            project.addCompileSourceRoot(outputDirectory.getAbsolutePath());
-        }
-
-        if (hasTestDir) {
-            String[] includedFiles = getIncludedFiles(testSourceDirectory.getAbsolutePath(), testExcludes, getTestIncludes());
-            compileFiles(includedFiles, testSourceDirectory, testOutputDirectory);
-            project.addTestCompileSourceRoot(testOutputDirectory.getAbsolutePath());
-        }
-
+        compileFiles(outputDirectory);
     }
 
-    private String[] getIncludedFiles(String absPath, String[] excludes, String[] includes) {
-        final FileSetManager fileSetManager = new FileSetManager();
-        final FileSet fs = new FileSet();
-        fs.setDirectory(absPath);
-        fs.setFollowSymlinks(false);
 
-        // exclude imports directory since it has already been compiled.
-        if (imports != null) {
-            String importExclude = null;
 
-            for (String importFile : this.imports) {
-                File file = new File(importFile);
-
-                if (file.isDirectory()) {
-                    importExclude = file.getName() + "/**";
-                } else if (file.isFile()) {
-                    importExclude = "**/" + file.getName();
-                }
-
-                fs.addExclude(importExclude);
-            }
-        }
-        for (String include : includes) {
-            fs.addInclude(include);
-        }
-        for (String exclude : excludes) {
-            fs.addExclude(exclude);
-        }
-        return fileSetManager.getIncludedFiles(fs);
-    }
-
-    protected abstract void compileFiles(String[] files, File sourceDir, File outDir) throws MojoExecutionException ;
+    protected abstract void compileFiles( File outDir) throws MojoExecutionException ;
 
     protected void loadLogicalTypesFactories() throws IOException, MojoExecutionException {
         try (URLClassLoader classLoader = createClassLoader()) {
@@ -377,7 +271,7 @@ public abstract class AbstractJdryMojo extends AbstractMojo {
         return velocityTools;
     }
 
-    protected abstract void doCompile(String filename, File sourceDirectory, File outputDirectory) throws IOException;
+    protected abstract void doCompile(File outputDirectory) throws IOException;
 
     protected URLClassLoader createClassLoader() throws DependencyResolutionRequiredException, MalformedURLException {
         final List<URL> urls = appendElements(project.getRuntimeClasspathElements());
@@ -397,7 +291,4 @@ public abstract class AbstractJdryMojo extends AbstractMojo {
         return runtimeUrls;
     }
 
-    protected abstract String[] getIncludes();
-
-    protected abstract String[] getTestIncludes();
 }

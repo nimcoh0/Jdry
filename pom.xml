@@ -23,13 +23,15 @@
         <module>jdry-annotation-discovery</module>
         <module>jdry-jaxrs</module>
         <!--module>jdry-jvmTool</module-->
-        <!--module>jdry-logger</module-->
         <module>jdry-socket</module>
         <module>jdry-maven-plugin</module>
         <module>jdry-socket-annotations</module>
         <module>jdry-jaxrs-annotations</module>
         <module>jdry-cucumber</module>
         <module>jdry-testng</module>
+        <module>jdry-local</module>
+        <module>jdry-logger</module>
+        <module>jdry-velocity-maven-plugin</module>
 
 
     </modules>
@@ -49,6 +51,7 @@
         <snakeyaml>1.27</snakeyaml>
         <javax.el>2.2.6</javax.el>
         <jdry-core>beta-1.0</jdry-core>
+        <jdry-local>beta-1.0</jdry-local>
         <jdry-plugin>beta-1.0</jdry-plugin>
         <jdry-grpc>beta-1.0</jdry-grpc>
         <jdry-avro>beta-1.0</jdry-avro>

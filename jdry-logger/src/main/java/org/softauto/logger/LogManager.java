@@ -1,8 +1,5 @@
 package org.softauto.logger;
 
-import org.softauto.annotations.ExposedForTesting;
-import org.softauto.annotations.RPC;
-
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicReference;
 

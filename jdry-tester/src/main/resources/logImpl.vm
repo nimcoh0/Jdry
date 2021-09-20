@@ -1,6 +1,5 @@
-#if ($protocol.getNamespace())
-package $this.mangle($protocol.getNamespace());
-#end
+package tests.infrastructure;
+
 import java.util.function.Function;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -12,9 +11,9 @@ import java.io.InputStream;
 import org.apache.logging.log4j.MarkerManager;
 
 @org.apache.avro.specific.AvroGenerated
-public class $this.mangle($protocol.getName())LogImpl {
+public class ListenerServiceLogImpl {
 
-    private static Logger logger = LogManager.getLogger($this.mangle($protocol.getName())LogImpl.class);
+    private static Logger logger = LogManager.getLogger(ListenerServiceLogImpl.class);
 
     public void org_auto_tests_exception(String exception){
 

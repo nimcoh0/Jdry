@@ -701,4 +701,50 @@ public class Utils {
         }
         return obj.toString();
     }
+
+
+    public static String getTypeNameFromSchema(Schema schema){
+        return  schema.getType().getName();
+    }
+
+
+    public static List<String> getTypesNameFromSchema(List<Schema.Field> schema){
+        List<String> list = new ArrayList<>();
+        for(Schema.Field f : schema){
+            list.add(f.schema().getType().getName());
+        }
+        return  list;
+    }
+
+    public static Method getMethodByName(String methodName,Class clazz){
+        Method[] methods = clazz.getDeclaredMethods();
+        for(Method m : methods){
+            if(m.getName().equals(methodName)){
+                return m;
+            }
+        }
+        return null;
+    }
+
+    public static Method getMethodByNameAndTypeNames(String methodName,Class clazz,Protocol.Message msg){
+        Schema request = msg.getRequest();
+        List<String> t = getTypesNameFromSchema(request.getFields());
+        Method[] methods = clazz.getDeclaredMethods();
+        for(Method m : methods){
+            if(m.getName().equals(methodName)){
+                Class<?>[]   parameterTypes =   m.getParameterTypes();
+                if(parameterTypes.length == t.size()){
+                    for(int i=0;i<t.size();i++){
+                        String t1 = parameterTypes[i].getTypeName().toLowerCase();
+                        if(!t1.contains(t.get(i).toLowerCase())){
+                        //if(!t.get(i).equals(parameterTypes[i].getTypeName())){
+                            return null;
+                        }
+                     }
+                    return m;
+                }
+            }
+        }
+        return null;
+    }
 }

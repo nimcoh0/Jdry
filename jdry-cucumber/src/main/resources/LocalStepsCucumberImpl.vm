@@ -170,7 +170,7 @@ ${this.mangle($error.getFullName())}##
 #if (${this.javaUnbox($response, true)} != "void" )
     $typeVarName = ##
 #end
-tests.${this.mangle($name)}(##
+localTests.${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
 #*      *#${this.mangle($p.name())}#if ($foreach.hasNext), #end
 #end
@@ -279,7 +279,7 @@ ${this.mangle($error.getFullName())}##
 #end##    (one way)
 {
 $varNameFuture = new CallFuture<>();
-#*      *#asyncTests.${this.mangle($name)}(##
+#*      *#localTests.${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
 #*      *#${this.mangle($p.name())}#if ($foreach.hasNext), #end
 #end

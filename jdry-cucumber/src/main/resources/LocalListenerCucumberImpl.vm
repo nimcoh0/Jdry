@@ -35,8 +35,8 @@ public class $this.mangle($protocol.getName())CucumberImpl  extends CucumberAbst
 
     public $this.mangle($protocol.getName())CucumberImpl(){
           try {
-             if( Class.forName("org.softauto.listener.ListenerObserver", false, this.getClass().getClassLoader())!= null){
-                 org.softauto.listener.ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceCucumberImpl", this);
+             if( Class.forName("org.softauto.listener.LocalListenerObserver", false, this.getClass().getClassLoader())!= null){
+                 org.softauto.listener.LocalListenerObserver.getInstance().register("tests.infrastructure.LocalListenerServiceCucumberImpl", this);
              }
              registerGlueClass(this);
          }catch (Exception e){

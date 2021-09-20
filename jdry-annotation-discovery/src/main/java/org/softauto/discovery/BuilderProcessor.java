@@ -36,8 +36,8 @@ public class BuilderProcessor extends AbstractProcessor {
 
     private static String SCHEMA_VERSION = "1.0";
     private static String SCHEMA_NAMESPACE = "tests.infrastructure";
-    static final private String STEP_PROTOCOL_NAME = "StepService";
-    static final private String LISTENER_PROTOCOL_NAME = "ListenerService";
+    static private String STEP_PROTOCOL_NAME = "StepService";
+    static private String LISTENER_PROTOCOL_NAME = "ListenerService";
 
 
     List<Provider> providers = null;
@@ -53,11 +53,24 @@ public class BuilderProcessor extends AbstractProcessor {
         schemaBuilders.add(new SchemaMessageHandler());
      }
 
+     private void setOptions(){
+        if(processingEnv.getOptions().get("stepProtocolName") != null){
+            STEP_PROTOCOL_NAME = processingEnv.getOptions().get("stepProtocolName");
+        }
+        if(processingEnv.getOptions().get("listenerProtocolName") != null){
+             LISTENER_PROTOCOL_NAME = processingEnv.getOptions().get("listenerProtocolName");
+        }
+        if(processingEnv.getOptions().get("schemaVersion") != null){
+            SCHEMA_VERSION = processingEnv.getOptions().get("schemaVersion");
+        }
+
+     }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         try {
-             for (TypeElement annotation : annotations) {
+            setOptions();
+            for (TypeElement annotation : annotations) {
                 logger.debug("found annotation "+ annotation);
                 Set<? extends Element> annotatedElements = roundEnv.getElementsAnnotatedWith(annotation);
                 Map<Boolean, List<Element>> annotatedMethods = annotatedElements.stream().collect(Collectors.partitioningBy(element -> (true)));

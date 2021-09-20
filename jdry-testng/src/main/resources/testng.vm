@@ -23,14 +23,18 @@ import com.esotericsoftware.minlog.Log;
 import static com.esotericsoftware.minlog.Log.*;
 
 @org.apache.avro.specific.AvroGenerated
-public class AbstractTester {
+public class AbstractTesterImpl {
 
     private static final Logger logger = LogManager.getLogger(AbstractTester.class);
     static boolean initialize = false;
     public StepService tests;
+    public LocalStepService localTests;
+    public LocalListenerService localListeners;
     public StepService.Callback asyncTests;
+    public LocalStepService.Callback localAsyncTests;
     public ListenerService listeners;
     public ListenerService.Callback asyncListeners;
+    public LocalListenerService.Callback localAsyncListeners;
     public ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeSuite
@@ -39,9 +43,13 @@ public class AbstractTester {
         if(!initialize){
             initialize = true;
             tests =  Client.create(tests.infrastructure.StepService.class);
+            localTests = Client.create(tests.infrastructure.LocalStepService.class);
             asyncTests =  Client.create(tests.infrastructure.StepService.Callback.class);
+            localAsyncTests =  Client.create(tests.infrastructure.LocalStepService.Callback.class);
             listeners = Client.create(tests.infrastructure.ListenerService.class);
+            localListeners = Client.create(tests.infrastructure.LocalListenerService.class);
             asyncListeners = Client.create(tests.infrastructure.ListenerService.Callback.class);
+            localAsyncListeners = Client.create(tests.infrastructure.LocalListenerService.Callback.class);
             ListenerInit.getInstance().loadConfiguration().initilize().register().startLifeCycle();
             //Log.set(LEVEL_TRACE);
            loadPlugins();
