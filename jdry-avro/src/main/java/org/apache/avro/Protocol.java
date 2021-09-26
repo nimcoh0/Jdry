@@ -21,6 +21,8 @@ package org.apache.avro;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
+import jdk.nashorn.internal.ir.ObjectNode;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -66,6 +68,9 @@ public class Protocol extends JsonProperties {
   private static final Set<String> FIELD_RESERVED = Collections
       .unmodifiableSet(new HashSet<>(Arrays.asList("name", "type", "doc", "default", "aliases")));
 
+
+
+
   /** A protocol message. */
   public class Message extends JsonProperties {
     private String name;
@@ -99,6 +104,36 @@ public class Protocol extends JsonProperties {
       return null;
     }
 
+
+    public String getTypes(List<Schema.Field> fields){
+      List<String> types = new ArrayList<>();
+      for(Schema.Field field : fields){
+         types.add(field.schema().getFullName()+".class");
+      }
+      String joinedString = StringUtils.join(types,",");
+      return joinedString;
+    }
+
+    public String getArgs(List<Schema.Field> fields){
+      List<String> args = new ArrayList<>();
+      for(Schema.Field field : fields){
+        if(field.hasDefaultValue()) {
+          args.add(field.defaultValue().asText());
+        }else {
+          args.add(null);
+        }
+      }
+      String joinedString = StringUtils.join(args,",");
+      return joinedString;
+    }
+
+    public boolean hasContent(){
+     if(this.hasProp("content")   ) {
+        return true;
+      }
+      return false;
+    }
+
     public String getResponseTypeForCallBack(){
       switch (this.getResponse().getName()){
         case "null" : return "Void";
@@ -125,6 +160,8 @@ public class Protocol extends JsonProperties {
     public Schema getRequest() {
       return request;
     }
+
+
 
     /** The returned data. */
     public Schema getResponse() {
@@ -160,6 +197,12 @@ public class Protocol extends JsonProperties {
         }
        return false;
     }
+
+    public String getProp(String name) {
+      return getObjectProp(name).toString();
+    }
+
+
 
     public boolean  hasDescription(){
       if(this.hasProp("description")){

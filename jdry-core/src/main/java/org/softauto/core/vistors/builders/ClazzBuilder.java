@@ -15,24 +15,24 @@ public class ClazzBuilder {
 
     public static class Builder {
 
-        private List<HashMap<String,Object>> constructorRequest;
+        //private List<HashMap<String,Object>> constructorRequest;
         private String fullClassName;
         private ClassType initialize;
 
-        public Builder(){
-            constructorRequest = new ArrayList<>();
-        }
+        //public Builder(){
+           // constructorRequest = new ArrayList<>();
+        //}
 
 
-        public List<HashMap<String, Object>> getConstructorRequest() {
-            return constructorRequest;
-        }
+        //public List<HashMap<String, Object>> getConstructorRequest() {
+           // return constructorRequest;
+       // }
 
-        public void setConstructorRequest(List<HashMap<String, Object>> constructorRequest) {
-            if(constructorRequest.size()> 0) {
-                this.constructorRequest = constructorRequest;
-            }
-        }
+       // public void setConstructorRequest(List<HashMap<String, Object>> constructorRequest) {
+        //    if(constructorRequest.size()> 0) {
+          //      this.constructorRequest = constructorRequest;
+          //  }
+       // }
 
         public String getFullClassName() {
             return fullClassName;
@@ -52,7 +52,7 @@ public class ClazzBuilder {
 
         public HashMap<String,Object> build(){
             HashMap<String,Object> clazz = new HashMap<>();
-            clazz.put("constructorRequest", constructorRequest);
+            //clazz.put("constructorRequest", constructorRequest);
             clazz.put("fullClassName", fullClassName);
             clazz.put("initialize", initialize);
             return clazz;

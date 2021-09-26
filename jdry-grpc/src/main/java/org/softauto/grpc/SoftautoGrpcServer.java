@@ -19,11 +19,14 @@
 package org.softauto.grpc;
 
 
+import com.google.inject.*;
 import io.grpc.MethodDescriptor;
 import io.grpc.ServerServiceDefinition;
 import io.grpc.stub.ServerCalls;
 import io.grpc.stub.StreamObserver;
 import org.apache.avro.Protocol;
+import org.softauto.core.Configuration;
+import org.softauto.core.Context;
 import org.softauto.core.Utils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -43,9 +46,15 @@ public abstract class SoftautoGrpcServer {
 
 
   private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(SoftautoGrpcServer.class);
+  private static Injector injector ;
+
+
   protected SoftautoGrpcServer() {
+    try {
 
-
+    }catch (Exception e){
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -107,17 +116,23 @@ public abstract class SoftautoGrpcServer {
     private String fullClassName;
     private Protocol.Message msg;
 
-    UnaryMethodHandler(Method method,String fullClassName,Protocol.Message msg) {
+
+    UnaryMethodHandler(Method method,String fullClassName,Protocol.Message msg) throws Exception{
       this.msg = msg;
       this.method = method;
       this.fullClassName = fullClassName;
+      Class guiceModule = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Configuration.get(Context.GUICE_MODULE).asText(), Configuration.get(Context.TEST_MACHINE).asText());
+      AbstractModule module = (AbstractModule) guiceModule.newInstance();
+      injector = Guice.createInjector(module);
     }
+
 
     @Override
     public void invoke(Object[] request, StreamObserver<Object> responseObserver) {
       Object methodResponse = null;
       try {
-        Object serviceImpl = Utils.getClassInstance(fullClassName, msg, request, method);
+        Object serviceImpl = injector.getInstance(Utils.findClass(fullClassName));
+        //Object serviceImpl = Utils.getClassInstance(fullClassName, msg, request, method);
         if(!msg.hasProp("type") || !msg.getProp("type").equals("constructor")) {
           Method m = Utils.getMethod(serviceImpl, method.getName(), method.getParameterTypes());
           logger.debug("invoking " + method);
@@ -155,7 +170,7 @@ public abstract class SoftautoGrpcServer {
     Method method;
     private Protocol.Message msg;
 
-    OneWayUnaryMethodHandler(Method method,String fullClassName,Protocol.Message msg) {
+    OneWayUnaryMethodHandler(Method method,String fullClassName,Protocol.Message msg) throws Exception{
       super(method,fullClassName,msg);
       this.fullClassName = fullClassName;
       this.method = method;
@@ -173,7 +188,8 @@ public abstract class SoftautoGrpcServer {
 
       // process the rpc request
       try {
-          Object serviceImpl = Utils.getClassInstance(fullClassName, msg, request, method);
+          Object serviceImpl = injector.getInstance(Utils.findClass(fullClassName));
+          //Object serviceImpl = Utils.getClassInstance(fullClassName, msg, request, method);
           if(!msg.hasProp("type") || !msg.getProp("type").equals("constructor")) {
           Method m = Utils.getMethod(serviceImpl, msg.getProp("method"), method.getParameterTypes());
           logger.debug("invoking " + method);

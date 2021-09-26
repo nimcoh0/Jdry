@@ -1529,4 +1529,17 @@ public class Compiler {
   public void setOutputCharacterEncoding(String outputCharacterEncoding) {
     this.outputCharacterEncoding = outputCharacterEncoding;
   }
+
+  public boolean isJson(String str){
+    try {
+      if (str != null ){
+        new ObjectMapper().readTree(str);
+        return true;
+      }
+    }catch (Exception e){
+      return false;
+    }
+    return false;
+  }
+
 }

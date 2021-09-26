@@ -130,7 +130,7 @@ public  class DefaultMethodVistor implements ElementVisitor {
         }
         visitMessageKey(e);
         visitReturnType(e);
-        clazzBuilder.setConstructorRequest(getConstructorDefaultValues(e.getEnclosingElement()));
+        //clazzBuilder.setConstructorRequest(getConstructorDefaultValues(e.getEnclosingElement()));
         for (int i = 0; i <  e.getParameters().size(); i++) {
             VariableElement param = e.getParameters().get(i);
             visitVariable(param,o);

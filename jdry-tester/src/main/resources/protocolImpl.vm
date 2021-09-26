@@ -62,7 +62,7 @@ ${this.mangle($error.getFullName())}##
 #end##    (one way)
 {
 
-#if($message.getContent())
+#if($message.hasContent())
     $message.getContent()
 #else
  LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " ${this.mangle($name)} args :" ##
