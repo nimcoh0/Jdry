@@ -2,7 +2,6 @@ package org.softauto.logger;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.grpc.ManagedChannel;
-import org.softauto.core.CallFuture;
 import org.softauto.plugin.api.Provider;
 
 import javax.lang.model.element.Element;
@@ -54,7 +53,7 @@ public class LoggerProviderImpl implements Provider {
     }
 
     @Override
-    public <RespT> void exec(String methodName, Object[] args, CallFuture<RespT> callback, ManagedChannel channel) {
+    public <RespT> void exec(String methodName,  org.softauto.serializer.CallFuture<RespT> callback, ManagedChannel channel,Object...args) {
 
     }
 }

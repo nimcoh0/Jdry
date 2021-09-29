@@ -7,12 +7,12 @@ import org.apache.avro.AvroRuntimeException;
 import java.io.Serializable;
 
 public class CallbackToResponseStreamObserverAdpater<T> implements StreamObserver<Object>, Serializable {
-    private final CallFuture<T> callback;
+    private final org.softauto.serializer.CallFuture<T> callback;
     private ManagedChannel channel;
     private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(CallbackToResponseStreamObserverAdpater.class);
 
 
-    public CallbackToResponseStreamObserverAdpater(CallFuture<T> callback,ManagedChannel channel) {
+    public CallbackToResponseStreamObserverAdpater(org.softauto.serializer.CallFuture<T> callback,ManagedChannel channel) {
         this.callback = callback;
         this.channel = channel;
     }

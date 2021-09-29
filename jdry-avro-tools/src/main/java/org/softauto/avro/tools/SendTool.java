@@ -7,7 +7,6 @@ import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
 import org.apache.avro.Protocol;
 import org.apache.avro.generic.GenericData;
-import org.softauto.core.CallFuture;
 import org.softauto.grpc.SoftautoGrpcUtils;
 import org.softauto.plugin.ProviderManager;
 import org.softauto.plugin.api.Provider;
@@ -122,12 +121,12 @@ public class SendTool implements Tool {
                 return 1;
             }
 
-            CallFuture<?> callFuture = new CallFuture<>();
+            org.softauto.serializer.CallFuture<?> callFuture = new org.softauto.serializer.CallFuture<>();
             Field[] fs =  ((GenericData.Record)datum).getClass().getDeclaredFields();
             fs[1].setAccessible(true);
             Object[] o = ((Object[])fs[1].get(datum));
             Provider provider = ProviderManager.provider(transceiver.get()).create().iface(iface);
-            provider.exec(message_name.get(),o,callFuture,channel);
+            provider.exec(message_name.get(),callFuture,channel,o);
 
             Object response =  callFuture.get();
             dump(out,  response);

@@ -5,6 +5,8 @@ import org.softauto.core.Configuration;
 import org.softauto.core.Context;
 import org.softauto.core.Utils;
 import org.softauto.grpc.SoftautoGrpcUtils;
+import org.softauto.serializer.Serializer;
+import org.softauto.serializer.service.Message;
 
 import java.lang.reflect.Method;
 
@@ -19,19 +21,33 @@ public class Sender {
     Object[] args;
     ListenerGrpcClient.ServiceInvocationHandler proxy;
     Method method;
+    String service;
     String fqmn;
+    Class[] types;
 
     public Sender(ListenerGrpcClient.ServiceInvocationHandler proxy,Method method ,Object[] args,String fqmn){
         this.args = args;
         this.method = method;
         this.proxy = proxy;
         this.fqmn = fqmn;
+
+    }
+
+    public Sender(String fqmn,Object[] args,Class[] types,String service){
+        this.args = args;
+        this.types = types;
+        this.fqmn = fqmn;
+        this.service = service;
     }
 
     public Object[] send() {
         Object result = null;
         try {
-            result = proxy.invoke(null, method, args);
+            Serializer serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).buildChannel();
+            Message message = Message.newBuilder().setService(service).setDescriptor(fqmn).setArgs(args).setTypes(types).build();
+            result =  serializer.write(message);
+
+            //result = proxy.invoke(null, method, args);
             logger.debug("send message successfully "+fqmn);
         } catch (Exception e) {
             if (e.getCause().toString().contains("UNAVAILABLE")) {
@@ -54,12 +70,18 @@ public class Sender {
         private Object[] objs;
         private Class[] types;
         private Object[] args;
+        private String service;
         private ListenerGrpcClient.ServiceInvocationHandler proxy;
 
         org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Builder.class);
 
         public Builder(){
 
+        }
+
+        public Builder setService(String service) {
+            this.service = service;
+            return this;
         }
 
         public String getFqmn() {
@@ -80,8 +102,18 @@ public class Sender {
             return this;
         }
 
+        public Sender build(){
+            try {
+                types = Utils.getTypes(objs[1]);
+                args = Utils.getArgs(objs[0]);
+                return  new Sender(fqmn, args, types,service);
+            }catch (Exception e){
+                logger.debug("build message "+fqmn+" fail  ",e );
+            }
+            return null;
+        }
 
-
+        /*
         public Sender build(){
             try {
                 types = Utils.getTypes(objs[1]);
@@ -111,7 +143,7 @@ public class Sender {
             }
             return null;
         }
-
+*/
     }
 
 }

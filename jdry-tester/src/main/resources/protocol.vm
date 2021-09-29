@@ -102,7 +102,7 @@ ${this.mangle($error.getFullName())}##
 #*      *#${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.hasNext), #end
 #end
 #if ($message.getRequest().getFields().size() > 0), #end
-org.softauto.core.CallFuture<$message.getResponseTypeForCallBack()> callback) throws java.io.IOException;
+org.softauto.serializer.CallFuture<$message.getResponseTypeForCallBack()> callback) throws java.io.IOException;
 #end## (generate callback method)
 #end## (requests)
   }## End of Callback interface

@@ -72,7 +72,11 @@ ${this.mangle($error.getFullName())}##
    );
 
    #if (${this.javaUnbox($response, true)} != "void" )
-        return null;
+   return new Object[]{##
+        #foreach ($p in $message.getRequest().getFields())##
+            ${this.mangle($p.name())}#if ($foreach.hasNext), #end##
+        #end
+        };
    #end
  #end
 }

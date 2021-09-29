@@ -1,0 +1,27 @@
+package tests.infrastructure;
+
+import com.google.inject.AbstractModule;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.softauto.core.Configuration;
+import org.softauto.core.Context;
+import org.softauto.core.Utils;
+
+
+@org.apache.avro.specific.AvroGenerated
+public class ListenerModule extends AbstractModule {
+
+    private static Logger logger = LogManager.getLogger(ListenerModule.class);
+
+
+    @Override
+    protected void configure() {
+    try{
+        bind(org.softauto.listener.system.SystemService.class).toInstance(new org.softauto.listener.system.SystemServiceImpl());
+        bind(tests.infrastructure.ListenerServiceLog.class).toInstance(new tests.infrastructure.ListenerServiceLogImpl());
+        bind(tests.infrastructure.ListenerService.class).toInstance(new tests.infrastructure.ListenerServiceImpl());
+    }catch(Exception e){
+        e.printStackTrace();
+    }
+  }
+}

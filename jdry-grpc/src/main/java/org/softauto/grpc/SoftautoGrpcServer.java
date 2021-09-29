@@ -121,9 +121,9 @@ public abstract class SoftautoGrpcServer {
       this.msg = msg;
       this.method = method;
       this.fullClassName = fullClassName;
-      Class guiceModule = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Configuration.get(Context.GUICE_MODULE).asText(), Configuration.get(Context.TEST_MACHINE).asText());
-      AbstractModule module = (AbstractModule) guiceModule.newInstance();
-      injector = Guice.createInjector(module);
+      //Class guiceModule = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Configuration.get(Context.GUICE_MODULE).asText(), Configuration.get(Context.TEST_MACHINE).asText());
+      //AbstractModule module = (AbstractModule) guiceModule.newInstance();
+      //injector = Guice.createInjector(module);
     }
 
 

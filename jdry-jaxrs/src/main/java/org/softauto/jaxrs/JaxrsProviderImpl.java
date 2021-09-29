@@ -52,7 +52,7 @@ public class JaxrsProviderImpl implements Provider {
     }
 
     @Override
-    public <RespT> void exec(String methodName, Object[] args, CallFuture<RespT> callback, ManagedChannel channel) {
+    public <RespT> void exec(String methodName, org.softauto.serializer.CallFuture<RespT> callback, ManagedChannel channel,Object...args) {
         try {
              executor.submit(()->{
                 CallbackToResponseStreamObserverAdpater observerAdpater = new CallbackToResponseStreamObserverAdpater(callback, null);

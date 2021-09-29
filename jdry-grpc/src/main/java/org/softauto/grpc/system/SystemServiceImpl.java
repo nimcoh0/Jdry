@@ -1,12 +1,14 @@
 package org.softauto.grpc.system;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.inject.*;
 import com.sun.tools.attach.VirtualMachine;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 import org.softauto.core.Configuration;
 import org.softauto.core.Context;
+import org.softauto.core.Utils;
 import org.softauto.grpc.RpcProviderImpl;
 import org.softauto.jvm.HeapHelper;
 import org.softauto.logger.Log4j2Utils;
@@ -18,6 +20,7 @@ import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
 
 /**
  * System service for internal messages between the listener server and the grpc server
@@ -25,6 +28,7 @@ import java.util.Date;
 public class SystemServiceImpl {
 
     private static SystemServiceImpl systemServiceImpl = null;
+    public Injector injector ;
 
     /** indecate if the syatem was loaded */
     boolean loaded = false;
@@ -41,13 +45,20 @@ public class SystemServiceImpl {
     }
 
     private SystemServiceImpl(){
-
+       // injector = Guice.createInjector(new BasicModule());
     }
 
     public int hello() {
         return 0;
     }
 
+
+    public Injector getInjector() {
+        if(injector == null){
+            injector = Guice.createInjector(new BasicModule());
+        }
+        return injector;
+    }
 
     /**
      * set start test log
@@ -118,6 +129,7 @@ public class SystemServiceImpl {
 
     private  void load()  {
         try {
+            initGuice();
             RpcProviderImpl.getInstance().initilizeSerializer();
             loadPlugins();
             //InjectorInit.getInstance().initilize().register();
@@ -183,6 +195,20 @@ public class SystemServiceImpl {
             }
         }catch (Exception e){
             logger.error("fail to load plugins  ",e);
+        }
+    }
+
+
+    public  void initGuice(){
+        try {
+            Class guiceModule = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Configuration.get(Context.GUICE_MODULE).asText(), Configuration.get(Context.TEST_MACHINE).asText());
+            AbstractModule module = (AbstractModule) guiceModule.newInstance();
+            //Injector oldInjector = Guice.createInjector(allYourOtherModules);
+            //Module myModule = new PropertiesModule(injector..get.get(Properties.class));
+            injector = injector.createChildInjector(module);
+            //injector = Guice.createInjector(module);
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

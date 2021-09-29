@@ -8,11 +8,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.apache.avro.Protocol;
 import org.apache.avro.Schema;
+import org.apache.avro.ipc.Callback;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.softauto.annotations.DefaultValue;
 import org.softauto.injector.Injector;
 import org.softauto.jvm.HeapHelper;
+import org.softauto.serializer.CallFuture;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
@@ -733,7 +735,14 @@ public class Utils {
         for(Method m : methods){
             if(m.getName().equals(methodName)){
                 Class<?>[]   parameterTypes =   m.getParameterTypes();
-                if(parameterTypes.length == t.size()){
+                Object[] finalTypes = null;
+                if ((parameterTypes.length > 0) && (parameterTypes[parameterTypes.length - 1] instanceof Class)
+                        && CallFuture.class.isAssignableFrom(((Class<?>) parameterTypes[parameterTypes.length - 1]))) {
+                    finalTypes = Arrays.copyOf(parameterTypes, parameterTypes.length - 1);
+                }else {
+                    finalTypes = Arrays.copyOf(parameterTypes, parameterTypes.length );
+                }
+                if(t.size() == finalTypes.length){
                     for(int i=0;i<t.size();i++){
                         String t1 = parameterTypes[i].getTypeName().toLowerCase();
                         if(!t1.contains(t.get(i).toLowerCase())){

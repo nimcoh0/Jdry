@@ -2,7 +2,7 @@ package org.softauto.plugin.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.grpc.ManagedChannel;
-import org.softauto.core.CallFuture;
+
 
 import javax.lang.model.element.Element;
 import java.io.IOException;
@@ -54,6 +54,6 @@ public interface Provider {
       * @param callback
       * @param <RespT>
       */
-     <RespT> void exec(String methodName, Object[] args, CallFuture<RespT> callback, ManagedChannel channel);
+     <RespT> void exec(String methodName, org.softauto.serializer.CallFuture<RespT> callback, ManagedChannel channel,Object...args);
 
 }

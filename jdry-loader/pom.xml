@@ -17,12 +17,7 @@
             <version>${jdry-annotations}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-logger</artifactId>
-            <version>${jdry-local}</version>
 
-        </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-guice</artifactId>

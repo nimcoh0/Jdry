@@ -2,6 +2,8 @@ package org.softauto.local;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.JsonArray;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
 import org.apache.avro.Protocol;
@@ -10,6 +12,7 @@ import org.softauto.core.*;
 import org.softauto.local.schema.MessageHandler;
 import org.softauto.plugin.api.Provider;
 import javax.lang.model.element.Element;
+import javax.rmi.CORBA.Util;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -32,6 +35,7 @@ public class LocalProviderImpl implements Provider {
     String fullClassName;
     Protocol.Message msg;
     private ExecutorService executor = Executors.newSingleThreadExecutor();
+    Injector injector = Guice.createInjector();
 
     public static LocalProviderImpl getInstance(){
         if(localProviderImpl == null){
@@ -73,16 +77,19 @@ public class LocalProviderImpl implements Provider {
     }
 
     @Override
-    public <RespT> void exec(String methodName, Object[] args, CallFuture<RespT> callback, ManagedChannel channel) {
+    public <RespT> void exec(String methodName, org.softauto.serializer.CallFuture<RespT> callback, ManagedChannel channel,Object...args) {
 
             executor.submit(()->{
                 try {
                    // CallbackToResponseStreamObserverAdpater observerAdpater = new CallbackToResponseStreamObserverAdpater(callback, null);
-                    Protocol protocol = Utils.getProtocol(iface);
-                    msg = protocol.getMessages().get(methodName);
-                    method = Utils.getMethodByNameAndTypeNames(methodName, iface, msg);
-                    fullClassName = ((HashMap)msg.getObjectProp("class")).get("fullClassName").toString();
-                    new LocalClient().setFullClassName(fullClassName).setMethod(method).setMsg(msg).setArgs(args).call();
+                    //Protocol protocol = Utils.getProtocol(iface);
+                    //msg = protocol.getMessages().get(methodName);
+                    fullClassName = Utils.getFullClassName(methodName);
+                    Object o = injector.getInstance(Utils.findClass(fullClassName));
+                    //method = Utils.getMethodByNameAndTypeNames(methodName, iface, msg);
+                    method = Utils.getMethod(o,methodName, (Class[]) args[1]);
+
+                    new LocalClient().setServiceImpl(o).setMethod(method).setArgs((Object[]) args[0]).call(callback);
                     logger.debug("successfully exec Local call  " + methodName);
                 }catch (Exception e){
                     e.printStackTrace();

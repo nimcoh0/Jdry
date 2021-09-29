@@ -3,7 +3,6 @@ package org.softauto.tester;
 
 import io.grpc.CallOptions;
 import org.apache.avro.Protocol;
-import org.softauto.core.CallFuture;
 import org.softauto.core.Utils;
 import org.softauto.plugin.ProviderManager;
 import org.softauto.plugin.api.Provider;
@@ -81,33 +80,34 @@ public class Client {
         private Object invokeUnaryMethod(Method method, Object[] args) throws Exception {
             Type[] parameterTypes = method.getParameterTypes();
             if ((parameterTypes.length > 0) && (parameterTypes[parameterTypes.length - 1] instanceof Class)
-                    && CallFuture.class.isAssignableFrom(((Class<?>) parameterTypes[parameterTypes.length - 1]))) {
+                    && org.softauto.serializer.CallFuture.class.isAssignableFrom(((Class<?>) parameterTypes[parameterTypes.length - 1]))) {
+                Type[] finalTypes = Arrays.copyOf(parameterTypes, parameterTypes.length - 1);
                 // get the callback argument from the end
                 logger.debug("invoke async request :"+ method.getName());
                 Object[] finalArgs = Arrays.copyOf(args, args.length - 1);
-                CallFuture<?> callback = (CallFuture<?>) args[args.length - 1];
-                unaryRequest(method.getName(), finalArgs, callback);
+                org.softauto.serializer.CallFuture<?> callback = (org.softauto.serializer.CallFuture<?>) args[args.length - 1];
+                unaryRequest(method.getName(),  callback,finalArgs,finalTypes);
                 return null;
             } else {
                 logger.debug("invoke sync request :"+ method.getName());
-                return unaryRequest(method.getName(), args);
+                return unaryRequest(method.getName(), args,parameterTypes);
 
             }
         }
 
-        private Object unaryRequest(String methodName, Object[] args) throws Exception {
-            CallFuture<?> callFuture = new CallFuture<>();
-            unaryRequest(methodName, args, callFuture);
+        private Object unaryRequest(String methodName, Object...args) throws Exception {
+            org.softauto.serializer.CallFuture<?> callFuture = new org.softauto.serializer.CallFuture<>();
+            unaryRequest(methodName,  callFuture,args);
             return callFuture.get();
         }
 
 
-        private <RespT> void unaryRequest(String methodName, Object[] args, CallFuture<RespT> callback) throws Exception {
+        private <RespT> void unaryRequest(String methodName,  org.softauto.serializer.CallFuture<RespT> callback,Object...args) throws Exception {
             Protocol.Message message = protocol.getMessages().get(methodName);
             logger.debug("invoking message according to :" + message.toString());
             Provider provider = ProviderManager.provider(message.getProp("transceiver")).create().iface(iface);
             logger.debug("invoke method " + methodName+ " using protocol "+ message.getProp("transceiver"));
-            provider.exec( methodName,  args,  callback,null);
+            provider.exec( methodName, callback,null,args);
          }
 
     }

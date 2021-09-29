@@ -13,23 +13,14 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-plugin</artifactId>
-            <version>${jdry-plugin}</version>
 
-        </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-socket-annotations</artifactId>
             <version>${jdry-socket-annotations}</version>
 
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-logger</artifactId>
-            <version>${jdry-logger}</version>
-        </dependency>
+
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-core</artifactId>

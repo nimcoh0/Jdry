@@ -52,7 +52,7 @@ public abstract class SystemServer extends SoftautoGrpcServer {
     for (Method method : iface.getMethods()) {
       Protocol.Message msg = messages.get(method.getName());
       // setup a method handler only if corresponding message exists in avro protocol.
-      if (msg != null && msg.getProp("transceiver").equals("RPC")) {
+      if (msg != null ) {
           try {
             Method m = Utils.getMethod2(impl.getClass(), method.getName(), method.getParameterTypes());
             UnaryMethodHandler methodHandler =  new UnaryMethodHandler(impl, m);

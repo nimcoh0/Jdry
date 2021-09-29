@@ -110,4 +110,12 @@ public class ListenerObserver {
         return l;
     }
 
+
+    public Object getLastChannel(String key){
+        List<Object> channels = getChannels(key);
+        if(channels != null && channels.size() > 0) {
+            return channels.get(channels.size() - 1);
+        }
+        return null;
+    }
 }

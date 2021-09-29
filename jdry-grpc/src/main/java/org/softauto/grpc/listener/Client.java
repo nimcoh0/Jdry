@@ -1,5 +1,6 @@
 package org.softauto.grpc.listener;
 
+import org.apache.avro.Protocol;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 import org.aspectj.lang.JoinPoint;
@@ -7,7 +8,9 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.softauto.core.Configuration;
+import org.softauto.core.Context;
 import org.softauto.core.Utils;
+import org.softauto.grpc.SoftautoGrpcUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,10 +46,17 @@ public class Client {
     /** list of classes to be ignore in the logs */
     List<String> logIgnoreList = new ArrayList();
 
-
+    String listenerService;
+    String listenerServiceLog;
+    Class listener;
+    Class log;
 
     public void init() {
         try {
+            listener = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , Context.LISTENER_SERVICE,Configuration.get(Context.TEST_MACHINE).asText());
+            listenerService = SoftautoGrpcUtils.getServiceName(listener);
+            log = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() ,Context.LISTENER_SERVICE_LOG,Configuration.get(Context.TEST_MACHINE).asText());
+            listenerServiceLog = SoftautoGrpcUtils.getServiceName(listener);
             sendJdryLogs = Configuration.get("log_send_jdry").asBoolean();
             sendSutLogs = Configuration.get("log_send_sut").asBoolean();
             logIgnoreList = Arrays.asList(Configuration.get("log_trace_ignore_list").asText().split(","));
@@ -72,13 +82,17 @@ public class Client {
                    executor.submit(()-> {
                    try {
                      if(this.connected) {
-                           Sender sender = Sender.newBuilder().setFqmn(fqmn.get()).setObjs(new Object[]{joinPoint.getArgs(), sig.getMethod().getParameterTypes()}).build();
-                           if(sender != null) {
-                               ref.set(sender.send());
-                           }else {
-                               ref.set(new Object[]{});
-                           }
-                       }
+                         if (listener.getMethod(fqmn.get(), sig.getMethod().getParameterTypes()) != null) {
+                             Sender sender = Sender.newBuilder().setService(listenerService).setFqmn(fqmn.get()).setObjs(new Object[]{joinPoint.getArgs(), sig.getMethod().getParameterTypes()}).build();
+                             logger.debug("fqmn:" + fqmn.get() + " args:" + joinPoint.getArgs().toString() + " types:" + sig.getMethod().getParameterTypes());
+                             if (sender != null) {
+                                 ref.set(sender.send());
+                             } else {
+                                 ref.set(new Object[]{});
+                                 logger.error("send message " + fqmn.get() + " fail  ");
+                             }
+                         }
+                     }
                    }catch(Exception e){
                         logger.error("send message "+fqmn.get()+" fail  ",e );
                    }
@@ -209,7 +223,7 @@ public class Client {
                                   executor.submit(()-> {
                                   try {
                                       if(this.connected) {
-                                          Sender sender = Sender.newBuilder().setFqmn(fqmn).setObjs(new Object[]{logBuilder.getArguments(), logBuilder.getClasses()}).build();
+                                          Sender sender = Sender.newBuilder().setService(listenerServiceLog).setFqmn(fqmn).setObjs(new Object[]{logBuilder.getArguments(), logBuilder.getClasses()}).build();
                                           if(sender != null) {
                                               sender.send();
                                           }
@@ -224,7 +238,7 @@ public class Client {
                                  executor.submit(()-> {
                                  try {
                                       if(this.connected) {
-                                         Sender sender = Sender.newBuilder().setFqmn(fqmn).setObjs(new Object[]{logBuilder.getArguments(), logBuilder.getClasses()}).build();
+                                         Sender sender = Sender.newBuilder().setService(listenerServiceLog).setFqmn(fqmn).setObjs(new Object[]{logBuilder.getArguments(), logBuilder.getClasses()}).build();
                                          if(sender != null) {
                                              sender.send();
                                          }
@@ -263,7 +277,7 @@ public class Client {
                     executor.submit(()-> {
                     try {
                        if(this.connected) {
-                            Sender sender = Sender.newBuilder().setFqmn(fqmn).setObjs(new Object[]{args, types}).build();
+                            Sender sender = Sender.newBuilder().setService(listenerServiceLog).setFqmn(fqmn).setObjs(new Object[]{args, types}).build();
                             if(sender != null) {
                                sender.send();
                             }
@@ -288,10 +302,12 @@ public class Client {
                         executor.submit(()-> {
                         try {
                            if(this.connected) {
-                                Sender sender = Sender.newBuilder().setFqmn(fqmn+"_result").setObjs(new Object[]{result, sig.getMethod().getReturnType()}).build();
-                                if(sender != null) {
-                                    sender.send();
-                                }
+                               if (listener.getMethod(fqmn, sig.getMethod().getReturnType()) != null) {
+                                   Sender sender = Sender.newBuilder().setService(listenerService).setFqmn(fqmn + "_result").setObjs(new Object[]{result, sig.getMethod().getReturnType()}).build();
+                                   if (sender != null) {
+                                       sender.send();
+                                   }
+                               }
                             }
                              }catch(Exception e){
                                 logger.error("sendResult fail for "+fqmn,e );
@@ -301,9 +317,11 @@ public class Client {
                     executor.submit(()-> {
                     try {
                         if(this.connected) {
-                            Sender sender = Sender.newBuilder().setFqmn(fqmn+"_result").setObjs(new Object[]{joinPoint.getArgs(), sig.getMethod().getParameterTypes()}).build();
-                            if(sender != null) {
-                                sender.send();
+                            if (listener.getMethod(fqmn, sig.getMethod().getParameterTypes()) != null) {
+                                Sender sender = Sender.newBuilder().setService(listenerService).setFqmn(fqmn + "_result").setObjs(new Object[]{joinPoint.getArgs(), sig.getMethod().getParameterTypes()}).build();
+                                if (sender != null) {
+                                    sender.send();
+                                }
                             }
                         }
                           }catch(Exception e){

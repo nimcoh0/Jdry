@@ -11,6 +11,9 @@ import org.apache.avro.AvroRemoteException;
 import org.apache.avro.Protocol;
 import org.softauto.core.*;
 import org.softauto.grpc.SoftautoGrpcUtils;
+import org.softauto.serializer.CallFuture;
+import org.softauto.serializer.Serializer;
+import org.softauto.serializer.service.Message;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -97,20 +100,21 @@ public abstract class ListenerGrpcClient {
     private Object invokeUnaryMethod(Method method, Object[] args) throws Exception {
       Type[] parameterTypes = method.getParameterTypes();
       if ((parameterTypes.length > 0) && (parameterTypes[parameterTypes.length - 1] instanceof Class)
-          && CallFuture.class.isAssignableFrom(((Class<?>) parameterTypes[parameterTypes.length - 1]))) {
+          && org.softauto.serializer.CallFuture.class.isAssignableFrom(((Class<?>) parameterTypes[parameterTypes.length - 1]))) {
         // get the callback argument from the end
+        Type[] finalTypes = Arrays.copyOf(parameterTypes, parameterTypes.length - 1);
         Object[] finalArgs = Arrays.copyOf(args, args.length - 1);
-        CallFuture<?> callback = (CallFuture<?>) args[args.length - 1];
-        unaryRequest(method.getName(), finalArgs, callback);
+        org.softauto.serializer.CallFuture<?> callback = (org.softauto.serializer.CallFuture<?>) args[args.length - 1];
+        unaryRequest(method.getName(), callback,finalArgs,finalTypes);
         return null;
       } else {
-        return unaryRequest(method.getName(), args);
+        return unaryRequest(method.getName(), args,parameterTypes);
       }
     }
 
-    private Object unaryRequest(String methodName, Object[] args) throws Exception {
-      CallFuture<Object> callFuture = new CallFuture<>();
-      unaryRequest(methodName, args, callFuture);
+    private Object unaryRequest(String methodName, Object...args) throws Exception {
+      org.softauto.serializer.CallFuture<Object> callFuture = new org.softauto.serializer.CallFuture<>();
+      unaryRequest(methodName, callFuture,args);
       try {
         return callFuture.get();
       } catch (Exception e) {
@@ -121,15 +125,8 @@ public abstract class ListenerGrpcClient {
       }
     }
 
-    /**
-     * send messages to the listener server
-     * @param methodName
-     * @param args
-     * @param callback
-     * @param <RespT>
-     * @throws Exception
-     */
-    private <RespT> void unaryRequest(String methodName, Object[] args, CallFuture<RespT> callback)  {
+   /*
+    private <RespT> void unaryRequest(String methodName, Object[] args, org.softauto.serializer.CallFuture<RespT> callback)  {
       try {
         AbstractServiceDescriptor serviceDescriptor = ServiceDescriptor.create(iface);
         MethodDescriptor<Object[], Object> m = serviceDescriptor.getMethod(methodName, MethodDescriptor.MethodType.UNARY);
@@ -141,7 +138,24 @@ public abstract class ListenerGrpcClient {
 
       }
     }
+*/
 
+    private <RespT> void unaryRequest(String methodName,  org.softauto.serializer.CallFuture<RespT> callback,Object...args)  {
+    //public <RespT> void exec(String methodName, CallFuture<RespT> callback, ManagedChannel channel, Object...args){
+      try {
+        logger.debug("exec rpc call "+ methodName);
+        Serializer serializer;
+        if(channel != null) {
+          serializer = new Serializer().setChannel(channel);
+        }else {
+          serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).buildChannel();
+        }
+        Message message = Message.newBuilder().setDescriptor(methodName).setArgs((Object[]) args[0]).setTypes((Class[]) args[1]).build();
+        serializer.write(message,callback);
+      }catch (Exception e){
+        logger.error("fail exec rpc call "+ methodName, e);
+      }
+    }
 
   }
 }

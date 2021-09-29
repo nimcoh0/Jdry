@@ -2,6 +2,9 @@ package org.softauto.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import org.softauto.core.Configuration;
@@ -10,6 +13,7 @@ import org.softauto.core.ServiceLocator;
 import org.softauto.core.Utils;
 import org.softauto.listener.system.SystemService;
 import org.softauto.listener.system.SystemServiceImpl;
+import org.softauto.serializer.service.SerializerService;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +28,7 @@ public class ListenerInit {
     private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(ListenerInit.class);
     private static ListenerInit listenerProviderImpl = null;
     ObjectMapper objectMapper;
-
+    Injector injector;
 
     /**
      * instance of lifecycle class
@@ -81,18 +85,14 @@ public class ListenerInit {
          return this;
     }
 
-
-    /**
-     * initilize listener server . load Listener Service, Listener Service Log & System Service
-     * @return
-     * @throws IOException
-     */
+/*
     public ListenerInit initilize()  {
         try {
             server = ServerBuilder.forPort(Configuration.get(Context.LISTENER_PORT).asInt())
                     .addService(ListenerGrpcServer.createServiceDefinition(getListenerServiceClass(),  getListenerServiceImplClass().newInstance()))
                     .addService(ListenerGrpcServer.createServiceDefinition(getListenerServiceLogClass(),  getListenerServiceLogImplClass().newInstance()))
                     .addService(ListenerGrpcServer.createServiceDefinition(SystemService.class,  new SystemServiceImpl()))
+                    .addService(ListenerGrpcServer.createServiceDefinition(SerializerService.class,  new SerializerServiceImpl()))
                     .build();
             server.start();
         logger.info("listener load successfully on port "+ Configuration.get(Context.LISTENER_PORT).asInt());
@@ -103,6 +103,38 @@ public class ListenerInit {
 
         return this;
     }
+*/
+
+
+    public ListenerInit initilize()  {
+        try {
+            server = ServerBuilder.forPort(Configuration.get(Context.LISTENER_PORT).asInt())
+                    .addService(ListenerGrpcServer.createServiceDefinition(SerializerService.class))
+                    .build();
+            server.start();
+            logger.info("listener load successfully on port "+ Configuration.get(Context.LISTENER_PORT).asInt());
+            init();
+        }catch (Exception e) {
+            logger.error("start Listener fail  ", e);
+        }
+
+        return this;
+    }
+
+    public Injector getInjector() {
+        return injector;
+    }
+
+    protected void init() {
+        try {
+            Class listenerModule = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Configuration.get(Context.LISTENER_MODULE).asText(), Configuration.get(Context.TEST_MACHINE).asText());
+            AbstractModule module = (AbstractModule) listenerModule.newInstance();
+            injector = Guice.createInjector(module);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     public ListenerInit register() {
         ServiceLocator.getInstance().register("LISTENER",server);

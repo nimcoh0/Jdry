@@ -27,7 +27,6 @@ import io.grpc.stub.StreamObserver;
 import org.apache.avro.AvroRemoteException;
 import org.apache.avro.Protocol;
 import org.softauto.core.AbstractServiceDescriptor;
-import org.softauto.core.CallFuture;
 import org.softauto.core.CallbackToResponseStreamObserverAdpater;
 import org.softauto.core.Configuration;
 import org.softauto.grpc.SoftautoGrpcUtils;
@@ -117,10 +116,10 @@ public abstract class ListenerGrpcClient {
     private Object invokeUnaryMethod(Method method, Object[] args) throws Exception {
       Type[] parameterTypes = method.getParameterTypes();
       if ((parameterTypes.length > 0) && (parameterTypes[parameterTypes.length - 1] instanceof Class)
-          && CallFuture.class.isAssignableFrom(((Class<?>) parameterTypes[parameterTypes.length - 1]))) {
+          && org.softauto.serializer.CallFuture.class.isAssignableFrom(((Class<?>) parameterTypes[parameterTypes.length - 1]))) {
         // get the callback argument from the end
         Object[] finalArgs = Arrays.copyOf(args, args.length - 1);
-        CallFuture<?> callback = (CallFuture<?>) args[args.length - 1];
+        org.softauto.serializer.CallFuture<?> callback = (org.softauto.serializer.CallFuture<?>) args[args.length - 1];
         unaryRequest(method.getName(), finalArgs, callback);
         return null;
       } else {
@@ -129,7 +128,7 @@ public abstract class ListenerGrpcClient {
     }
 
     private Object unaryRequest(String methodName, Object[] args) throws Exception {
-      CallFuture<Object> callFuture = new CallFuture<>();
+      org.softauto.serializer.CallFuture<Object> callFuture = new org.softauto.serializer.CallFuture<>();
       unaryRequest(methodName, args, callFuture);
       try {
         return callFuture.get();
@@ -149,7 +148,7 @@ public abstract class ListenerGrpcClient {
      * @param <RespT>
      * @throws Exception
      */
-    private <RespT> void unaryRequest(String methodName, Object[] args, CallFuture<RespT> callback)  {
+    private <RespT> void unaryRequest(String methodName, Object[] args, org.softauto.serializer.CallFuture<RespT> callback)  {
       try {
         AbstractServiceDescriptor serviceDescriptor = ServiceDescriptor.create(iface);
         MethodDescriptor<Object[], Object> m = serviceDescriptor.getMethod(methodName, MethodDescriptor.MethodType.UNARY);

@@ -21,12 +21,12 @@ public interface SystemService {
     public interface Callback extends org.softauto.grpc.system.SystemService {
         public static final Protocol PROTOCOL = org.softauto.grpc.system.SystemService.PROTOCOL;
 
-        void org_softauto_grpc_system_SystemServiceImpl_hello(org.softauto.core.CallFuture<Void> callback);
-        void org_softauto_grpc_system_SystemServiceImpl_shutdown(org.softauto.core.CallFuture<Void> callback);
-        void org_softauto_grpc_system_SystemServiceImpl_configuration(JsonNode configuration,org.softauto.core.CallFuture<Void> callback);
-        void org_softauto_grpc_system_SystemServiceImpl_keepAlive( org.softauto.core.CallFuture<Void> callback);
-        void org_softauto_grpc_system_SystemServiceImpl_acknowledge(org.softauto.core.CallFuture<Void> callback);
-        void org_softauto_grpc_system_SystemServiceImpl_startTest(String testname,org.softauto.core.CallFuture<Void> callback);
-        void org_softauto_grpc_system_SystemServiceImpl_endTest(String testname,org.softauto.core.CallFuture<Void> callback);
+        void org_softauto_grpc_system_SystemServiceImpl_hello(org.softauto.serializer.CallFuture<Void> callback);
+        void org_softauto_grpc_system_SystemServiceImpl_shutdown(org.softauto.serializer.CallFuture<Void> callback);
+        void org_softauto_grpc_system_SystemServiceImpl_configuration(JsonNode configuration,org.softauto.serializer.CallFuture<Void> callback);
+        void org_softauto_grpc_system_SystemServiceImpl_keepAlive( org.softauto.serializer.CallFuture<Void> callback);
+        void org_softauto_grpc_system_SystemServiceImpl_acknowledge(org.softauto.serializer.CallFuture<Void> callback);
+        void org_softauto_grpc_system_SystemServiceImpl_startTest(String testname,org.softauto.serializer.CallFuture<Void> callback);
+        void org_softauto_grpc_system_SystemServiceImpl_endTest(String testname,org.softauto.serializer.CallFuture<Void> callback);
     }
 }

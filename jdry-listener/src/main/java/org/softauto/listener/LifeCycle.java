@@ -4,7 +4,6 @@ import io.grpc.CallOptions;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.apache.avro.Protocol;
-import org.softauto.core.CallFuture;
 import org.softauto.core.Configuration;
 import org.softauto.core.Utils;
 import org.softauto.listener.system.SystemService;
@@ -149,22 +148,23 @@ public class LifeCycle {
         private Object invokeUnaryMethod(Method method, Object[] args) throws Exception {
             Type[] parameterTypes = method.getParameterTypes();
             if ((parameterTypes.length > 0) && (parameterTypes[parameterTypes.length - 1] instanceof Class)
-                    && CallFuture.class.isAssignableFrom(((Class<?>) parameterTypes[parameterTypes.length - 1]))) {
+                    && org.softauto.serializer.CallFuture.class.isAssignableFrom(((Class<?>) parameterTypes[parameterTypes.length - 1]))) {
                 // get the callback argument from the end
+                Type[] finalTypes = Arrays.copyOf(parameterTypes, parameterTypes.length - 1);
                 logger.debug("invoking  async request :"+ method.getName());
                 Object[] finalArgs = Arrays.copyOf(args, args.length - 1);
-                CallFuture<?> callback = (CallFuture<?>) args[args.length - 1];
-                unaryRequest(method.getName(), finalArgs, callback);
+                org.softauto.serializer.CallFuture<?> callback = (org.softauto.serializer.CallFuture<?>) args[args.length - 1];
+                unaryRequest(method.getName(),  callback,finalArgs,finalTypes);
                 return null;
             } else {
                 logger.debug("invoking  sync request :"+ method.getName());
-                return unaryRequest(method.getName(), args);
+                return unaryRequest(method.getName(), args,parameterTypes);
             }
         }
 
-        private Object unaryRequest(String methodName, Object[] args) throws Exception {
-            CallFuture<Object> callFuture = new CallFuture<>();
-            unaryRequest(methodName, args, callFuture);
+        private Object unaryRequest(String methodName, Object...args) throws Exception {
+            org.softauto.serializer.CallFuture<Object> callFuture = new org.softauto.serializer.CallFuture<>();
+            unaryRequest(methodName,  callFuture,args);
             return callFuture.get();
          }
 
@@ -177,12 +177,12 @@ public class LifeCycle {
          * @param <RespT>
          * @throws Exception
          */
-        private <RespT> void unaryRequest(String methodName, Object[] args, CallFuture<RespT> callback)  {
+        private <RespT> void unaryRequest(String methodName, org.softauto.serializer.CallFuture<RespT> callback,Object...args)  {
             Provider provider = ProviderManager.provider("RPC").create().iface(iface);
             String host = Configuration.get("serializer_host").asText();
             int port = Configuration.get("system_port").asInt();
             ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
-            provider.exec( methodName,  args,  callback, channel);
+            provider.exec( methodName,callback, channel,args);
         }
 
     }

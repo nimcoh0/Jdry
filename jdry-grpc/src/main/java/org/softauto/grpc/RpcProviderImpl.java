@@ -10,6 +10,12 @@ import org.softauto.grpc.schema.MessageHandler;
 import org.softauto.grpc.system.SystemServiceImpl;
 import org.softauto.logger.LogManager;
 import org.softauto.plugin.api.Provider;
+import org.softauto.serialization.KryoSerialization;
+import org.softauto.serializer.CallFuture;
+import org.softauto.serializer.Callback;
+import org.softauto.serializer.Serializer;
+import org.softauto.serializer.service.Message;
+import org.softauto.serializer.service.SerializerService;
 
 import javax.lang.model.element.Element;
 import java.io.IOException;
@@ -59,6 +65,7 @@ public class RpcProviderImpl implements Provider {
 
 
 
+
     @Override
     public JsonNode parser(Element element) {
         return  new MessageHandler().parser(element);
@@ -86,7 +93,8 @@ public class RpcProviderImpl implements Provider {
             LogManager.setStatus(true);
             logger.info("starting System server ....");
             server = ServerBuilder.forPort(systemPort)
-                   .addService(SystemServer.createServiceDefinition(org.softauto.grpc.system.SystemService.class,SystemServiceImpl.getInstance()))
+                   //.addService(SystemServer.createServiceDefinition(org.softauto.grpc.system.SystemService.class,SystemServiceImpl.getInstance()))
+                   .addService(org.softauto.serializer.SoftautoGrpcServer.createServiceDefinition(SerializerService.class, new org.softauto.grpc.SerializerServiceImpl()))
                    .build();
             server.start();
             logger.info("System server started on port : "+ port);
@@ -105,6 +113,7 @@ public class RpcProviderImpl implements Provider {
      * @return
      * @throws IOException
      */
+    /*
     public Provider initilizeSerializer() throws IOException {
         try {
             logger.info("starting Serializer server ....");
@@ -120,11 +129,30 @@ public class RpcProviderImpl implements Provider {
         return this;
     }
 
+     */
+
+    public Provider initilizeSerializer() throws IOException {
+        try {
+            org.softauto.serializer.SoftautoGrpcServer.setSerializationEngine(org.softauto.serializer.kryo.KryoSerialization.getInstance());
+            server = ServerBuilder.forPort(port)
+                    .addService(org.softauto.serializer.SoftautoGrpcServer.createServiceDefinition(SerializerService.class, new org.softauto.grpc.SerializerServiceImpl()))
+                    .build();
+            server.start();
+
+        }catch (Exception e){
+            logger.fatal("fail to start Serializer server ", e);
+            System.exit(1);
+        }
+        return this;
+    }
+
+
     @Override
     public void register() {
         ServiceLocator.getInstance().register(type,this);
     }
 
+    /*
     @Override
     public <RespT> void exec(String methodName, Object[] args, CallFuture<RespT> callback,ManagedChannel channel){
         try {
@@ -140,6 +168,23 @@ public class RpcProviderImpl implements Provider {
         }
     }
 
+     */
 
+    @Override
+    public <RespT> void exec(String methodName,  CallFuture<RespT> callback,ManagedChannel channel,Object...args){
+        try {
+            logger.debug("exec rpc call "+ methodName);
+            Serializer serializer;
+            if(channel != null) {
+                serializer = new Serializer().setChannel(channel);
+            }else {
+                serializer = new Serializer().setHost(host).setPort(port).buildChannel();
+            }
+            Message message = Message.newBuilder().setDescriptor(methodName).setArgs((Object[]) args[0]).setTypes((Class[]) args[1]).build();
+            serializer.write(message,callback);
+        }catch (Exception e){
+            logger.error("fail exec rpc call "+ methodName, e);
+        }
+    }
 
 }
