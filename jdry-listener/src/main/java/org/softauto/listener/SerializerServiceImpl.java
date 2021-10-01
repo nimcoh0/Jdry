@@ -1,12 +1,9 @@
 package org.softauto.listener;
 
 
-import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.softauto.core.Utils;
-
-import org.softauto.grpc.system.SystemServiceImpl;
-import org.softauto.listener.system.BasicModule;
+import org.softauto.system.SystemServiceImpl;
 import org.softauto.serializer.CallFuture;
 import org.softauto.serializer.service.Message;
 import org.softauto.serializer.service.SerializerService;
@@ -25,16 +22,82 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
 
     public SerializerServiceImpl(){
         try {
-            injector = Guice.createInjector(new BasicModule());
-
+            injector = SystemServiceImpl.getInstance().getInjector();
             //injector = Guice.createInjector(new BasicModule());
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
+    @Override
+    public void execute(Message message, CallFuture<Object> callback) throws Exception {
+        Object methodResponse = null;
+        injector = ListenerInit.getInstance().getInjector();
+        try {
+            String fullClassName = message.getService();
+            Class iface = Utils.findClass(fullClassName);
+            Object serviceImpl = injector.getInstance(iface);
+            Method method = Utils.getMethod2(serviceImpl, message.getDescriptor(), message.getTypes());
+            Object channel = ListenerObserver.getInstance().getLastChannel(serviceImpl.getClass().getName());
+            if(channel == null){
+                channel = serviceImpl;
+            }
+            logger.debug("invoking " + message.getDescriptor());
+            method.setAccessible(true);
+            if (Modifier.isStatic(method.getModifiers())) {
+                methodResponse = method.invoke(null, message.getArgs());
+            } else {
+                methodResponse = method.invoke(channel, message.getArgs());
+            }
 
 
+        } catch (InvocationTargetException e) {
+            logger.error("fail invoke method "+ message.getDescriptor(),e );
+            callback.handleError(e);
+
+        } catch (Exception e) {
+            logger.error("fail invoke method "+ message.getDescriptor(),e );
+            callback.handleError(e);
+        }
+        callback.handleResult(methodResponse);
+
+    }
+
+
+    @Override
+    public Object execute(Message message) throws Exception {
+        Object methodResponse = null;
+        injector = ListenerInit.getInstance().getInjector();
+        try {
+            String fullClassName = message.getService();
+            Class iface = Utils.findClass(fullClassName);
+            Object serviceImpl = injector.getInstance(iface);
+            Method method = Utils.getMethod2(serviceImpl, message.getDescriptor(), message.getTypes());
+            Object channel = ListenerObserver.getInstance().getLastChannel(serviceImpl.getClass().getName());
+            if(channel == null){
+                channel = serviceImpl;
+            }
+            logger.debug("invoking " + message.getDescriptor());
+            method.setAccessible(true);
+            if (Modifier.isStatic(method.getModifiers())) {
+                methodResponse = method.invoke(null, message.getArgs());
+            } else {
+                methodResponse = method.invoke(channel, message.getArgs());
+            }
+
+
+        } catch (InvocationTargetException e) {
+            logger.error("fail invoke method "+ message.getDescriptor(),e );
+
+        } catch (Exception e) {
+            logger.error("fail invoke method "+ message.getDescriptor(),e );
+
+        }
+        return methodResponse;
+
+    }
+
+    /*
     @Override
     public void execute(Message message, CallFuture<Object> callback) throws Exception {
         Object methodResponse = null;
@@ -91,4 +154,6 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
         }
         return methodResponse;
     }
+    */
+
 }

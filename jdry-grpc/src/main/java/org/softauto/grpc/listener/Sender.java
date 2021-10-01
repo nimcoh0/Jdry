@@ -19,19 +19,19 @@ public class Sender {
     public static Builder newBuilder() { return new Builder();}
     org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Sender.class);
     Object[] args;
-    ListenerGrpcClient.ServiceInvocationHandler proxy;
+    //ListenerGrpcClient.ServiceInvocationHandler proxy;
     Method method;
     String service;
     String fqmn;
     Class[] types;
 
-    public Sender(ListenerGrpcClient.ServiceInvocationHandler proxy,Method method ,Object[] args,String fqmn){
-        this.args = args;
-        this.method = method;
-        this.proxy = proxy;
-        this.fqmn = fqmn;
+    //public Sender(ListenerGrpcClient.ServiceInvocationHandler proxy,Method method ,Object[] args,String fqmn){
+   //     this.args = args;
+   //     this.method = method;
+    //    this.proxy = proxy;
+    //    this.fqmn = fqmn;
 
-    }
+   // }
 
     public Sender(String fqmn,Object[] args,Class[] types,String service){
         this.args = args;
@@ -71,7 +71,7 @@ public class Sender {
         private Class[] types;
         private Object[] args;
         private String service;
-        private ListenerGrpcClient.ServiceInvocationHandler proxy;
+        //private ListenerGrpcClient.ServiceInvocationHandler proxy;
 
         org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Builder.class);
 

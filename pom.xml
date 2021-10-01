@@ -27,8 +27,8 @@
         <module>jdry-socket-annotations</module>
         <module>jdry-jaxrs-annotations</module>
         <module>jdry-local</module>
-        <module>jdry-logger</module>
-        <module>jdry-guice</module>
+        <!--module>jdry-logger</module-->
+        <module>jdry-system</module>
 
 
     </modules>
@@ -91,7 +91,11 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.0.1-jre</version>
+        </dependency>
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-stub</artifactId>

@@ -17,13 +17,13 @@ public static final org.apache.avro.Protocol PROTOCOL = org.apache.avro.Protocol
     public static final org.apache.avro.Protocol PROTOCOL = ListenerServiceLog.PROTOCOL;
 
 
-      void org_auto_tests_exception(String exception, org.softauto.core.CallFuture<Void> callback) throws java.io.IOException;
+      void org_auto_tests_exception(String exception, org.softauto.serializer.CallFuture<Void> callback) throws java.io.IOException;
 
-      void org_auto_tests_softautoLoggerLog(String level,String log, String clazz, org.softauto.core.CallFuture<Void> callback) throws java.io.IOException;
+      void org_auto_tests_softautoLoggerLog(String level,String log, String clazz, org.softauto.serializer.CallFuture<Void> callback) throws java.io.IOException;
 
-      void org_auto_tests_log(String level,String marker,String log, String clazz,org.softauto.core.CallFuture<Void> callback) throws java.io.IOException;
+      void org_auto_tests_log(String level,String marker,String log, String clazz,org.softauto.serializer.CallFuture<Void> callback) throws java.io.IOException;
 
-      void org_auto_tests_logError(String level,String marker,String log, String clazz, String ex,org.softauto.core.CallFuture<Void> callback) throws java.io.IOException;
+      void org_auto_tests_logError(String level,String marker,String log, String clazz, String ex,org.softauto.serializer.CallFuture<Void> callback) throws java.io.IOException;
   }
 
 }

@@ -11,12 +11,9 @@ import org.softauto.core.Configuration;
 import org.softauto.core.Context;
 import org.softauto.core.ServiceLocator;
 import org.softauto.core.Utils;
-import org.softauto.listener.system.SystemService;
-import org.softauto.listener.system.SystemServiceImpl;
 import org.softauto.serializer.service.SerializerService;
 
 import java.io.File;
-import java.io.IOException;
 
 
 /**
@@ -30,21 +27,12 @@ public class ListenerInit {
     ObjectMapper objectMapper;
     Injector injector;
 
-    /**
-     * instance of lifecycle class
-     */
-    LifeCycle lifeCycle;
 
 
     /**
      * listener server
      */
     Server server = null;
-
-
-    public LifeCycle getLifeCycle() {
-        return lifeCycle;
-    }
 
 
     private Class getListenerServiceLogImplClass() {
@@ -109,7 +97,7 @@ public class ListenerInit {
     public ListenerInit initilize()  {
         try {
             server = ServerBuilder.forPort(Configuration.get(Context.LISTENER_PORT).asInt())
-                    .addService(ListenerGrpcServer.createServiceDefinition(SerializerService.class))
+                    .addService(org.softauto.serializer.SoftautoGrpcServer.createServiceDefinition(SerializerService.class, new org.softauto.listener.SerializerServiceImpl()))
                     .build();
             server.start();
             logger.info("listener load successfully on port "+ Configuration.get(Context.LISTENER_PORT).asInt());
@@ -150,26 +138,10 @@ public class ListenerInit {
            return Utils.getClazz(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() + "/ListenerServiceLog");
      }
 
-    public void startLifeCycle(){
-        lifeCycle =  new LifeCycle();
-    }
+
 
     public void shutdown(){
-        lifeCycle.shutdown();
-        server.shutdown();
+       server.shutdown();
     }
 
-    public void keepAlive(){
-        lifeCycle.keepAlive();
-    }
-
-
-
-    public void startTest(String testname){
-        lifeCycle.startTest(testname);
-    }
-
-    public void endTest(String testname){
-        lifeCycle.endTest(testname);
-    }
 }

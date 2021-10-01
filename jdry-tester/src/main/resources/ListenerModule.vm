@@ -17,7 +17,7 @@ public class ListenerModule extends AbstractModule {
     @Override
     protected void configure() {
     try{
-        bind(org.softauto.listener.system.SystemService.class).toInstance(new org.softauto.listener.system.SystemServiceImpl());
+        bind(org.softauto.system.SystemServiceImpl.class).toInstance(org.softauto.system.SystemServiceImpl.getInstance());
         bind(tests.infrastructure.ListenerServiceLog.class).toInstance(new tests.infrastructure.ListenerServiceLogImpl());
         bind(tests.infrastructure.ListenerService.class).toInstance(new tests.infrastructure.ListenerServiceImpl());
     }catch(Exception e){

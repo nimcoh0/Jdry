@@ -1,4 +1,4 @@
-package org.softauto.grpc.system;
+package org.softauto.system;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.*;
@@ -9,7 +9,6 @@ import org.apache.logging.log4j.MarkerManager;
 import org.softauto.core.Configuration;
 import org.softauto.core.Context;
 import org.softauto.core.Utils;
-import org.softauto.grpc.RpcProviderImpl;
 import org.softauto.jvm.HeapHelper;
 import org.softauto.logger.Log4j2Utils;
 import org.softauto.logger.LogManager;
@@ -20,7 +19,6 @@ import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Properties;
 
 /**
  * System service for internal messages between the listener server and the grpc server
@@ -54,9 +52,6 @@ public class SystemServiceImpl {
 
 
     public Injector getInjector() {
-        if(injector == null){
-            injector = Guice.createInjector(new BasicModule());
-        }
         return injector;
     }
 
@@ -130,7 +125,7 @@ public class SystemServiceImpl {
     private  void load()  {
         try {
             initGuice();
-            RpcProviderImpl.getInstance().initilizeSerializer();
+            //RpcProviderImpl.getInstance().initilize();
             loadPlugins();
             //InjectorInit.getInstance().initilize().register();
             loadHeapHelper();
@@ -205,7 +200,8 @@ public class SystemServiceImpl {
             AbstractModule module = (AbstractModule) guiceModule.newInstance();
             //Injector oldInjector = Guice.createInjector(allYourOtherModules);
             //Module myModule = new PropertiesModule(injector..get.get(Properties.class));
-            injector = injector.createChildInjector(module);
+            injector =  Guice.createInjector(module);
+            //injector = injector.createChildInjector(module);
             //injector = Guice.createInjector(module);
         }catch (Exception e){
             e.printStackTrace();

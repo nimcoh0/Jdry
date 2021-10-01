@@ -27,7 +27,7 @@ public class Context {
     public final static String LISTENER_SERVICE_LOG = "ListenerServiceLog";
     public final static String SERIALIZER_PORT = "serializer_port";
     public final static String SERIALIZER_HOST = "serializer_host";
-    public final static String SYSTEM_PORT = "system_port";
+    //public final static String SYSTEM_PORT = "system_port";
     public final static String GUICE_MODULE = "guice_module";
     public final static String LISTENER_MODULE = "listener_module";
 }

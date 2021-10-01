@@ -2,11 +2,7 @@ package org.softauto.avro.tools;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import org.apache.avro.Protocol;
-import org.softauto.grpc.SoftautoGrpcServer;
-import org.softauto.grpc.SoftautoGrpcUtils;
-//import org.softauto.avro.tools.service.AvroGrpcServer;
-//import org.softauto.avro.tools.service.AvroGrpcUtils;
+import org.softauto.serializer.service.SerializerService;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -27,18 +23,14 @@ public class GrpcReceiveTool implements Tool {
 
             if (arguments.size() != 6) {
                 System.err.println(
-                        "Usage: -port <port>  -protocol_file <protocol file> -message_name <message name> ");
-                System.err.println(" port               - receiver port ");
-                System.err.println(" protocol_file      - protocol json file ");
-                //System.err.println(" protocol_file_impl - protocol json file impl");
-                System.err.println(" message_name       - message name ");
+                        "Usage: -port <port>  -impl <impl class>  ");
+                System.err.println(" impl      - impl class file ");
+                System.err.println(" port      - receiver port ");
                 return 1;
             }
 
             Optional<Integer> port = Optional.empty();
-            Optional<String> protocol_file = Optional.empty();
-            //Optional<String> protocol_file_impl = Optional.empty();
-            Optional<String> message_name = Optional.empty();
+            Optional<String> impl = Optional.empty();
             int arg = 0;
             List<Object> args = new ArrayList<>(arguments);
 
@@ -50,45 +42,21 @@ public class GrpcReceiveTool implements Tool {
                 args.remove(arg - 1);
             }
 
-            if (args.contains("-protocol_file")) {
-                arg = args.indexOf("-protocol_file") + 1;
-                protocol_file = Optional.of(args.get(arg).toString());
+            if (args.contains("-impl")) {
+                arg = args.indexOf("-impl") + 1;
+                impl = Optional.of(args.get(arg).toString());
                 args.remove(arg);
                 args.remove(arg - 1);
             }
 
-            /*
-            if (args.contains("-protocol_file_impl")) {
-                arg = args.indexOf("-protocol_file_impl") + 1;
-                protocol_file_impl = Optional.of(args.get(arg).toString());
-                args.remove(arg);
-                args.remove(arg - 1);
-            }
-*/
 
 
-            if (args.contains("-message_name")) {
-                arg = args.indexOf("-message_name") + 1;
-                message_name = Optional.of(args.get(arg).toString());
-                args.remove(arg);
-                args.remove(arg - 1);
-            }
-
-            String path = getPath(protocol_file.get());
-            String fileName = getName(protocol_file.get());
-            //String implPath = getPath(protocol_file_impl.get());
-            //String implFileName = getName(protocol_file_impl.get());
-            Class iface = org.softauto.core.Utils.getClazz(path,fileName);
-            //Class implIface = org.softauto.core.Utils.getClazz(implPath,implFileName);
-            Protocol protocol = SoftautoGrpcUtils.getProtocol(iface);
-            Protocol.Message message = protocol.getMessages().get(message_name.get());
-            if (message == null) {
-                err.println(String.format("No message named '%s' found in protocol '%s'.", message_name.get(), protocol));
-                return 1;
-            }
+            String path = getPath(impl.get());
+            String className = getName(impl.get());
+            Class iface = org.softauto.core.Utils.getClazz(path,className);
 
             server = ServerBuilder.forPort(port.get())
-                    .addService(SoftautoGrpcServer.createServiceDefinition(iface))
+                    .addService(org.softauto.serializer.SoftautoGrpcServer.createServiceDefinition(SerializerService.class, iface.newInstance()))
                     .build();
             server.start();
             lock.await();

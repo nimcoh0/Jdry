@@ -1,15 +1,9 @@
 package org.softauto.grpc;
 
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
 import com.google.inject.Injector;
-import org.apache.avro.Protocol;
-import org.softauto.core.Configuration;
-import org.softauto.core.Context;
 import org.softauto.core.Utils;
-import org.softauto.grpc.system.BasicModule;
-import org.softauto.grpc.system.SystemServiceImpl;
+import org.softauto.system.SystemServiceImpl;
 import org.softauto.serializer.CallFuture;
 import org.softauto.serializer.service.Message;
 import org.softauto.serializer.service.SerializerService;
@@ -28,7 +22,7 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
 
     public SerializerServiceImpl(){
         try {
-            injector = SystemServiceImpl.getInstance().getInjector();
+
             //injector = Guice.createInjector(new BasicModule());
         }catch (Exception e){
             e.printStackTrace();
@@ -43,7 +37,13 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
         try {
             String fullClassName = Utils.getFullClassName(message.getDescriptor());
             String methodName = Utils.getMethodName(message.getDescriptor());
-            Object serviceImpl = injector.getInstance(Utils.findClass(fullClassName));
+            Object serviceImpl;
+            injector = SystemServiceImpl.getInstance().getInjector();
+            if(injector != null) {
+                serviceImpl = injector.getInstance(Utils.findClass(fullClassName));
+            }else {
+                serviceImpl = SystemServiceImpl.getInstance();
+            }
             Method m = Utils.getMethod(serviceImpl, methodName, message.getTypes());
             logger.debug("invoking " + message.getDescriptor());
             m.setAccessible(true);
@@ -70,7 +70,13 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
         Object methodResponse = null;
         try {
             String fullClassName = Utils.getFullClassName(message.getDescriptor());
-            Object serviceImpl = injector.getInstance(Utils.findClass(fullClassName));
+            Object serviceImpl;
+            injector = SystemServiceImpl.getInstance().getInjector();
+            if(injector != null) {
+                serviceImpl = injector.getInstance(Utils.findClass(fullClassName));
+            }else {
+                serviceImpl = SystemServiceImpl.getInstance();
+            }
             String methodName = Utils.getMethodName(message.getDescriptor());
             Method m = Utils.getMethod(serviceImpl, methodName, message.getTypes());
             logger.debug("invoking " + message.getDescriptor());

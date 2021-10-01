@@ -2,17 +2,10 @@ package org.softauto.grpc;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.grpc.*;
-import io.grpc.stub.ClientCalls;
-import io.grpc.stub.StreamObserver;
 import org.softauto.core.*;
-import org.softauto.core.Context;
 import org.softauto.grpc.schema.MessageHandler;
-import org.softauto.grpc.system.SystemServiceImpl;
-import org.softauto.logger.LogManager;
 import org.softauto.plugin.api.Provider;
-import org.softauto.serialization.KryoSerialization;
 import org.softauto.serializer.CallFuture;
-import org.softauto.serializer.Callback;
 import org.softauto.serializer.Serializer;
 import org.softauto.serializer.service.Message;
 import org.softauto.serializer.service.SerializerService;
@@ -82,18 +75,14 @@ public class RpcProviderImpl implements Provider {
     }
 
 
-    /**
-     * load the system server
-     * @return
-     * @throws IOException
-     */
+    /*
     @Override
     public Provider initilize() throws IOException {
         try {
             LogManager.setStatus(true);
             logger.info("starting System server ....");
             server = ServerBuilder.forPort(systemPort)
-                   //.addService(SystemServer.createServiceDefinition(org.softauto.grpc.system.SystemService.class,SystemServiceImpl.getInstance()))
+                   //.addService(SystemServer.createServiceDefinition(org.softauto.system.SystemService.class,SystemServiceImpl.getInstance()))
                    .addService(org.softauto.serializer.SoftautoGrpcServer.createServiceDefinition(SerializerService.class, new org.softauto.grpc.SerializerServiceImpl()))
                    .build();
             server.start();
@@ -107,7 +96,7 @@ public class RpcProviderImpl implements Provider {
         }
         return this;
     }
-
+*/
     /**
      * load the grpc server
      * @return
@@ -130,8 +119,8 @@ public class RpcProviderImpl implements Provider {
     }
 
      */
-
-    public Provider initilizeSerializer() throws IOException {
+    @Override
+    public Provider initilize() throws IOException {
         try {
             org.softauto.serializer.SoftautoGrpcServer.setSerializationEngine(org.softauto.serializer.kryo.KryoSerialization.getInstance());
             server = ServerBuilder.forPort(port)

@@ -203,7 +203,7 @@ public class Client {
 
 
 
-            @Before("execution(* org.softauto.grpc.system.SystemServiceImpl.setConnection(..)) ")
+            @Before("execution(* org.softauto.system.SystemServiceImpl.setConnection(..)) ")
             public void setConnection(JoinPoint joinPoint) throws Throwable {
                 Object[] objs = joinPoint.getArgs();
                 connected = ((Boolean)objs[0]);

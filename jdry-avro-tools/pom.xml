@@ -27,7 +27,11 @@
             <artifactId>avro-tools</artifactId>
             <version>${avro-tools}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-serializer</artifactId>
+            <version>beta-1.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.maven.shared</groupId>

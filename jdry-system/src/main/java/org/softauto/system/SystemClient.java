@@ -1,4 +1,4 @@
-package org.softauto.listener;
+package org.softauto.system;
 
 import io.grpc.CallOptions;
 import io.grpc.ManagedChannel;
@@ -6,7 +6,6 @@ import io.grpc.ManagedChannelBuilder;
 import org.apache.avro.Protocol;
 import org.softauto.core.Configuration;
 import org.softauto.core.Utils;
-import org.softauto.listener.system.SystemService;
 import org.softauto.plugin.ProviderManager;
 import org.softauto.plugin.api.Provider;
 
@@ -16,82 +15,9 @@ import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 
-/**
- * manage the communication lifeCycle for the system service
- */
-public class LifeCycle {
+public class SystemClient {
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(LifeCycle.class);
-    SystemService systemService = null;
-
-    /**
-     * life cycle to get configuration from tester
-     * if SUT answer to sayHello the configuration will be send
-     * to the grpc server
-     */
-    public LifeCycle(){
-       int result =  sayHello();
-       if(result == 0){
-           int res = sendConfiguration();
-           if(res != 0){
-               logger.fatal(" fail to send configuration to sut  ");
-               System.exit(1);
-           }
-       }else {
-           logger.fatal(" now answer for sut  ");
-           System.exit(1);
-       }
-    }
-
-    /**
-     * check if the Sut is a live
-     * @return
-     */
-    public int sayHello() {
-        systemService = create(SystemService.class);
-        return systemService.org_softauto_grpc_system_SystemServiceImpl_hello();
-    }
-
-    public void keepAlive(){
-        systemService.org_softauto_grpc_system_SystemServiceImpl_keepAlive();
-    }
-
-    public void startTest(String testname){
-        systemService.org_softauto_grpc_system_SystemServiceImpl_startTest(testname);
-    }
-
-    public void endTest(String testname){
-        systemService.org_softauto_grpc_system_SystemServiceImpl_endTest(testname);
-    }
-
-    /**
-     * send configuration to the grpc server in the sut
-     * @return
-     */
-    public int sendConfiguration(){
-        int i = -1;
-        try {
-           i = systemService.org_softauto_grpc_system_SystemServiceImpl_configuration(Configuration.getConfiguration());
-        }catch (Exception e){
-            logger.error("fail send configuration ", e);
-            return 1;
-        }
-        return i;
-    }
-
-    /**
-     * send request to shutdown to the grpc server in the Sut .indicate test/suite end
-     */
-    public void shutdown(){
-        systemService.org_softauto_grpc_system_SystemServiceImpl_shutdown();
-    }
-
-    /**
-     * create the stub proxy
-     * @param iface
-     * @param <T>
-     * @return
-     */
+    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(SystemClient.class);
     public static <T> T create(Class<T> iface) {
         return create(iface, CallOptions.DEFAULT);
     }
@@ -166,7 +92,7 @@ public class LifeCycle {
             org.softauto.serializer.CallFuture<Object> callFuture = new org.softauto.serializer.CallFuture<>();
             unaryRequest(methodName,  callFuture,args);
             return callFuture.get();
-         }
+        }
 
         /**
          * this method will resolve the correct protocol provider base on the schema property  "transceiver"
@@ -178,9 +104,9 @@ public class LifeCycle {
          * @throws Exception
          */
         private <RespT> void unaryRequest(String methodName, org.softauto.serializer.CallFuture<RespT> callback,Object...args)  {
-            Provider provider = ProviderManager.provider("RPC").create().iface(iface);
+            Provider provider = ProviderManager.provider("SYSTEM").create().iface(iface);
             String host = Configuration.get("serializer_host").asText();
-            int port = Configuration.get("system_port").asInt();
+            int port = Configuration.get("serializer_port").asInt();
             ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
             provider.exec( methodName,callback, channel,args);
         }

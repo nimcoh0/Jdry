@@ -23,6 +23,7 @@ public class $this.mangle($protocol.getName())Module extends AbstractModule {
     @Override
     protected void configure() {
     try{
+    bind( org.softauto.system.SystemServiceImpl.class).toInstance(org.softauto.system.SystemServiceImpl.getInstance());
 #foreach ($e in $protocol.getMessages().entrySet())
 #set ($name = $e.getKey())
 #set ($message = $e.getValue())
