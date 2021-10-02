@@ -1,1 +1,1 @@
-org.softauto.listener.server.ListenerServerProvider
+org.softauto.listener.client.ListenerClientProvider

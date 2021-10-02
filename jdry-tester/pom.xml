@@ -44,7 +44,7 @@
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
-            <artifactId>jdry-listener</artifactId>
+            <artifactId>jdry-listener-server</artifactId>
             <version>${jdry-listener}</version>
         </dependency>
         <dependency>

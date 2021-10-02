@@ -3,6 +3,7 @@ package org.softauto.grpc;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.grpc.*;
 import org.softauto.core.*;
+import org.softauto.core.Context;
 import org.softauto.grpc.schema.MessageHandler;
 import org.softauto.plugin.api.Provider;
 import org.softauto.serializer.CallFuture;
@@ -127,7 +128,7 @@ public class RpcProviderImpl implements Provider {
                     .addService(org.softauto.serializer.SoftautoGrpcServer.createServiceDefinition(SerializerService.class, new org.softauto.grpc.SerializerServiceImpl()))
                     .build();
             server.start();
-
+            //Listener listener = Listener.newlistenerFactory().setAspectjweaver(Configuration.get(Context.ASPECT_WEAVER).asText()).setServiceImpl(new org.softauto.listener.client.ListenerServiceImpl()).getListener();
         }catch (Exception e){
             logger.fatal("fail to start Serializer server ", e);
             System.exit(1);
