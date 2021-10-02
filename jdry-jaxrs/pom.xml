@@ -15,23 +15,23 @@
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-core</artifactId>
-            <version>${jdry-core}</version>
+            <version>beta-1.0</version>
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-jaxrs-annotations</artifactId>
-            <version>${jdry-jaxrs-annotations}</version>
+            <version>beta-1.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-multipart</artifactId>
-            <version>${jersey-media-multipart}</version>
+            <version>2.25.1</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
-            <version>${jersey-client}</version>
+            <version>2.25.1</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
@@ -43,12 +43,12 @@
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
-            <version>${jakarta.xml.bind-api}</version>
+            <version>3.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-jaxrs-annotations</artifactId>
-            <version>${jdry-jaxrs-annotations}</version>
+            <version>beta-1.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

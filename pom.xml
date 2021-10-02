@@ -22,13 +22,11 @@
         <module>jdry-annotation-discovery</module>
         <module>jdry-jaxrs</module>
         <!--module>jdry-jvmTool</module-->
-        <module>jdry-socket</module>
-        <module>jdry-socket-annotations</module>
-        <module>jdry-jaxrs-annotations</module>
+
         <module>jdry-local</module>
         <!--module>jdry-logger</module-->
         <module>jdry-system</module>
-        <module>jdry-listener-client</module>
+        <module>jdry-listener</module>
 
 
     </modules>

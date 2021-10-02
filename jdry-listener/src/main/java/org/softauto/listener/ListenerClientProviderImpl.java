@@ -1,17 +1,18 @@
-package org.softauto.listener.client;
+package org.softauto.listener;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.sun.tools.attach.VirtualMachine;
 import io.grpc.ManagedChannel;
 import org.softauto.core.Configuration;
 import org.softauto.core.Context;
 import org.softauto.core.ServiceLocator;
 import org.softauto.core.Utils;
-import org.softauto.listener.Listener;
 import org.softauto.plugin.api.Provider;
 import org.softauto.serializer.CallFuture;
 
 import javax.lang.model.element.Element;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 
 public class ListenerClientProviderImpl implements Provider {
 
@@ -30,6 +31,9 @@ public class ListenerClientProviderImpl implements Provider {
     Class iface;
 
 
+    Object serviceImpl;
+
+
     public static ListenerClientProviderImpl getInstance(){
         if(listenerClientProviderImpl == null){
             listenerClientProviderImpl =  new ListenerClientProviderImpl();
@@ -37,11 +41,15 @@ public class ListenerClientProviderImpl implements Provider {
         return listenerClientProviderImpl;
     }
 
+    public  Object getServiceImpl() {
+        return serviceImpl;
+    }
 
     @Override
     public Provider initilize() throws IOException {
         listener = Listener.newlistenerFactory().setAspectjweaver(Configuration.get(Context.ASPECT_WEAVER).asText()).setServiceImpl(new ListenerServiceImpl()).getListener();
         iface = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , Context.LISTENER_SERVICE,Configuration.get(Context.TEST_MACHINE).asText());
+        startWeaver(Configuration.get(Context.ASPECT_WEAVER).asText());
         return this;
     }
 
@@ -78,6 +86,20 @@ public class ListenerClientProviderImpl implements Provider {
 
     @Override
     public <RespT> void exec(String methodName, CallFuture<RespT> callback, ManagedChannel channel, Object... args) {
+
+    }
+
+    public  void startWeaver(String aspectjweaver){
+        try {
+            String pid = ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
+            VirtualMachine jvm = VirtualMachine.attach(pid);
+            jvm.loadAgent(aspectjweaver);
+            jvm.detach();
+            logger.info("Listener server Load successfully ");
+        }catch (Exception e){
+            logger.fatal("load Listener fail ",e);
+            System.exit(1);
+        }
 
     }
 }

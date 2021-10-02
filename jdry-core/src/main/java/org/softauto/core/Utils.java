@@ -589,6 +589,22 @@ public class Utils {
         return "";
     }
 
+    public static String result2String(Object result){
+        try{
+
+            if(result != null){
+                if(result instanceof List){
+                    return ToStringBuilder.reflectionToString(((List)result).toArray(), new MultipleRecursiveToStringStyle());
+                }else {
+                    return ToStringBuilder.reflectionToString(result, new MultipleRecursiveToStringStyle());
+                }
+            }
+        }catch(Exception e){
+            logger.warn("result to String fail on  ",e.getMessage());
+        }
+        return "";
+    }
+
     public static String toString(Object obj){
         return ToStringBuilder.reflectionToString(obj, new MultipleRecursiveToStringStyle());
     }

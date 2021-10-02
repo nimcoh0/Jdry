@@ -1,4 +1,4 @@
-package org.softauto.listener.client;
+package org.softauto.listener;
 
 import org.softauto.core.Configuration;
 import org.softauto.core.Context;
