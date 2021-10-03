@@ -12,7 +12,6 @@ import org.apache.avro.ipc.Callback;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.softauto.annotations.DefaultValue;
-import org.softauto.injector.Injector;
 import org.softauto.jvm.HeapHelper;
 import org.softauto.serializer.CallFuture;
 import org.yaml.snakeyaml.Yaml;
@@ -49,14 +48,8 @@ public class Utils {
     }
 
 
-    /**
-     * get Class Instance - this method will try to load or get exist class instance
-     * @param fullClassName
-     * @param msg
-     * @param request
-     * @param method
-     * @return
-     */
+
+    /*
     public static Object getClassInstance(String fullClassName,Protocol.Message msg,Object[] request,Method method){
         List<Object>  objs = null;
         try {
@@ -100,6 +93,8 @@ public class Utils {
         return null;
     }
 
+
+     */
     private static ClassType getClassType(Protocol.Message msg){
         String initialize = null;
         if(msg.hasProp("class")) {

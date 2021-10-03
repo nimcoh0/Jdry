@@ -13,7 +13,6 @@
         <module>jdry-grpc</module>
         <module>jdry-core</module>
         <!--module>jdry-plugin</module-->
-        <module>jdry-listener-server</module>
         <module>jdry-kryo-serialization</module>
         <module>jdry-loader</module>
         <!--module>jdry-injector</module-->
@@ -22,7 +21,11 @@
         <module>jdry-annotation-discovery</module>
         <module>jdry-jaxrs</module>
         <!--module>jdry-jvmTool</module-->
-
+        <module>jdry-testng-plugin</module>
+        <module>jdry-socket-annotations</module>
+        <module>jdry-socket</module>
+        <module>jdry-jaxrs-annotations</module>
+        <module>jdry-cucumber-plugin</module>
         <module>jdry-local</module>
         <!--module>jdry-logger</module-->
         <module>jdry-system</module>

@@ -19,8 +19,8 @@ public class $this.mangle($protocol.getName())Impl implements $this.mangle($prot
 
     public $this.mangle($protocol.getName())Impl(){
           try {
-             if( Class.forName("org.softauto.listener.server.ListenerObserver", false, this.getClass().getClassLoader())!= null){
-                 org.softauto.listener.server.ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceImpl", this);
+             if( Class.forName("org.softauto.tester.listener.ListenerObserver", false, this.getClass().getClassLoader())!= null){
+                 org.softauto.tester.listener.ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceImpl", this);
              }
          }catch (Exception e){
            // e.printStackTrace();

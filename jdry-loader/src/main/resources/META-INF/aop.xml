@@ -1,9 +1,0 @@
-<aspectj>
-    <aspects>
-        <aspect name="org.softauto.grpc.listener.Client"/>
-        <weaver >
-            <include within="org.softauto.logger..*"/>
-            <include within="org.softauto.system..*"/>
-         </weaver>
-    </aspects>
-</aspectj>

@@ -18,7 +18,7 @@ public class ListenerClientProviderImpl implements Provider {
 
     private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(ListenerClientProviderImpl.class);
     private static ListenerClientProviderImpl listenerClientProviderImpl = null;
-    Listener listener;
+    //Listener listener;
 
     /**
      * this provider name
@@ -29,7 +29,7 @@ public class ListenerClientProviderImpl implements Provider {
      * the schema interface class
      */
     Class iface;
-
+    Class ifaceLog;
 
     Object serviceImpl;
 
@@ -42,13 +42,14 @@ public class ListenerClientProviderImpl implements Provider {
     }
 
     public  Object getServiceImpl() {
-        return serviceImpl;
+        return new ListenerServiceImpl();
     }
 
     @Override
     public Provider initilize() throws IOException {
-        listener = Listener.newlistenerFactory().setAspectjweaver(Configuration.get(Context.ASPECT_WEAVER).asText()).setServiceImpl(new ListenerServiceImpl()).getListener();
+        //listener = Listener.newlistenerFactory().setAspectjweaver(Configuration.get(Context.ASPECT_WEAVER).asText()).setServiceImpl(new ListenerServiceImpl()).getListener();
         iface = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , Context.LISTENER_SERVICE,Configuration.get(Context.TEST_MACHINE).asText());
+        ifaceLog = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , Context.LISTENER_SERVICE_LOG,Configuration.get(Context.TEST_MACHINE).asText());
         startWeaver(Configuration.get(Context.ASPECT_WEAVER).asText());
         return this;
     }
@@ -58,14 +59,29 @@ public class ListenerClientProviderImpl implements Provider {
     }
 
 
+    public Class getServiceClass(String name){
+        if(name.equals("tests.infrastructure."+Context.LISTENER_SERVICE)) {
+            return iface;
+        }
+        if(name.equals("tests.infrastructure."+Context.LISTENER_SERVICE_LOG)) {
+            return ifaceLog;
+        }
+        return null;
+    }
+
+
+    public Class getIfaceLog() {
+        return ifaceLog;
+    }
+
     @Override
     public void register() {
-        ServiceLocator.getInstance().register("LISTENER-CLIENT",listener);
+        ServiceLocator.getInstance().register("LISTENER-CLIENT",this);
     }
 
     @Override
     public void shutdown() {
-        listener.shutdown();
+
     }
 
     @Override

@@ -11,15 +11,18 @@ public class ListenerServiceImpl {
     private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(ListenerServiceImpl.class);
 
 
-    public static Object[] execute(String methodName, Object[] args, Class[] types) throws Exception {
+    public static Object[] execute(String methodName, Object[] args, Class[] types,String service) throws Exception {
         Object result = null;
         try {
-            if (ListenerClientProviderImpl.getInstance().getIface().getMethod(methodName, types) != null) {
+            Class iface = ListenerClientProviderImpl.getInstance().getServiceClass(service);
+            if (iface.getMethod(methodName, types) != null) {
                 Serializer serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).buildChannel();
-                Message message = Message.newBuilder().setDescriptor(methodName).setArgs(args).setTypes(types).build();
+                Message message = Message.newBuilder().setService(service).setDescriptor(methodName).setArgs(args).setTypes(types).build();
                 result = serializer.write(message);
                 logger.debug("send message successfully " + methodName);
             }
+        }catch (NoSuchMethodException n){
+            return (new Object[]{});
         } catch (Exception e) {
             if (e.getCause().toString().contains("UNAVAILABLE")) {
                 logger.debug("fail on UNAVAILABLE ", e);

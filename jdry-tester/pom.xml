@@ -42,17 +42,17 @@
             <artifactId>jdry-avro</artifactId>
             <version>${jdry-avro}</version>
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-listener-server</artifactId>
-            <version>${jdry-listener}</version>
-        </dependency>
+
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-common</artifactId>
             <version>4.1.53.Final</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>${reflections}</version>
+        </dependency>
     </dependencies>
 
     <build>

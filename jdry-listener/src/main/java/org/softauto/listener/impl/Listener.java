@@ -24,14 +24,14 @@ public class Listener {
     static boolean isInit = false;
     static Object serviceImpl  ;
     static Method method;
-
+    static String servicename = "tests.infrastructure.ListenerService";
 
     private  static ExecutorService executor = Executors.newFixedThreadPool(50);
 
     static void init(){
         try {
            serviceImpl = ListenerClientProviderImpl.getInstance().getServiceImpl();
-           method = serviceImpl.getClass().getDeclaredMethod("execute", new Class[]{String.class,Object[].class,Class[].class});
+           method = serviceImpl.getClass().getDeclaredMethod("execute", new Class[]{String.class,Object[].class,Class[].class,java.lang.String.class});
         }catch (Exception e){
             logger.error("ServiceImpl not found ",e);
         }
@@ -54,7 +54,7 @@ public class Listener {
                     try {
                         logger.debug("fqmn:" + fqmn.get() + " args:" + joinPoint.getArgs().toString() + " types:" + sig.getMethod().getParameterTypes());
                         method.setAccessible(true);
-                        ref.set((Object[]) method.invoke(null, new Object[]{fqmn.get(), joinPoint.getArgs(), sig.getMethod().getParameterTypes()}));
+                        ref.set((Object[]) method.invoke(null, new Object[]{fqmn.get(), joinPoint.getArgs(), sig.getMethod().getParameterTypes(),servicename}));
                     } catch (Exception e) {
                         logger.error("send message " + fqmn.get() + " fail  ", e);
                     }
@@ -86,7 +86,7 @@ public class Listener {
                     try {
                         logger.debug("fqmn:" + fqmn + "_result" + " args:" + joinPoint.getArgs().toString() + " types:" + sig.getMethod().getParameterTypes());
                         method.setAccessible(true);
-                        method.invoke(null, new Object[]{fqmn + "_result", new Object[]{result}, sig.getMethod().getReturnType()});
+                        method.invoke(null, new Object[]{fqmn + "_result", new Object[]{result}, sig.getMethod().getReturnType(),servicename});
                     }catch(Exception e){
                         logger.error("sendResult fail for "+fqmn+ "_result",e );
                     }
@@ -96,7 +96,7 @@ public class Listener {
                 try {
                     logger.debug("fqmn:" + fqmn + "_result" + " args:" + joinPoint.getArgs().toString() + " types:" + sig.getMethod().getParameterTypes());
                     method.setAccessible(true);
-                    method.invoke(null, new Object[]{fqmn+ "_result" , joinPoint.getArgs(), sig.getMethod().getParameterTypes()});
+                    method.invoke(null, new Object[]{fqmn+ "_result" , joinPoint.getArgs(), sig.getMethod().getParameterTypes(),servicename});
 
                 }catch(Exception e){
                     logger.error("sendResult fail for "+fqmn+ "_result" ,e);
