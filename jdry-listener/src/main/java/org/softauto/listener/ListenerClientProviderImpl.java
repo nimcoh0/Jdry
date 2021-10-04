@@ -50,6 +50,8 @@ public class ListenerClientProviderImpl implements Provider {
         //listener = Listener.newlistenerFactory().setAspectjweaver(Configuration.get(Context.ASPECT_WEAVER).asText()).setServiceImpl(new ListenerServiceImpl()).getListener();
         iface = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , Context.LISTENER_SERVICE,Configuration.get(Context.TEST_MACHINE).asText());
         ifaceLog = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , Context.LISTENER_SERVICE_LOG,Configuration.get(Context.TEST_MACHINE).asText());
+        String javaHome = System.getenv("JAVA_HOME");
+        Utils.addJarToClasspath(javaHome+"/lib/tools.jar");
         startWeaver(Configuration.get(Context.ASPECT_WEAVER).asText());
         return this;
     }

@@ -16,7 +16,12 @@
             <artifactId>jdry-annotations</artifactId>
             <version>${jdry-annotations}</version>
         </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-listener</artifactId>
+            <version>beta-1.0</version>
 
+        </dependency>
 
         <dependency>
             <groupId>org.softauto</groupId>
