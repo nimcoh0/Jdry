@@ -71,7 +71,7 @@ public class RestService {
             try {
                 Client client = channel.getClient();
                 MultivaluedMap<String, Object> headers = channel.getHeaders();
-                URI uri = channel.setPath(methodDescriptor.getPath()).getUri(args);
+                URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
                 return new JerseyHelper(client).get(uri.toString(), methodDescriptor.getProduces(), headers, res);
             }catch (Exception e){
                 e.printStackTrace();
@@ -87,8 +87,8 @@ public class RestService {
             try {
                 Client client = channel.getClient();
                 MultivaluedMap<String, Object> headers = channel.getHeaders();
-                URI uri = channel.setPath(methodDescriptor.getPath()).getUri(args);
-                Entity<?> entity = methodDescriptor.buildEntity(methodDescriptor.getMessage(),args);
+                URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
+                Entity<?> entity = methodDescriptor.buildEntity(methodDescriptor.getMessage(),(Object[])args[0]);
                 return new JerseyHelper(client).post(uri.toString(), methodDescriptor.getProduces(), headers, res,entity);
 
             }catch (Exception e){
@@ -105,8 +105,8 @@ public class RestService {
             try {
                 Client client = channel.getClient();
                 MultivaluedMap<String, Object> headers = channel.getHeaders();
-                URI uri = channel.setPath(methodDescriptor.getPath()).getUri(args);
-                Entity<?> entity = methodDescriptor.buildEntity(methodDescriptor.getMessage(),args);
+                URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
+                Entity<?> entity = methodDescriptor.buildEntity(methodDescriptor.getMessage(),(Object[])args[0]);
                 return new JerseyHelper(client).put(uri.toString(), methodDescriptor.getProduces(), headers, res,entity);
             }catch (Exception e){
                 e.printStackTrace();
@@ -122,7 +122,7 @@ public class RestService {
             try {
                 Client client = channel.getClient();
                 MultivaluedMap<String, Object> headers = channel.getHeaders();
-                URI uri = channel.setPath(methodDescriptor.getPath()).getUri(args);
+                URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
                 return new JerseyHelper(client).delete(uri.toString(), methodDescriptor.getProduces(), headers, res);
             }catch (Exception e){
                 e.printStackTrace();

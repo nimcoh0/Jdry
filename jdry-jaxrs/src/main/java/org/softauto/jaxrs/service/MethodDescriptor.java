@@ -134,26 +134,28 @@ public class MethodDescriptor {
     public Entity buildEntity(Protocol.Message message, Object[] args){
         Entity<?> entity = null;
         try{
-            String consumes = ((HashMap)message.getObjectProp("jaxrs")).get("Consumes").toString();
-            if(consumes.equals(MediaType.APPLICATION_JSON)) {
-                Object body = getArgValue(args,content[0],message) ;
-                String json = new ObjectMapper().writeValueAsString(body);
-                entity = Entity.entity(json, MediaType.APPLICATION_JSON);
-            }
-            if(consumes.equals(MediaType.MULTIPART_FORM_DATA_TYPE)) {
-                Form form = new Form();
-                for(int i =0;i<content.length;i++){
-                    form.param(content[i], args[i].toString());
+            if(((HashMap)message.getObjectProp("jaxrs")).get("Consumes") != null) {
+                String consumes = ((HashMap) message.getObjectProp("jaxrs")).get("Consumes").toString();
+                if (consumes.equals(MediaType.APPLICATION_JSON)) {
+                    Object body = getArgValue(args, content[0], message);
+                    String json = new ObjectMapper().writeValueAsString(body);
+                    entity = Entity.entity(json, MediaType.APPLICATION_JSON);
                 }
+                if (consumes.equals(MediaType.MULTIPART_FORM_DATA_TYPE)) {
+                    Form form = new Form();
+                    for (int i = 0; i < content.length; i++) {
+                        form.param(content[i], args[i].toString());
+                    }
 
-               entity = Entity.entity(form, MediaType.MULTIPART_FORM_DATA_TYPE);
-            }
-            if(consumes.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
-                Form form = new Form();
-                for(int i =0;i<content.length;i++){
-                    form.param(content[i], args[i].toString());
+                    entity = Entity.entity(form, MediaType.MULTIPART_FORM_DATA_TYPE);
                 }
-               entity = Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED);
+                if (consumes.equals(MediaType.APPLICATION_FORM_URLENCODED)) {
+                    Form form = new Form();
+                    for (int i = 0; i < content.length; i++) {
+                        form.param(content[i], args[i].toString());
+                    }
+                    entity = Entity.entity(form, MediaType.APPLICATION_FORM_URLENCODED);
+                }
             }
         }catch (Exception e){
             e.printStackTrace();
