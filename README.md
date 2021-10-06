@@ -1,4 +1,5 @@
 
+
  
 
 # Jdry - Java Don't repeat yourself 
@@ -42,9 +43,11 @@ Jdry works as client server architecture . it uses the SUT code impl as the buil
 to be examine or update and can serve as verify point or data set . method annotated as ExportForTesting are serve as proxy at the Tester so no impl is needed . any java type can be Serialize so the proxy  methods are serve as is without the need of Protobuf like solutions  
 
 # Getting Started
-download the project and run "mvn clean install" 
-
+download the project and run "mvn clean install"
 Jdry build of two parts  SUT - the developing application &  Tester - the test project
+
+> you also need jdry-serializer , jdry-maven-plugin and
+> jdry-velocity-maven-plugin
 
 ## SUT
 
@@ -53,14 +56,13 @@ Jdry build of two parts  SUT - the developing application &  Tester - the test p
 and set the correct protocol you want to use @RPC for grpc ,@JXRS for jax-rs and @SOCKET for socket
  annotate any method in the SUT code that you want to Listen as @ListenerForTesting and @RPC 
 
-> step 2 & 3 should be done by the developers 
+> step on the SUT should be done by the developers 
 
  run mvn clean install -P schema 
 > that will create the schema files . TestService.avpr for ExportForTesting & ListenerService.avpr for ListenerForTesting under  target\generated-sources\annotations\tests\infrastructure
 
- add  the Java agent (loader)  & the waver to the SUT project vm options 
+ add  the Java agent (loader)  to the SUT project vm options 
 
-    -javaagent:<path>/aspectjweaver-1.9.6.jar
     -javaagent:<path>/jdry-loader-1.0.0-jar.jar
 
 
@@ -70,23 +72,23 @@ and set the correct protocol you want to use @RPC for grpc ,@JXRS for jax-rs and
 
     <aspectj>  
      <aspects> 
-	     <aspect name="org.softauto.grpc.listener.Client"/>  
-		 <weaver options="-verbose">  
+	      <weaver options="-verbose">  
 		     <include within="<your domain>..*"/>  
          </weaver>
      </aspects>
     </aspectj>
 
 ## Tester
+the setting depend on the kind of Test framework you are using . in this example we use testNG
 for tester setup see [Tester setup](https://github.com/nimcoh0/Jdry/wiki/Tester-setup)
 copy the * avpr files to src\test\resources\schema in the Tester project
 run mvn clean install
   
 
 > a list of classes are generated at target\generated-sources\tests\infrastructure
-> that include the schema interfaces ,the schema impl and the AbstractTester
+> that include the schema interfaces ,the schema impl and the AbstractTesterImpl
 
-set your tests suite class to extend AbstractTester 
+set your tests suite class to extend AbstractTesterImpl 
 
 > The current impl testng.vm build the tester to be compitable with TestNg.
     you can replace it with a custom vm that suited your test framework 
@@ -95,6 +97,9 @@ create configuration file `<tester project root>/Configuration.yaml`
 for configuration detail see [configuration](https://github.com/nimcoh0/Jdry/wiki/configuration.yaml)	
  
 
+
+
+
 ## command line setup
 create a new folder lib at the Tester project \lib
 copy the Tester jar , any more protocol jar you need , the test framework jar (for example testng.jar)
@@ -102,8 +107,17 @@ and your SUT jar to the lib folder
 
     <your tester project path>\target\test-classes> java  -cp "..\..\lib\*;" org.testng.TestNG <path to the testng xml >UserTests.xml  
 
+# Helper classes
 
 # How To Use It
+same as in SUT you can annotaed your local method in the helper classes with ExportForTesting . 
+
+> ListenerForTesting is not supported in the local helper classes . (no
+> need)
+> 
+set the tester pom file according to tester setup and run
+mvn clean install -P schema ,
+it will produce   LocalTestService.avpr for ExportForTesting 
 
 Example test :
 	this test uses Async call ,Sync call and listener for change the method arg values at runtime .
@@ -130,7 +144,7 @@ Example test :
 		      }  
             };  
 		      lock.await(10, TimeUnit.MINUTES);  
-    	      future.get();  //execute the Async
+    	      future.get();  //execute the Async 
     	      //execute Sync method for verify 
 		      EventStatus eventStatus = tests.org_pack_processor_db_DBService_loadEventStatus(Integer.valueOf(ref.get()[0].toString()),String.valueOf(ref.get()[1]));  
 		      Assert.assertTrue(eventStatus.getEventStatus() > 0);  
