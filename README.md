@@ -51,7 +51,7 @@ Jdry build of two parts  SUT - the developing application &  Tester - the test p
 
 ## SUT
 
- set the requirement dependency in the SUT pom file and the pom profile - see [SUT setup ](https://github.com/nimcoh0/Jdry/wiki/SUT-setup) 
+ set the requirement dependency in the SUT pom file and the pom profile - see [SUT setup ](https://github.com/nimcoh0/Jdry/wiki/SUT-pom-setup) 
  annotate any method in the SUT code that you want to invoke as @ExportForTesting
 and set the correct protocol you want to use @RPC for grpc ,@JXRS for jax-rs and @SOCKET for socket
  annotate any method in the SUT code that you want to Listen as @ListenerForTesting and @RPC 
