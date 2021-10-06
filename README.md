@@ -80,7 +80,7 @@ and set the correct protocol you want to use @RPC for grpc ,@JXRS for jax-rs and
 
 ## Tester
 the setting depend on the kind of Test framework you are using . in this example we use testNG
-for tester setup see [Tester setup](https://github.com/nimcoh0/Jdry/wiki/Tester-setup)
+for tester setup see [Tester setup](https://github.com/nimcoh0/Jdry/wiki/Tester-pom-setup)
 copy the * avpr files to src\test\resources\schema in the Tester project
 run mvn clean install
   
