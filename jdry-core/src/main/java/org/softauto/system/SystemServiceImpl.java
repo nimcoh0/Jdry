@@ -140,7 +140,7 @@ public class SystemServiceImpl {
     private  void loadHeapHelper(){
         try {
             String path = Configuration.get(Context.TEMP_DIRECTORY).asText();
-            String name = Configuration.get(Context.LIB_HEAP_HELPER_NAME).asText();
+            String name = "libHeapHelper.dll";
             loadLib(path,name);
             String pid = ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
             VirtualMachine jvm = VirtualMachine.attach(pid);
@@ -196,7 +196,7 @@ public class SystemServiceImpl {
 
     public  void initGuice(){
         try {
-            Class guiceModule = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Configuration.get(Context.GUICE_MODULE).asText(), Configuration.get(Context.TEST_MACHINE).asText());
+            Class guiceModule = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), "StepServiceModule", Configuration.get(Context.TEST_MACHINE).asText());
             AbstractModule module = (AbstractModule) guiceModule.newInstance();
             //Injector oldInjector = Guice.createInjector(allYourOtherModules);
             //Module myModule = new PropertiesModule(injector..get.get(Properties.class));

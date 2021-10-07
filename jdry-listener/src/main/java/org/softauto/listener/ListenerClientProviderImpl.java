@@ -52,7 +52,7 @@ public class ListenerClientProviderImpl implements Provider {
         ifaceLog = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , Context.LISTENER_SERVICE_LOG,Configuration.get(Context.TEST_MACHINE).asText());
         String javaHome = System.getenv("JAVA_HOME");
         Utils.addJarToClasspath(javaHome+"/lib/tools.jar");
-        startWeaver(Configuration.get(Context.ASPECT_WEAVER).asText());
+        startWeaver(Configuration.get(Context.M2_ROOT).asText()+"/repository/org/aspectj/aspectjweaver/1.9.6/aspectjweaver-1.9.6.jar");
         return this;
     }
 

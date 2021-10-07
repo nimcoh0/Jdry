@@ -1,9 +1,5 @@
 package org.softauto.cucumber;
 
-import io.cucumber.java.*;
-//import org.apache.commons.lang3.ArrayUtils;
-//import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -110,17 +106,7 @@ public class Cucumber {
         return description;
     }
 
-    /*
-    public String getActualTypeArgumentName(String list){
-        try {
-            return Utils.getActualTypeArgumentName(list);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
 
-     */
 
     public String fqmnToString(String fqmn){
         return fqmn.replace(".","_").replace("<","_").replace(">","_");

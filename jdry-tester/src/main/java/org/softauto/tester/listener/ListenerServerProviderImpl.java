@@ -129,7 +129,7 @@ public class ListenerServerProviderImpl implements Provider {
 
     protected void init() {
         try {
-            Class listenerModule = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Configuration.get(Context.LISTENER_MODULE).asText(), Configuration.get(Context.TEST_MACHINE).asText());
+            Class listenerModule = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), "ListenerModule", Configuration.get(Context.TEST_MACHINE).asText());
             AbstractModule module = (AbstractModule) listenerModule.newInstance();
             injector = Guice.createInjector(module);
         }catch (Exception e){
