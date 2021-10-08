@@ -91,7 +91,12 @@ public void validate(String $exp ,String $operator,Object $expected)throws Excep
     Assert.assertTrue(result);
 }
 
-
+@Then("a validate step result of {$exp} {$operator} {$expected} {$future} #async")
+public void asyncValidate (String $exp ,String $operator,Object $expected ,Object $future) throws Exception{
+    // Object o =  evulExp($expected);
+     boolean result = getResult($exp + " "+ $operator + " "+ $expected);
+     Assert.assertTrue(result);
+}
 
 
 #foreach ($e in $protocol.getMessages().entrySet())

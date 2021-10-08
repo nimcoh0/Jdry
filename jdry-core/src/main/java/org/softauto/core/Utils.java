@@ -653,19 +653,35 @@ public class Utils {
             throw new RuntimeException("Unexpected exception", e);
         }
     }
-    public static boolean isJson(String str){
+    public static boolean isJson(Object object)
+    {
+        return (object instanceof JsonArray || object instanceof JsonObject);
+    }
+
+    public static boolean isJson(String json)
+    {
+        return (isJsonArray(json) || isJsonObject(json));
+    }
+
+    public static boolean isJsonArray(String json)
+    {
         try {
-            if (str != null ){
-                new ObjectMapper().readTree(str.toString());
-                return true;
-            }
+        return new ObjectMapper().readTree(json).getNodeType().equals(JsonNodeType.ARRAY);
         }catch (Exception e){
-            return false;
+            e.printStackTrace();
         }
         return false;
     }
 
-
+    public static boolean isJsonObject(String json)
+    {
+        try {
+            return new ObjectMapper().readTree(json).getNodeType().equals(JsonNodeType.OBJECT);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 
     public static boolean hasField(Class clazz, String fieldName){
