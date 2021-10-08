@@ -1,0 +1,34 @@
+{
+  "protocol" : "ListenerService",
+  "version" : "1.0",
+  "namespace" : "tests.infrastructure",
+  "types" : [ {
+    "name" : "baeldung.cucumber.books.Book",
+    "type" : "external"
+  }, {
+    "name" : "java.lang.Object[]",
+    "type" : "external"
+  } ],
+  "messages" : {
+    "baeldung_cucumber_books_BookCatalog_addBook_result" : {
+      "request" : [ {
+        "name" : "book",
+        "type" : "baeldung.cucumber.books.Book"
+      } ],
+      "method" : "addBook_result",
+      "transceiver" : "RPC",
+      "response" : "null",
+      "namespace" : "baeldung.cucumber.books.BookCatalog"
+    },
+    "baeldung_cucumber_books_BookCatalog_addBook" : {
+      "request" : [ {
+        "name" : "book",
+        "type" : "baeldung.cucumber.books.Book"
+      } ],
+      "method" : "addBook",
+      "transceiver" : "RPC",
+      "response" : "java.lang.Object[]",
+      "namespace" : "baeldung.cucumber.books.BookCatalog"
+    }
+  }
+}
