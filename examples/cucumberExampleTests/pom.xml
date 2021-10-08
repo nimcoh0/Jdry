@@ -12,12 +12,7 @@
             <groupId>org.softauto</groupId>
             <artifactId>jdry-tester</artifactId>
             <version>beta-1.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
+
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
@@ -25,17 +20,7 @@
             <version>beta-1.0</version>
 
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-testng</artifactId>
-            <version>beta-1.0</version>
 
-        </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-simple-socket</artifactId>
-            <version>beta-1.0</version>
-        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -44,23 +29,12 @@
         </dependency>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>cucumberBaeldung</artifactId>
+            <artifactId>app</artifactId>
             <version>1.0-SNAPSHOT</version>
 
         </dependency>
 
-        <!--dependency>
-            <groupId>uk.co.jemos.podam</groupId>
-            <artifactId>podam</artifactId>
-            <version>7.2.5.RELEASE</version>
 
-        </dependency-->
-
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.11</version>
-        </dependency>
         <dependency>
             <groupId>org.apache.avro</groupId>
             <artifactId>avro-ipc-netty</artifactId>
@@ -266,7 +240,7 @@
                             <outputName>StepServiceCucumberImpl</outputName>
                             <classpath>/${user.home}/.m2/repository/org/softauto/jdry-cucumber-plugin/beta-1.0/jdry-cucumber-plugin-beta-1.0.jar</classpath>
                             <velocityToolsClassesNames>org.softauto.cucumber.Cucumber</velocityToolsClassesNames>
-                            <!--velocityResources>jar:file:${user.home}/.m2/repository/org/softauto/jdry-cucumber/beta-1.0/jdry-cucumber-1.0.0-SNAPSHOT.jar</velocityResources-->
+
                         </configuration>
                     </execution>
 
