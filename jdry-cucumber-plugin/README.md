@@ -152,3 +152,6 @@ the "Then" step is a generic method that except exp , operator , exp
       boolean result = getResult(exp + " "+ operator + " "+ expected);  
       Assert.assertTrue(result);  
     }
+
+
+> see [examples](https://github.com/nimcoh0/Jdry/tree/master/examples)  for a complete example
