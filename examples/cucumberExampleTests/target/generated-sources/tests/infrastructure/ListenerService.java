@@ -7,13 +7,13 @@ package tests.infrastructure;
 
 @org.apache.avro.specific.AvroGenerated
 public interface ListenerService {
-  public static final org.apache.avro.Protocol PROTOCOL = org.apache.avro.Protocol.parse("{\"protocol\":\"ListenerService\",\"namespace\":\"tests.infrastructure\",\"version\":\"1.0\",\"types\":[{\"type\":\"external\",\"name\":\"Book\",\"namespace\":\"baeldung.cucumber.books\",\"fields\":[]},{\"type\":\"external\",\"name\":\"Object[]\",\"namespace\":\"java.lang\",\"fields\":[]}],\"messages\":{\"baeldung_cucumber_books_BookCatalog_addBook_result\":{\"method\":\"addBook_result\",\"transceiver\":\"RPC\",\"namespace\":\"baeldung.cucumber.books.BookCatalog\",\"request\":[{\"name\":\"book\",\"type\":\"baeldung.cucumber.books.Book\"}],\"response\":\"null\"},\"baeldung_cucumber_books_BookCatalog_addBook\":{\"method\":\"addBook\",\"transceiver\":\"RPC\",\"namespace\":\"baeldung.cucumber.books.BookCatalog\",\"request\":[{\"name\":\"book\",\"type\":\"baeldung.cucumber.books.Book\"}],\"response\":\"java.lang.Object[]\"}}}");
+  public static final org.apache.avro.Protocol PROTOCOL = org.apache.avro.Protocol.parse("{\"protocol\":\"ListenerService\",\"namespace\":\"tests.infrastructure\",\"version\":\"1.0\",\"types\":[{\"type\":\"external\",\"name\":\"Book\",\"namespace\":\"app.cucumber.books\",\"fields\":[]},{\"type\":\"external\",\"name\":\"Object[]\",\"namespace\":\"java.lang\",\"fields\":[]}],\"messages\":{\"app_cucumber_books_BookCatalog_addBook_result\":{\"method\":\"addBook_result\",\"transceiver\":\"RPC\",\"namespace\":\"app.cucumber.books.BookCatalog\",\"request\":[{\"name\":\"book\",\"type\":\"app.cucumber.books.Book\"}],\"response\":\"null\"},\"app_cucumber_books_BookCatalog_addBook\":{\"method\":\"addBook\",\"transceiver\":\"RPC\",\"namespace\":\"app.cucumber.books.BookCatalog\",\"request\":[{\"name\":\"book\",\"type\":\"app.cucumber.books.Book\"}],\"response\":\"java.lang.Object[]\"}}}");
   /**
    */
-   void baeldung_cucumber_books_BookCatalog_addBook_result(baeldung.cucumber.books.Book book);
+   void app_cucumber_books_BookCatalog_addBook_result(app.cucumber.books.Book book);
   /**
    */
-   java.lang.Object[] baeldung_cucumber_books_BookCatalog_addBook(baeldung.cucumber.books.Book book);
+   java.lang.Object[] app_cucumber_books_BookCatalog_addBook(app.cucumber.books.Book book);
 
   @SuppressWarnings("all")
   public interface Callback extends ListenerService {
@@ -21,10 +21,10 @@ public interface ListenerService {
     /**
      * @throws java.io.IOException The async call could not be completed.
      */
-    void baeldung_cucumber_books_BookCatalog_addBook_result(baeldung.cucumber.books.Book book, org.softauto.serializer.CallFuture<Void> callback) throws java.io.IOException;
+    void app_cucumber_books_BookCatalog_addBook_result(app.cucumber.books.Book book, org.softauto.serializer.CallFuture<Void> callback) throws java.io.IOException;
     /**
      * @throws java.io.IOException The async call could not be completed.
      */
-    void baeldung_cucumber_books_BookCatalog_addBook(baeldung.cucumber.books.Book book, org.softauto.serializer.CallFuture<java.lang.Object[]> callback) throws java.io.IOException;
+    void app_cucumber_books_BookCatalog_addBook(app.cucumber.books.Book book, org.softauto.serializer.CallFuture<java.lang.Object[]> callback) throws java.io.IOException;
   }
 }

@@ -27,18 +27,18 @@ public class ListenerServiceImpl implements ListenerService{
 
   /**
    */
-public  void baeldung_cucumber_books_BookCatalog_addBook_result(baeldung.cucumber.books.Book book){
+public  void app_cucumber_books_BookCatalog_addBook_result(app.cucumber.books.Book book){
 
- LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " baeldung_cucumber_books_BookCatalog_addBook_result args :"        +" book:" + book      );
+ LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_cucumber_books_BookCatalog_addBook_result args :"        +" book:" + book      );
 
     }
 
 
   /**
    */
-public  java.lang.Object[] baeldung_cucumber_books_BookCatalog_addBook(baeldung.cucumber.books.Book book){
+public  java.lang.Object[] app_cucumber_books_BookCatalog_addBook(app.cucumber.books.Book book){
 
- LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " baeldung_cucumber_books_BookCatalog_addBook args :"        +" book:" + book      );
+ LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_cucumber_books_BookCatalog_addBook args :"        +" book:" + book      );
 
       return new Object[]{                    book                };
     }

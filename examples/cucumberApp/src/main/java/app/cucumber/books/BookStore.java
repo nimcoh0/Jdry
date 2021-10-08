@@ -1,7 +1,6 @@
-package baeldung.cucumber.books;
+package app.cucumber.books;
 
 import org.softauto.annotations.ExposedForTesting;
-import org.softauto.annotations.ListenerForTesting;
 import org.softauto.annotations.RPC;
 
 import java.util.*;

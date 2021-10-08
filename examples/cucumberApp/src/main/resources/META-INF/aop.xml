@@ -1,7 +1,7 @@
 <aspectj>
     <aspects>
         <weaver options="-verbose">
-            <include within="baeldung.cucumber..*"/>
+            <include within="app.cucumber..*"/>
          </weaver>
     </aspects>
 </aspectj>

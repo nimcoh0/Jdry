@@ -7,22 +7,22 @@ package tests.infrastructure;
 
 @org.apache.avro.specific.AvroGenerated
 public interface StepService {
-  public static final org.apache.avro.Protocol PROTOCOL = org.apache.avro.Protocol.parse("{\"protocol\":\"StepService\",\"namespace\":\"tests.infrastructure\",\"version\":\"1.0\",\"types\":[{\"type\":\"external\",\"name\":\"Book\",\"namespace\":\"baeldung.cucumber.books\",\"fields\":[]},{\"type\":\"external\",\"name\":\"Collection<baeldung.cucumber.books.Book>\",\"namespace\":\"java.util\",\"fields\":[]},{\"type\":\"external\",\"name\":\"List<baeldung.cucumber.books.Book>\",\"namespace\":\"java.util\",\"fields\":[]},{\"type\":\"external\",\"name\":\"Optional<baeldung.cucumber.books.Book>\",\"namespace\":\"java.util\",\"fields\":[]}],\"messages\":{\"baeldung_cucumber_books_BookStore_addBook\":{\"method\":\"addBook\",\"transceiver\":\"RPC\",\"namespace\":\"baeldung.cucumber.books.BookStore\",\"type\":\"method\",\"class\":{\"fullClassName\":\"baeldung.cucumber.books.BookStore\",\"initialize\":\"INITIALIZE_NO_PARAM\",\"constructorRequest\":[]},\"request\":[{\"name\":\"book\",\"type\":\"baeldung.cucumber.books.Book\"}],\"response\":\"void\"},\"baeldung_cucumber_books_BookStore_addAllBooks\":{\"method\":\"addAllBooks\",\"transceiver\":\"RPC\",\"namespace\":\"baeldung.cucumber.books.BookStore\",\"description\":\"add all books in {books} to BookStore\",\"type\":\"method\",\"class\":{\"fullClassName\":\"baeldung.cucumber.books.BookStore\",\"initialize\":\"INITIALIZE_NO_PARAM\",\"constructorRequest\":[]},\"request\":[{\"name\":\"books\",\"type\":\"java.util.Collection<baeldung.cucumber.books.Book>\"}],\"response\":\"void\"},\"baeldung_cucumber_books_BookStore_booksByAuthor\":{\"method\":\"booksByAuthor\",\"transceiver\":\"RPC\",\"namespace\":\"baeldung.cucumber.books.BookStore\",\"description\":\"^I search for books by author (.+)$\",\"type\":\"method\",\"class\":{\"fullClassName\":\"baeldung.cucumber.books.BookStore\",\"initialize\":\"INITIALIZE_NO_PARAM\",\"constructorRequest\":[]},\"request\":[{\"name\":\"author\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}],\"response\":\"java.util.List<baeldung.cucumber.books.Book>\"},\"baeldung_cucumber_books_BookStore_bookByTitle\":{\"method\":\"bookByTitle\",\"transceiver\":\"RPC\",\"namespace\":\"baeldung.cucumber.books.BookStore\",\"description\":\"^I search for books by title (.+)$\",\"type\":\"method\",\"class\":{\"fullClassName\":\"baeldung.cucumber.books.BookStore\",\"initialize\":\"INITIALIZE_NO_PARAM\",\"constructorRequest\":[]},\"request\":[{\"name\":\"title\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}],\"response\":\"java.util.Optional<baeldung.cucumber.books.Book>\"},\"baeldung_cucumber_books_BookCatalog_getBooks\":{\"method\":\"getBooks\",\"transceiver\":\"RPC\",\"namespace\":\"baeldung.cucumber.books.BookCatalog\",\"description\":\"^I have the following books in the store$\",\"type\":\"method\",\"class\":{\"fullClassName\":\"baeldung.cucumber.books.BookCatalog\",\"initialize\":\"INITIALIZE_NO_PARAM\",\"constructorRequest\":[]},\"request\":[],\"response\":\"java.util.List<baeldung.cucumber.books.Book>\"}}}");
+  public static final org.apache.avro.Protocol PROTOCOL = org.apache.avro.Protocol.parse("{\"protocol\":\"StepService\",\"namespace\":\"tests.infrastructure\",\"version\":\"1.0\",\"types\":[{\"type\":\"external\",\"name\":\"Book\",\"namespace\":\"app.cucumber.books\",\"fields\":[]},{\"type\":\"external\",\"name\":\"Collection<app.cucumber.books.Book>\",\"namespace\":\"java.util\",\"fields\":[]},{\"type\":\"external\",\"name\":\"List<app.cucumber.books.Book>\",\"namespace\":\"java.util\",\"fields\":[]},{\"type\":\"external\",\"name\":\"Optional<app.cucumber.books.Book>\",\"namespace\":\"java.util\",\"fields\":[]}],\"messages\":{\"app_cucumber_books_BookStore_addBook\":{\"method\":\"addBook\",\"transceiver\":\"RPC\",\"namespace\":\"app.cucumber.books.BookStore\",\"type\":\"method\",\"class\":{\"fullClassName\":\"app.cucumber.books.BookStore\",\"initialize\":\"INITIALIZE_NO_PARAM\",\"constructorRequest\":[]},\"request\":[{\"name\":\"book\",\"type\":\"app.cucumber.books.Book\"}],\"response\":\"void\"},\"app_cucumber_books_BookStore_addAllBooks\":{\"method\":\"addAllBooks\",\"transceiver\":\"RPC\",\"namespace\":\"app.cucumber.books.BookStore\",\"description\":\"add all books in {books} to BookStore\",\"type\":\"method\",\"class\":{\"fullClassName\":\"app.cucumber.books.BookStore\",\"initialize\":\"INITIALIZE_NO_PARAM\",\"constructorRequest\":[]},\"request\":[{\"name\":\"books\",\"type\":\"java.util.Collection<app.cucumber.books.Book>\"}],\"response\":\"void\"},\"app_cucumber_books_BookStore_booksByAuthor\":{\"method\":\"booksByAuthor\",\"transceiver\":\"RPC\",\"namespace\":\"app.cucumber.books.BookStore\",\"description\":\"^I search for books by author (.+)$\",\"type\":\"method\",\"class\":{\"fullClassName\":\"app.cucumber.books.BookStore\",\"initialize\":\"INITIALIZE_NO_PARAM\",\"constructorRequest\":[]},\"request\":[{\"name\":\"author\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}],\"response\":\"java.util.List<app.cucumber.books.Book>\"},\"app_cucumber_books_BookStore_bookByTitle\":{\"method\":\"bookByTitle\",\"transceiver\":\"RPC\",\"namespace\":\"app.cucumber.books.BookStore\",\"description\":\"^I search for books by title (.+)$\",\"type\":\"method\",\"class\":{\"fullClassName\":\"app.cucumber.books.BookStore\",\"initialize\":\"INITIALIZE_NO_PARAM\",\"constructorRequest\":[]},\"request\":[{\"name\":\"title\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}],\"response\":\"java.util.Optional<app.cucumber.books.Book>\"},\"app_cucumber_books_BookCatalog_getBooks\":{\"method\":\"getBooks\",\"transceiver\":\"RPC\",\"namespace\":\"app.cucumber.books.BookCatalog\",\"description\":\"^I have the following books in the store$\",\"type\":\"method\",\"class\":{\"fullClassName\":\"app.cucumber.books.BookCatalog\",\"initialize\":\"INITIALIZE_NO_PARAM\",\"constructorRequest\":[]},\"request\":[],\"response\":\"java.util.List<app.cucumber.books.Book>\"}}}");
   /**
    */
-   void baeldung_cucumber_books_BookStore_addBook(baeldung.cucumber.books.Book book);
+   void app_cucumber_books_BookStore_addBook(app.cucumber.books.Book book);
   /**
    */
-   void baeldung_cucumber_books_BookStore_addAllBooks(java.util.Collection<baeldung.cucumber.books.Book> books);
+   void app_cucumber_books_BookStore_addAllBooks(java.util.Collection<app.cucumber.books.Book> books);
   /**
    */
-   java.util.List<baeldung.cucumber.books.Book> baeldung_cucumber_books_BookStore_booksByAuthor(java.lang.String author);
+   java.util.List<app.cucumber.books.Book> app_cucumber_books_BookStore_booksByAuthor(java.lang.String author);
   /**
    */
-   java.util.Optional<baeldung.cucumber.books.Book> baeldung_cucumber_books_BookStore_bookByTitle(java.lang.String title);
+   java.util.Optional<app.cucumber.books.Book> app_cucumber_books_BookStore_bookByTitle(java.lang.String title);
   /**
    */
-   java.util.List<baeldung.cucumber.books.Book> baeldung_cucumber_books_BookCatalog_getBooks();
+   java.util.List<app.cucumber.books.Book> app_cucumber_books_BookCatalog_getBooks();
 
   @SuppressWarnings("all")
   public interface Callback extends StepService {
@@ -30,22 +30,22 @@ public interface StepService {
     /**
      * @throws java.io.IOException The async call could not be completed.
      */
-    void baeldung_cucumber_books_BookStore_addBook(baeldung.cucumber.books.Book book, org.softauto.serializer.CallFuture<Void> callback) throws java.io.IOException;
+    void app_cucumber_books_BookStore_addBook(app.cucumber.books.Book book, org.softauto.serializer.CallFuture<Void> callback) throws java.io.IOException;
     /**
      * @throws java.io.IOException The async call could not be completed.
      */
-    void baeldung_cucumber_books_BookStore_addAllBooks(java.util.Collection<baeldung.cucumber.books.Book> books, org.softauto.serializer.CallFuture<Void> callback) throws java.io.IOException;
+    void app_cucumber_books_BookStore_addAllBooks(java.util.Collection<app.cucumber.books.Book> books, org.softauto.serializer.CallFuture<Void> callback) throws java.io.IOException;
     /**
      * @throws java.io.IOException The async call could not be completed.
      */
-    void baeldung_cucumber_books_BookStore_booksByAuthor(java.lang.String author, org.softauto.serializer.CallFuture<java.util.List<baeldung.cucumber.books.Book>> callback) throws java.io.IOException;
+    void app_cucumber_books_BookStore_booksByAuthor(java.lang.String author, org.softauto.serializer.CallFuture<java.util.List<app.cucumber.books.Book>> callback) throws java.io.IOException;
     /**
      * @throws java.io.IOException The async call could not be completed.
      */
-    void baeldung_cucumber_books_BookStore_bookByTitle(java.lang.String title, org.softauto.serializer.CallFuture<java.util.Optional<baeldung.cucumber.books.Book>> callback) throws java.io.IOException;
+    void app_cucumber_books_BookStore_bookByTitle(java.lang.String title, org.softauto.serializer.CallFuture<java.util.Optional<app.cucumber.books.Book>> callback) throws java.io.IOException;
     /**
      * @throws java.io.IOException The async call could not be completed.
      */
-    void baeldung_cucumber_books_BookCatalog_getBooks(org.softauto.serializer.CallFuture<java.util.List<baeldung.cucumber.books.Book>> callback) throws java.io.IOException;
+    void app_cucumber_books_BookCatalog_getBooks(org.softauto.serializer.CallFuture<java.util.List<app.cucumber.books.Book>> callback) throws java.io.IOException;
   }
 }

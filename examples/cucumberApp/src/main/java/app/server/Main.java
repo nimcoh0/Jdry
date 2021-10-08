@@ -1,6 +1,6 @@
-package baeldung.server;
+package app.server;
 
-import baeldung.cucumber.books.BookStore;
+import app.cucumber.books.BookStore;
 import io.vertx.core.AbstractVerticle;
 
 public class Main extends AbstractVerticle {
