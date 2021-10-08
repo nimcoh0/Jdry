@@ -1,4 +1,4 @@
-package app.cucumber.books;
+package app.books;
 
 public class Book {
 

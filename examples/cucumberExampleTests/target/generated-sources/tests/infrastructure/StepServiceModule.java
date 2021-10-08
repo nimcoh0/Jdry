@@ -27,8 +27,8 @@ public class StepServiceModule extends AbstractModule {
     protected void configure() {
     try{
     bind( org.softauto.system.SystemServiceImpl.class).toInstance(org.softauto.system.SystemServiceImpl.getInstance());
-        bind(app.cucumber.books.BookStore.class).toProvider(InitializeNoParamProvider.getProvider(app.cucumber.books.BookStore.class));
-        bind(app.cucumber.books.BookCatalog.class).toProvider(InitializeNoParamProvider.getProvider(app.cucumber.books.BookCatalog.class));
+        bind(app.books.BookCatalog.class).toProvider(InitializeNoParamProvider.getProvider(app.books.BookCatalog.class));
+        bind(app.books.BookStore.class).toProvider(InitializeNoParamProvider.getProvider(app.books.BookStore.class));
 }catch(Exception e){
     e.printStackTrace();
 }

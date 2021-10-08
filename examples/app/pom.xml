@@ -113,6 +113,11 @@
                     <artifactId>jdry-annotation-discovery</artifactId>
                     <version>beta-1.0</version>
                 </dependency>
+                <dependency>
+                    <groupId>org.softauto</groupId>
+                    <artifactId>jdry-grpc</artifactId>
+                    <version>beta-1.0</version>
+                </dependency>
             </dependencies>
         </profile>
     </profiles>

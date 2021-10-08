@@ -3,98 +3,92 @@
   "version" : "1.0",
   "namespace" : "tests.infrastructure",
   "types" : [ {
-    "name" : "app.cucumber.books.Book",
+    "name" : "java.util.List<app.books.Book>",
     "type" : "external"
   }, {
-    "name" : "java.util.Collection<app.cucumber.books.Book>",
+    "name" : "app.books.Book",
     "type" : "external"
   }, {
-    "name" : "java.util.List<app.cucumber.books.Book>",
+    "name" : "java.util.Collection<app.books.Book>",
     "type" : "external"
   }, {
-    "name" : "java.util.Optional<app.cucumber.books.Book>",
+    "name" : "java.util.Optional<app.books.Book>",
     "type" : "external"
   } ],
   "messages" : {
-    "app_cucumber_books_BookStore_addBook" : {
+    "app_books_BookCatalog_getBooks" : {
+      "request" : [ ],
+      "method" : "getBooks",
+      "transceiver" : "RPC",
+      "response" : "java.util.List<app.books.Book>",
+      "namespace" : "app.books.BookCatalog",
+      "description" : "^I have the following books in the store$",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.books.BookCatalog",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "app_books_BookStore_addBook" : {
       "request" : [ {
         "name" : "book",
-        "type" : "app.cucumber.books.Book"
+        "type" : "app.books.Book"
       } ],
       "method" : "addBook",
       "transceiver" : "RPC",
       "response" : "void",
-      "namespace" : "app.cucumber.books.BookStore",
+      "namespace" : "app.books.BookStore",
       "type" : "method",
       "class" : {
-        "fullClassName" : "app.cucumber.books.BookStore",
-        "initialize" : "INITIALIZE_NO_PARAM",
-        "constructorRequest" : [ ]
+        "fullClassName" : "app.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
       }
     },
-    "app_cucumber_books_BookStore_addAllBooks" : {
+    "app_books_BookStore_addAllBooks" : {
       "request" : [ {
         "name" : "books",
-        "type" : "java.util.Collection<app.cucumber.books.Book>"
+        "type" : "java.util.Collection<app.books.Book>"
       } ],
       "method" : "addAllBooks",
       "transceiver" : "RPC",
       "response" : "void",
-      "namespace" : "app.cucumber.books.BookStore",
-      "description" : "add all books in {books} to BookStore",
+      "namespace" : "app.books.BookStore",
       "type" : "method",
       "class" : {
-        "fullClassName" : "app.cucumber.books.BookStore",
-        "initialize" : "INITIALIZE_NO_PARAM",
-        "constructorRequest" : [ ]
+        "fullClassName" : "app.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
       }
     },
-    "app_cucumber_books_BookStore_booksByAuthor" : {
+    "app_books_BookStore_booksByAuthor" : {
       "request" : [ {
         "name" : "author",
         "type" : "string"
-      }  ],
+      } ],
       "method" : "booksByAuthor",
       "transceiver" : "RPC",
-      "response" : "java.util.List<app.cucumber.books.Book>",
-      "namespace" : "app.cucumber.books.BookStore",
+      "response" : "java.util.List<app.books.Book>",
+      "namespace" : "app.books.BookStore",
       "description" : "^I search for books by author (.+)$",
       "type" : "method",
       "class" : {
-        "fullClassName" : "app.cucumber.books.BookStore",
-        "initialize" : "INITIALIZE_NO_PARAM",
-        "constructorRequest" : [ ]
+        "fullClassName" : "app.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
       }
     },
-    "app_cucumber_books_BookStore_bookByTitle" : {
+    "app_books_BookStore_bookByTitle" : {
       "request" : [ {
         "name" : "title",
         "type" : "string"
       } ],
       "method" : "bookByTitle",
       "transceiver" : "RPC",
-      "response" : "java.util.Optional<app.cucumber.books.Book>",
-      "namespace" : "app.cucumber.books.BookStore",
+      "response" : "java.util.Optional<app.books.Book>",
+      "namespace" : "app.books.BookStore",
       "description" : "^I search for books by title (.+)$",
       "type" : "method",
       "class" : {
-        "fullClassName" : "app.cucumber.books.BookStore",
-        "initialize" : "INITIALIZE_NO_PARAM",
-        "constructorRequest" : [ ]
-      }
-    },
-    "app_cucumber_books_BookCatalog_getBooks" : {
-      "request" : [ ],
-      "method" : "getBooks",
-      "transceiver" : "RPC",
-      "response" : "java.util.List<app.cucumber.books.Book>",
-      "namespace" : "app.cucumber.books.BookCatalog",
-      "description" : "^I have the following books in the store$",
-      "type" : "method",
-      "class" : {
-        "fullClassName" : "app.cucumber.books.BookCatalog",
-        "initialize" : "INITIALIZE_NO_PARAM",
-        "constructorRequest" : [ ]
+        "fullClassName" : "app.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
       }
     }
   }

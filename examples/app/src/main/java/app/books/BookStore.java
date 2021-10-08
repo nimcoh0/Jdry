@@ -1,4 +1,4 @@
-package app.cucumber.books;
+package app.books;
 
 import org.softauto.annotations.ExposedForTesting;
 import org.softauto.annotations.RPC;

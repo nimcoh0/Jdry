@@ -87,11 +87,46 @@ public void validate(String exp ,String operator,Object expected)throws Exceptio
   /**
    */
 
+public java.util.List<app.books.Book> Book_;
+@Given("^I have the following books in the store$")
+public java.util.List<app.books.Book> app_books_BookCatalog_getBooks(){
+    Book_ = tests.app_books_BookCatalog_getBooks();
+    return Book_;
+}
+
+
+
+
 
 @ParameterType(".*")
-public app.cucumber.books.Book book (String book)throws Exception{
+public CallFuture future0 (String future0)throws Exception{
+   return new CallFuture<java.util.List<app.books.Book>>();
+}
+java.util.List<app.books.Book> Book_0;
+
+
+CallFuture<java.util.List<app.books.Book>> future0;
+java.util.List<app.books.Book> async_getBooks_result;
+
+
+public java.util.List<app.books.Book> getFuture0() throws ExecutionException, InterruptedException{
+        async_getBooks_result =  future0.get();
+        return async_getBooks_result;
+}
+
+@Given("a ^I have the following books in the store$ #async")
+public void async_app_books_BookCatalog_getBooks()throws Exception {
+future0 = new CallFuture<>();
+asyncTests.app_books_BookCatalog_getBooks( future0);
+}
+  /**
+   */
+
+
+@ParameterType(".*")
+public app.books.Book book (String book)throws Exception{
 if(Utils.isJson(book)){
-      return new ObjectMapper().readValue(book, app.cucumber.books.Book.class);
+      return new ObjectMapper().readValue(book, app.books.Book.class);
 }
       ExpressionParser parser = new SpelExpressionParser();
       StandardEvaluationContext itemContext = getContext(book);
@@ -99,101 +134,33 @@ if(Utils.isJson(book)){
           itemContext = new StandardEvaluationContext(this);
        }
       Expression exp2 = parser.parseExpression(book);
-      app.cucumber.books.Book result = (app.cucumber.books.Book) exp2.getValue(itemContext,app.cucumber.books.Book.class);
+      app.books.Book result = (app.books.Book) exp2.getValue(itemContext,app.books.Book.class);
 
 return result;
 }
-//public app.cucumber.books.Book book;
+//public app.books.Book book;
 
 @Given("addBook  with book {book}")
-public  void app_cucumber_books_BookStore_addBook(app.cucumber.books.Book book){
-tests.app_cucumber_books_BookStore_addBook(book);
+public  void app_books_BookStore_addBook(app.books.Book book){
+tests.app_books_BookStore_addBook(book);
 }
 
 
 
 
-public List<app.cucumber.books.Book> bookList;
-     @Given("a list of app.cucumber.books.Book")
-     public List<app.cucumber.books.Book> create_app_cucumber_books_Book (DataTable table){
+public List<app.books.Book> bookList;
+     @Given("a list of app.books.Book")
+     public List<app.books.Book> create_app_books_Book (DataTable table){
      try{
         List<Map<String, String>> map = table.asMaps(String.class, String.class);
         String json = new ObjectMapper().writeValueAsString(map);
-        app.cucumber.books.Book[] res = new ObjectMapper().readValue(json, app.cucumber.books.Book[].class);
+        app.books.Book[] res = new ObjectMapper().readValue(json, app.books.Book[].class);
         bookList = Arrays.asList(res);
      }catch (Exception e){
         e.printStackTrace();
      }
      return   bookList;
      }
-
-
-
-@ParameterType(".*")
-public CallFuture future0 (String future0)throws Exception{
-   return new CallFuture<Void>();
-}
-
-
-
-@ParameterType(".*")
-public app.cucumber.books.Book book0 (String book0)throws Exception{
-if(Utils.isJson(book0)){
-      return new ObjectMapper().readValue(book0, app.cucumber.books.Book.class);
-}
-      ExpressionParser parser = new SpelExpressionParser();
-      StandardEvaluationContext itemContext = getContext(book0);
-      if(itemContext == null){
-          itemContext = new StandardEvaluationContext(this);
-      }
-      Expression exp2 = parser.parseExpression(book0);
-      app.cucumber.books.Book result = (app.cucumber.books.Book) exp2.getValue(itemContext,app.cucumber.books.Book.class);
-
-return result;
-}
-//public app.cucumber.books.Book book0;
-
-CallFuture<Void> future0;
-Void async_addBook0_result;
-
-
-public Void getFuture0() throws ExecutionException, InterruptedException{
-        async_addBook0_result =  future0.get();
-        return async_addBook0_result;
-}
-
-@Given("a addBook1 with book0 {book0} #async")
-public  void async_app_cucumber_books_BookStore_addBook(app.cucumber.books.Book book0)throws Exception {
-future0 = new CallFuture<>();
-asyncTests.app_cucumber_books_BookStore_addBook(book0, future0);
-}
-  /**
-   */
-
-
-@ParameterType(".*")
-public java.util.Collection<app.cucumber.books.Book> books (String books)throws Exception{
-if(Utils.isJson(books)){
-      return new ObjectMapper().readValue(books, java.util.Collection.class);
-}
-      ExpressionParser parser = new SpelExpressionParser();
-      StandardEvaluationContext itemContext = getContext(books);
-      if(itemContext == null){
-          itemContext = new StandardEvaluationContext(this);
-       }
-      Expression exp2 = parser.parseExpression(books);
-      java.util.Collection<app.cucumber.books.Book> result = (java.util.Collection<app.cucumber.books.Book>) exp2.getValue(itemContext,java.util.Collection.class);
-
-return result;
-}
-//public java.util.Collection<app.cucumber.books.Book> books;
-
-@Given("add all books in {books} to BookStore")
-public  void app_cucumber_books_BookStore_addAllBooks(java.util.Collection<app.cucumber.books.Book> books){
-tests.app_cucumber_books_BookStore_addAllBooks(books);
-}
-
-
 
 
 
@@ -205,7 +172,75 @@ public CallFuture future1 (String future1)throws Exception{
 
 
 @ParameterType(".*")
-public java.util.Collection<app.cucumber.books.Book> books0 (String books0)throws Exception{
+public app.books.Book book0 (String book0)throws Exception{
+if(Utils.isJson(book0)){
+      return new ObjectMapper().readValue(book0, app.books.Book.class);
+}
+      ExpressionParser parser = new SpelExpressionParser();
+      StandardEvaluationContext itemContext = getContext(book0);
+      if(itemContext == null){
+          itemContext = new StandardEvaluationContext(this);
+      }
+      Expression exp2 = parser.parseExpression(book0);
+      app.books.Book result = (app.books.Book) exp2.getValue(itemContext,app.books.Book.class);
+
+return result;
+}
+//public app.books.Book book0;
+
+CallFuture<Void> future1;
+Void async_addBook0_result;
+
+
+public Void getFuture1() throws ExecutionException, InterruptedException{
+        async_addBook0_result =  future1.get();
+        return async_addBook0_result;
+}
+
+@Given("a addBook1 with book0 {book0} #async")
+public  void async_app_books_BookStore_addBook(app.books.Book book0)throws Exception {
+future1 = new CallFuture<>();
+asyncTests.app_books_BookStore_addBook(book0, future1);
+}
+  /**
+   */
+
+
+@ParameterType(".*")
+public java.util.Collection<app.books.Book> books (String books)throws Exception{
+if(Utils.isJson(books)){
+      return new ObjectMapper().readValue(books, java.util.Collection.class);
+}
+      ExpressionParser parser = new SpelExpressionParser();
+      StandardEvaluationContext itemContext = getContext(books);
+      if(itemContext == null){
+          itemContext = new StandardEvaluationContext(this);
+       }
+      Expression exp2 = parser.parseExpression(books);
+      java.util.Collection<app.books.Book> result = (java.util.Collection<app.books.Book>) exp2.getValue(itemContext,java.util.Collection.class);
+
+return result;
+}
+//public java.util.Collection<app.books.Book> books;
+
+@Given("addAllBooks  with books {books}")
+public  void app_books_BookStore_addAllBooks(java.util.Collection<app.books.Book> books){
+tests.app_books_BookStore_addAllBooks(books);
+}
+
+
+
+
+
+@ParameterType(".*")
+public CallFuture future2 (String future2)throws Exception{
+   return new CallFuture<Void>();
+}
+
+
+
+@ParameterType(".*")
+public java.util.Collection<app.books.Book> books0 (String books0)throws Exception{
 if(Utils.isJson(books0)){
       return new ObjectMapper().readValue(books0, java.util.Collection.class);
 }
@@ -215,25 +250,25 @@ if(Utils.isJson(books0)){
           itemContext = new StandardEvaluationContext(this);
       }
       Expression exp2 = parser.parseExpression(books0);
-      java.util.Collection<app.cucumber.books.Book> result = (java.util.Collection<app.cucumber.books.Book>) exp2.getValue(itemContext,app.cucumber.books.Book.class);
+      java.util.Collection<app.books.Book> result = (java.util.Collection<app.books.Book>) exp2.getValue(itemContext,app.books.Book.class);
 
 return result;
 }
-//public java.util.Collection<app.cucumber.books.Book> books0;
+//public java.util.Collection<app.books.Book> books0;
 
-CallFuture<Void> future1;
-Void async_addAllBooks_result;
+CallFuture<Void> future2;
+Void async_addAllBooks0_result;
 
 
-public Void getFuture1() throws ExecutionException, InterruptedException{
-        async_addAllBooks_result =  future1.get();
-        return async_addAllBooks_result;
+public Void getFuture2() throws ExecutionException, InterruptedException{
+        async_addAllBooks0_result =  future2.get();
+        return async_addAllBooks0_result;
 }
 
-@Given("a add all books in {books0} to BookStore #async")
-public  void async_app_cucumber_books_BookStore_addAllBooks(java.util.Collection<app.cucumber.books.Book> books0)throws Exception {
-future1 = new CallFuture<>();
-asyncTests.app_cucumber_books_BookStore_addAllBooks(books0, future1);
+@Given("a addAllBooks1 with books0 {books0} #async")
+public  void async_app_books_BookStore_addAllBooks(java.util.Collection<app.books.Book> books0)throws Exception {
+future2 = new CallFuture<>();
+asyncTests.app_books_BookStore_addAllBooks(books0, future2);
 }
   /**
    */
@@ -256,11 +291,11 @@ return result;
 }
 //public java.lang.String author;
 
-public java.util.List<app.cucumber.books.Book> Book_;
+public java.util.List<app.books.Book> Book_1;
 @Given("^I search for books by author (.+)$")
-public  java.util.List<app.cucumber.books.Book> app_cucumber_books_BookStore_booksByAuthor(java.lang.String author){
-    Book_ = tests.app_cucumber_books_BookStore_booksByAuthor(author);
-    return Book_;
+public  java.util.List<app.books.Book> app_books_BookStore_booksByAuthor(java.lang.String author){
+    Book_1 = tests.app_books_BookStore_booksByAuthor(author);
+    return Book_1;
 }
 
 
@@ -268,10 +303,10 @@ public  java.util.List<app.cucumber.books.Book> app_cucumber_books_BookStore_boo
 
 
 @ParameterType(".*")
-public CallFuture future2 (String future2)throws Exception{
-   return new CallFuture<java.util.List<app.cucumber.books.Book>>();
+public CallFuture future3 (String future3)throws Exception{
+   return new CallFuture<java.util.List<app.books.Book>>();
 }
-java.util.List<app.cucumber.books.Book> Book_0;
+java.util.List<app.books.Book> Book_2;
 
 
 
@@ -292,19 +327,19 @@ return result;
 }
 //public java.lang.String author0;
 
-CallFuture<java.util.List<app.cucumber.books.Book>> future2;
-java.util.List<app.cucumber.books.Book> async_booksByAuthor_result;
+CallFuture<java.util.List<app.books.Book>> future3;
+java.util.List<app.books.Book> async_booksByAuthor_result;
 
 
-public java.util.List<app.cucumber.books.Book> getFuture2() throws ExecutionException, InterruptedException{
-        async_booksByAuthor_result =  future2.get();
+public java.util.List<app.books.Book> getFuture3() throws ExecutionException, InterruptedException{
+        async_booksByAuthor_result =  future3.get();
         return async_booksByAuthor_result;
 }
 
 @Given("a ^I search for books by author (.+)$ #async")
-public  void async_app_cucumber_books_BookStore_booksByAuthor(java.lang.String author0)throws Exception {
-future2 = new CallFuture<>();
-asyncTests.app_cucumber_books_BookStore_booksByAuthor(author0, future2);
+public  void async_app_books_BookStore_booksByAuthor(java.lang.String author0)throws Exception {
+future3 = new CallFuture<>();
+asyncTests.app_books_BookStore_booksByAuthor(author0, future3);
 }
   /**
    */
@@ -327,11 +362,11 @@ return result;
 }
 //public java.lang.String title;
 
-public java.util.Optional<app.cucumber.books.Book> Book_1;
+public java.util.Optional<app.books.Book> Book_3;
 @Given("^I search for books by title (.+)$")
-public  java.util.Optional<app.cucumber.books.Book> app_cucumber_books_BookStore_bookByTitle(java.lang.String title){
-    Book_1 = tests.app_cucumber_books_BookStore_bookByTitle(title);
-    return Book_1;
+public  java.util.Optional<app.books.Book> app_books_BookStore_bookByTitle(java.lang.String title){
+    Book_3 = tests.app_books_BookStore_bookByTitle(title);
+    return Book_3;
 }
 
 
@@ -339,10 +374,10 @@ public  java.util.Optional<app.cucumber.books.Book> app_cucumber_books_BookStore
 
 
 @ParameterType(".*")
-public CallFuture future3 (String future3)throws Exception{
-   return new CallFuture<java.util.Optional<app.cucumber.books.Book>>();
+public CallFuture future4 (String future4)throws Exception{
+   return new CallFuture<java.util.Optional<app.books.Book>>();
 }
-java.util.Optional<app.cucumber.books.Book> Book_2;
+java.util.Optional<app.books.Book> Book_4;
 
 
 
@@ -363,53 +398,18 @@ return result;
 }
 //public java.lang.String title0;
 
-CallFuture<java.util.Optional<app.cucumber.books.Book>> future3;
-java.util.Optional<app.cucumber.books.Book> async_bookByTitle_result;
+CallFuture<java.util.Optional<app.books.Book>> future4;
+java.util.Optional<app.books.Book> async_bookByTitle_result;
 
 
-public java.util.Optional<app.cucumber.books.Book> getFuture3() throws ExecutionException, InterruptedException{
-        async_bookByTitle_result =  future3.get();
+public java.util.Optional<app.books.Book> getFuture4() throws ExecutionException, InterruptedException{
+        async_bookByTitle_result =  future4.get();
         return async_bookByTitle_result;
 }
 
 @Given("a ^I search for books by title (.+)$ #async")
-public  void async_app_cucumber_books_BookStore_bookByTitle(java.lang.String title0)throws Exception {
-future3 = new CallFuture<>();
-asyncTests.app_cucumber_books_BookStore_bookByTitle(title0, future3);
-}
-  /**
-   */
-
-public java.util.List<app.cucumber.books.Book> Book_3;
-@Given("^I have the following books in the store$")
-public java.util.List<app.cucumber.books.Book> app_cucumber_books_BookCatalog_getBooks(){
-    Book_3 = tests.app_cucumber_books_BookCatalog_getBooks();
-    return Book_3;
-}
-
-
-
-
-
-@ParameterType(".*")
-public CallFuture future4 (String future4)throws Exception{
-   return new CallFuture<java.util.List<app.cucumber.books.Book>>();
-}
-java.util.List<app.cucumber.books.Book> Book_4;
-
-
-CallFuture<java.util.List<app.cucumber.books.Book>> future4;
-java.util.List<app.cucumber.books.Book> async_getBooks_result;
-
-
-public java.util.List<app.cucumber.books.Book> getFuture4() throws ExecutionException, InterruptedException{
-        async_getBooks_result =  future4.get();
-        return async_getBooks_result;
-}
-
-@Given("a ^I have the following books in the store$ #async")
-public void async_app_cucumber_books_BookCatalog_getBooks()throws Exception {
+public  void async_app_books_BookStore_bookByTitle(java.lang.String title0)throws Exception {
 future4 = new CallFuture<>();
-asyncTests.app_cucumber_books_BookCatalog_getBooks( future4);
+asyncTests.app_books_BookStore_bookByTitle(title0, future4);
 }
 }

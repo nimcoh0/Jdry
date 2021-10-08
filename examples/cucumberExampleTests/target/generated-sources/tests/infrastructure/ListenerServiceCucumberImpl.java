@@ -73,16 +73,16 @@ public void validate(String exp0,String operator0,Object expected0)throws Except
 
   /**
    */
- public  app.cucumber.books.Book  addBook_book  ;
+ public  app.books.Book  addBook_book  ;
  
 @When("got addBook2 result")
-public  java.lang.Object[] app_cucumber_books_BookCatalog_addBook_result(){
+public  java.lang.Object[] app_books_BookCatalog_addBook_result(){
 AtomicReference<Object[]> ref = new AtomicReference();
 try {
     CountDownLatch lock = new CountDownLatch(1);
     new ListenerServiceImpl() {
         @Override
-        public void app_cucumber_books_BookCatalog_addBook_result(app.cucumber.books.Book book ) {
+        public void app_books_BookCatalog_addBook_result(app.books.Book book ) {
         addBook_book  = book ;
         ref.set(new Object[]{book });
         lock.countDown();
@@ -101,9 +101,9 @@ return ref.get();
 
 
 @ParameterType(".*")
-public app.cucumber.books.Book book1 (String book1)throws Exception{
+public app.books.Book book1 (String book1)throws Exception{
 if(Utils.isJson(book1)){
-      return new ObjectMapper().readValue(book1, app.cucumber.books.Book.class);
+      return new ObjectMapper().readValue(book1, app.books.Book.class);
 }
       ExpressionParser parser = new SpelExpressionParser();
       StandardEvaluationContext itemContext = getContext(book1);
@@ -111,12 +111,12 @@ if(Utils.isJson(book1)){
           itemContext = new StandardEvaluationContext(this);
       }
       Expression exp2 = parser.parseExpression(book1);
-      app.cucumber.books.Book result = (app.cucumber.books.Book) exp2.getValue(itemContext,app.cucumber.books.Book.class);
+      app.books.Book result = (app.books.Book) exp2.getValue(itemContext,app.books.Book.class);
 
 return result;
   }
 
-public app.cucumber.books.Book book1Value;
+public app.books.Book book1Value;
 
 
 @ParameterType(".*")
@@ -128,13 +128,13 @@ public app.cucumber.books.Book book1Value;
         return values0;
  }
 @When("got addBook3 result set  {exps0} with {values0}")
-public  java.lang.Object[] app_cucumber_books_BookCatalog_addBook(String exps0 ,String values0){
+public  java.lang.Object[] app_books_BookCatalog_addBook(String exps0 ,String values0){
 AtomicReference<Object[]> ref = new AtomicReference();
 try {
     CountDownLatch lock = new CountDownLatch(1);
     new ListenerServiceImpl() {
         @Override
-        public java.lang.Object[] app_cucumber_books_BookCatalog_addBook(app.cucumber.books.Book book1 ) {
+        public java.lang.Object[] app_books_BookCatalog_addBook(app.books.Book book1 ) {
         book1Value = book1;
         String[] _exps = exps0.split(",");
         String[] _values = values0.split(",");

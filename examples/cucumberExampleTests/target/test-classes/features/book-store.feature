@@ -1,6 +1,6 @@
 Feature: Book Store
   Scenario: Correct non-zero number of books found by author by list
-    Given a list of baeldung.cucumber.books.Book
+    Given a list of app.cucumber.books.Book
       | title                                | author      | id |
       | The Devil in the White City          | Erik Larson | 1  |
       | The Lion, the Witch and the Wardrobe | C.S. Lewis  | 2  |
