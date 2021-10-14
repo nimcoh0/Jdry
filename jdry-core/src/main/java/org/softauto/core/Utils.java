@@ -161,6 +161,10 @@ public class Utils {
         return null;
     }
 
+    public static String capitalizeFirstLetter(String str){
+        return str.toUpperCase().charAt(0)+str.substring(1,str.length());
+    }
+
     /**
      * get Declared Method
      * @param o

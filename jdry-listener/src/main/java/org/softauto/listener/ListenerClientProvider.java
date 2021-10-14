@@ -2,6 +2,7 @@ package org.softauto.listener;
 
 import org.softauto.plugin.api.Provider;
 import org.softauto.plugin.spi.PluginProvider;
+import org.softauto.plugin.spi.PluginTypes;
 
 public class ListenerClientProvider implements PluginProvider {
     @Override
@@ -22,5 +23,10 @@ public class ListenerClientProvider implements PluginProvider {
     @Override
     public String getName() {
         return "LISTENER-CLIENT";
+    }
+
+    @Override
+    public PluginTypes getType() {
+        return PluginTypes.regular;
     }
 }

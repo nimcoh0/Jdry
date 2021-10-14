@@ -202,7 +202,43 @@ public class Protocol extends JsonProperties {
       return getObjectProp(name).toString();
     }
 
+    public boolean hasGivenDescription(){
+      if(this.getObjectProp("cucumber") != null)
+        if(((JsonNode)this.getObjectProp("cucumber")).get("given") != null){
+          return true;
+        }
+      return false;
+    }
 
+    public String getGivenDescription(){
+      return ((JsonNode)this.getObjectProp("cucumber")).get("given").asText();
+    }
+
+
+
+    public boolean hasThenDescription(){
+      if(this.getObjectProp("cucumber") != null)
+        if(((JsonNode)this.getObjectProp("cucumber")).get("then") != null){
+          return true;
+        }
+      return false;
+    }
+
+    public String getThenDescription(){
+      return ((JsonNode)this.getObjectProp("cucumber")).get("then").asText();
+    }
+
+    public boolean hasWhenDescription(){
+      if(this.getObjectProp("cucumber") != null)
+        if(((JsonNode)this.getObjectProp("cucumber")).get("when") != null){
+          return true;
+        }
+      return false;
+    }
+
+    public String getWhenDescription(){
+      return ((JsonNode)this.getObjectProp("cucumber")).get("when").asText();
+    }
 
     public boolean  hasDescription(){
       if(this.hasProp("description")){

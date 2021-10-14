@@ -3,6 +3,7 @@ package org.softauto.discovery;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.auto.service.AutoService;
 import org.softauto.core.Utils;
 import org.softauto.discovery.schema.SchemaHeaderHandler;
@@ -80,6 +81,12 @@ public class BuilderProcessor extends AbstractProcessor {
                     for (Element element : k.getValue()) {
                          for (Provider provider : providers) {
                              JsonNode node = provider.parser(element);
+                             if(node != null) {
+                                 List<Provider> extProviders = ProviderManager.getExtendedProviders();
+                                 for (Provider p : extProviders) {
+                                     ((ObjectNode) node).setAll((ObjectNode) p.parser(element));
+                                 }
+                             }
                              Visitor v = new SchemaVisitor(getProtocolName(annotation),node,nodes);
                              this.accept(v);
                              logger.debug("new element for provider "+ provider.getClass().getName());

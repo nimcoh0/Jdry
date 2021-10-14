@@ -25,6 +25,7 @@ import org.junit.Assert;
 import io.cucumber.datatable.DataTable;
 import java.util.Map;
 import java.util.*;
+import org.softauto.cucumber.*;
 
 #if ($protocol.getDoc())
 /** $protocol.getDoc() */
@@ -44,75 +45,40 @@ public class $this.mangle($protocol.getName())CucumberImpl extends CucumberAbstr
 
 
 
-#set ($exp = $cucumber.getVarName("exp"))
-#set ($future = $cucumber.getVarName("future"))
-#set ($operator = $cucumber.getVarName("operator"))
-#set ($expected = $cucumber.getVarName("expected"))
+#set ($exp = $cucumberutils.getVarName("exp"))
+#set ($future = $cucumberutils.getVarName("future"))
 
 @ParameterType(".*")
 public String $exp (String $exp) throws Exception{
     return $exp;
 }
 
-/*
-@ParameterType(".*")
-public Object $future (String $future) throws Exception{
-      ExpressionParser parser = new SpelExpressionParser();
-      StandardEvaluationContext itemContext = getContext($future);
-      if(itemContext == null){
-          itemContext = new StandardEvaluationContext(this);
-      }
-      Expression exp2 = parser.parseExpression(get${future.toUpperCase().charAt(0)}${future.substring(1,$future.length())}());
-      return exp2.getValue(itemContext);
-}
-*/
-@ParameterType(".*")
-public String $operator (String $operator)throws Exception{
-       return $operator;
-}
-@ParameterType(".*")
-public Object $expected (String $expected)throws Exception{
-      ExpressionParser parser = new SpelExpressionParser();
-      StandardEvaluationContext itemContext = getContext($expected);
-       if(itemContext == null){
-          itemContext = new StandardEvaluationContext(this);
-       }
-      Expression exp2 = parser.parseExpression($expected);
-      Object result = exp2.getValue(itemContext);
-
-return result;
-}
-
-@Then("validate step result of {$exp} {$operator} {$expected}")
-public void validate(String $exp ,String $operator,Object $expected)throws Exception{
-    //Object o =  evulExp($expected);
-    boolean result = getResult($exp + " "+ $operator + " "+ $expected);
+## generic validate method
+@Then("result of {$exp}")
+public void validate(String $exp )throws Exception{
+    String left = CucumberUtils.getLeft($exp);
+    String right = CucumberUtils.getRight($exp);
+    String operator = CucumberUtils.getOperator($exp);
+    boolean result = getResult(CucumberUtils.expToGetter(left) +" "+ operator +" "+ CucumberUtils.expToGetter(right));
     Assert.assertTrue(result);
 }
-
 
 
 #foreach ($e in $protocol.getMessages().entrySet())
 #set ($name = $e.getKey())
 #set ($message = $e.getValue())
 #set ($response = $message.getResponse())
-#set ($typeVarName = $cucumber.getVarName(${this.javaUnbox($response, true)}))
-  /**
-#if ($message.getDoc())
-   * $this.escapeForJavadoc($message.getDoc())
-#end
+#set ($class = $message.getJsonProp("class"))
+#set ($fullClassName = $class.get("fullClassName").asText())
+#set ($responseVarName = $cucumberutils.getVarName(${this.javaUnbox($response, true)}))
+
 #foreach ($p in $message.getRequest().getFields())##
-#if ($p.doc())   * @param ${this.mangle($p.name())} $p.doc()
-#end
-#end
-   */
-#foreach ($annotation in $this.javaAnnotations($message))
-  @$annotation
-#end
-#foreach ($p in $message.getRequest().getFields())##
-#set ($varName = $cucumber.getVarName($p.name()))
+#set ($varName = $cucumberutils.getVarName($p.name()))
 $p.setName($varName)
-$cucumber.addVarName($varName)
+$cucumberutils.addVarName($varName)
+
+## for every argument create parameterType if not exist
+#if(!$cucumberutils.hasParameterType($varName))
 @ParameterType(".*")
 public ${this.javaUnbox($p.schema(),false)} $varName (String $varName)throws Exception{
 if(Utils.isJson($varName)){
@@ -128,41 +94,39 @@ if(Utils.isJson($varName)){
 
 return result;
 }
-//public ${this.javaUnbox($p.schema(),false)} $varName;
-#if($foreach.hasNext)#end
 #end
+$cucumberutils.addParameterType(${this.javaUnbox($p.schema(),false)}, $varName)
+#end ## end of create parameterType
 
 #if (${this.javaUnbox($response, true)} != "void" )
-public ${this.javaUnbox($response, true)} $typeVarName;
+public ${this.javaUnbox($response, true)} $responseVarName;
 #end
-#if($message.hasDescription())
-@Given("$cucumber.buildDescription($message.getDescription())##
+
+#if($message.hasWhenDescription())
+@When("$message.getWhenDescription()")
 #else
-@Given("$cucumber.getVarName(${this.mangle($name)}) ##
+@When("$cucumberutils.getDefaultWhenDescription(${this.mangle($name)})##
 #foreach ($p in $message.getRequest().getFields())##
- with $p.name() {$p.name()}#if($foreach.hasNext) and #end
+$cucumberutils.getbeforeFieldName($p.schema().getType(),$p.name()) {$p.name()}#if($foreach.hasNext) and #end
 #end##
-#end
 ")
-public ##
-#foreach ($p in $message.getRequest().getFields())##
-#if($p.schema().isGeneric())<${this.javaUnbox($p.schema(),false)}>#end#if($foreach.hasNext)#end ##
 #end
-${this.javaUnbox($response, true)} ${this.mangle($name)}(##
+#if($message.hasGivenDescription())
+@Given("$message.getGivenDescription()")
+#else
+@Given("$cucumberutils.getDefaultGivenDescription(${this.mangle($name)})##
+#foreach ($p in $message.getRequest().getFields())##
+$cucumberutils.getbeforeFieldName($p.schema().getType(),$p.name()) {$p.name()}#if($foreach.hasNext) and #end
+#end##
+")
+#end
+public ${this.javaUnbox($response, true)} ${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
 #*      *#${this.javaUnbox($p.schema(), false)} $p.name()#if ($foreach.hasNext), #end
 #end
-)#if (! $message.isOneWay() && $message.getErrors().getTypes().size() > 1)
- throws ##
-## The first error is always "string", so we skip it.
-#foreach ($error in $message.getErrors().getTypes().subList(1, $message.getErrors().getTypes().size()))
-${this.mangle($error.getFullName())}##
-#if ($foreach.hasNext), #end
-#end##    (error list)
-#end##    (one way)
-{
+){
 #if (${this.javaUnbox($response, true)} != "void" )
-    $typeVarName = ##
+    $responseVarName = ##
 #end
 tests.${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
@@ -170,21 +134,35 @@ tests.${this.mangle($name)}(##
 #end
 );
 #if (${this.javaUnbox($response, true)} != "void" )
-    return $typeVarName;
+    return $responseVarName;
 #end
 }
-
+#if (${this.javaUnbox($response, true)} != "void" )
+#if($message.hasThenDescription())
+@Then("$message.getThenDescription()")
+#else
+@Then("$cucumberutils.getDefaultThenDescription(${this.mangle($name)}) {exp}")
+#end
+public void validate_$cucumberutils.getMethodName(${this.mangle($name)})(String $exp )throws Exception{
+    String left = CucumberUtils.getLeft($exp);
+    String right = CucumberUtils.getRight($exp);
+    String operator = CucumberUtils.getOperator($exp);
+    boolean result = getResult(CucumberUtils.expToGetter("${responseVarName}"+" "+left) +" "+ operator +" "+ CucumberUtils.expToGetter(right));
+    Assert.assertTrue(result);
+}
+#end
 
 
 #if ($message.getRequest().getFields().size() > 0)
 #foreach ($p in $message.getRequest().getFields())##
-#set ($objectVarName = $cucumber.getVarName(${this.getBasicTypeName("${p.name()}List")}))
-#if(!$cucumber.isPrimitive(${this.javaUnbox($p.schema(), false)}))
-#if(!$cucumber.hasObjectName(${this.getBasicTypeName(${this.javaUnbox($p.schema(), false)})}))
-$cucumber.addObjectName(${this.getBasicTypeName(${this.javaUnbox($p.schema(), false)})},$objectVarName)
+#set ($objectVarName = $cucumberutils.getVarName(${this.getBasicTypeName("${p.name()}List")}))
+#if(!$cucumberutils.isPrimitive(${this.javaUnbox($p.schema(), false)}))
+#if(!$cucumberutils.hasObjectName(${this.getBasicTypeName(${this.javaUnbox($p.schema(), false)})}))
+$cucumberutils.addObjectName(${this.getBasicTypeName(${this.javaUnbox($p.schema(), false)})},$objectVarName)
 public List<${this.getBasicTypeName(${this.javaUnbox($p.schema(), false)})}> $objectVarName;
-     @Given("a list of ${this.javaUnbox($p.schema(), false)}")
-     public List<${this.getBasicTypeName(${this.javaUnbox($p.schema(), false)})}> create_$cucumber.fqmnToString(${this.javaUnbox($p.schema(), false)}) (DataTable table){
+     @When("got list of $cucumberutils.getShortVarName(${this.javaUnbox($p.schema(), false)})")
+     @Given("list of $cucumberutils.getShortVarName(${this.javaUnbox($p.schema(), false)})")
+     public List<${this.getBasicTypeName(${this.javaUnbox($p.schema(), false)})}> create_$cucumberutils.fqmnToString(${this.javaUnbox($p.schema(), false)}) (DataTable table){
      try{
         List<Map<String, String>> map = table.asMaps(String.class, String.class);
         String json = new ObjectMapper().writeValueAsString(map);
@@ -202,21 +180,20 @@ public List<${this.getBasicTypeName(${this.javaUnbox($p.schema(), false)})}> $ob
 #end##
 #end
 
-
-#set ($varNameFuture = $cucumber.getVarName("future"))
+#set ($varNameFuture = $cucumberutils.getVarName("future"))
 @ParameterType(".*")
 public CallFuture $varNameFuture (String $varNameFuture)throws Exception{
    return new CallFuture<$message.getResponseTypeForCallBack()>();
 }
-#set ($typeVarName = $cucumber.getVarName(${this.javaUnbox($response, true)}))
+#set ($typeVarName = $cucumberutils.getVarName(${this.javaUnbox($response, true)}))
 #if (${this.javaUnbox($response, true)} != "void" )
 $message.getResponseTypeForCallBack() $typeVarName;
 #end
 
 #foreach ($p in $message.getRequest().getFields())##
-#set ($varName = $cucumber.getVarName($p.name()))
+#set ($varName = $cucumberutils.getVarName($p.name()))
 $p.setName($varName)
-$cucumber.addVarName($varName)
+$cucumberutils.addVarName($varName)
 @ParameterType(".*")
 public ${this.javaUnbox($p.schema(),false)} $varName (String $varName)throws Exception{
 if(Utils.isJson($varName)){
@@ -236,7 +213,7 @@ return result;
 #if($foreach.hasNext)#end
 #end
 
-#set ($resultVarName = $cucumber.getVarName(${this.mangle($name)}))
+#set ($resultVarName = $cucumberutils.getVarName(${this.mangle($name)}))
 CallFuture<$message.getResponseTypeForCallBack()> $varNameFuture;
 $message.getResponseTypeForCallBack() async_${resultVarName}_result;
 
@@ -246,31 +223,30 @@ public $message.getResponseTypeForCallBack() get${this.capitalizeFirstLetter($va
         return async_${resultVarName}_result;
 }
 
-#if($message.hasDescription())
-@Given("a $cucumber.buildDescription($message.getDescription())##
+#if($message.hasWhenDescription())
+@When("$message.getWhenDescription()")
 #else
-@Given("a $cucumber.getVarName(${this.mangle($name)}) ##
+@When("$cucumberutils.getDefaultWhenDescription(${this.mangle($name)})##
 #foreach ($p in $message.getRequest().getFields())##
-with $p.name() {$p.name()}#if($foreach.hasNext) and #end
+$cucumberutils.getbeforeFieldName($p.schema().getType(),$p.name()) {$p.name()}#if($foreach.hasNext) and #end
 #end##
-#end
  #async")
-public ##
-#foreach ($p in $message.getRequest().getFields())##
-#if($p.schema().isGeneric())<${this.javaUnbox($p.schema(),false)}>#end#if($foreach.hasNext)#end ##
 #end
+#if($message.hasGivenDescription())
+@Given("$message.getGivenDescription()")
+#else
+@Given("$cucumberutils.getDefaultGivenDescription(${this.mangle($name)})##
+#foreach ($p in $message.getRequest().getFields())##
+$cucumberutils.getbeforeFieldName($p.schema().getType(),$p.name()) {$p.name()}#if($foreach.hasNext) and #end
+#end##
+ #async")
+#end
+public ##
 void async_${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
 #*      *#${this.javaUnbox($p.schema(), false)} $p.name()#if ($foreach.hasNext), #end
 #end
-)throws Exception #if (! $message.isOneWay() && $message.getErrors().getTypes().size() > 1)
- throws ##
-## The first error is always "string", so we skip it.
-#foreach ($error in $message.getErrors().getTypes().subList(1, $message.getErrors().getTypes().size()))
-${this.mangle($error.getFullName())}##
-#if ($foreach.hasNext), #end
-#end##    (error list)
-#end##    (one way)
+)throws Exception ##
 {
 $varNameFuture = new CallFuture<>();
 #*      *#asyncTests.${this.mangle($name)}(##
@@ -279,6 +255,8 @@ $varNameFuture = new CallFuture<>();
 #end
 #if($message.getRequest().getFields().size()>0),#end $varNameFuture);
 }
+
 #end
-#end## (requests)
+
+#end
 }## End of protocol interface

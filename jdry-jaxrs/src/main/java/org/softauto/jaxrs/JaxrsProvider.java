@@ -4,6 +4,7 @@ package org.softauto.jaxrs;
 
 import org.softauto.plugin.api.Provider;
 import org.softauto.plugin.spi.PluginProvider;
+import org.softauto.plugin.spi.PluginTypes;
 
 public class JaxrsProvider implements PluginProvider {
 
@@ -26,5 +27,10 @@ public class JaxrsProvider implements PluginProvider {
     @Override
     public String getVersion() {
         return "1.0";
+    }
+
+    @Override
+    public PluginTypes getType() {
+        return PluginTypes.regular;
     }
 }

@@ -28,4 +28,8 @@ public interface PluginProvider {
      */
     String getName();
 
+    PluginTypes getType();
+
+
+
 }

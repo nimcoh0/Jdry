@@ -28,6 +28,7 @@ import org.junit.Assert;
 import io.cucumber.datatable.DataTable;
 import java.util.Map;
 import java.util.*;
+import org.softauto.cucumber.*;
 
 @org.apache.avro.specific.AvroGenerated
 public class StepServiceCucumberImpl extends CucumberAbstractTesterImpl {
@@ -46,55 +47,34 @@ public String exp (String exp) throws Exception{
     return exp;
 }
 
-/*
-@ParameterType(".*")
-public Object future (String future) throws Exception{
-      ExpressionParser parser = new SpelExpressionParser();
-      StandardEvaluationContext itemContext = getContext(future);
-      if(itemContext == null){
-          itemContext = new StandardEvaluationContext(this);
-      }
-      Expression exp2 = parser.parseExpression(getFuture());
-      return exp2.getValue(itemContext);
-}
-*/
-@ParameterType(".*")
-public String operator (String operator)throws Exception{
-       return operator;
-}
-@ParameterType(".*")
-public Object expected (String expected)throws Exception{
-      ExpressionParser parser = new SpelExpressionParser();
-      StandardEvaluationContext itemContext = getContext(expected);
-       if(itemContext == null){
-          itemContext = new StandardEvaluationContext(this);
-       }
-      Expression exp2 = parser.parseExpression(expected);
-      Object result = exp2.getValue(itemContext);
-
-return result;
-}
-
-@Then("validate step result of {exp} {operator} {expected}")
-public void validate(String exp ,String operator,Object expected)throws Exception{
-    //Object o =  evulExp(expected);
-    boolean result = getResult(exp + " "+ operator + " "+ expected);
+@Then("result of {exp}")
+public void validate(String exp )throws Exception{
+    String left = CucumberUtils.getLeft(exp);
+    String right = CucumberUtils.getRight(exp);
+    String operator = CucumberUtils.getOperator(exp);
+    boolean result = getResult(CucumberUtils.expToGetter(left) +" "+ operator +" "+ CucumberUtils.expToGetter(right));
     Assert.assertTrue(result);
 }
 
 
 
-  /**
-   */
+ 
+public java.util.List<app.books.Book> BookList;
 
-public java.util.List<app.books.Book> Book_;
-@Given("^I have the following books in the store$")
+@When("Get Books ")
+@Given("Get Books")
 public java.util.List<app.books.Book> app_books_BookCatalog_getBooks(){
-    Book_ = tests.app_books_BookCatalog_getBooks();
-    return Book_;
+    BookList = tests.app_books_BookCatalog_getBooks();
+    return BookList;
 }
-
-
+@Then("books {exp}")
+public void validate_getBooks(String exp )throws Exception{
+    String left = CucumberUtils.getLeft(exp);
+    String right = CucumberUtils.getRight(exp);
+    String operator = CucumberUtils.getOperator(exp);
+    boolean result = getResult(CucumberUtils.expToGetter("BookList"+" "+left) +" "+ operator +" "+ CucumberUtils.expToGetter(right));
+    Assert.assertTrue(result);
+}
 
 
 
@@ -102,7 +82,7 @@ public java.util.List<app.books.Book> app_books_BookCatalog_getBooks(){
 public CallFuture future0 (String future0)throws Exception{
    return new CallFuture<java.util.List<app.books.Book>>();
 }
-java.util.List<app.books.Book> Book_0;
+java.util.List<app.books.Book> BookList0;
 
 
 CallFuture<java.util.List<app.books.Book>> future0;
@@ -114,13 +94,15 @@ public java.util.List<app.books.Book> getFuture0() throws ExecutionException, In
         return async_getBooks_result;
 }
 
-@Given("a ^I have the following books in the store$ #async")
+@When("Get Books  #async")
+@Given("Get Books #async")
 public void async_app_books_BookCatalog_getBooks()throws Exception {
 future0 = new CallFuture<>();
 asyncTests.app_books_BookCatalog_getBooks( future0);
 }
-  /**
-   */
+
+
+
 
 
 @ParameterType(".*")
@@ -138,18 +120,20 @@ if(Utils.isJson(book)){
 
 return result;
 }
-//public app.books.Book book;
 
-@Given("addBook  with book {book}")
-public  void app_books_BookStore_addBook(app.books.Book book){
+ 
+
+@When("Add Book  from  {book}")
+@Given("Add Book from  {book}")
+public void app_books_BookStore_addBook(app.books.Book book){
 tests.app_books_BookStore_addBook(book);
 }
 
 
 
-
 public List<app.books.Book> bookList;
-     @Given("a list of app.books.Book")
+     @When("got list of Book")
+     @Given("list of Book")
      public List<app.books.Book> create_app_books_Book (DataTable table){
      try{
         List<Map<String, String>> map = table.asMaps(String.class, String.class);
@@ -161,7 +145,6 @@ public List<app.books.Book> bookList;
      }
      return   bookList;
      }
-
 
 
 @ParameterType(".*")
@@ -189,21 +172,23 @@ return result;
 //public app.books.Book book0;
 
 CallFuture<Void> future1;
-Void async_addBook0_result;
+Void async_addBook_result;
 
 
 public Void getFuture1() throws ExecutionException, InterruptedException{
-        async_addBook0_result =  future1.get();
-        return async_addBook0_result;
+        async_addBook_result =  future1.get();
+        return async_addBook_result;
 }
 
-@Given("a addBook1 with book0 {book0} #async")
-public  void async_app_books_BookStore_addBook(app.books.Book book0)throws Exception {
+@When("Add Book  from  {book0} #async")
+@Given("Add Book from  {book0} #async")
+public void async_app_books_BookStore_addBook(app.books.Book book0)throws Exception {
 future1 = new CallFuture<>();
 asyncTests.app_books_BookStore_addBook(book0, future1);
 }
-  /**
-   */
+
+
+
 
 
 @ParameterType(".*")
@@ -221,14 +206,14 @@ if(Utils.isJson(books)){
 
 return result;
 }
-//public java.util.Collection<app.books.Book> books;
 
-@Given("addAllBooks  with books {books}")
-public  void app_books_BookStore_addAllBooks(java.util.Collection<app.books.Book> books){
+ 
+
+@When("Add Books  from  {books}")
+@Given("Add All Books from  {books}")
+public void app_books_BookStore_addAllBooks(java.util.Collection<app.books.Book> books){
 tests.app_books_BookStore_addAllBooks(books);
 }
-
-
 
 
 
@@ -257,21 +242,23 @@ return result;
 //public java.util.Collection<app.books.Book> books0;
 
 CallFuture<Void> future2;
-Void async_addAllBooks0_result;
+Void async_addAllBooks_result;
 
 
 public Void getFuture2() throws ExecutionException, InterruptedException{
-        async_addAllBooks0_result =  future2.get();
-        return async_addAllBooks0_result;
+        async_addAllBooks_result =  future2.get();
+        return async_addAllBooks_result;
 }
 
-@Given("a addAllBooks1 with books0 {books0} #async")
-public  void async_app_books_BookStore_addAllBooks(java.util.Collection<app.books.Book> books0)throws Exception {
+@When("Add Books  from  {books0} #async")
+@Given("Add All Books from  {books0} #async")
+public void async_app_books_BookStore_addAllBooks(java.util.Collection<app.books.Book> books0)throws Exception {
 future2 = new CallFuture<>();
 asyncTests.app_books_BookStore_addAllBooks(books0, future2);
 }
-  /**
-   */
+
+
+
 
 
 @ParameterType(".*")
@@ -289,16 +276,24 @@ if(Utils.isJson(author)){
 
 return result;
 }
-//public java.lang.String author;
 
-public java.util.List<app.books.Book> Book_1;
-@Given("^I search for books by author (.+)$")
-public  java.util.List<app.books.Book> app_books_BookStore_booksByAuthor(java.lang.String author){
-    Book_1 = tests.app_books_BookStore_booksByAuthor(author);
-    return Book_1;
+ 
+public java.util.List<app.books.Book> BookList1;
+
+@When("got Books By Author with author {author}")
+@Given("Author Books with author {author}")
+public java.util.List<app.books.Book> app_books_BookStore_booksByAuthor(java.lang.String author){
+    BookList1 = tests.app_books_BookStore_booksByAuthor(author);
+    return BookList1;
 }
-
-
+@Then("author books {exp}")
+public void validate_booksByAuthor(String exp )throws Exception{
+    String left = CucumberUtils.getLeft(exp);
+    String right = CucumberUtils.getRight(exp);
+    String operator = CucumberUtils.getOperator(exp);
+    boolean result = getResult(CucumberUtils.expToGetter("BookList1"+" "+left) +" "+ operator +" "+ CucumberUtils.expToGetter(right));
+    Assert.assertTrue(result);
+}
 
 
 
@@ -306,7 +301,7 @@ public  java.util.List<app.books.Book> app_books_BookStore_booksByAuthor(java.la
 public CallFuture future3 (String future3)throws Exception{
    return new CallFuture<java.util.List<app.books.Book>>();
 }
-java.util.List<app.books.Book> Book_2;
+java.util.List<app.books.Book> BookList2;
 
 
 
@@ -336,13 +331,15 @@ public java.util.List<app.books.Book> getFuture3() throws ExecutionException, In
         return async_booksByAuthor_result;
 }
 
-@Given("a ^I search for books by author (.+)$ #async")
-public  void async_app_books_BookStore_booksByAuthor(java.lang.String author0)throws Exception {
+@When("got Books By Author with author {author0} #async")
+@Given("Author Books with author {author0} #async")
+public void async_app_books_BookStore_booksByAuthor(java.lang.String author0)throws Exception {
 future3 = new CallFuture<>();
 asyncTests.app_books_BookStore_booksByAuthor(author0, future3);
 }
-  /**
-   */
+
+
+
 
 
 @ParameterType(".*")
@@ -360,16 +357,24 @@ if(Utils.isJson(title)){
 
 return result;
 }
-//public java.lang.String title;
 
-public java.util.Optional<app.books.Book> Book_3;
-@Given("^I search for books by title (.+)$")
-public  java.util.Optional<app.books.Book> app_books_BookStore_bookByTitle(java.lang.String title){
-    Book_3 = tests.app_books_BookStore_bookByTitle(title);
-    return Book_3;
+ 
+public java.util.Optional<app.books.Book> Book;
+
+@When("got Book By Title with title {title}")
+@Given("Book Title with title {title}")
+public java.util.Optional<app.books.Book> app_books_BookStore_bookByTitle(java.lang.String title){
+    Book = tests.app_books_BookStore_bookByTitle(title);
+    return Book;
 }
-
-
+@Then("book title {exp}")
+public void validate_bookByTitle(String exp )throws Exception{
+    String left = CucumberUtils.getLeft(exp);
+    String right = CucumberUtils.getRight(exp);
+    String operator = CucumberUtils.getOperator(exp);
+    boolean result = getResult(CucumberUtils.expToGetter("Book"+" "+left) +" "+ operator +" "+ CucumberUtils.expToGetter(right));
+    Assert.assertTrue(result);
+}
 
 
 
@@ -377,7 +382,7 @@ public  java.util.Optional<app.books.Book> app_books_BookStore_bookByTitle(java.
 public CallFuture future4 (String future4)throws Exception{
    return new CallFuture<java.util.Optional<app.books.Book>>();
 }
-java.util.Optional<app.books.Book> Book_4;
+java.util.Optional<app.books.Book> Book0;
 
 
 
@@ -407,9 +412,12 @@ public java.util.Optional<app.books.Book> getFuture4() throws ExecutionException
         return async_bookByTitle_result;
 }
 
-@Given("a ^I search for books by title (.+)$ #async")
-public  void async_app_books_BookStore_bookByTitle(java.lang.String title0)throws Exception {
+@When("got Book By Title with title {title0} #async")
+@Given("Book Title with title {title0} #async")
+public void async_app_books_BookStore_bookByTitle(java.lang.String title0)throws Exception {
 future4 = new CallFuture<>();
 asyncTests.app_books_BookStore_bookByTitle(title0, future4);
 }
+
+
 }

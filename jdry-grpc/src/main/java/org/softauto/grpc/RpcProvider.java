@@ -3,6 +3,7 @@ package org.softauto.grpc;
 
 import org.softauto.plugin.api.Provider;
 import org.softauto.plugin.spi.PluginProvider;
+import org.softauto.plugin.spi.PluginTypes;
 
 public class RpcProvider implements PluginProvider {
 
@@ -20,6 +21,11 @@ public class RpcProvider implements PluginProvider {
     @Override
     public String getName() {
         return "RPC";
+    }
+
+    @Override
+    public PluginTypes getType() {
+        return PluginTypes.regular;
     }
 
     @Override

@@ -23,6 +23,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import io.cucumber.java.en.Then;
 import org.junit.Assert;
 import java.util.List;
+import org.softauto.cucumber.*;
 
 @org.apache.avro.specific.AvroGenerated
 public class ListenerServiceCucumberImpl  extends CucumberAbstractTesterImpl{
@@ -41,50 +42,54 @@ public class ListenerServiceCucumberImpl  extends CucumberAbstractTesterImpl{
 
 
 
- 
+
  @ParameterType(".*")
  public String exp0 (String exp0) throws Exception{
      return exp0;
  }
 
-@ParameterType(".*")
-public String operator0 (String operator0)throws Exception{
-       return operator0;
-}
-@ParameterType(".*")
-public Object expected0 (String expected0)throws Exception{
-      ExpressionParser parser = new SpelExpressionParser();
-      StandardEvaluationContext itemContext = getContext(expected0);
-       if(itemContext == null){
-          itemContext = new StandardEvaluationContext(this);
-       }
-      Expression exp2 = parser.parseExpression(expected0);
-      Object result = exp2.getValue(itemContext);
 
-return result;
+@Then("validate listener result of {exp0}")
+public void validate(String exp0)throws Exception{
+    String left = CucumberUtils.getLeft(exp0);
+        String right = CucumberUtils.getRight(exp0);
+        String operator = CucumberUtils.getOperator(exp0);
+        boolean result = getResult(CucumberUtils.expToGetter(left) +" "+ operator +" "+ CucumberUtils.expToGetter(right));
+        Assert.assertTrue(result);
 }
 
-@Then("validate listener result of {exp0} {operator0} {expected0}")
-public void validate(String exp0,String operator0,Object expected0)throws Exception{
-    boolean result = getResult(exp0 + " "+ operator0 + " "+ expected0);
+
+
+
+
+
+
+public app.books.Book addBook_book1;
+
+
+@Then("result of Add Book book {exp0}")
+public void validate_addBookResult_book1(String exp0 )throws Exception{
+    String left = CucumberUtils.getLeft(exp0);
+    String right = CucumberUtils.getRight(exp0);
+    String operator = CucumberUtils.getOperator(exp0);
+    boolean result = getResult(CucumberUtils.expToGetter("addBook_book1"+" "+left) +" "+ operator +" "+ CucumberUtils.expToGetter(right));
     Assert.assertTrue(result);
 }
 
 
-  /**
-   */
- public  app.books.Book  addBook_book  ;
  
-@When("got addBook2 result")
-public  java.lang.Object[] app_books_BookCatalog_addBook_result(){
+
+
+@When("wait for result of  Add Book")
+public java.lang.Object[] app_books_BookCatalog_addBook_result(){
 AtomicReference<Object[]> ref = new AtomicReference();
 try {
     CountDownLatch lock = new CountDownLatch(1);
     new ListenerServiceImpl() {
         @Override
-        public void app_books_BookCatalog_addBook_result(app.books.Book book ) {
-        addBook_book  = book ;
-        ref.set(new Object[]{book });
+        public void app_books_BookCatalog_addBook_result(app.books.Book book1 ) {
+        addBook_book1  = book1 ;
+        ref.set(new Object[]{book1 });
         lock.countDown();
         }
      };
@@ -96,27 +101,26 @@ return ref.get();
 }
 
 
-  /**
-   */
 
 
-@ParameterType(".*")
-public app.books.Book book1 (String book1)throws Exception{
-if(Utils.isJson(book1)){
-      return new ObjectMapper().readValue(book1, app.books.Book.class);
+
+
+
+
+public app.books.Book addBook_book2;
+
+
+@Then("Add Book book {exp0}")
+public void validate_addBook_book2(String exp0 )throws Exception{
+    String left = CucumberUtils.getLeft(exp0);
+    String right = CucumberUtils.getRight(exp0);
+    String operator = CucumberUtils.getOperator(exp0);
+    boolean result = getResult(CucumberUtils.expToGetter("addBook_book2"+" "+left) +" "+ operator +" "+ CucumberUtils.expToGetter(right));
+    Assert.assertTrue(result);
 }
-      ExpressionParser parser = new SpelExpressionParser();
-      StandardEvaluationContext itemContext = getContext(book1);
-      if(itemContext == null){
-          itemContext = new StandardEvaluationContext(this);
-      }
-      Expression exp2 = parser.parseExpression(book1);
-      app.books.Book result = (app.books.Book) exp2.getValue(itemContext,app.books.Book.class);
 
-return result;
-  }
 
-public app.books.Book book1Value;
+ 
 
 
 @ParameterType(".*")
@@ -127,15 +131,15 @@ public app.books.Book book1Value;
  public String values0 (String values0) throws Exception{
         return values0;
  }
-@When("got addBook3 result set  {exps0} with {values0}")
-public  java.lang.Object[] app_books_BookCatalog_addBook(String exps0 ,String values0){
+@When("update Add Book  arguments{exps0} with {values0}")
+public java.lang.Object[] app_books_BookCatalog_addBook(String exps0 ,String values0){
 AtomicReference<Object[]> ref = new AtomicReference();
 try {
     CountDownLatch lock = new CountDownLatch(1);
     new ListenerServiceImpl() {
         @Override
-        public java.lang.Object[] app_books_BookCatalog_addBook(app.books.Book book1 ) {
-        book1Value = book1;
+        public java.lang.Object[] app_books_BookCatalog_addBook(app.books.Book book2 ) {
+        addBook_book2 = book2;
         String[] _exps = exps0.split(",");
         String[] _values = values0.split(",");
         for(int i=0;i<_exps.length;i++){
@@ -143,7 +147,7 @@ try {
             setResult(_exps[i],v);
         }
         lock.countDown();
-        return new Object[]{book1 };
+        return new Object[]{book2 };
          };
      };
     lock.await(10, TimeUnit.MINUTES);
@@ -152,6 +156,7 @@ try {
 }
 return ref.get();
 }
+
 
 
 }

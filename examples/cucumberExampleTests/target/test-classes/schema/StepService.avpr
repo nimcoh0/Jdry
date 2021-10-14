@@ -45,10 +45,10 @@
       }
     },
     "app_books_BookStore_addAllBooks" : {
-      "request" : [ {
+      "request" : [{
         "name" : "books",
         "type" : "java.util.Collection<app.books.Book>"
-      } ],
+      }],
       "method" : "addAllBooks",
       "transceiver" : "RPC",
       "response" : "void",

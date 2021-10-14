@@ -16,7 +16,7 @@
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
-            <artifactId>jdry-cucumber</artifactId>
+            <artifactId>jdry-cucumber-plugin</artifactId>
             <version>beta-1.0</version>
 
         </dependency>
@@ -67,6 +67,8 @@
             <version>6.10.4</version>
 
         </dependency>
+
+
     </dependencies>
     <build>
         <plugins>
@@ -82,14 +84,6 @@
                     <generatedTestSourcesDirectory>target/generated-test-sources/test-annotations</generatedTestSourcesDirectory>
                     <generatedSourcesDirectory>target/generated-sources</generatedSourcesDirectory>
                     <compilerArgument>-parameters</compilerArgument>
-                    <compilerArgs>
-                        <arg>-XDignore.symbol.file</arg>
-                        <compilerArgument>-proc:none</compilerArgument>
-                        <!--arg>-proc:only</arg-->
-
-
-                    </compilerArgs>
-                    <fork>true</fork>
 
                 </configuration>
 
@@ -238,8 +232,8 @@
                             <template>StepsCucumberImpl.vm</template>
                             <includes>StepService.avpr</includes>
                             <outputName>StepServiceCucumberImpl</outputName>
-                            <classpath>/${user.home}/.m2/repository/org/softauto/jdry-cucumber-plugin/beta-1.0/jdry-cucumber-plugin-beta-1.0.jar</classpath>
-                            <velocityToolsClassesNames>org.softauto.cucumber.Cucumber</velocityToolsClassesNames>
+                            <classpath>C:\work\myprojects\java\Jdry\jdry-cucumber-plugin\target/jdry-cucumber-1.0.0-SNAPSHOT.jar</classpath>
+                            <velocityToolsClassesNames>org.softauto.cucumber.CucumberUtils</velocityToolsClassesNames>
 
                         </configuration>
                     </execution>
@@ -259,8 +253,8 @@
                             <template>ListenerCucumberImpl.vm</template>
                             <includes>ListenerService.avpr</includes>
                             <outputName>ListenerServiceCucumberImpl</outputName>
-                            <classpath>/${user.home}/.m2/repository/org/softauto/jdry-cucumber-plugin/beta-1.0/jdry-cucumber-plugin-beta-1.0.jar</classpath>
-                            <velocityToolsClassesNames>org.softauto.cucumber.Cucumber</velocityToolsClassesNames>
+                            <classpath>C:\work\myprojects\java\Jdry\jdry-cucumber-plugin\target/jdry-cucumber-1.0.0-SNAPSHOT.jar</classpath>
+                            <velocityToolsClassesNames>org.softauto.cucumber.CucumberUtils</velocityToolsClassesNames>
                             <!--velocityResources>jar:file:${user.home}/.m2/repository/org/softauto/jdry-cucumber/beta-1.0/jdry-cucumber-1.0.0-SNAPSHOT.jar</velocityResources-->
                         </configuration>
                     </execution>
@@ -286,48 +280,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.3</version>
-                <executions>
-                    <execution>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                            <finalName>project-name-product-1.0.0-SNAPSHOT</finalName>
-                            <transformers>
 
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ComponentsXmlResourceTransformer"/>
-                                <transformer
-                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                <transformer implementation="com.github.edwgiz.mavenShadePlugin.log4j2CacheTransformer.PluginsCacheFileTransformer" />
-
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.github.edwgiz</groupId>
-                        <artifactId>maven-shade-plugin.log4j2-cachefile-transformer</artifactId>
-                        <version>2.6.1</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>

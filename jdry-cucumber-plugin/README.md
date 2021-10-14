@@ -98,7 +98,7 @@ set the jdry-maven-plugin
     			     <includes>StepService.avpr</includes>  
     			     <outputName>StepServiceCucumberImpl</outputName>  
     			     <classpath>/${user.home}/.m2/repository/org/softauto/jdry-cucumber-plugin/beta-1.0/jdry-cucumber-plugin-beta-1.0.jar</classpath>  
-    			     <velocityToolsClassesNames>org.softauto.cucumber.Cucumber</velocityToolsClassesNames>  
+    			     <velocityToolsClassesNames>org.softauto.cucumber.CucumberUtils</velocityToolsClassesNames>  
                 </configuration>  
     	    </execution>  
         <execution>  
@@ -114,7 +114,7 @@ set the jdry-maven-plugin
     			     <includes>localStepService.avpr</includes>  
     			     <outputName>LocalStepServiceCucumberImpl</outputName>  
     			     <classpath>/${user.home}/.m2/repository/org/softauto/jdry-cucumber-plugin/beta-1.0/jdry-cucumber-plugin-beta-1.0.jar</classpath>  
-    			     <velocityToolsClassesNames>org.softauto.cucumber.Cucumber</velocityToolsClassesNames>  
+    			     <velocityToolsClassesNames>org.softauto.cucumber.CucumberUtils</velocityToolsClassesNames>  
                </configuration>  
     	    </execution>  
     	    <execution>  
@@ -130,7 +130,7 @@ set the jdry-maven-plugin
     			     <includes>ListenerService.avpr</includes>  
     			     <outputName>ListenerServiceCucumberImpl</outputName>  
     			     <classpath>/${user.home}/.m2/repository/org/softauto/jdry-cucumber-plugin/beta-1.0/jdry-cucumber-plugin-beta-1.0.jar</classpath>  
-    			     <velocityToolsClassesNames>org.softauto.cucumber.Cucumber</velocityToolsClassesNames>  
+    			     <velocityToolsClassesNames>org.softauto.cucumber.CucumberUtils</velocityToolsClassesNames>  
                 </configuration>  
     	    </execution>
          </executions>  

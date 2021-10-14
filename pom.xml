@@ -30,7 +30,7 @@
         <!--module>jdry-logger</module-->
         <module>jdry-system</module>
         <module>jdry-listener</module>
-
+        <module>jdry-nlp</module>
 
 
     </modules>

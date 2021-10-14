@@ -21,6 +21,12 @@
             <artifactId>vertx-core</artifactId>
             <version>3.9.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-grpc</artifactId>
+            <version>beta-1.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

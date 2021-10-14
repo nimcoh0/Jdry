@@ -20,6 +20,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
 import io.cucumber.java.en.Then;
 import org.junit.Assert;
 import java.util.List;
+import org.softauto.cucumber.*;
 
 #if ($protocol.getDoc())
 /** $protocol.getDoc() */
@@ -45,36 +46,21 @@ public class $this.mangle($protocol.getName())CucumberImpl  extends CucumberAbst
 
 
 
- #set ($exp = $cucumber.getVarName("exp"))
-#set ($operator = $cucumber.getVarName("operator"))
-#set ($expected = $cucumber.getVarName("expected"))
+#set ($exp = $cucumberutils.getVarName("exp"))
 
  @ParameterType(".*")
  public String $exp (String $exp) throws Exception{
      return $exp;
  }
 
-@ParameterType(".*")
-public String $operator (String $operator)throws Exception{
-       return $operator;
-}
-@ParameterType(".*")
-public Object $expected (String $expected)throws Exception{
-      ExpressionParser parser = new SpelExpressionParser();
-      StandardEvaluationContext itemContext = getContext($expected);
-       if(itemContext == null){
-          itemContext = new StandardEvaluationContext(this);
-       }
-      Expression exp2 = parser.parseExpression($expected);
-      Object result = exp2.getValue(itemContext);
 
-return result;
-}
-
-@Then("validate listener result of {$exp} {$operator} {$expected}")
-public void validate(String $exp,String $operator,Object $expected)throws Exception{
-    boolean result = getResult($exp + " "+ $operator + " "+ $expected);
-    Assert.assertTrue(result);
+@Then("validate listener result of {$exp}")
+public void validate(String $exp)throws Exception{
+    String left = CucumberUtils.getLeft($exp);
+        String right = CucumberUtils.getRight($exp);
+        String operator = CucumberUtils.getOperator($exp);
+        boolean result = getResult(CucumberUtils.expToGetter(left) +" "+ operator +" "+ CucumberUtils.expToGetter(right));
+        Assert.assertTrue(result);
 }
 
 
@@ -82,51 +68,41 @@ public void validate(String $exp,String $operator,Object $expected)throws Except
 #set ($name = $e.getKey())
 #set ($message = $e.getValue())
 #set ($response = $message.getResponse())
-  /**
-#if ($message.getDoc())
-   * $this.escapeForJavadoc($message.getDoc())
-#end
+#set ($fullClassName = $message.getProp("namespace"))
+
+
 #foreach ($p in $message.getRequest().getFields())##
-#if ($p.doc())   * @param ${this.mangle($p.name())} $p.doc()
-#end
-#end
-   */
-#foreach ($annotation in $this.javaAnnotations($message))
-  @$annotation
-#end
-#if(!$name.contains("_result"))
-#foreach ($p in $message.getRequest().getFields())##
-#set ($varName = $cucumber.getVarName($p.name()))
+#set ($varName = $cucumberutils.getVarName($p.name()))
 $p.setName($varName)
-$cucumber.addVarName($varName)
-@ParameterType(".*")
-public ${this.javaUnbox($p.schema(),false)} $varName (String $varName)throws Exception{
-if(Utils.isJson($varName)){
-      return new ObjectMapper().readValue($varName, ${this.getOwnerTypeName(${this.javaUnbox($p.schema(),false)})}.class);
-}
-      ExpressionParser parser = new SpelExpressionParser();
-      StandardEvaluationContext itemContext = getContext($varName);
-      if(itemContext == null){
-          itemContext = new StandardEvaluationContext(this);
-      }
-      Expression exp2 = parser.parseExpression($varName);
-      ${this.javaUnbox($p.schema(),false)} result = (${this.javaUnbox($p.schema(),false)}) exp2.getValue(itemContext,${this.getOwnerTypeName(${this.javaUnbox($p.schema(),false)})}.class);
+$cucumberutils.addVarName($varName)
 
-return result;
-  }
+public ${this.javaUnbox($p.schema(),false)} $cucumberutils.getShortVarName(${this.mangle($name)})_$p.name();
 
-public ${this.javaUnbox($p.schema(),false)} ${varName}Value;
 
-#if($foreach.hasNext)#end
-#end
+#if($message.hasThenDescription())
+@Then("$message.getThenDescription()")
 #else
-#foreach ($p in $message.getRequest().getFields())##
- public  ${this.javaUnbox($p.schema(), false)}  $cucumber.getShortVarName(${this.mangle($name)})_$p.name()  ;
-#end ##
+#if(!$name.contains("_result"))##
+@Then("$cucumberutils.getDefaultSentence(${this.mangle($name)}) $cucumberutils.getOriginalVarName(${p.name()}) {$exp}")
+#else
+@Then("result of $cucumberutils.getDefaultSentence(${this.mangle($name)}) $cucumberutils.getOriginalVarName(${p.name()}) {$exp}")
 #end
-#set ($exps = $cucumber.getVarName("exps"))
-#set ($values = $cucumber.getVarName("values"))
+#end
+public void validate_$cucumberutils.getMethodName(${this.mangle($name)})_${p.name()}(String $exp )throws Exception{
+    String left = CucumberUtils.getLeft($exp);
+    String right = CucumberUtils.getRight($exp);
+    String operator = CucumberUtils.getOperator($exp);
+    boolean result = getResult(CucumberUtils.expToGetter("$cucumberutils.getShortVarName(${this.mangle($name)})_$p.name()"+" "+left) +" "+ operator +" "+ CucumberUtils.expToGetter(right));
+    Assert.assertTrue(result);
+}
 
+
+#end ## end of create parameterType
+
+
+
+#set ($exps = $cucumberutils.getVarName("exps"))
+#set ($values = $cucumberutils.getVarName("values"))
 #if(!$name.contains("_result"))##
 @ParameterType(".*")
  public String $exps (String $exps) throws Exception{
@@ -137,32 +113,24 @@ public ${this.javaUnbox($p.schema(),false)} ${varName}Value;
         return $values;
  }
 #end
-#if($message.hasDescription())
-@When("$message.getDescription()##
+#if($message.hasWhenDescription())
+@When("$message.getWhenDescription()")
 #else
-@When("got $cucumber.getVarName(${this.mangle($name)}) result##
+#if(!$name.contains("_result"))##
+@When("update $cucumberutils.getDefaultSentence(${this.mangle($name)})  arguments##
+#else
+@When("wait for result of  $cucumberutils.getDefaultSentence(${this.mangle($name)})##
 #end
 #if(!$name.contains("_result"))##
- set  {$exps} with {$values}##
-#end
+{$exps} with {$values}##
+#end##
 ")
-public ##
-#foreach ($p in $message.getRequest().getFields())##
-#if($p.schema().isGeneric())<${this.javaUnbox($p.schema(),false)}>#end#if($foreach.hasNext)#end ##
 #end
-java.lang.Object[] ${this.mangle($name)}(##
+public java.lang.Object[] ${this.mangle($name)}(##
 #if(!$name.contains("_result"))
 String $exps ,String $values##
 #end
-)#if (! $message.isOneWay() && $message.getErrors().getTypes().size() > 1)
- throws ##
-## The first error is always "string", so we skip it.
-#foreach ($error in $message.getErrors().getTypes().subList(1, $message.getErrors().getTypes().size()))
-${this.mangle($error.getFullName())}##
-#if ($foreach.hasNext), #end
-#end##    (error list)
-#end##    (one way)
-{
+){
 AtomicReference<Object[]> ref = new AtomicReference();
 try {
     CountDownLatch lock = new CountDownLatch(1);
@@ -175,7 +143,7 @@ ${this.javaUnbox($p.schema(), false)} $p.name()#if ($foreach.hasNext), #end
 ) {
 #if (${this.javaUnbox($response, true)} != "void" )
 #foreach ($p in $message.getRequest().getFields())
-        ${p.name()}Value = $p.name();
+        $cucumberutils.getShortVarName(${this.mangle($name)})_$p.name() = $p.name();
 #end
         String[] _exps = ${exps}.split(",");
         String[] _values = ${values}.split(",");
@@ -192,7 +160,7 @@ $p.name()#if ($foreach.hasNext), #end
          };
 #else
 #foreach ($p in $message.getRequest().getFields())##
-        $cucumber.getShortVarName(${this.mangle($name)})_$p.name()  = $p.name() ;
+        $cucumberutils.getShortVarName(${this.mangle($name)})_$p.name()  = $p.name() ;
 #end##
         ref.set(new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
@@ -209,6 +177,7 @@ $p.name()#if ($foreach.hasNext), #end
 }
 return ref.get();
 }
+
 
 
 #end

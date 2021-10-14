@@ -3,6 +3,7 @@ package org.softauto.plugin;
 
 import org.softauto.plugin.api.Provider;
 import org.softauto.plugin.spi.PluginProvider;
+import org.softauto.plugin.spi.PluginTypes;
 
 import java.util.*;
 
@@ -23,8 +24,10 @@ public class ProviderManager {
         try {
             ServiceLoader<PluginProvider> loader = ServiceLoader.load(PluginProvider.class, ProviderManager.class.getClassLoader());
             loader.forEach(provider -> {
-                services.add(provider);
-                logger.debug("found plugin " + provider.getName());
+                if(provider.getType().equals(PluginTypes.regular)) {
+                    services.add(provider);
+                    logger.debug("found plugin " + provider.getName());
+                }
             });
             logger.debug("found " + services.size() + " plugins");
         }catch (Exception e){
@@ -68,7 +71,9 @@ public class ProviderManager {
         try {
             List<PluginProvider> pluginProviders = providers();
             for (PluginProvider p : pluginProviders) {
-                providers.add(p.create());
+                if(p.getType().equals(PluginTypes.regular)) {
+                    providers.add(p.create());
+                }
             }
             logger.debug("found " + providers.size() + " providers " + Arrays.toString(providers.toArray()));
         }catch (Exception e){
@@ -97,4 +102,20 @@ public class ProviderManager {
         return null;
     }
 
+
+    public static List<Provider> getExtendedProviders(){
+        List<Provider> providers = new ArrayList<>();
+        try {
+            List<PluginProvider> pluginProviders = providers();
+            for (PluginProvider p : pluginProviders) {
+                if(p.getType().equals(PluginTypes.extended)) {
+                    providers.add(p.create());
+                }
+            }
+            logger.debug("found " + providers.size() + " extended providers " + Arrays.toString(providers.toArray()));
+        }catch (Exception e){
+            logger.error("fail getting extended provider list ",e);
+        }
+        return providers;
+    }
 }
