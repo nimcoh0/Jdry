@@ -24,12 +24,13 @@
         <module>jdry-testng-plugin</module>
         <module>jdry-socket-annotations</module>
         <module>jdry-socket</module>
+        <module>jdry-simple-socket</module>
         <module>jdry-jaxrs-annotations</module>
         <module>jdry-cucumber-plugin</module>
         <module>jdry-local</module>
         <!--module>jdry-logger</module-->
         <module>jdry-system</module>
-        <module>jdry-listener</module>
+        <module>jdry-listener-manager</module>
         <module>jdry-nlp</module>
 
 
@@ -174,6 +175,7 @@
             <artifactId>json</artifactId>
             <version>20201115</version>
         </dependency>
+
     </dependencies>
 
     <build>

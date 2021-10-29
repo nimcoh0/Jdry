@@ -1,16 +1,12 @@
-package org.softauto.listener.impl;
+package org.softauto.logger.impl;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.softauto.core.Utils;
-import org.softauto.listener.ListenerClientProviderImpl;
-import org.softauto.listener.LogBuilder;
+
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Logger {
 
@@ -22,10 +18,10 @@ public class Logger {
 
     private  static ExecutorService executor = Executors.newFixedThreadPool(50);
 
-    static void init(){
+    static public void init(Object serviceImpl){
         try {
-            serviceImpl = ListenerClientProviderImpl.getInstance().getServiceImpl();
-            method = serviceImpl.getClass().getDeclaredMethod("execute", new Class[]{String.class,Object[].class,Class[].class,java.lang.String.class});
+            //serviceImpl = ListenerClientProviderImpl.getInstance().getServiceImpl();
+            method = serviceImpl.getClass().getDeclaredMethod("execute", new Class[]{String.class,Object[].class,Class[].class});
         }catch (Exception e){
             logger.error("ServiceImpl not found ",e);
         }
@@ -88,10 +84,7 @@ public class Logger {
     }
 
     public  static void log(String level,String marker,String log,String clazz,String ex) {
-        if (!isInit) {
-            init();
-            isInit = true;
-        }
+
         try {
             if (ex == null) {
                 String fqmn = "org_auto_tests_log";

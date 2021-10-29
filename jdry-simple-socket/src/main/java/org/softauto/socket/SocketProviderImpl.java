@@ -3,11 +3,11 @@ package org.softauto.socket;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
-import org.softauto.core.CallFuture;
 import org.softauto.core.CallbackToResponseStreamObserverAdpater;
 import org.softauto.core.Configuration;
 import org.softauto.core.ServiceLocator;
 import org.softauto.plugin.api.Provider;
+import org.softauto.serializer.CallFuture;
 import org.softauto.socket.schema.MessageHandler;
 
 import javax.lang.model.element.Element;
@@ -48,6 +48,7 @@ public class SocketProviderImpl implements Provider {
         this.iface = iface;
         return this;
     }
+
 
 
 
@@ -108,7 +109,7 @@ public class SocketProviderImpl implements Provider {
      * @param <RespT>
      */
     @Override
-    public <RespT> void exec(String methodName,  CallFuture<RespT> callback, ManagedChannel channel,Object[] args) {
+    public <RespT> void exec(String methodName,  CallFuture<RespT> callback, ManagedChannel channel,Object...args) {
         try{
             executor.submit(()->{
                 String host = Configuration.get("socket/host").asText();

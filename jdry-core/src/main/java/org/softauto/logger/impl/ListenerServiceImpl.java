@@ -1,4 +1,4 @@
-package org.softauto.listener;
+package org.softauto.logger.impl;
 
 import org.softauto.core.Configuration;
 import org.softauto.core.Context;
@@ -10,14 +10,26 @@ public class ListenerServiceImpl {
 
     private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(ListenerServiceImpl.class);
 
+    static Class iface;
+    static String servicename = "tests.infrastructure.ListenerServiceLog";
 
-    public static Object[] execute(String methodName, Object[] args, Class[] types,String service) throws Exception {
+    public ListenerServiceImpl setServicename(String servicename) {
+        this.servicename = servicename;
+        return this;
+    }
+
+    public ListenerServiceImpl setIface(Class iface) {
+        this.iface = iface;
+        return this;
+    }
+
+
+    public static Object[] execute(String methodName, Object[] args, Class[] types) throws Exception {
         Object result = null;
         try {
-            Class iface = ListenerClientProviderImpl.getInstance().getServiceClass(service);
-            if (iface.getMethod(methodName, types) != null) {
+           if (iface.getMethod(methodName, types) != null) {
                 Serializer serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).buildChannel();
-                Message message = Message.newBuilder().setService(service).setDescriptor(methodName).setArgs(args).setTypes(types).build();
+                Message message = Message.newBuilder().setService(servicename).setDescriptor(methodName).setArgs(args).setTypes(types).build();
                 result = serializer.write(message);
                 logger.debug("send message successfully " + methodName);
             }

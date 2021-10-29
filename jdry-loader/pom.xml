@@ -18,7 +18,7 @@
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
-            <artifactId>jdry-listener</artifactId>
+            <artifactId>jdry-listener-old</artifactId>
             <version>beta-1.0</version>
 
         </dependency>
@@ -42,7 +42,12 @@
             <artifactId>jdry-grpc</artifactId>
             <version>${jdry-grpc}</version>
         </dependency>
+        <!--dependency>
+            <groupId>org.example</groupId>
+            <artifactId>jdry-listener</artifactId>
+            <version>1.0-SNAPSHOT</version>
 
+        </dependency-->
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-kryo-serialization</artifactId>
@@ -50,6 +55,17 @@
         </dependency>
 
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.example</groupId>
+                <artifactId>jdry-listener</artifactId>
+                <version>1.0-SNAPSHOT</version>
+
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
 <pluginManagement>

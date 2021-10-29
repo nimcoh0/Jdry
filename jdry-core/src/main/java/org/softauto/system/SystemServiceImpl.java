@@ -12,6 +12,7 @@ import org.softauto.core.Utils;
 import org.softauto.jvm.HeapHelper;
 import org.softauto.logger.Log4j2Utils;
 import org.softauto.logger.LogManager;
+import org.softauto.logger.impl.ListenerServiceImpl;
 import org.softauto.plugin.ProviderManager;
 import org.softauto.plugin.spi.PluginProvider;
 
@@ -129,6 +130,7 @@ public class SystemServiceImpl {
             loadPlugins();
             //InjectorInit.getInstance().initilize().register();
             loadHeapHelper();
+            initLogger();
             setConnection(true);
             logger.info("Injector Load successfully ");
         }catch(Exception e){
@@ -137,9 +139,17 @@ public class SystemServiceImpl {
         }
     }
 
+    private void initLogger(){
+        ListenerServiceImpl listenerServiceImpl = new ListenerServiceImpl();
+        Class ifaceLog = Utils.getRemoteOrLocalClass(org.softauto.core.Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , Context.LISTENER_SERVICE_LOG,org.softauto.core.Configuration.get(Context.TEST_MACHINE).asText());
+        listenerServiceImpl.setIface(ifaceLog);
+        org.softauto.logger.impl.Logger.init(listenerServiceImpl);
+    }
+
+
     private  void loadHeapHelper(){
         try {
-            String path = Configuration.get(Context.TEMP_DIRECTORY).asText();
+            String path = System.getenv("temp");
             String name = "libHeapHelper.dll";
             loadLib(path,name);
             String pid = ManagementFactory.getRuntimeMXBean().getName().split("@")[0];

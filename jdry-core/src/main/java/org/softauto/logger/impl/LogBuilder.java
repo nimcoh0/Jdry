@@ -1,4 +1,4 @@
-package org.softauto.listener;
+package org.softauto.logger.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -11,7 +11,7 @@ public class LogBuilder {
     private Class<String>[] classes;
     private Object[] arguments;
 
-    public LogBuilder(Class<String>[] classes,Object[] arguments){
+    public LogBuilder(Class<String>[] classes, Object[] arguments){
         this.arguments = arguments;
         this.classes = classes;
     }
