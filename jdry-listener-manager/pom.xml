@@ -25,24 +25,25 @@
             <version>${jdry-core}</version>
 
         </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-listener</artifactId>
+            <version>beta-1.0</version>
 
+        </dependency>
 
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>${reflections}</version>
         </dependency>
-        <!--dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>1.9.6</version>
-        </dependency>
+
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
             <version>1.9.6</version>
 
-        </dependency-->
+        </dependency>
         <!--dependency>
             <groupId>com.sun</groupId>
             <artifactId>tools</artifactId>
@@ -50,26 +51,20 @@
             <scope>system</scope>
             <systemPath>${java.home}/../lib/tools.jar</systemPath>
         </dependency-->
-        <!--dependency>
+        <dependency>
             <groupId>com.github.olivergondza</groupId>
             <artifactId>maven-jdk-tools-wrapper</artifactId>
             <version>0.1</version>
-        </dependency-->
-        <!--dependency>
+        </dependency>
+        <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjtools</artifactId>
             <version>1.9.6</version>
-        </dependency-->
+        </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>2.14.1</version>
-
-        </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-listener</artifactId>
-            <version>beta-1.0</version>
 
         </dependency>
         <dependency>
@@ -78,8 +73,6 @@
             <version>3.5</version>
         </dependency>
     </dependencies>
-
-
 
     <build>
         <plugins>

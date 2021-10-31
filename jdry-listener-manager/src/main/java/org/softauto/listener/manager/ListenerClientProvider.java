@@ -1,4 +1,4 @@
-package org.softauto.listenerold;
+package org.softauto.listener.manager;
 
 import org.softauto.plugin.api.Provider;
 import org.softauto.plugin.spi.PluginProvider;

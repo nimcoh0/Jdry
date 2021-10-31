@@ -5,7 +5,7 @@ Permissions: all-permission
 Can-Redefine-Classes: true
 Can-Retransform-Classes: true
 Can-Set-Native-Method-Prefix: true
-Class-Path: C:/Program Files/Java/jdk1.8.0_161/lib/tools.jar jdry-loader-beta-1.0-jar-with-dependencies.jar
+
 
 
 

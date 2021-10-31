@@ -1,4 +1,4 @@
-package org.softauto.listenerold;
+package org.softauto.listener.manager;
 
 import org.softauto.core.Configuration;
 import org.softauto.core.Context;
@@ -11,18 +11,8 @@ public class ListenerServiceImpl implements ListenerService {
 
 
     private  final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(ListenerServiceImpl.class);
-    Class iface;
     String servicename = "tests.infrastructure.ListenerService";
 
-    public ListenerServiceImpl setServicename(String servicename) {
-        this.servicename = servicename;
-        return this;
-    }
-
-    public ListenerServiceImpl setIface(Class iface) {
-        this.iface = iface;
-        return this;
-    }
 
 
 
@@ -32,7 +22,7 @@ public class ListenerServiceImpl implements ListenerService {
         try {
 
                 Serializer serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).buildChannel();
-                Message message = Message.newBuilder().setService(servicename).setService(ServiceType.BEFORE.toString()).setDescriptor(methodName).setArgs(args).setTypes(types).build();
+                Message message = Message.newBuilder().setService(servicename).setDescriptor(methodName).setArgs(args).setTypes(types).build();
                 result = serializer.write(message);
                 logger.debug("send message successfully " + methodName);
 
@@ -61,7 +51,7 @@ public class ListenerServiceImpl implements ListenerService {
         try {
 
                 Serializer serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).buildChannel();
-                Message message = Message.newBuilder().setService(servicename).setService(ServiceType.AFTER.toString()).setDescriptor(methodName).setArgs(args).setTypes(types).build();
+                Message message = Message.newBuilder().setService(servicename).setDescriptor(methodName).setArgs(args).setTypes(types).build();
                 result = serializer.write(message);
                 logger.debug("send message successfully " + methodName);
 

@@ -78,6 +78,8 @@ public class ListenerServerProviderImpl implements Provider {
                 Configuration.setConfiguration(objectMapper.readTree(new File(System.getProperty("user.dir")+"/Configuration.yaml")));
                 Configuration.put(Context.TEST_MACHINE,Utils.getMachineIp());
                 Configuration.put(Context.TEST_MACHINE_NAME,Utils.getMachineName());
+                if(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH) == null)
+                    Configuration.put(Context.TEST_INFRASTRUCTURE_PATH,System.getProperty("user.dir")+"/target/test-classes/tests/infrastructure");
             }
            logger.debug("configuration load successfully ");
         }catch(Exception e){

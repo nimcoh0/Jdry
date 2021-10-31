@@ -32,8 +32,7 @@ public class RpcProviderImpl implements Provider {
     /** default grpc server port **/
     int port = 8085;
 
-    /** default system server port **/
-    int systemPort = 8086;
+
 
     Server server = null;
 

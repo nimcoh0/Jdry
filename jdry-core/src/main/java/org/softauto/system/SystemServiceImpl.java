@@ -130,7 +130,7 @@ public class SystemServiceImpl {
             loadPlugins();
             //InjectorInit.getInstance().initilize().register();
             loadHeapHelper();
-            initLogger();
+            //initLogger();
             setConnection(true);
             logger.info("Injector Load successfully ");
         }catch(Exception e){
