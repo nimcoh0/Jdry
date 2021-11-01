@@ -61,9 +61,9 @@ and set the correct protocol you want to use @RPC for grpc ,@JXRS for jax-rs and
  run mvn clean install -P schema 
 > that will create the schema files . TestService.avpr for ExportForTesting & ListenerService.avpr for ListenerForTesting under  target\generated-sources\annotations\tests\infrastructure
 
- add  the Java agent (loader)  to the SUT project vm options 
-
-    -javaagent:<path>/jdry-loader-1.0.0-jar.jar
+ add  the Java agent (loader)  to the SUT project vm options . download from templates or download the project and compile it 
+ 
+    -javaagent:<path>/jdry-agent-beta-1.0.jar
 
 
 
