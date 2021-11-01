@@ -78,6 +78,13 @@ and set the correct protocol you want to use @RPC for grpc ,@JXRS for jax-rs and
      </aspects>
     </aspectj>
 
+add 
+	<dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-annotations</artifactId>
+            <version>beta-1.0</version>
+        </dependency>
+	
 ## Tester
 the simple why is [quick start ](https://github.com/nimcoh0/Jdry/wiki/Quick-Start)
 or for more details read the rest of the file .
