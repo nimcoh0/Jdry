@@ -13,7 +13,7 @@ import org.apache.logging.log4j.MarkerManager;
 @org.apache.avro.specific.AvroGenerated
 public class ListenerServiceLogImpl implements ListenerServiceLog{
 
-    private static Logger logger = LogManager.getLogger(ListenerServiceLogImpl.class);
+    private static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ListenerServiceLogImpl.class);
 
     public void org_auto_tests_exception(String exception){
 

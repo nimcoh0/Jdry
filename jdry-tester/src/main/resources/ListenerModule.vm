@@ -11,7 +11,7 @@ import org.softauto.core.Utils;
 @org.apache.avro.specific.AvroGenerated
 public class ListenerModule extends AbstractModule {
 
-    private static Logger logger = LogManager.getLogger(ListenerModule.class);
+    private static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ListenerModule.class);
 
 
     @Override

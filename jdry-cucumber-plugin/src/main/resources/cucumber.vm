@@ -37,7 +37,7 @@ import org.softauto.system.SystemProviderImpl;
 @org.apache.avro.specific.AvroGenerated
 public class CucumberAbstractTesterImpl {
 
-    private static final Logger logger = LogManager.getLogger(CucumberAbstractTesterImpl.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(CucumberAbstractTesterImpl.class);
     static boolean initialize = false;
     public static StepService tests;
     public static LocalStepService localTests;
@@ -83,12 +83,12 @@ public class CucumberAbstractTesterImpl {
    public void testStart(){
         SystemProviderImpl.getInstance().startTest("bb");
         //ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceImpl",ListenerInit.getInstance().getListenerServiceImpl());
-        org.softauto.logger.LogManager.setStatus(true);
+        //org.softauto.logger.LogManager.setStatus(true);
    }
 
 
     public void endTest(io.cucumber.java.Scenario scenario){
-        org.softauto.logger.LogManager.setStatus(false);
+        //org.softauto.logger.LogManager.setStatus(false);
         SystemProviderImpl.getInstance().endTest(scenario.getName());
         ListenerObserver.getInstance().reset();
 

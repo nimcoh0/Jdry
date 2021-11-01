@@ -11,10 +11,14 @@ public class LogBuilder {
     private Class<String>[] classes;
     private Object[] arguments;
 
+
     public LogBuilder(Class<String>[] classes, Object[] arguments){
         this.arguments = arguments;
         this.classes = classes;
+
     }
+
+
 
     public String toJson(){
         try {
@@ -37,6 +41,9 @@ public class LogBuilder {
     public static class Builder {
         private Class<String>[] classes;
         private Object[] arguments;
+
+
+
 
         public Class[] getClasses() {
             return classes;

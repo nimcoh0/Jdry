@@ -32,6 +32,7 @@
         <module>jdry-system</module>
         <module>jdry-listener-manager</module>
         <module>jdry-nlp</module>
+        <!--module>jdry-logger</module-->
 
 
     </modules>

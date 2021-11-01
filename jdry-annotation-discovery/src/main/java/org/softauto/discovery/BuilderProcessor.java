@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 @AutoService(Processor.class)
 public class BuilderProcessor extends AbstractProcessor {
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(BuilderProcessor.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(BuilderProcessor.class);
 
     private static String SCHEMA_VERSION = "1.0";
     private static String SCHEMA_NAMESPACE = "tests.infrastructure";

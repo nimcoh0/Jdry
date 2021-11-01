@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 public class SystemClient {
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(SystemClient.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(SystemClient.class);
     public static <T> T create(Class<T> iface) {
         return create(iface, CallOptions.DEFAULT);
     }

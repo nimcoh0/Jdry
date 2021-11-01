@@ -2,6 +2,7 @@ package org.softauto.loader;
 
 import org.softauto.grpc.RpcProviderImpl;
 
+
 import java.lang.instrument.Instrumentation;
 
 /**
@@ -11,12 +12,13 @@ import java.lang.instrument.Instrumentation;
  */
 public class Loader {
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(Loader.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Loader.class);
 
 
     public static void agentmain(String agentArgs, Instrumentation instrumentation){
         try {
             RpcProviderImpl.getInstance().initilize().register();
+
         }catch(Exception e){
             logger.fatal("jdry agent attach to vm fail ",e);
             System.exit(1);
@@ -31,6 +33,7 @@ public class Loader {
     public static void premain(String agentArgument, Instrumentation instrumentation){
              try {
                 RpcProviderImpl.getInstance().initilize().register();
+
             }catch(Exception e){
                 logger.fatal("jdry agent load fail ",e);
                 System.exit(1);

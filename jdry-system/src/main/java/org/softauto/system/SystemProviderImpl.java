@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class SystemProviderImpl implements Provider {
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(SystemProviderImpl.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(SystemProviderImpl.class);
     SystemService systemService = null;
     /**
      * this provider name

@@ -53,7 +53,8 @@ public class JdryXMLConfiguration extends XmlConfiguration{
         AppenderRef rollingRef = AppenderRef.createAppenderRef("rolling", null, null);
         AppenderRef[] refs = new AppenderRef[] {ref,rollingRef};
         LoggerConfig loggerConfig = LoggerConfig.createLogger("false", Level.ALL, loggerName,"true", refs, null, config, null );
-        loggerConfig.addAppender(appender, Level.DEBUG, jdryFilter);
+        //loggerConfig.addAppender(appender, Level.DEBUG, jdryFilter);
+        loggerConfig.addAppender(appender, Level.DEBUG, null);
         loggerConfig.addAppender(rolling, Level.TRACE, tracerFilter);
         addLogger(loggerName, loggerConfig);
         }

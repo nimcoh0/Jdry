@@ -12,7 +12,7 @@ import javax.lang.model.element.Element;
  */
 public class MessageHandler extends AbstractMessage {
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(MessageHandler.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(MessageHandler.class);
 
     @Override
     public JsonNode parser(Element element) {

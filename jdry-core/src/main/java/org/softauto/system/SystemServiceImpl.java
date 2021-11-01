@@ -10,10 +10,9 @@ import org.softauto.core.Configuration;
 import org.softauto.core.Context;
 import org.softauto.core.Utils;
 import org.softauto.jvm.HeapHelper;
-import org.softauto.logger.Log4j2Utils;
-import org.softauto.logger.LogManager;
 import org.softauto.logger.impl.ListenerServiceImpl;
 import org.softauto.plugin.ProviderManager;
+import org.softauto.plugin.api.Provider;
 import org.softauto.plugin.spi.PluginProvider;
 
 import java.io.*;
@@ -32,7 +31,7 @@ public class SystemServiceImpl {
     /** indecate if the syatem was loaded */
     boolean loaded = false;
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(SystemServiceImpl.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(SystemServiceImpl.class);
 
     private static final Marker TRACER = MarkerManager.getMarker("TRACER");
 
@@ -63,7 +62,7 @@ public class SystemServiceImpl {
     public void startTest(String testname){
         logger.info(" **************** start test "+ testname+ " ******************");
         logger.info(TRACER," **************** start test "+ testname+ " ******************");
-        LogManager.setStatus(true);
+        //LogManager.setStatus(true);
 
     }
 
@@ -80,7 +79,7 @@ public class SystemServiceImpl {
             logger.info(" **************** end test " + testname + " ******************");
             logger.info(TRACER, " **************** end test " + testname + " ******************");
             logger.info(TRACER, "roll test");
-            LogManager.setStatus(false);
+            //LogManager.setStatus(false);
 
         }catch (Exception e){
             logger.error("fail end test ",e);
@@ -95,7 +94,7 @@ public class SystemServiceImpl {
     public int configuration(JsonNode configuration) {
         Configuration.setConfiguration(configuration);
         if(!loaded) {
-            Log4j2Utils.changeLogLevel(Configuration.get("log_level").asText());
+            //Log4j2Utils.changeLogLevel(Configuration.get("log_level").asText());
             load();
             loaded = true;
         }else {
@@ -126,25 +125,21 @@ public class SystemServiceImpl {
     private  void load()  {
         try {
             initGuice();
+            initLoger();
             //RpcProviderImpl.getInstance().initilize();
             loadPlugins();
             //InjectorInit.getInstance().initilize().register();
             loadHeapHelper();
             //initLogger();
             setConnection(true);
-            logger.info("Injector Load successfully ");
+            logger.info(Context.JDRY,"Injector Load successfully ");
         }catch(Exception e){
             logger.fatal("init fail ",e);
             System.exit(1);
         }
     }
 
-    private void initLogger(){
-        ListenerServiceImpl listenerServiceImpl = new ListenerServiceImpl();
-        Class ifaceLog = Utils.getRemoteOrLocalClass(org.softauto.core.Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , Context.LISTENER_SERVICE_LOG,org.softauto.core.Configuration.get(Context.TEST_MACHINE).asText());
-        listenerServiceImpl.setIface(ifaceLog);
-        org.softauto.logger.impl.Logger.init(listenerServiceImpl);
-    }
+
 
 
     private  void loadHeapHelper(){
@@ -216,5 +211,18 @@ public class SystemServiceImpl {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public void initLoger() throws IOException {
+        try {
+            ListenerServiceImpl listenerServiceImpl = new ListenerServiceImpl();
+            Class ifaceLog = Utils.getRemoteOrLocalClass(org.softauto.core.Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Context.LISTENER_SERVICE_LOG, org.softauto.core.Configuration.get(Context.TEST_MACHINE).asText());
+            listenerServiceImpl.setIface(ifaceLog);
+            org.softauto.logger.impl.Logger.init(listenerServiceImpl);
+            logger.info("successfully load Logger");
+        }catch (Exception e){
+            logger.error("fail to load logger",e);
+        }
+
     }
 }

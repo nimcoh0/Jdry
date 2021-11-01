@@ -26,7 +26,7 @@ import java.io.InputStream;
 
 /** Utility methods for using Avro IDL and serialization with gRPC. */
 public final class SoftautoGrpcUtils {
-  private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(SoftautoGrpcUtils.class);
+  private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(SoftautoGrpcUtils.class);
   private SoftautoGrpcUtils() {
   }
 

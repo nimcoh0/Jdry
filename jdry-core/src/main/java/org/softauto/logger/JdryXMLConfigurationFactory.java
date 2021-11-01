@@ -6,9 +6,6 @@ import org.apache.logging.log4j.core.config.ConfigurationFactory;
 import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.Order;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
-import org.softauto.core.Context;
-import org.softauto.core.Utils;
-import org.softauto.logger.impl.ListenerServiceImpl;
 
 /**
  * log4j2 extend for trace & jdry logs. it will use SUT log4j2.xml or if not exist

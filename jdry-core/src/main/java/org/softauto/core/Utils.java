@@ -11,6 +11,10 @@ import org.apache.avro.Schema;
 import org.apache.avro.ipc.Callback;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.softauto.annotations.DefaultValue;
 import org.softauto.jvm.HeapHelper;
 import org.softauto.serializer.CallFuture;
@@ -754,5 +758,23 @@ public class Utils {
             }
         }
         return null;
+    }
+
+    public static String getCurrentTimeUTCAsString(){
+        return convertToDbTimeStr(getCurrentTimeUTC());
+    }
+
+    public static DateTime getCurrentTimeUTC() {
+        return new DateTime(DateTimeZone.UTC);
+    }
+
+    private static DateTimeFormatter getDateTimeFormatter(String format) {
+        return DateTimeFormat.forPattern(format).withZoneUTC();
+    }
+
+    public static String convertToDbTimeStr(DateTime dateTime) {
+        DateTimeFormatter dtf = getDateTimeFormatter(Context.DEFUALT_DATETIME_FORMAT);
+        return dtf.print(dateTime);
+
     }
 }

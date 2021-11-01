@@ -6,7 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 public class Hex implements BinaryEncoder, BinaryDecoder{
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(Hex.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Hex.class);
     public static final Charset DEFAULT_CHARSET;
     public static final String DEFAULT_CHARSET_NAME = "UTF-8";
     private static final char[] DIGITS_LOWER;

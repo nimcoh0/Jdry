@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class ListenerObserver {
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(ListenerObserver.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ListenerObserver.class);
     private List<HashMap<String,Object>> channels = null;
 
     private static ListenerObserver listenerObserver = null;

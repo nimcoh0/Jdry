@@ -10,7 +10,7 @@ import org.apache.logging.log4j.core.config.LoggerConfig;
  */
 public class Log4j2Utils {
 
-    private static final Logger logger = LogManager.getLogger(Log4j2Utils.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Log4j2Utils.class);
 
     /**
      * change log level at run time

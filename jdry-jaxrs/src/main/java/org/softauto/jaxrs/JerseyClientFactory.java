@@ -12,7 +12,7 @@ import org.softauto.jaxrs.auto.SslSelfSigned;
  */
 public class JerseyClientFactory {
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(JerseyClientFactory.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(JerseyClientFactory.class);
 
     public JerseyClientFactory(){
 

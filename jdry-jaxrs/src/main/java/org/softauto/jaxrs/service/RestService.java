@@ -16,7 +16,7 @@ import java.util.Map;
 public class RestService {
 
     private static ServiceDefinition serviceDefinition = null;
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(RestService.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(RestService.class);
 
     public static ServiceDefinition getServiceDefinition(){
          return serviceDefinition;

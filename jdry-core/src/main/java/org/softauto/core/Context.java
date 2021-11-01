@@ -1,5 +1,8 @@
 package org.softauto.core;
 
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
+
 import java.util.HashMap;
 
 public class Context {
@@ -32,4 +35,8 @@ public class Context {
     public final static String LISTENER_MODULE = "listener_module";
     public final static String ASPECT_WEAVER = "aspectjweaver";
     public final static String M2_ROOT = "m2_root";
+    public final static String SEND_LOG_TO_TESTER = "send_log_to_tester";
+    public final static Marker TRACER = MarkerManager.getMarker("TRACER");
+    public final static Marker JDRY = MarkerManager.getMarker("JDRY");
+    public static final String DEFUALT_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 }

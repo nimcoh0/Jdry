@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 public class ChannelDescriptor extends AbstractHttp {
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(ChannelDescriptor.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ChannelDescriptor.class);
 
     private String host;
 

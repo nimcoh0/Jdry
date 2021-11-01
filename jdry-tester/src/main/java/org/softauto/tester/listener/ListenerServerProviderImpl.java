@@ -27,7 +27,7 @@ import java.io.File;
  */
 public class ListenerServerProviderImpl implements Provider {
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(ListenerServerProviderImpl.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ListenerServerProviderImpl.class);
     private static ListenerServerProviderImpl listenerProviderImpl = null;
     ObjectMapper objectMapper;
     Injector injector;

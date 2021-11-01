@@ -25,7 +25,7 @@ import org.softauto.system.SystemProviderImpl;
 @org.apache.avro.specific.AvroGenerated
 public class AbstractTesterImpl {
 
-    private static final Logger logger = LogManager.getLogger(AbstractTesterImpl.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(AbstractTesterImpl.class);
     static boolean initialize = false;
     public StepService tests;
     public LocalStepService localTests;
@@ -59,12 +59,12 @@ public class AbstractTesterImpl {
    public void testStart(Method method){
         SystemProviderImpl.getInstance().startTest(method.getName());
         //ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceImpl",ListenerInit.getInstance().getListenerServiceImpl());
-        org.softauto.logger.LogManager.setStatus(true);
+        //org.softauto.logger.LogManager.setStatus(true);
    }
 
     @AfterMethod
     public void endTest(Method method){
-        org.softauto.logger.LogManager.setStatus(false);
+        //org.softauto.logger.LogManager.setStatus(false);
         SystemProviderImpl.getInstance().endTest(method.getName());
         ListenerObserver.getInstance().reset();
 

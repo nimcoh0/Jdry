@@ -26,7 +26,7 @@ public class MethodDescriptor {
     String[] content;
 
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(MethodDescriptor.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(MethodDescriptor.class);
 
 
     public String getFullMethodName() {

@@ -5,8 +5,7 @@ Permissions: all-permission
 Can-Redefine-Classes: true
 Can-Retransform-Classes: true
 Can-Set-Native-Method-Prefix: true
-
-
+Class-Path: jdry-logger-beta-1.0-jar-with-dependencies.jar jdry-loader-beta-1.0-jar-with-dependencies.jar
 
 
 

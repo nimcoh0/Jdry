@@ -11,7 +11,7 @@ public abstract class AbstractServiceDescriptor {
     protected static final ConcurrentMap<String, AbstractServiceDescriptor> SERVICE_DESCRIPTORS = new ConcurrentHashMap<>();
     protected  String serviceName;
     protected Protocol protocol;
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(AbstractServiceDescriptor.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(AbstractServiceDescriptor.class);
 
     public Protocol getProtocol() {
         return protocol;

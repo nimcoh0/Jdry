@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentMap;
 
 public class ServiceDescriptor {
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(ServiceDescriptor.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ServiceDescriptor.class);
     // cache for service descriptors.
     private static final ConcurrentMap<String, ServiceDescriptor> SERVICE_DESCRIPTORS = new ConcurrentHashMap<>();
     private  String serviceName;

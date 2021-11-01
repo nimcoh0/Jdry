@@ -31,7 +31,7 @@ import org.softauto.cucumber.*;
 @org.apache.avro.specific.AvroGenerated
 public class $this.mangle($protocol.getName())CucumberImpl  extends CucumberAbstractTesterImpl{
 #if($protocol.getMessages().size() > 0)
-    private static Logger logger = LogManager.getLogger($this.mangle($protocol.getName())CucumberImpl.class);
+    private static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger($this.mangle($protocol.getName())CucumberImpl.class);
 
     public $this.mangle($protocol.getName())CucumberImpl(){
           try {

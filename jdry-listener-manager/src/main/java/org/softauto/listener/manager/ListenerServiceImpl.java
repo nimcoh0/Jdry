@@ -10,7 +10,7 @@ import org.softauto.serializer.service.Message;
 public class ListenerServiceImpl implements ListenerService {
 
 
-    private  final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(ListenerServiceImpl.class);
+    private  final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ListenerServiceImpl.class);
     String servicename = "tests.infrastructure.ListenerService";
 
 

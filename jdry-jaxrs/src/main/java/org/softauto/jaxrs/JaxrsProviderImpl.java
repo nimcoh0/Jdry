@@ -22,7 +22,7 @@ public class JaxrsProviderImpl implements Provider {
 
 
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(JaxrsProviderImpl.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(JaxrsProviderImpl.class);
     private static JaxrsProviderImpl jaxrsProviderImpl = null;
     Class iface;
     ServiceDefinition serviceDefinition;

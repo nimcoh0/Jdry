@@ -2,10 +2,7 @@
 serializer_port: "8085"
 listener_port: "9091"
 serializer_host: "localhost"
-m2_root: "C:/Users/nimco/.m2/"
 tests_infrastructure_path: "C:/work/myprojects/java/jdry/examples/cucumberExampleTests/target/classes/tests/infrastructure"
-temp_directory: "C:/temp"
-
 #log
 log_level: "trace"
 

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  */
 public class Configuration {
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(Configuration.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Configuration.class);
     static JsonNode configuration;
 
     public static void setConfiguration(JsonNode configuration){

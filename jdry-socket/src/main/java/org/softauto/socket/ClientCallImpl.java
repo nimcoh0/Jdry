@@ -12,7 +12,7 @@ public class ClientCallImpl {
     private static SocketChannel client;
     private static ByteBuffer buffer;
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(ClientCallImpl.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ClientCallImpl.class);
 
 
     public ClientCallImpl(String host, int port){

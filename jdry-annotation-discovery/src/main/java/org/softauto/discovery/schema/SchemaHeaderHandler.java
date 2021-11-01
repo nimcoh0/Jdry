@@ -5,7 +5,7 @@ import org.softauto.discovery.Visitor;
 
 public class SchemaHeaderHandler extends AbstractSchema {
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(SchemaHeaderHandler.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(SchemaHeaderHandler.class);
     private static String SCHEMA_VERSION = "1.0";
     private static String SCHEMA_NAMESPACE = "tests.infrastructure";
     static final private String STEP_PROTOCOL_NAME = "StepService";

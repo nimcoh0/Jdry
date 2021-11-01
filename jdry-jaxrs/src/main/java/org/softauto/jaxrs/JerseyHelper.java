@@ -14,7 +14,7 @@ public class JerseyHelper {
 
     protected Client client = null;
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(JerseyHelper.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(JerseyHelper.class);
 
     public JerseyHelper(Client client){
         this.client = client;

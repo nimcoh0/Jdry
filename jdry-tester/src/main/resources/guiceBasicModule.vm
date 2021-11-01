@@ -18,7 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @org.apache.avro.specific.AvroGenerated
 public class $this.mangle($protocol.getName())Module extends AbstractModule {
 
-    private static Logger logger = LogManager.getLogger($this.mangle($protocol.getName())Module.class);
+    private static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger($this.mangle($protocol.getName())Module.class);
 
     @Override
     protected void configure() {

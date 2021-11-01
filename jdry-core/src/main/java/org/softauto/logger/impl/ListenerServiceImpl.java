@@ -8,7 +8,7 @@ import org.softauto.serializer.service.Message;
 public class ListenerServiceImpl {
 
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(ListenerServiceImpl.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ListenerServiceImpl.class);
 
     static Class iface;
     static String servicename = "tests.infrastructure.ListenerServiceLog";

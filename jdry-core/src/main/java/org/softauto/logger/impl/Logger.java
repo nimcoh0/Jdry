@@ -1,10 +1,12 @@
 package org.softauto.logger.impl;
 
 import org.aspectj.lang.JoinPoint;
+import org.softauto.core.Configuration;
+import org.softauto.core.Context;
 import org.softauto.core.Utils;
 
-
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -14,7 +16,7 @@ public class Logger {
     static boolean isInit = false;
     static Object serviceImpl  ;
     static Method method;
-    static String servicename = "tests.infrastructure.ListenerServiceLog";
+
 
     private  static ExecutorService executor = Executors.newFixedThreadPool(50);
 
@@ -84,36 +86,37 @@ public class Logger {
     }
 
     public  static void log(String level,String marker,String log,String clazz,String ex) {
-
-        try {
-            if (ex == null) {
-                String fqmn = "org_auto_tests_log";
-                LogBuilder logBuilder = LogBuilder.newBuilder().setArguments(level, marker, log, clazz).build();
-                executor.submit(() -> {
-                    try {
-                        logger.debug("fqmn:" + fqmn + " " + logBuilder.toJson());
-                        method.setAccessible(true);
-                        method.invoke(null, new Object[]{fqmn,logBuilder.getArguments(), logBuilder.getClasses(), servicename});
-                    } catch (Exception e) {
-                        logger.error("send message org_auto_tests_log fail ", e);
-                    }
-                });
-            } else {
-                String fqmn = "org_auto_tests_logError";
-                LogBuilder logBuilder = LogBuilder.newBuilder().setArguments(level, marker, log, clazz, ex).build();
-                executor.submit(() -> {
-                    try {
-                        logger.debug("fqmn:" + fqmn + " " + logBuilder.toJson());
-                        method.setAccessible(true);
-                        method.invoke(null, new Object[]{fqmn,logBuilder.getArguments(), logBuilder.getClasses(), servicename});
-                    } catch (Exception e) {
-                        logger.error("send message org_auto_tests_logError fail ", e);
-                    }
-                });
-            }
-        } catch (Exception e) {
-            logger.error("capture log  fail ", e);
-        }
+      if(Configuration.get(Context.SEND_LOG_TO_TESTER) != null && Configuration.get(Context.SEND_LOG_TO_TESTER).asText() == "Yes") {
+          try {
+              if (ex == null) {
+                  String fqmn = "org_auto_tests_log";
+                  LogBuilder logBuilder = LogBuilder.newBuilder().setArguments(level, marker, log, clazz).build();
+                  executor.submit(() -> {
+                      try {
+                          logger.debug("fqmn:" + fqmn + " " + logBuilder.toJson());
+                          method.setAccessible(true);
+                          method.invoke(null, new Object[]{fqmn, logBuilder.getArguments(), logBuilder.getClasses()});
+                      } catch (Exception e) {
+                          logger.error("send message org_auto_tests_log fail ", e);
+                      }
+                  });
+              } else {
+                  String fqmn = "org_auto_tests_logError";
+                  LogBuilder logBuilder = LogBuilder.newBuilder().setArguments(level, marker, log, clazz, ex).setDataTime(Utils.getCurrentTimeUTCAsString()).build();
+                  executor.submit(() -> {
+                      try {
+                          logger.debug("fqmn:" + fqmn + " " + logBuilder.toJson());
+                          method.setAccessible(true);
+                          method.invoke(null, new Object[]{fqmn, logBuilder.getArguments(), logBuilder.getClasses()});
+                      } catch (Exception e) {
+                          logger.error("send message org_auto_tests_logError fail ", e);
+                      }
+                  });
+              }
+          } catch (Exception e) {
+              logger.error("capture log  fail ", e);
+          }
+      }
     }
 
 }

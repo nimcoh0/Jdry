@@ -17,7 +17,7 @@ import java.lang.management.ManagementFactory;
 
 public class ListenerClientProviderImpl implements Provider {
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(ListenerClientProviderImpl.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ListenerClientProviderImpl.class);
     private static ListenerClientProviderImpl listenerClientProviderImpl = null;
 
 
@@ -45,10 +45,15 @@ public class ListenerClientProviderImpl implements Provider {
 
     @Override
     public Provider initilize() throws IOException {
-        Class iface = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , Context.LISTENER_SERVICE,Configuration.get(Context.TEST_MACHINE).asText());
-        ListenerServiceImpl listenerServiceImpl = new ListenerServiceImpl();
-        Listener.addSchema(iface);
-        Listener.init(listenerServiceImpl);
+        try {
+            Class iface = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Context.LISTENER_SERVICE, Configuration.get(Context.TEST_MACHINE).asText());
+            ListenerServiceImpl listenerServiceImpl = new ListenerServiceImpl();
+            Listener.addSchema(iface);
+            Listener.init(listenerServiceImpl);
+            logger.info("successfully load listener");
+        }catch (Exception e){
+            logger.error("fail to load listener",e);
+        }
         return this;
     }
 

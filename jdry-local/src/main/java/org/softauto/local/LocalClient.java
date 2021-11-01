@@ -7,7 +7,7 @@ import java.lang.reflect.Modifier;
 
 public class LocalClient {
 
-    private static final org.softauto.logger.Logger logger = org.softauto.logger.LogManager.getLogger(LocalClient.class);
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(LocalClient.class);
     String fullClassName;
     Protocol.Message msg;
     Method method;
