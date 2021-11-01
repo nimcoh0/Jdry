@@ -79,6 +79,7 @@ and set the correct protocol you want to use @RPC for grpc ,@JXRS for jax-rs and
     </aspectj>
 
 add 
+
 	<dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-annotations</artifactId>
