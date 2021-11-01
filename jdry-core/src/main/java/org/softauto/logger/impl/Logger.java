@@ -102,7 +102,7 @@ public class Logger {
                   });
               } else {
                   String fqmn = "org_auto_tests_logError";
-                  LogBuilder logBuilder = LogBuilder.newBuilder().setArguments(level, marker, log, clazz, ex).setDataTime(Utils.getCurrentTimeUTCAsString()).build();
+                  LogBuilder logBuilder = LogBuilder.newBuilder().setArguments(level, marker, log, clazz, ex).build();
                   executor.submit(() -> {
                       try {
                           logger.debug("fqmn:" + fqmn + " " + logBuilder.toJson());
