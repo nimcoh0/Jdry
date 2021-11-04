@@ -1007,8 +1007,11 @@ public class Compiler {
     return str.toUpperCase().charAt(0)+str.substring(1,str.length());
   }
 
+  public String unCapitalizeFirstLetter(String str){
+    return str.toLowerCase().charAt(0)+str.substring(1,str.length());
+  }
 
-  private String javaType(Schema schema, boolean checkConvertedLogicalType) {
+  public String javaType(Schema schema, boolean checkConvertedLogicalType) {
     if (checkConvertedLogicalType) {
       String convertedLogicalType = getConvertedLogicalType(schema);
       if (convertedLogicalType != null) {
@@ -1056,6 +1059,7 @@ public class Compiler {
       return "java.lang.Void";
     default:
       throw new RuntimeException("Unknown type: " + schema);
+
     }
   }
 
@@ -1513,6 +1517,19 @@ public class Compiler {
       return true;
     }
   }
+
+  public static String getDefaultValue(String name){
+    switch (name){
+      case "int" : return "-1";
+      case "Integer" : return "-1";
+      case "boolean" : return "false" ;
+      case "double"  : return "-1.0";
+      case "long"    : return "-1";
+      default : return "null";
+    }
+  }
+
+
 
 
   public static void main(String[] args) throws Exception {

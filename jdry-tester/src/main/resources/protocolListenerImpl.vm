@@ -1,0 +1,157 @@
+#if ($protocol.getNamespace())
+package $this.mangle($protocol.getNamespace());
+#end
+import java.util.function.Function;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import org.softauto.core.AsyncResult;
+import org.softauto.core.Handler;
+import org.softauto.core.Future;
+import org.softauto.serializer.CallFuture;
+
+@org.apache.avro.specific.AvroGenerated
+public class $this.mangle($protocol.getName())Impl {
+
+    private static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger($this.mangle($protocol.getName())Impl.class);
+    public static long timeOutInMin = 1;
+    public $this.mangle($protocol.getName())Impl(){
+          try {
+             if( Class.forName("org.softauto.tester.listener.ListenerObserver", false, this.getClass().getClassLoader())!= null){
+                 org.softauto.tester.listener.ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceImpl", this);
+             }
+         }catch (Exception e){
+            e.printStackTrace();
+         }
+    }
+
+    public void setTimeOut(long min){
+        this.timeOutInMin = min;
+    }
+
+#foreach ($e in $protocol.getMessages().entrySet())
+#set ($name = $e.getKey())
+#set ($message = $e.getValue())
+#set ($response = $message.getResponse())
+
+public static class ${this.mangle($name)}{
+    private static ${this.mangle($name)} ${this.unCapitalizeFirstLetter(${this.mangle($name)})}= null;
+    static CountDownLatch lock = new CountDownLatch(0);
+#if (${this.javaUnbox($response, true)} != "void" )
+    ${this.javaUnbox($response, true)} _result;
+#end
+#foreach ($p in $message.getRequest().getFields())##
+    ${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())} = $this.getDefaultValue($p.schema().getName());
+#end
+
+    public ${this.mangle($name)}(){
+        try {
+          if( Class.forName("org.softauto.tester.listener.ListenerObserver", false, this.getClass().getClassLoader())!= null){
+             org.softauto.tester.listener.ListenerObserver.getInstance().register("${this.mangle($name)}", this);
+          }
+         }catch (Exception e){
+            e.printStackTrace();
+         }
+    }
+
+    public static ${this.mangle($name)} waitTo(){
+    if(${this.unCapitalizeFirstLetter(${this.mangle($name)})} == null){
+            try{
+                ${this.unCapitalizeFirstLetter(${this.mangle($name)})} = new ${this.mangle($name)}();
+                lock = new CountDownLatch(1);
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+            }catch (Exception e){
+               e.printStackTrace();
+            }
+        }
+        return ${this.unCapitalizeFirstLetter(${this.mangle($name)})};
+    }
+
+    public static void waitTo(Handler<AsyncResult<${this.mangle($name)}>> resultHandler){
+    if(${this.unCapitalizeFirstLetter(${this.mangle($name)})} == null){
+            try{
+                ${this.unCapitalizeFirstLetter(${this.mangle($name)})} = new ${this.mangle($name)}();
+                lock = new CountDownLatch(1);
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                resultHandler.handle(Future.handleResult(${this.unCapitalizeFirstLetter(${this.mangle($name)})}));
+            }catch (Exception e){
+               resultHandler.handle(Future.handleError(e));
+            }
+        }
+
+    }
+
+#if (${this.javaUnbox($response, true)} != "void" )
+    public ${this.javaUnbox($response, true)} get_Result(){
+        return _result;
+    }
+
+    public ${this.mangle($name)} get_Result(Handler<AsyncResult<$this.javaType($response,false)>> resultHandler){
+        try{
+            resultHandler.handle(Future.handleResult(_result));
+        }catch (Exception e){
+          resultHandler.handle(Future.handleError(e));
+        }
+        return this;
+    }
+
+    public ${this.mangle($name)} get_Result(CallFuture<$this.javaType($response,false)> future){
+         return this;
+    }
+
+
+    public ${this.unCapitalizeFirstLetter(${this.mangle($name)})} ${this.mangle($name)}(${this.javaUnbox($response, true)} result){
+        ${this.mangle($name)}._result = result;
+        lock.countDown();
+        return this;
+    }
+#end
+
+
+#foreach ($p in $message.getRequest().getFields())##
+    public ${this.javaUnbox($p.schema(), false)} get${this.capitalizeFirstLetter(${this.mangle($p.name())})}(){
+        return ${this.mangle($p.name())};
+    }
+
+    public ${this.mangle($name)} get${this.capitalizeFirstLetter(${this.mangle($p.name())})}(Handler<AsyncResult<$this.javaType($p.schema(),false)>> resultHandler){
+        resultHandler.handle(Future.handleResult(${this.mangle($p.name())}));
+        return this;
+    }
+
+    public ${this.mangle($name)} get${this.capitalizeFirstLetter(${this.mangle($p.name())})}(CallFuture<$this.javaType($p.schema(), false)> future){
+       future.handleResult(${this.mangle($p.name())});
+       return this;
+    }
+
+    public ${this.unCapitalizeFirstLetter(${this.mangle($name)})} set${this.capitalizeFirstLetter(${this.mangle($p.name())})}(${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}){
+        ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($p.name())};
+        return this;
+    }
+
+#end
+
+    public java.lang.Object[] ${this.mangle($name)}(##
+#foreach ($p in $message.getRequest().getFields())##
+#*      *#${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.hasNext), #end
+#end
+    ){
+        try {
+#foreach ($p in $message.getRequest().getFields())##
+           ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($p.name())};
+#end
+            lock.countDown();
+        }catch (Exception e){
+             e.printStackTrace();
+        }
+        return new Object[]{##
+#foreach ($p in $message.getRequest().getFields())##
+${this.mangle($p.name())}#if ($foreach.hasNext), #end##
+#end
+};
+    }
+}
+
+#end## (requests)
+}## End of protocol interface

@@ -39,7 +39,7 @@ public  class ListenerDataVistor implements ElementVisitor {
     public HashMap<String, Object> getNode(){
         HashMap<String, Object> o = new HashMap<>();
         message.put("request", request);
-        message.put("response", "java.lang.Object[]");
+        //message.put("response", "java.lang.Object[]");
         message.put("namespace", namespace);
         message.put("method", method);
         types.add(getType("java.lang.Object[]","external"));

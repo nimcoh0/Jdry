@@ -37,6 +37,7 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
             String fullClassName = message.getService();
             Class iface = Utils.findClass(fullClassName);
             Object serviceImpl = injector.getInstance(iface);
+            Class<?>[] classes = serviceImpl.getClass().getClasses();
             Method method = Utils.getMethod2(serviceImpl, message.getDescriptor(), message.getTypes());
             Object channel = ListenerObserver.getInstance().getLastChannel(serviceImpl.getClass().getName());
             if(channel == null){
@@ -67,22 +68,31 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
     @Override
     public Object execute(Message message) throws Exception {
         Object methodResponse = null;
-        injector = ListenerServerProviderImpl.getInstance().getInjector();
+        //injector = ListenerServerProviderImpl.getInstance().getInjector();
         try {
-            String fullClassName = message.getService();
-            Class iface = Utils.findClass(fullClassName);
-            Object serviceImpl = injector.getInstance(iface);
-            Method method = Utils.getMethod2(serviceImpl, message.getDescriptor(), message.getTypes());
-            Object channel = ListenerObserver.getInstance().getLastChannel(serviceImpl.getClass().getName());
-            if(channel == null){
-                channel = serviceImpl;
+            String fullServiceClassName = message.getService();
+            Object serviceImpl;
+            Object o = ListenerObserver.getInstance().getLastChannel(message.getDescriptor());
+            if(o == null) {
+                serviceImpl = ListenerObserver.getInstance().getLastChannel(fullServiceClassName);
+                Class<?>[] classes = serviceImpl.getClass().getClasses();
+                Class subClass = Utils.getSubClass(classes,fullServiceClassName+"$"+message.getDescriptor());
+                o = subClass.newInstance();
             }
+            //Class service = Utils.findClass(fullServiceClassName);
+            //Object serviceImpl = injector.getInstance(service);
+
+            //String fullClassName = Utils.getFullClassName2(message.getDescriptor());
+           // Class subClass = Utils.getSubClass(classes,fullServiceClassName+"$"+message.getDescriptor());
+
+            Method method = Utils.getMethod2(o, message.getDescriptor(), message.getTypes());
+
             logger.debug("invoking " + message.getDescriptor());
             method.setAccessible(true);
             if (Modifier.isStatic(method.getModifiers())) {
                 methodResponse = method.invoke(null, message.getArgs());
             } else {
-                methodResponse = method.invoke(channel, message.getArgs());
+                methodResponse = method.invoke(o, message.getArgs());
             }
 
 

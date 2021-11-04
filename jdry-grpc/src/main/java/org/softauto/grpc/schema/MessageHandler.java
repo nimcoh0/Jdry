@@ -24,9 +24,10 @@ public class MessageHandler extends AbstractMessage {
         try {
             if (element.getAnnotation(RPC.class) != null) {
                 if(element.getAnnotation(ListenerForTesting.class) != null) {
-                    JsonNode  listenerResult =  super.parseElement(element, new ListenerResultVistor("RPC"));
+                    //JsonNode  listenerResult =  super.parseElement(element, new ListenerResultVistor("RPC"));
                     JsonNode  listenerData = super.parseElement(element, new ListenerDataVistor("RPC"));
-                    return new MargeJsonNode().mergeNode((ObjectNode)listenerResult,(ObjectNode)listenerData);
+                    //return new MargeJsonNode().mergeNode((ObjectNode)listenerResult,(ObjectNode)listenerData);
+                    return listenerData;
                 }else {
                     return super.parseElement(element, new DefaultMethodVistor("RPC"));
                 }

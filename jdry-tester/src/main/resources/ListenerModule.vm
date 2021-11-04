@@ -19,7 +19,7 @@ public class ListenerModule extends AbstractModule {
     try{
         bind(org.softauto.system.SystemServiceImpl.class).toInstance(org.softauto.system.SystemServiceImpl.getInstance());
         bind(tests.infrastructure.ListenerServiceLog.class).toInstance(new tests.infrastructure.ListenerServiceLogImpl());
-        bind(tests.infrastructure.ListenerService.class).toInstance(new tests.infrastructure.ListenerServiceImpl());
+        bind(tests.infrastructure.ListenerServiceImpl.class);
     }catch(Exception e){
         e.printStackTrace();
     }

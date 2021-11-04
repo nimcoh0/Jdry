@@ -11,7 +11,7 @@ public class ListenerServiceImpl implements ListenerService {
 
 
     private  final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ListenerServiceImpl.class);
-    String servicename = "tests.infrastructure.ListenerService";
+    String servicename = "tests.infrastructure.ListenerServiceImpl";
 
 
 
@@ -22,7 +22,7 @@ public class ListenerServiceImpl implements ListenerService {
         try {
 
                 Serializer serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).buildChannel();
-                Message message = Message.newBuilder().setService(servicename).setDescriptor(methodName).setArgs(args).setTypes(types).build();
+                Message message = Message.newBuilder().setState(ServiceType.BEFORE.name()).setService(servicename).setDescriptor(methodName).setArgs(args).setTypes(types).build();
                 result = serializer.write(message);
                 logger.debug("send message successfully " + methodName);
 
@@ -51,7 +51,7 @@ public class ListenerServiceImpl implements ListenerService {
         try {
 
                 Serializer serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).buildChannel();
-                Message message = Message.newBuilder().setService(servicename).setDescriptor(methodName).setArgs(args).setTypes(types).build();
+                Message message = Message.newBuilder().setState(ServiceType.AFTER.name()).setService(servicename).setDescriptor(methodName).setArgs(args).setTypes(types).build();
                 result = serializer.write(message);
                 logger.debug("send message successfully " + methodName);
 

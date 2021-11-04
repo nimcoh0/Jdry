@@ -32,6 +32,10 @@ public class AbstractTesterImpl {
     public ListenerService listeners;
     public ListenerService.Callback asyncListeners;
     public ObjectMapper objectMapper = new ObjectMapper();
+    public StepServiceImpl testsImpl;
+    public ListenerServiceImpl listenersImpl;
+
+
 
     @BeforeSuite
     public void start(){
@@ -42,6 +46,8 @@ public class AbstractTesterImpl {
             asyncTests =  Client.create(tests.infrastructure.StepService.Callback.class);
             listeners = Client.create(tests.infrastructure.ListenerService.class);
             asyncListeners = Client.create(tests.infrastructure.ListenerService.Callback.class);
+            testsImpl = new StepServiceImpl();
+            listenersImpl = new ListenerServiceImpl();
             //ListenerInit.getInstance().loadConfiguration().initilize().register();
             //Log.set(LEVEL_TRACE);
            loadPlugins();

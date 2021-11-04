@@ -106,7 +106,8 @@ public interface AsyncResult<T>{
     }
 
     default AsyncResult<T> setArguments(Object[] arg) {
-       return  (AsyncResult<T>)new org.softauto.serializer.CallFuture().handleArguments(arg);
+       //return  (AsyncResult<T>)new org.softauto.serializer.CallFuture().handleArguments(arg);
+        return  (AsyncResult<T>)new CallFuture().handleArguments(arg);
 
     }
 

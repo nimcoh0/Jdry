@@ -238,6 +238,9 @@ public class Utils {
         return  descriptor.substring(0,descriptor.lastIndexOf("_")).replace("_",".");
     }
 
+    public static String getFullClassName2(String descriptor){
+        return  descriptor.substring(0,descriptor.lastIndexOf("_"));
+    }
     /**
      * get Method Name from FQMN
      * @param descriptor
@@ -777,4 +780,14 @@ public class Utils {
         return dtf.print(dateTime);
 
     }
+
+    public static Class<?> getSubClass(Class<?>[] classes, String name){
+        for(Class<?> c : classes){
+            if(c.getName().equals(name)){
+                return c;
+            }
+        }
+        return null;
+    }
+
 }

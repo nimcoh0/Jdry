@@ -6,6 +6,7 @@ import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.Layout;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.FileAppender;
+import org.apache.logging.log4j.core.appender.SocketAppender;
 import org.apache.logging.log4j.core.config.AppenderRef;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.ConfigurationSource;
@@ -19,6 +20,9 @@ import org.apache.logging.log4j.core.config.builder.impl.DefaultConfigurationBui
 import org.apache.logging.log4j.core.config.xml.XmlConfiguration;
 import org.apache.logging.log4j.core.filter.MarkerFilter;
 import org.apache.logging.log4j.core.layout.PatternLayout;
+import org.apache.logging.log4j.core.net.ssl.SslConfiguration;
+
+import java.io.Serializable;
 
 /**
  * extend log4j2 configuration for jdry & trace logs
@@ -45,16 +49,21 @@ public class JdryXMLConfiguration extends XmlConfiguration{
         final Layout traceLayout = PatternLayout.newBuilder().withPattern("%d{yyyy-MM-dd HH:mm:ss.SSS} sut     %-5level %-30notEmpty{[%marker]} - %msg%xEx -  %n").build();
         final Appender appender = FileAppender.createAppender(fileName, "false", "false", "jdry", "true",
                 "false", "false", "4000", jdryLayout, null, "false", null, config);
+        SocketAppender socketAppender = SocketAppender.createAppender("localhost", "23", "UDP", null, 3000, "3000", "false", "sock", "false", "false", jdryLayout, null, "false",  config);
         appender.start();
+        socketAppender.start();
         rolling.start();
         addAppender(appender);
         addAppender(rolling );
+        addAppender(socketAppender );
         AppenderRef ref = AppenderRef.createAppenderRef("jdry", null, null);
         AppenderRef rollingRef = AppenderRef.createAppenderRef("rolling", null, null);
-        AppenderRef[] refs = new AppenderRef[] {ref,rollingRef};
+        AppenderRef sockRef = AppenderRef.createAppenderRef("sock", null, null);
+        AppenderRef[] refs = new AppenderRef[] {ref,rollingRef,sockRef};
         LoggerConfig loggerConfig = LoggerConfig.createLogger("false", Level.ALL, loggerName,"true", refs, null, config, null );
         //loggerConfig.addAppender(appender, Level.DEBUG, jdryFilter);
         loggerConfig.addAppender(appender, Level.DEBUG, null);
+        loggerConfig.addAppender(socketAppender, Level.DEBUG, null);
         loggerConfig.addAppender(rolling, Level.TRACE, tracerFilter);
         addLogger(loggerName, loggerConfig);
         }
