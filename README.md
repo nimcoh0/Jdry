@@ -134,41 +134,52 @@ Example test :
 	this test uses Async call ,Sync call and listener for change the method arg values at runtime .
 	no other classes needed .all the real impl is at the SUT code 
 	
-    public class packageProcessorEventTests extends AbstractTester {
+    public class packageProcessorEventTests extends AbstractTesterImpl {
     
-    @Test  
-    public void Over_Speed_New_Event(){  
-        try {  
-            logger.info("start test Over_Speed_New_Event");  
-            CountDownLatch lock = new CountDownLatch(1);  //we need this lock for the Async steps
-		    final CallFuture<String> future = new CallFuture<>();  //calback for the Async call
-		    AtomicReference<Object[]> ref = new AtomicReference();  
-	        asyncTests.helper_Sock_send(data,1,future);  //call Async method 
-             //set new listener
-		     new ListenerServiceImpl(){  
-                @Override  
-			    public java.lang.Object[] org_pack_processor_process_events_EventHeadler_HandlerOverSpeed(org.pack.processor.objects.UserEvent userEvent, org.pack.processor.objects.UserInfo userInfo, org.pack.processor.objects.ObjectInfo objectInfo, org.pack.processor.objects.DeviceWebLocationData location){  
-                    userEvent.setCheckedValue(String.valueOf(location.getSpeed()-1));  //change arg value 
-			        ref.set(new Object[]{userEvent.getEventId(),location.getImei()});  
-			        lock.countDown();  //remove the lockdown
-				    return new Object[]{userEvent,userInfo,objectInfo,location}; //return the update arg to the real method  
-		      }  
-            };  
-		      lock.await(10, TimeUnit.MINUTES);  
-    	      future.get();  //execute the Async 
-    	      //execute Sync method for verify 
-		      EventStatus eventStatus = tests.org_pack_processor_db_DBService_loadEventStatus(Integer.valueOf(ref.get()[0].toString()),String.valueOf(ref.get()[1]));  
-		      Assert.assertTrue(eventStatus.getEventStatus() > 0);  
-		      logger.info("test Over_Speed_New_Event finish successfully");  
-      
-	      }catch (Exception e){  
-            logger.error("test Over_Speed_New_Event fail ",e);  
-          }  
-	    }
-	   }
+   @Test
+    public void check_Event_Route_Trigger(){
+        try {
+            CountDownLatch lock = new CountDownLatch(1);
+            final CallFuture<Void> future = new CallFuture<>();
+            new LocalStepServiceImpl.Helper_Sock_send(data,1,future);
+            AtomicReference<Object[]> ref = new AtomicReference();
+
+            new ListenerServiceImpl.org_pack_processor_process_events_EventHeadler_HandlerOverSpeed(){
+                @Override
+                public  java.lang.Object[] org_pack_processor_process_events_EventHeadler_HandlerOverSpeed(org.pack.processor.objects.UserEvent userEvent, org.pack.processor.objects.UserInfo userInfo, org.pack.processor.objects.ObjectInfo objectInfo, org.pack.processor.objects.DeviceWebLocationData location){
+                    lock.countDown();
+                    return new Object[]{userEvent,userInfo,objectInfo,location};
+                }
+
+            };
+            lock.await(10, TimeUnit.MINUTES);
+            future.get();
+            EventStatus eventStatus = tests.org_pack_processor_db_DBService_loadEventStatus(Integer.valueOf(ref.get()[0].toString()),String.valueOf(ref.get()[1]));
+
+            Assert.assertFalse(eventStatus.getDtServer().equals(String.valueOf(ref.get()[2])) );
+            logger.info("test check_Event_Route_Trigger finish successfully");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void check_Event_Route_Trigger1(){
+        try {
+
+            new LocalStepServiceImpl.Helper_Sock_send(data,1).then(
+                    ListenerServiceImpl.org_pack_processor_process_events_EventHeadler_HandlerOverSpeed.waitTo().getUserInfo(),res ->{
+                        Assert.assertTrue(((UserInfo)res.result()).getUserName() != null);
+                    });
+            logger.info("test check_Event_Route_Trigger finish successfully");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
  
-in the above test we use asyncTests proxy to invoke helper_Sock_send method (when package = helper , class = Sock and method = send ) in async way . because the method send flow will run the org_pack_processor_process_events_EventHeadler_HandlerOverSpeed method befor he finish , we need to run it Async so the listener can be register before the send execute . at this example we wait to code to rich the HandlerOverSpeed method and then replace the value of userEvent CheckedValue filed . then return the args to the SUT to perform the real call with the update args  . after the Async finsih we call a sync method using the test proxy 
+in the above test we use LocalStepServiceImpl to invoke helper_Sock_send method (when package = helper , class = Sock and method = send ) in async way in conjunction with org_pack_processor_process_events_EventHeadler_HandlerOverSpeed  , we need to run it Async so the listener can be register before the send execute . at this example we wait to code to rich the HandlerOverSpeed method and then replace the value of userEvent CheckedValue filed . then return the args to the SUT to perform the real call with the update args  . after the Async finsih we call a sync method using the test proxy 
 to call org_pack_processor_db_DBService_loadEventStatus method for verify the result . 
+the second example is the same idea but hide the complexity in LocalStepServiceImpl that is generated automatically
 
 for list of current limitations see https://github.com/nimcoh0/Jdry/wiki/limitations
 
