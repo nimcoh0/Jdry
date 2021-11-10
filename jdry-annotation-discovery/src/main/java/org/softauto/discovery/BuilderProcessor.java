@@ -96,7 +96,16 @@ public class BuilderProcessor extends AbstractProcessor {
                 String schema = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(nodes);
                 FileObject builderFile = processingEnv.getFiler().createResource(StandardLocation.SOURCE_OUTPUT, SCHEMA_NAMESPACE, getProtocolName(annotation) + ".avpr", null);
                 String filePath = builderFile.toUri().getPath();
-                Utils.save(schema, filePath);
+                if(Utils.isFileExist(filePath)){
+                    JsonNode f = Utils.getTextFile(builderFile.getName());
+                    JsonNode messages = f.get("messages");
+                    ((ObjectNode)messages).setAll((ObjectNode) nodes.get("messages"));
+                    String schema1 = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(f);
+                    Utils.save(schema1, filePath);
+                    //Utils.update(nodes.get("messages").asText(), filePath);
+                }else {
+                    Utils.save(schema, filePath);
+                }
                 logger.debug("new schema  created at "+ filePath);
             }
 

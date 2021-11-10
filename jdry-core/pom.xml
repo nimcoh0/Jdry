@@ -11,7 +11,11 @@
 
     <artifactId>jdry-core</artifactId>
     <dependencies>
-
+        <dependency>
+            <groupId>com.github.drapostolos</groupId>
+            <artifactId>type-parser</artifactId>
+            <version>0.7.0</version>
+        </dependency>
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>

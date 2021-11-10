@@ -45,8 +45,8 @@ public class JdryXMLConfiguration extends XmlConfiguration{
         Appender rolling =  createRollingAppender();
         Filter tracerFilter = MarkerFilter.createFilter("TRACER", Filter.Result.ACCEPT, Filter.Result.DENY);
         Filter jdryFilter = MarkerFilter.createFilter("JDRY", Filter.Result.ACCEPT, Filter.Result.DENY);
-        final Layout jdryLayout = PatternLayout.newBuilder().withPattern("%d{yyyy-MM-dd HH:mm:ss.SSS} sut     %-5level %-30notEmpty{[%marker]} - %msg%xEx - %class{36} %L %M%n").build();
-        final Layout traceLayout = PatternLayout.newBuilder().withPattern("%d{yyyy-MM-dd HH:mm:ss.SSS} sut     %-5level %-30notEmpty{[%marker]} - %msg%xEx -  %n").build();
+        final Layout jdryLayout = PatternLayout.newBuilder().withPattern("%d{yyyy-MM-dd HH:mm:ss.SSS} sut     %-5level %-30notEmpty{[%marker]} %tid - %msg%xEx - %class{36} %L %M%n").build();
+        final Layout traceLayout = PatternLayout.newBuilder().withPattern("%d{yyyy-MM-dd HH:mm:ss.SSS} sut     %-5level %-30notEmpty{[%marker]} %tid - %msg%xEx -  %n").build();
         final Appender appender = FileAppender.createAppender(fileName, "false", "false", "jdry", "true",
                 "false", "false", "4000", jdryLayout, null, "false", null, config);
         SocketAppender socketAppender = SocketAppender.createAppender("localhost", "23", "UDP", null, 3000, "3000", "false", "sock", "false", "false", jdryLayout, null, "false",  config);

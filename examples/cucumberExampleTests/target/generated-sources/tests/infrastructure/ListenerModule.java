@@ -8,9 +8,7 @@ package tests.infrastructure;
 import com.google.inject.AbstractModule;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.softauto.core.Configuration;
-import org.softauto.core.Context;
-import org.softauto.core.Utils;
+import org.softauto.system.SystemServiceImpl;
 
 
 @org.apache.avro.specific.AvroGenerated
@@ -22,7 +20,7 @@ public class ListenerModule extends AbstractModule {
     @Override
     protected void configure() {
     try{
-        bind(org.softauto.system.SystemServiceImpl.class).toInstance(org.softauto.system.SystemServiceImpl.getInstance());
+        bind(SystemServiceImpl.class).toInstance(SystemServiceImpl.getInstance());
         bind(tests.infrastructure.ListenerServiceLog.class).toInstance(new tests.infrastructure.ListenerServiceLogImpl());
         bind(tests.infrastructure.ListenerService.class).toInstance(new tests.infrastructure.ListenerServiceImpl());
     }catch(Exception e){

@@ -61,22 +61,24 @@ public class KryoSerialization extends AbstractSerialization {
     @Override
     public synchronized byte[] serialize(Object obj) throws Exception{
         Output output = null;
+        byte[] data = null;
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream(4096);
             //output = new Output(new ObjectOutputStream(outputStream));
             output = new Output(outputStream);
             serialize(obj, output);
-            byte[] data =  output.toBytes();
+            data = output.toBytes();
             //byte[] data =  outputStream.toByteArray();
-            return data;
 
+        }catch (Exception e){
+            e.printStackTrace();
         }finally {
             if(output != null){
                 output.flush();
                 output.close();
             }
         }
-
+        return data;
     }
 
 
@@ -92,19 +94,23 @@ public class KryoSerialization extends AbstractSerialization {
     @Override
     public synchronized <T> T deserialize(final byte[] objectData) throws Exception{
         Input input = null;
+        Object object = null;
         try {
             if (objectData == null) {
                 throw new IllegalArgumentException("The byte[] must not be null");
             }
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(objectData);
             input = new Input(byteArrayInputStream, (int) objectData.length);
-            Object object = deserialize(input);
-            return (T) object;
+            object = deserialize(input);
+
+        }catch (Exception e){
+            e.printStackTrace();
         } finally {
             if (input != null) {
                 input.close();
             }
         }
+        return (T) object;
     }
 
     @Override

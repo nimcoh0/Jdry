@@ -105,6 +105,7 @@ public class Protocol extends JsonProperties {
     }
 
 
+
     public String getTypes(List<Schema.Field> fields){
       List<String> types = new ArrayList<>();
       for(Schema.Field field : fields){

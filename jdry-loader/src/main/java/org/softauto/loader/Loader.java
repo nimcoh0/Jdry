@@ -1,6 +1,7 @@
 package org.softauto.loader;
 
 import org.softauto.grpc.RpcProviderImpl;
+import org.softauto.jvm.JvmProviderImpl;
 
 
 import java.lang.instrument.Instrumentation;
@@ -18,6 +19,7 @@ public class Loader {
     public static void agentmain(String agentArgs, Instrumentation instrumentation){
         try {
             RpcProviderImpl.getInstance().initilize().register();
+            JvmProviderImpl.getInstance().initilize().register();
 
         }catch(Exception e){
             logger.fatal("jdry agent attach to vm fail ",e);

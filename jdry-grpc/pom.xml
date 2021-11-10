@@ -26,10 +26,16 @@
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
-            <artifactId>jdry-guice</artifactId>
+            <artifactId>jdry-injector</artifactId>
             <version>beta-1.0</version>
             <scope>compile</scope>
         </dependency>
+        <!--dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-guice</artifactId>
+            <version>beta-1.0</version>
+            <scope>compile</scope>
+        </dependency-->
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-kryo-serialization</artifactId>

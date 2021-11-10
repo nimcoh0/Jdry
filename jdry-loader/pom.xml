@@ -16,8 +16,22 @@
             <artifactId>jdry-annotations</artifactId>
             <version>${jdry-annotations}</version>
         </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-listener-manager</artifactId>
+            <version>beta-1.0</version>
 
-
+        </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-jvmTool</artifactId>
+            <version>beta-1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-injector</artifactId>
+            <version>beta-1.0</version>
+        </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-core</artifactId>
@@ -28,12 +42,7 @@
             <artifactId>jdry-avro</artifactId>
             <version>${jdry-avro}</version>
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-listener-manager</artifactId>
-            <version>beta-1.0</version>
 
-        </dependency>
 
 
 

@@ -28,7 +28,7 @@ public class ListenerServiceImpl {
         Object result = null;
         try {
            if (iface.getMethod(methodName, types) != null) {
-                Serializer serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).buildChannel();
+                Serializer serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).build();
                 Message message = Message.newBuilder().setService(servicename).setDescriptor(methodName).setArgs(args).setTypes(types).build();
                 result = serializer.write(message);
                 logger.debug("send message successfully " + methodName);

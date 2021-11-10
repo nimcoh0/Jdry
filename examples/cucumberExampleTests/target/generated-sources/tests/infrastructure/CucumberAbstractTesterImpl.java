@@ -5,10 +5,6 @@
  */
 package tests.infrastructure;
 
-import io.cucumber.java.After;
-import io.cucumber.java.AfterStep;
-import io.cucumber.java.Before;
-import io.cucumber.java.BeforeStep;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.softauto.tester.Client;
@@ -17,22 +13,16 @@ import org.softauto.plugin.ProviderManager;
 import org.softauto.plugin.spi.PluginProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.softauto.tester.listener.ListenerObserver;
-import java.lang.reflect.Method;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import org.softauto.core.Utils;
-import com.esotericsoftware.minlog.Log;
-import static com.esotericsoftware.minlog.Log.*;
-import java.util.Properties;
-import java.io.FileInputStream;
-import java.io.InputStream;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import org.softauto.tester.system.SystemImpl;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
-import org.softauto.system.SystemProviderImpl;
 
 @org.apache.avro.specific.AvroGenerated
 public class CucumberAbstractTesterImpl {
@@ -77,7 +67,7 @@ public class CucumberAbstractTesterImpl {
 
 
    public void testStart(){
-        SystemProviderImpl.getInstance().startTest("bb");
+        SystemImpl.getInstance().startTest("bb");
         //ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceImpl",ListenerInit.getInstance().getListenerServiceImpl());
         org.softauto.logger.LogManager.setStatus(true);
    }
@@ -85,7 +75,7 @@ public class CucumberAbstractTesterImpl {
 
     public void endTest(io.cucumber.java.Scenario scenario){
         org.softauto.logger.LogManager.setStatus(false);
-        SystemProviderImpl.getInstance().endTest(scenario.getName());
+        SystemImpl.getInstance().endTest(scenario.getName());
         ListenerObserver.getInstance().reset();
 
     }
@@ -94,7 +84,7 @@ public class CucumberAbstractTesterImpl {
     public void finalize() {
         try {
             ListenerServerProviderImpl.getInstance().shutdown();
-            SystemProviderImpl.getInstance().shutdown();
+            SystemImpl.getInstance().shutdown();
             logger.info("shutdown down Listener");
         } catch (Exception e) {
            logger.error("fail shutdown listener ",e);

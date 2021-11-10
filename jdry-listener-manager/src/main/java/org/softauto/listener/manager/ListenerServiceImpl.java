@@ -11,7 +11,7 @@ public class ListenerServiceImpl implements ListenerService {
 
 
     private  final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ListenerServiceImpl.class);
-    String servicename = "tests.infrastructure.ListenerServiceImpl";
+    String servicename = "tests.infrastructure.Listener";
 
 
 
@@ -21,12 +21,13 @@ public class ListenerServiceImpl implements ListenerService {
         Object result = null;
         try {
 
-                Serializer serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).buildChannel();
+                Serializer serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).build();
                 Message message = Message.newBuilder().setState(ServiceType.BEFORE.name()).setService(servicename).setDescriptor(methodName).setArgs(args).setTypes(types).build();
                 result = serializer.write(message);
                 logger.debug("send message successfully " + methodName);
 
         }catch (NoSuchMethodException n){
+            logger.debug("send message "+methodName+" fail  ",n );
             return (new Object[]{});
         } catch (Exception e) {
             if (e.getCause().toString().contains("UNAVAILABLE")) {
@@ -44,14 +45,31 @@ public class ListenerServiceImpl implements ListenerService {
         return new Object[]{result};
     }
 
-
     @Override
     public  void executeAfter(String methodName, Object[] args, Class[] types) throws Exception {
         Object result = null;
         try {
+            Serializer serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).build();
+            Message message = Message.newBuilder().setState(ServiceType.AFTER.name()).setService(servicename).setDescriptor(methodName).setArgs(args).setTypes(types).build();
+            result = serializer.write(message);
+            logger.debug("send message successfully " + methodName);
 
-                Serializer serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).buildChannel();
-                Message message = Message.newBuilder().setState(ServiceType.AFTER.name()).setService(servicename).setDescriptor(methodName).setArgs(args).setTypes(types).build();
+        } catch (Exception e) {
+            if (e.getCause().toString().contains("UNAVAILABLE")) {
+                logger.debug("fail on UNAVAILABLE ", e);
+
+            }
+            logger.debug("send message "+methodName+" fail  ",e );
+        }
+
+    }
+
+    @Override
+    public  void executeAfter(String methodName, Object[] args, Class[] types,Object res,Class resType) throws Exception {
+        Object result = null;
+        try {
+                Serializer serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).build();
+                Message message = Message.newBuilder().addData("result",res).addData("resultType",resType).setState(ServiceType.AFTER.name()).setService(servicename).setDescriptor(methodName).setArgs(args).setTypes(types).build();
                 result = serializer.write(message);
                 logger.debug("send message successfully " + methodName);
 

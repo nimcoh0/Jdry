@@ -22,12 +22,7 @@
             <artifactId>jdry-avro</artifactId>
             <version>beta-1.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-system</artifactId>
-            <version>beta-1.0</version>
 
-        </dependency>
     </dependencies>
 
     <build>

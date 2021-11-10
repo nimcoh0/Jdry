@@ -13,20 +13,29 @@ import org.apache.logging.log4j.Logger;
 @$annotation
 #end
 @org.apache.avro.specific.AvroGenerated
-public class $this.mangle($protocol.getName())Impl implements $this.mangle($protocol.getName()){
+public class $this.mangle($protocol.getName())Impl {
 
     private static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger($this.mangle($protocol.getName())Impl.class);
 
     public $this.mangle($protocol.getName())Impl(){
           try {
-             if( Class.forName("org.softauto.tester.listener.ListenerObserver", false, this.getClass().getClassLoader())!= null){
-                 org.softauto.tester.listener.ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceImpl", this);
+             if( Class.forName("org.softauto.dispatcher.ListenerObserver", false, this.getClass().getClassLoader())!= null){
+                 org.softauto.dispatcher.ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceImpl", this);
              }
          }catch (Exception e){
            // e.printStackTrace();
          }
     }
 
+    public $this.mangle($protocol.getName())Impl(String name){
+          try {
+             if( Class.forName("org.softauto.dispatcher.ListenerObserver", false, this.getClass().getClassLoader())!= null){
+                 org.softauto.dispatcher.ListenerObserver.getInstance().register(name, this);
+             }
+         }catch (Exception e){
+           // e.printStackTrace();
+         }
+    }
 
 #foreach ($e in $protocol.getMessages().entrySet())
 #set ($name = $e.getKey())
@@ -45,23 +54,11 @@ public class $this.mangle($protocol.getName())Impl implements $this.mangle($prot
   @$annotation
 #end
 public ##
-#foreach ($p in $message.getRequest().getFields())##
-#if($p.schema().isGeneric())<${this.javaUnbox($p.schema(),false)}>#end#if($foreach.hasNext)#end ##
-#end
-${this.javaUnbox($response, true)} ${this.mangle($name)}(##
+java.lang.Object[] ${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
 #*      *#${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.hasNext), #end
 #end
-)#if (! $message.isOneWay() && $message.getErrors().getTypes().size() > 1)
- throws ##
-## The first error is always "string", so we skip it.
-#foreach ($error in $message.getErrors().getTypes().subList(1, $message.getErrors().getTypes().size()))
-${this.mangle($error.getFullName())}##
-#if ($foreach.hasNext), #end
-#end##    (error list)
-#end##    (one way)
-{
-
+){
 #if($message.hasContent())
     $message.getContent()
 #else
@@ -77,6 +74,8 @@ ${this.mangle($error.getFullName())}##
             ${this.mangle($p.name())}#if ($foreach.hasNext), #end##
         #end
         };
+   #else
+   return new Object[]{};
    #end
  #end
 }

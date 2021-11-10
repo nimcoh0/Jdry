@@ -82,7 +82,7 @@ public class RpcProviderImpl implements Provider {
             LogManager.setStatus(true);
             logger.info("starting System server ....");
             server = ServerBuilder.forPort(systemPort)
-                   //.addService(SystemServer.createServiceDefinition(org.softauto.system.SystemService.class,SystemServiceImpl.getInstance()))
+                   //.addService(SystemServer.createServiceDefinition(SystemService.class,SystemServiceImpl.getInstance()))
                    .addService(org.softauto.serializer.SoftautoGrpcServer.createServiceDefinition(SerializerService.class, new org.softauto.grpc.SerializerServiceImpl()))
                    .build();
             server.start();
@@ -124,7 +124,7 @@ public class RpcProviderImpl implements Provider {
         try {
             org.softauto.serializer.SoftautoGrpcServer.setSerializationEngine(org.softauto.serializer.kryo.KryoSerialization.getInstance());
             server = ServerBuilder.forPort(port)
-                    .addService(org.softauto.serializer.SoftautoGrpcServer.createServiceDefinition(SerializerService.class, new org.softauto.grpc.SerializerServiceImpl()))
+                    .addService(org.softauto.serializer.SoftautoGrpcServer.createServiceDefinition(SerializerService.class, org.softauto.grpc.SerializerServiceImpl.class))
                     .build();
             server.start();
             //Listener listener = Listener.newlistenerFactory().setAspectjweaver(Configuration.get(Context.ASPECT_WEAVER).asText()).setServiceImpl(new org.softauto.listener.client.ListenerServiceImpl()).getListener();
@@ -167,7 +167,7 @@ public class RpcProviderImpl implements Provider {
             if(channel != null) {
                 serializer = new Serializer().setChannel(channel);
             }else {
-                serializer = new Serializer().setHost(host).setPort(port).buildChannel();
+                serializer = new Serializer().setHost(host).setPort(port).build();
             }
             Message message = Message.newBuilder().setDescriptor(methodName).setArgs((Object[]) args[0]).setTypes((Class[]) args[1]).build();
             serializer.write(message,callback);

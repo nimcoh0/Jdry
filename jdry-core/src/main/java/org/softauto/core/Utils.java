@@ -16,7 +16,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.softauto.annotations.DefaultValue;
-import org.softauto.jvm.HeapHelper;
+//import org.softauto.jvm.HeapHelper;
 import org.softauto.serializer.CallFuture;
 import org.yaml.snakeyaml.Yaml;
 
@@ -26,10 +26,15 @@ import java.lang.reflect.*;
 import java.net.Inet4Address;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
 
@@ -204,12 +209,17 @@ public class Utils {
      */
     public static Method getMethod2(Object o, String fullMethodName, Class[] types)throws Exception{
         try {
+            logger.debug("trying to find method " + fullMethodName +" with types "+ result2String(types)+ " on "+o.getClass().getName());
             Method[] m = o.getClass().getMethods();
             if (o instanceof Class<?>) {
                 Class c = (Class) o;
-                return c.getMethod(getMethodName(fullMethodName), types);
+                Method method = c.getMethod(getMethodName(fullMethodName), types);
+                logger.debug("found method " + fullMethodName);
+                return method;
             }
-            return o.getClass().getMethod(fullMethodName, types);
+            Method method = o.getClass().getMethod(fullMethodName, types);
+            logger.debug("found method " + fullMethodName);
+            return method;
         }catch (Exception e){
             logger.warn("fail get method 2 "+ fullMethodName,e.getMessage());
             return null;
@@ -375,6 +385,64 @@ public class Utils {
         }
 
     }
+
+    public static void update(String json,String path) throws IOException {
+        FileWriter file = null;
+        File f = new File(path.substring(0,path.lastIndexOf("/")));
+        try{
+            f.mkdirs();
+            file = new FileWriter(path,true);
+
+            file.write(json);
+            logger.debug("save file " + path );
+        }catch (Exception e){
+            logger.error("fail save file "+  path, e);
+        }finally {
+            file.close();
+        }
+    }
+
+    public static boolean isFileExist(String path){
+        FileWriter file = null;
+        File f = new File(path);
+        if(f.exists()){
+            return true;
+        }
+        return false;
+    }
+
+    private static String readFromInputStream(InputStream inputStream)
+            throws IOException {
+        StringBuilder resultStringBuilder = new StringBuilder();
+        try (BufferedReader br
+                     = new BufferedReader(new InputStreamReader(inputStream))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                resultStringBuilder.append(line).append("\n");
+            }
+        }
+        return resultStringBuilder.toString();
+    }
+
+    public static JsonNode getTextFile(String file) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode node = null;
+        try {
+            Path path = Paths.get(file);
+            Stream<String> lines = Files.lines(path);
+            String data = lines.collect(Collectors.joining("\n"));
+            lines.close();
+            //String json = objectMapper.writeValueAsString(data);
+            node = objectMapper.readTree(data);
+
+            logger.debug("successfully got file "+ file);
+            return node;
+        }catch(Exception e){
+            logger.error("get file fail "+ file , e);
+        }
+        return node;
+    }
+
 
     /**
      * get schema/JsonNode from file

@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class ProviderManager {
 
-    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ProviderManager.class);
+    private static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ProviderManager.class);
 
 
     /**

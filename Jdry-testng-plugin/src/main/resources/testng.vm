@@ -1,11 +1,9 @@
 package tests.infrastructure;
 
 
-import org.softauto.tester.listener.ListenerObserver;
-import org.softauto.tester.listener.ListenerServerProviderImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.softauto.tester.Client;
+//import org.softauto.tester.Client;
 import org.softauto.plugin.ProviderManager;
 import org.softauto.plugin.spi.PluginProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,23 +18,28 @@ import java.time.format.DateTimeFormatter;
 import org.softauto.core.Utils;
 import com.esotericsoftware.minlog.Log;
 import static com.esotericsoftware.minlog.Log.*;
-import org.softauto.system.SystemProviderImpl;
+import org.softauto.tester.system.SystemImpl;
+import org.softauto.dispatcher.ListenerObserver;
+import org.softauto.dispatcher.ListenerServerProviderImpl;
+
 
 @org.apache.avro.specific.AvroGenerated
 public class AbstractTesterImpl {
 
     private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(AbstractTesterImpl.class);
     static boolean initialize = false;
-    public StepService tests;
-    public LocalStepService localTests;
-    public StepService.Callback asyncTests;
-    public LocalStepService.Callback localAsyncTests;
-    public ListenerService listeners;
-    public ListenerService.Callback asyncListeners;
-    public ObjectMapper objectMapper = new ObjectMapper();
-    public LocalStepServiceImpl localTestsImpl;
-    public StepServiceImpl testsImpl;
-    public ListenerServiceImpl listenersImpl;
+    public ListenerServiceImpl listenerServiceImpl;
+    public Listener listener;
+    //public StepService tests;
+    //public LocalStepService localTests;
+    //public StepService.Callback asyncTests;
+    //public LocalStepService.Callback localAsyncTests;
+    //public ListenerService listeners;
+    //public ListenerService.Callback asyncListeners;
+    //public ObjectMapper objectMapper = new ObjectMapper();
+    //public LocalStep localTestsImpl;
+    //public Step testsImpl;
+    //public ListenerServiceImpl listenersImpl;
 
 
 
@@ -45,18 +48,22 @@ public class AbstractTesterImpl {
         try {
         if(!initialize){
             initialize = true;
-            tests =  Client.create(tests.infrastructure.StepService.class);
-            localTests = Client.create(tests.infrastructure.LocalStepService.class);
-            asyncTests =  Client.create(tests.infrastructure.StepService.Callback.class);
-            localAsyncTests =  Client.create(tests.infrastructure.LocalStepService.Callback.class);
-            listeners = Client.create(tests.infrastructure.ListenerService.class);
-            asyncListeners = Client.create(tests.infrastructure.ListenerService.Callback.class);
-            localTestsImpl = new LocalStepServiceImpl();
-            testsImpl = new StepServiceImpl();
-            listenersImpl = new ListenerServiceImpl();
+
+            //tests =  Client.create(tests.infrastructure.StepService.class);
+            //localTests = Client.create(tests.infrastructure.LocalStepService.class);
+            //asyncTests =  Client.create(tests.infrastructure.StepService.Callback.class);
+            //localAsyncTests =  Client.create(tests.infrastructure.LocalStepService.Callback.class);
+            //listeners = Client.create(tests.infrastructure.ListenerService.class);
+            //asyncListeners = Client.create(tests.infrastructure.ListenerService.Callback.class);
+           // localTestsImpl = new LocalStep();
+            //testsImpl = new Step();
+            //listenersImpl = new Listener();
             //ListenerInit.getInstance().loadConfiguration().initilize().register();
             //Log.set(LEVEL_TRACE);
            loadPlugins();
+           SystemImpl.getInstance().initilize();
+           listenerServiceImpl = new ListenerServiceImpl();
+           listener = new Listener();
            }
         }catch (Exception e){
             logger.error("fail start listener ",e);
@@ -65,7 +72,7 @@ public class AbstractTesterImpl {
 
    @BeforeMethod
    public void testStart(Method method){
-        SystemProviderImpl.getInstance().startTest(method.getName());
+        SystemImpl.getInstance().startTest(method.getName());
         //ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceImpl",ListenerInit.getInstance().getListenerServiceImpl());
         //org.softauto.logger.LogManager.setStatus(true);
    }
@@ -73,7 +80,7 @@ public class AbstractTesterImpl {
     @AfterMethod
     public void endTest(Method method){
         //org.softauto.logger.LogManager.setStatus(false);
-        SystemProviderImpl.getInstance().endTest(method.getName());
+        SystemImpl.getInstance().endTest(method.getName());
         ListenerObserver.getInstance().reset();
 
     }
@@ -82,7 +89,7 @@ public class AbstractTesterImpl {
     public void finalize() {
         try {
             ListenerServerProviderImpl.getInstance().shutdown();
-            SystemProviderImpl.getInstance().shutdown();
+            SystemImpl.getInstance().shutdown();
             logger.info("shutdown down Listener");
         } catch (Exception e) {
            logger.error("fail shutdown listener ",e);

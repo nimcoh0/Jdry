@@ -26,12 +26,15 @@
         <module>jdry-socket</module>
         <module>jdry-simple-socket</module>
         <module>jdry-jaxrs-annotations</module>
-        <module>jdry-cucumber-plugin</module>
+        <!--module>jdry-cucumber-plugin</module-->
         <module>jdry-local</module>
         <!--module>jdry-logger</module-->
-        <module>jdry-system</module>
+        <!--module>jdry-system</module-->
         <module>jdry-listener-manager</module>
-        <module>jdry-nlp</module>
+        <!--module>jdry-nlp</module-->
+        <module>jdry-ListenerDispatcher</module>
+        <module>jdry-injector</module>
+        <module>jdry-jvmTool</module>
         <!--module>jdry-logger</module-->
 
 

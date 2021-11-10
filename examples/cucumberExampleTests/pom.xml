@@ -11,7 +11,7 @@
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-tester</artifactId>
-            <version>beta-1.0</version>
+            <version>beta-1.0</version>ListenerServiceImpl
 
         </dependency>
         <dependency>

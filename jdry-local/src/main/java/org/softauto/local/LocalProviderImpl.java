@@ -2,8 +2,8 @@ package org.softauto.local;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.gson.JsonArray;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+//import com.google.inject.Guice;
+//import com.google.inject.Injector;
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
 import org.apache.avro.Protocol;
@@ -35,7 +35,7 @@ public class LocalProviderImpl implements Provider {
     String fullClassName;
     Protocol.Message msg;
     private ExecutorService executor = Executors.newSingleThreadExecutor();
-    Injector injector = Guice.createInjector();
+    //Injector injector = Guice.createInjector();
 
     public static LocalProviderImpl getInstance(){
         if(localProviderImpl == null){
@@ -85,7 +85,8 @@ public class LocalProviderImpl implements Provider {
                     //Protocol protocol = Utils.getProtocol(iface);
                     //msg = protocol.getMessages().get(methodName);
                     fullClassName = Utils.getFullClassName(methodName);
-                    Object o = injector.getInstance(Utils.findClass(fullClassName));
+                    //Object o = injector.getInstance(Utils.findClass(fullClassName));
+                    Object o = Utils.findClass(fullClassName).newInstance();
                     //method = Utils.getMethodByNameAndTypeNames(methodName, iface, msg);
                     method = Utils.getMethod(o,methodName, (Class[]) args[1]);
 

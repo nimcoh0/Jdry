@@ -4,19 +4,12 @@
  * DO NOT EDIT DIRECTLY
  */
 package tests.infrastructure;
-import java.util.function.Function;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.google.inject.AbstractModule;
-import com.google.inject.TypeLiteral;
-import com.google.inject.matcher.Matchers;
-import com.google.inject.spi.TypeListener;
-import org.softauto.guice.JvmTypeListener;
-import org.softauto.guice.InitializeNoParamProvider;
-import com.google.inject.multibindings.Multibinder;
-import org.softauto.guice.InitializeParamProvider;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.softauto.injector1.JvmTypeListener;
+import org.softauto.injector1.InitializeNoParamProvider;
+import org.softauto.system.SystemServiceImpl;
 
 @org.apache.avro.specific.AvroGenerated
 public class StepServiceModule extends AbstractModule {
@@ -26,7 +19,7 @@ public class StepServiceModule extends AbstractModule {
     @Override
     protected void configure() {
     try{
-    bind( org.softauto.system.SystemServiceImpl.class).toInstance(org.softauto.system.SystemServiceImpl.getInstance());
+    bind( SystemServiceImpl.class).toInstance(SystemServiceImpl.getInstance());
         bind(app.books.BookCatalog.class).toProvider(InitializeNoParamProvider.getProvider(app.books.BookCatalog.class));
         bind(app.books.BookStore.class).toProvider(InitializeNoParamProvider.getProvider(app.books.BookStore.class));
 }catch(Exception e){

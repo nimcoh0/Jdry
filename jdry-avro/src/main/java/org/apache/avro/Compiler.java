@@ -1518,6 +1518,30 @@ public class Compiler {
     }
   }
 
+  public String getArrayTypes(List<Schema.Field> fields){
+    List<String> types = new ArrayList<>();
+    for(Schema.Field field : fields){
+      if(field.schema().isPrimitive()){
+        types.add(this.convertToPrimitive(field.schema().getName().replaceAll("\\[|\\]","")).getName() + ".class");
+      }else {
+        types.add(this.javaType(field.schema(), false) + ".class");
+      }
+    }
+    String joinedString = StringUtils.join(types,",");
+    //String types = getTypes(fields);
+    return "new Class[]{"+joinedString+"}";
+  }
+
+  public String getArrayNames(List<Schema.Field> fields){
+    List<String> names = new ArrayList<>();
+    for(Schema.Field field : fields){
+      names.add(field.name());
+    }
+    String joinedString = StringUtils.join(names,",");
+    //String types = getTypes(fields);
+    return "new Object[]{"+joinedString+"}";
+  }
+
   public static String getDefaultValue(String name){
     switch (name){
       case "int" : return "-1";
@@ -1529,7 +1553,25 @@ public class Compiler {
     }
   }
 
+  public static Class convertToPrimitive(String type){
+    try{
+      switch (type){
+        case "int"     : return int.class;
+        case "boolean" : return boolean.class;
+        case "java.lang.String"  : return String.class;
+        case "string"  : return String.class;
+        case "byte"    : return byte.class;
+        case "long"    : return long.class;
+        case "float"   : return float.class;
+        case "double"  : return double.class;
+        //default: return extractConstructorDefaultArgsValue( value,clazz,type);
+      }
 
+    }catch (Exception e){
+      e.printStackTrace();
+    }
+    return null;
+  }
 
 
   public static void main(String[] args) throws Exception {

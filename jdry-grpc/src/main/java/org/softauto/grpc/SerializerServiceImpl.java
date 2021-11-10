@@ -1,7 +1,8 @@
 package org.softauto.grpc;
 
 
-import com.google.inject.Injector;
+import org.softauto.core.AbstractInjector;
+import org.softauto.core.ServiceLocator;
 import org.softauto.core.Utils;
 import org.softauto.system.SystemServiceImpl;
 import org.softauto.serializer.CallFuture;
@@ -16,7 +17,7 @@ import java.lang.reflect.Modifier;
 public class SerializerServiceImpl implements SerializerService,SerializerService.Callback{
 
     private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(SerializerServiceImpl.class);
-    private Injector injector ;
+    private AbstractInjector injector ;
 
 
 
@@ -38,9 +39,9 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
             String fullClassName = Utils.getFullClassName(message.getDescriptor());
             String methodName = Utils.getMethodName(message.getDescriptor());
             Object serviceImpl;
-            injector = SystemServiceImpl.getInstance().getInjector();
+            injector = (AbstractInjector)ServiceLocator.getInstance().getService("INJECTOR");
             if(injector != null) {
-                serviceImpl = injector.getInstance(Utils.findClass(fullClassName));
+                serviceImpl = injector.inject(fullClassName);
             }else {
                 serviceImpl = SystemServiceImpl.getInstance();
             }
@@ -71,9 +72,9 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
         try {
             String fullClassName = Utils.getFullClassName(message.getDescriptor());
             Object serviceImpl;
-            injector = SystemServiceImpl.getInstance().getInjector();
-            if(injector != null) {
-                serviceImpl = injector.getInstance(Utils.findClass(fullClassName));
+            injector = (AbstractInjector)ServiceLocator.getInstance().getService("INJECTOR");
+            if(injector != null && !fullClassName.equals("org.softauto.system.SystemServiceImpl")) {
+                serviceImpl = injector.inject(fullClassName);
             }else {
                 serviceImpl = SystemServiceImpl.getInstance();
             }
