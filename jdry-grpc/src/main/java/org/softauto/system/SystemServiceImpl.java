@@ -1,19 +1,12 @@
 package org.softauto.system;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.inject.*;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 import org.softauto.core.Configuration;
-import org.softauto.core.Context;
-import org.softauto.core.Utils;
-
 import org.softauto.injector.InjectorProviderImpl;
-import org.softauto.logger.impl.ListenerServiceImpl;
-import org.softauto.plugin.ProviderManager;
-import org.softauto.plugin.spi.PluginProvider;
-
-import java.io.*;
+import org.softauto.jvm.JvmProviderImpl;
+import org.softauto.listener.manager.ListenerClientProviderImpl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -23,7 +16,6 @@ import java.util.Date;
 public class SystemServiceImpl {
 
     private static SystemServiceImpl systemServiceImpl = null;
-    public Injector injector ;
 
     /** indecate if the syatem was loaded */
     boolean loaded = false;
@@ -40,7 +32,7 @@ public class SystemServiceImpl {
     }
 
     private SystemServiceImpl(){
-       // injector = Guice.createInjector(new BasicModule());
+
     }
 
     public int hello() {
@@ -48,9 +40,6 @@ public class SystemServiceImpl {
     }
 
 
-    public Injector getInjector() {
-        return injector;
-    }
 
     /**
      * set start test log
@@ -59,7 +48,6 @@ public class SystemServiceImpl {
     public void startTest(String testname){
         logger.info(" **************** start test "+ testname+ " ******************");
         logger.info(TRACER," **************** start test "+ testname+ " ******************");
-        //LogManager.setStatus(true);
 
     }
 
@@ -76,7 +64,6 @@ public class SystemServiceImpl {
             logger.info(" **************** end test " + testname + " ******************");
             logger.info(TRACER, " **************** end test " + testname + " ******************");
             logger.info(TRACER, "roll test");
-            //LogManager.setStatus(false);
 
         }catch (Exception e){
             logger.error("fail end test ",e);
@@ -91,7 +78,6 @@ public class SystemServiceImpl {
     public int configuration(JsonNode configuration) {
         Configuration.setConfiguration(configuration);
         if(!loaded) {
-            //Log4j2Utils.changeLogLevel(Configuration.get("log_level").asText());
             load();
             loaded = true;
         }else {
@@ -107,7 +93,6 @@ public class SystemServiceImpl {
     public void shutdown() {
         try {
             setConnection(false);
-            //HeapHelper.clean();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -121,15 +106,10 @@ public class SystemServiceImpl {
 
     private  void load()  {
         try {
-            initInjector();
-            initLoger();
-            //RpcProviderImpl.getInstance().initilize();
-            loadPlugins();
-            //InjectorInit.getInstance().initilize().register();
-            //loadHeapHelper();
-            //initLogger();
+            InjectorProviderImpl.getInstance().initialize().register();
+            ListenerClientProviderImpl.getInstance().initialize().register();
+            JvmProviderImpl.getInstance().initialize().register();
             setConnection(true);
-            logger.info(Context.JDRY,"Injector Load successfully ");
         }catch(Exception e){
             logger.fatal("init fail ",e);
             System.exit(1);
@@ -138,103 +118,4 @@ public class SystemServiceImpl {
 
 
 
-/*
-    private  void loadHeapHelper(){
-        try {
-            String path = System.getenv("temp");
-            String name = "libHeapHelper.dll";
-            loadLib(path,name);
-            String pid = ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
-            VirtualMachine jvm = VirtualMachine.attach(pid);
-            jvm.loadAgentPath(path+"/"+name, null);
-            logger.info("HeapHelper agent attach to pid " + pid + " successfully");
-        }catch (Exception e){
-            logger.error("HeapHelper agent fail to load",e);
-        }
-    }
-
-    private void loadLib(String path, String name) {
-        InputStream input = this.getClass().getClassLoader().getResourceAsStream(name);
-        OutputStream outputStream = null;
-        try {
-            File fileOut = new File(path+"/"+name);
-            outputStream = new FileOutputStream(fileOut);
-            IOUtils.copy(input, outputStream);
-        } catch (Exception e) {
-           e.printStackTrace();
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (outputStream != null) {
-                try {
-                    outputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-*/
-
-    private  void loadPlugins(){
-        try {
-            for(PluginProvider provider : ProviderManager.providers()){
-                if(!provider.getName().equals("RPC")) {
-                    provider.create().initilize().register();
-                    logger.info("plugin " + provider.getName() + "load successfully");
-                }
-            }
-        }catch (Exception e){
-            logger.error("fail to load plugins  ",e);
-        }
-    }
-
-
-    public void initInjector(){
-        try {
-            Class iface = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), "StepService", Configuration.get(Context.TEST_MACHINE).asText());
-            InjectorProviderImpl.getInstance().initilize().register();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-
-    /*
-    public  void initGuice(){
-        try {
-            Class guiceModule = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), "StepServiceModule", Configuration.get(Context.TEST_MACHINE).asText());
-            AbstractModule module = (AbstractModule) guiceModule.newInstance();
-            //Injector oldInjector = Guice.createInjector(allYourOtherModules);
-            //Module myModule = new PropertiesModule(injector..get.get(Properties.class));
-            injector =  Guice.createInjector(module);
-            //injector = injector.createChildInjector(module);
-            //injector = Guice.createInjector(module);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-*/
-
-
-    public void initLoger() throws IOException {
-        try {
-            if(Configuration.get(Context.SEND_LOG_TO_TESTER) != null && Configuration.get(Context.SEND_LOG_TO_TESTER).asText() == "Yes") {
-                ListenerServiceImpl listenerServiceImpl = new ListenerServiceImpl();
-                Class ifaceLog = Utils.getRemoteOrLocalClass(org.softauto.core.Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Context.LISTENER_SERVICE_LOG, org.softauto.core.Configuration.get(Context.TEST_MACHINE).asText());
-                listenerServiceImpl.setIface(ifaceLog);
-                org.softauto.logger.impl.Logger.init(listenerServiceImpl);
-                logger.info("successfully load Logger");
-            }
-        }catch (Exception e){
-            logger.error("fail to load logger",e);
-        }
-
-    }
 }

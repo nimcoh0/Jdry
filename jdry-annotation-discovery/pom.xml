@@ -5,7 +5,7 @@
     <parent>
         <artifactId>jdry</artifactId>
         <groupId>org.softauto</groupId>
-        <version>beta-1.0</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,26 +15,26 @@
         <dependency>
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service</artifactId>
-            <version>1.0-rc6</version>
+            <version>${auto-service}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-annotations</artifactId>
-            <version>beta-1.0</version>
+            <version>${jdry-annotations}</version>
 
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-core</artifactId>
-            <version>beta-1.0</version>
+            <version>${jdry-core}</version>
 
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.11.3</version>
+            <version>${jackson-databind}</version>
         </dependency>
 
     </dependencies>

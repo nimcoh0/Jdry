@@ -72,9 +72,10 @@ public class RestService {
                 Client client = channel.getClient();
                 MultivaluedMap<String, Object> headers = channel.getHeaders();
                 URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
+                logger.debug("invoke GET for "+ uri);
                 return new JerseyHelper(client).get(uri.toString(), methodDescriptor.getProduces(), headers, res);
             }catch (Exception e){
-                e.printStackTrace();
+                logger.error("fail invoke GET for uri "+ methodDescriptor.getPath()+ " with args "+ Utils.result2String((Object[])args[0]),e);
             }
             return null;
         }
@@ -89,10 +90,11 @@ public class RestService {
                 MultivaluedMap<String, Object> headers = channel.getHeaders();
                 URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
                 Entity<?> entity = methodDescriptor.buildEntity(methodDescriptor.getMessage(),(Object[])args[0]);
+                logger.debug("invoke POST for "+ uri + " with headers "+ headers.values() + " entity");
                 return new JerseyHelper(client).post(uri.toString(), methodDescriptor.getProduces(), headers, res,entity);
 
             }catch (Exception e){
-                e.printStackTrace();
+                logger.error("fail invoke POST for uri "+ methodDescriptor.getPath()+ " with args "+ Utils.result2String((Object[])args[0]),e);
             }
             return null;
         }
@@ -107,9 +109,10 @@ public class RestService {
                 MultivaluedMap<String, Object> headers = channel.getHeaders();
                 URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
                 Entity<?> entity = methodDescriptor.buildEntity(methodDescriptor.getMessage(),(Object[])args[0]);
+                logger.debug("invoke PUT for "+ uri + " with headers "+ headers.values() + " entity");
                 return new JerseyHelper(client).put(uri.toString(), methodDescriptor.getProduces(), headers, res,entity);
             }catch (Exception e){
-                e.printStackTrace();
+                logger.error("fail invoke PUT for uri "+ methodDescriptor.getPath()+ " with args "+ Utils.result2String((Object[])args[0]),e);
             }
             return null;
         }
@@ -123,9 +126,10 @@ public class RestService {
                 Client client = channel.getClient();
                 MultivaluedMap<String, Object> headers = channel.getHeaders();
                 URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
+                logger.debug("invoke DELETE for "+ uri + " with headers "+ headers.values() );
                 return new JerseyHelper(client).delete(uri.toString(), methodDescriptor.getProduces(), headers, res);
             }catch (Exception e){
-                e.printStackTrace();
+                logger.error("fail invoke DELETE for uri "+ methodDescriptor.getPath()+ " with args "+ Utils.result2String((Object[])args[0]),e);
             }
             return null;
         }

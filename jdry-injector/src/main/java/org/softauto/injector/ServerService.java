@@ -91,7 +91,7 @@ public class ServerService {
                 Class c = Class.forName(classDescriptor.getFullClassName());
                 Method singleton =  c.getDeclaredMethod("getInstance");
                 obj  = singleton.invoke(c);
-
+                logger.debug("invoke Singleton class  " + classDescriptor.getFullClassName());
              }catch (Exception e){
                 logger.warn("fail get Instance Class for  "+classDescriptor.getFullClassName(),e.getMessage());
 
@@ -116,7 +116,7 @@ public class ServerService {
                 Object[] values = classDescriptor.getArgs();
                 Constructor constructor = c.getDeclaredConstructor(types);
                 obj  = constructor.newInstance(values);
-
+                logger.debug("invoke Initialize class "+classDescriptor.getFullClassName() + "with ares "+Utils.result2String(values) + "and types "+Utils.result2String(types));
             }catch (Exception e){
                 logger.warn("fail get Instance Class for  "+classDescriptor.getFullClassName(),e.getMessage());
             }
@@ -135,7 +135,7 @@ public class ServerService {
             try {
                 Class c = Utils.findClass(classDescriptor.getFullClassName()) ;
                 obj  = c.newInstance();
-
+                logger.debug("invoke Initialize No Param Class "+ classDescriptor.getFullClassName());
             }catch (Exception e){
                 logger.warn("fail get Instance Class for  "+classDescriptor.getFullClassName(),e.getMessage());
             }

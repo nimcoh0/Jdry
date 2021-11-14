@@ -1,8 +1,14 @@
 package org.softauto.tester;
 
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import org.softauto.core.Configuration;
 import org.softauto.serializer.CallFuture;
 import org.softauto.plugin.ProviderManager;
 import org.softauto.plugin.api.Provider;
+import org.softauto.serializer.Serializer;
+import org.softauto.serializer.service.Message;
+
 import java.util.Arrays;
 
 public class InvocationHandler {
@@ -18,6 +24,22 @@ public class InvocationHandler {
             logger.error("fail invoke method "+ methodName+ " with args "+ Arrays.toString(args),e);
         }
         return null;
+    }
+
+    public <T> T invoke(String methodName, Object[] args, Class[] types)  {
+        CallFuture<T> future = new CallFuture<>();
+        T t = null;
+        try {
+            String host = Configuration.get("serializer_host").asText();
+            int port = Configuration.get("serializer_port").asInt();
+            Serializer serializer = new Serializer().setHost(host).setPort(port).build();
+            Message message = Message.newBuilder().setDescriptor(methodName).setArgs(args).setTypes(types).build();
+            serializer.write(message,future);
+            t = future.get();
+        } catch (Exception e) {
+            logger.error("fail invoke method "+ methodName+ " with args "+ Arrays.toString(args),e);
+        }
+        return t;
     }
 
 

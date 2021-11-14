@@ -42,11 +42,11 @@ public class InjectorProviderImpl implements Provider {
 
 
 
-    public InjectorProviderImpl initilize() throws IOException {
+    public InjectorProviderImpl initialize() throws IOException {
         try {
             this.iface =  Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , Context.STEP_SERVICE, Configuration.get(Context.TEST_MACHINE).asText());
             injector = new Injector().createServiceDefinition(iface);
-            logger.debug("successfully initilize");
+            logger.info("Injector successfully initilize");
         }catch (Throwable e){
             logger.fatal("fail to load injector ", e);
             System.exit(1);

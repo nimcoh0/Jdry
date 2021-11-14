@@ -5,7 +5,7 @@
     <parent>
         <artifactId>jdry</artifactId>
         <groupId>org.softauto</groupId>
-        <version>beta-1.0</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,40 +15,40 @@
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-core</artifactId>
-            <version>beta-1.0</version>
+            <version>${jdry-core}</version>
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-jaxrs-annotations</artifactId>
-            <version>beta-1.0</version>
+            <version>${jdry-jaxrs-annotations}</version>
         </dependency>
 
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-multipart</artifactId>
-            <version>2.25.1</version>
+            <version>${jersey-media-multipart}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
-            <version>2.25.1</version>
+            <version>${jersey-client}</version>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet</artifactId>
-            <version>2.25.1</version>
+            <version>${jersey-container-servlet}</version>
         </dependency>
 
 
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
-            <version>3.0.0</version>
+            <version>${jakarta.xml.bind-api}</version>
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-jaxrs-annotations</artifactId>
-            <version>beta-1.0</version>
+            <version>${jdry-jaxrs-annotations}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -66,31 +66,13 @@
                         <goal>shade</goal>
                     </goals>
                     <configuration>
-                        <filters>
-                            <filter>
-                                <artifact>*:*</artifact>
-                                <excludes>
-                                    <exclude>META-INF/*.SF</exclude>
-                                    <exclude>META-INF/*.DSA</exclude>
-                                    <exclude>META-INF/*.RSA</exclude>
-                                </excludes>
-                            </filter>
-                        </filters>
-                        <finalName>dry5-jaxrs-1.0.0-SNAPSHOT</finalName>
-                        <transformers>
-                            <transformer implementation="com.github.edwgiz.mavenShadePlugin.log4j2CacheTransformer.PluginsCacheFileTransformer" />
 
-                        </transformers>
+                        <finalName>dry5-jaxrs-1.0.0-SNAPSHOT</finalName>
+
                     </configuration>
                 </execution>
             </executions>
-            <dependencies>
-                <dependency>
-                    <groupId>com.github.edwgiz</groupId>
-                    <artifactId>maven-shade-plugin.log4j2-cachefile-transformer</artifactId>
-                    <version>2.6.1</version>
-                </dependency>
-            </dependencies>
+
         </plugin>
     </plugins>
     </build>

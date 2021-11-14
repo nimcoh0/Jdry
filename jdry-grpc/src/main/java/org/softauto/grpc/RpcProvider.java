@@ -20,7 +20,7 @@ public class RpcProvider implements PluginProvider {
 
     @Override
     public String getName() {
-        return "RPC";
+        return "GRPC-SERVER";
     }
 
     @Override

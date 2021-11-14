@@ -18,90 +18,41 @@ import java.time.format.DateTimeFormatter;
 import org.softauto.core.Utils;
 import com.esotericsoftware.minlog.Log;
 import static com.esotericsoftware.minlog.Log.*;
-import org.softauto.tester.system.SystemImpl;
-import org.softauto.dispatcher.ListenerObserver;
-import org.softauto.dispatcher.ListenerServerProviderImpl;
+import org.softauto.tester.SystemState;
+
 
 
 @org.apache.avro.specific.AvroGenerated
 public class AbstractTesterImpl {
 
     private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(AbstractTesterImpl.class);
-    static boolean initialize = false;
     public ListenerServiceImpl listenerServiceImpl;
     public Listener listener;
-    //public StepService tests;
-    //public LocalStepService localTests;
-    //public StepService.Callback asyncTests;
-    //public LocalStepService.Callback localAsyncTests;
-    //public ListenerService listeners;
-    //public ListenerService.Callback asyncListeners;
-    //public ObjectMapper objectMapper = new ObjectMapper();
-    //public LocalStep localTestsImpl;
-    //public Step testsImpl;
-    //public ListenerServiceImpl listenersImpl;
+
 
 
 
     @BeforeSuite
     public void start(){
         try {
-        if(!initialize){
-            initialize = true;
-
-            //tests =  Client.create(tests.infrastructure.StepService.class);
-            //localTests = Client.create(tests.infrastructure.LocalStepService.class);
-            //asyncTests =  Client.create(tests.infrastructure.StepService.Callback.class);
-            //localAsyncTests =  Client.create(tests.infrastructure.LocalStepService.Callback.class);
-            //listeners = Client.create(tests.infrastructure.ListenerService.class);
-            //asyncListeners = Client.create(tests.infrastructure.ListenerService.Callback.class);
-           // localTestsImpl = new LocalStep();
-            //testsImpl = new Step();
-            //listenersImpl = new Listener();
-            //ListenerInit.getInstance().loadConfiguration().initilize().register();
-            //Log.set(LEVEL_TRACE);
+           //Log.set(LEVEL_TRACE);
            loadPlugins();
-           SystemImpl.getInstance().initilize();
+           SystemState.getInstance().initialize();
            listenerServiceImpl = new ListenerServiceImpl();
            listener = new Listener();
-           }
         }catch (Exception e){
             logger.error("fail start listener ",e);
         }
     }
 
-   @BeforeMethod
-   public void testStart(Method method){
-        SystemImpl.getInstance().startTest(method.getName());
-        //ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceImpl",ListenerInit.getInstance().getListenerServiceImpl());
-        //org.softauto.logger.LogManager.setStatus(true);
-   }
 
-    @AfterMethod
-    public void endTest(Method method){
-        //org.softauto.logger.LogManager.setStatus(false);
-        SystemImpl.getInstance().endTest(method.getName());
-        ListenerObserver.getInstance().reset();
-
-    }
-
-    @AfterSuite
-    public void finalize() {
-        try {
-            ListenerServerProviderImpl.getInstance().shutdown();
-            SystemImpl.getInstance().shutdown();
-            logger.info("shutdown down Listener");
-        } catch (Exception e) {
-           logger.error("fail shutdown listener ",e);
-        }
-    }
 
     public  void loadPlugins(){
         try {
             for(PluginProvider provider : ProviderManager.providers()){
                 if(!provider.getName().equals("RPC")) {
-                   provider.create().initilize().register();
-                   logger.info("plugin " + provider.getName() + "load successfully");
+                   provider.create().initialize().register();
+
                 }
             }
         }catch (Exception e){

@@ -18,6 +18,7 @@ public class MessageHandler extends AbstractMessage {
             try {
                 if (element.getAnnotation(LOCAL.class) != null) {
                    JsonNode localMethod  =  super.parseElement(element,new LocalMethodVisitor());
+                   logger.debug("local parse successfully");
                    return localMethod;
                 }
             }catch (Exception e){

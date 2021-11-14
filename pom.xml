@@ -7,35 +7,28 @@
     <groupId>org.softauto</groupId>
     <artifactId>jdry</artifactId>
     <packaging>pom</packaging>
-    <version>beta-1.0</version>
+    <version>1.0.0</version>
     <modules>
         <module>jdry-tester</module>
         <module>jdry-grpc</module>
         <module>jdry-core</module>
-        <!--module>jdry-plugin</module-->
         <module>jdry-kryo-serialization</module>
         <module>jdry-loader</module>
-        <!--module>jdry-injector</module-->
         <module>jdry-avro</module>
         <module>jdry-annotations</module>
         <module>jdry-annotation-discovery</module>
         <module>jdry-jaxrs</module>
-        <!--module>jdry-jvmTool</module-->
         <module>jdry-testng-plugin</module>
         <module>jdry-socket-annotations</module>
         <module>jdry-socket</module>
         <module>jdry-simple-socket</module>
         <module>jdry-jaxrs-annotations</module>
-        <!--module>jdry-cucumber-plugin</module-->
         <module>jdry-local</module>
-        <!--module>jdry-logger</module-->
-        <!--module>jdry-system</module-->
         <module>jdry-listener-manager</module>
-        <!--module>jdry-nlp</module-->
-        <module>jdry-ListenerDispatcher</module>
+        <module>jdry-listener-server</module>
         <module>jdry-injector</module>
         <module>jdry-jvmTool</module>
-        <!--module>jdry-logger</module-->
+
 
 
     </modules>
@@ -54,23 +47,21 @@
         <javax.el-api>3.0.0</javax.el-api>
         <snakeyaml>1.27</snakeyaml>
         <javax.el>2.2.6</javax.el>
-        <jdry-core>beta-1.0</jdry-core>
-        <jdry-local>beta-1.0</jdry-local>
-        <jdry-plugin>beta-1.0</jdry-plugin>
-        <jdry-grpc>beta-1.0</jdry-grpc>
-        <jdry-avro>beta-1.0</jdry-avro>
-        <jdry-listener>beta-1.0</jdry-listener>
-        <jdry-logger>beta-1.0</jdry-logger>
+        <jdry-core>1.0.0</jdry-core>
+        <jdry-local>1.0.0</jdry-local>
+        <jdry-grpc>1.0.0</jdry-grpc>
+        <jdry-avro>1.0.0</jdry-avro>
+        <jdry-listener>1.0.0</jdry-listener>
         <commons-codec>1.13</commons-codec>
         <jdry-annotations>beta-1.0</jdry-annotations>
         <jdry-annotation-discovery>beta-1.0</jdry-annotation-discovery>
-        <avro-ipc-netty>1.9.1</avro-ipc-netty>
         <jdry-socket-annotations>beta-1.0</jdry-socket-annotations>
         <log4j-api>2.14.1</log4j-api>
         <log4j-core>2.14.1</log4j-core>
-        <jdry-injector>beta-1.0</jdry-injector>
-        <jdry-kryo-serialization>beta-1.0</jdry-kryo-serialization>
-        <jdry-jvmTool>beta-1.0</jdry-jvmTool>
+        <jdry-injector>1.0.0</jdry-injector>
+        <jdry-kryo-serialization>1.0.0</jdry-kryo-serialization>
+        <jdry-jvmTool>1.0.0</jdry-jvmTool>
+        <jdry-listener-server>1.0.0</jdry-listener-server>
         <aspectjweaver>1.9.6</aspectjweaver>
         <aspectjrt>1.9.6</aspectjrt>
         <aspectjtools>1.9.6</aspectjtools>
@@ -95,13 +86,30 @@
         <maven-core>3.8.1</maven-core>
         <maven-plugin-annotations>3.5</maven-plugin-annotations>
         <version.roaster>2.22.3.Final</version.roaster>
+        <avro-ipc-netty>1.9.1</avro-ipc-netty>
+        <avro-ipc>1.10.0</avro-ipc>
+        <maven-jdk-tools-wrapper>0.1</maven-jdk-tools-wrapper>
+        <commons-lang3>3.5</commons-lang3>
+        <jersey-container-servlet>2.25.1</jersey-container-servlet>
+        <javax.annotation-api>1.3.2</javax.annotation-api>
+        <jackson-databind>2.11.1</jackson-databind>
+        <guava>31.0.1-jre</guava>
+        <type-parser>0.7.0</type-parser>
+        <commons-io>2.10.0</commons-io>
+        <velocity-engine-core>2.2</velocity-engine-core>
+        <auto-service>1.0-rc6</auto-service>
+        <grpc-core>1.18.0</grpc-core>
+        <grpc-stub>1.18.0</grpc-stub>
+        <grpc-netty>1.18.0</grpc-netty>
+        <jdry-serializer>1.0.0</jdry-serializer>
+        <jdry-listener-manager>1.0.0</jdry-listener-manager>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.0.1-jre</version>
+            <version>${guava}</version>
         </dependency>
         <dependency>
             <groupId>io.grpc</groupId>
@@ -155,7 +163,7 @@
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-core</artifactId>
-            <version>1.18.0</version>
+            <version>${grpc-core}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.code.findbugs</groupId>
@@ -166,12 +174,12 @@
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-stub</artifactId>
-            <version>1.18.0</version>
+            <version>${grpc-stub}</version>
         </dependency>
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-netty</artifactId>
-            <version>1.18.0</version>
+            <version>${grpc-netty}</version>
 
         </dependency>
         <dependency>

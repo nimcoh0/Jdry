@@ -21,10 +21,10 @@ public class Configuration {
     }
 
     public static JsonNode get(String path){
-        if(configuration.at("/"+path) != null){
+        if(configuration.at("/"+path) != null && !configuration.at("/"+path).asText().isEmpty()){
                 return  configuration.at("/"+path);
          }
-        logger.warn(path + " dose not exist in configuration");
+
         return null;
     }
 

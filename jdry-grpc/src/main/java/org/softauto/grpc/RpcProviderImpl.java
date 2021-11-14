@@ -120,20 +120,21 @@ public class RpcProviderImpl implements Provider {
 
      */
     @Override
-    public Provider initilize() throws IOException {
+    public Provider initialize() throws IOException {
         try {
             org.softauto.serializer.SoftautoGrpcServer.setSerializationEngine(org.softauto.serializer.kryo.KryoSerialization.getInstance());
             server = ServerBuilder.forPort(port)
                     .addService(org.softauto.serializer.SoftautoGrpcServer.createServiceDefinition(SerializerService.class, org.softauto.grpc.SerializerServiceImpl.class))
                     .build();
             server.start();
-            //Listener listener = Listener.newlistenerFactory().setAspectjweaver(Configuration.get(Context.ASPECT_WEAVER).asText()).setServiceImpl(new org.softauto.listener.client.ListenerServiceImpl()).getListener();
+            logger.info("Grpc Server load successfully on port "+port);
         }catch (Exception e){
             logger.fatal("fail to start Serializer server ", e);
             System.exit(1);
         }
         return this;
     }
+
 
 
     @Override

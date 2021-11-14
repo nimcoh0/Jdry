@@ -63,10 +63,11 @@ public class SocketProviderImpl implements Provider {
 
 
     @Override
-    public Provider initilize() throws IOException {
+    public Provider initialize() throws IOException {
 
         return this;
     }
+
 
 
     /**

@@ -17,19 +17,6 @@ import java.lang.reflect.Modifier;
 public class SerializerServiceImpl implements SerializerService,SerializerService.Callback{
 
     private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(SerializerServiceImpl.class);
-    private AbstractInjector injector ;
-
-
-
-    public SerializerServiceImpl(){
-        try {
-
-            //injector = Guice.createInjector(new BasicModule());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
 
 
     @Override
@@ -39,7 +26,7 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
             String fullClassName = Utils.getFullClassName(message.getDescriptor());
             String methodName = Utils.getMethodName(message.getDescriptor());
             Object serviceImpl;
-            injector = (AbstractInjector)ServiceLocator.getInstance().getService("INJECTOR");
+            AbstractInjector injector = (AbstractInjector)ServiceLocator.getInstance().getService("INJECTOR");
             if(injector != null) {
                 serviceImpl = injector.inject(fullClassName);
             }else {
@@ -72,7 +59,7 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
         try {
             String fullClassName = Utils.getFullClassName(message.getDescriptor());
             Object serviceImpl;
-            injector = (AbstractInjector)ServiceLocator.getInstance().getService("INJECTOR");
+            AbstractInjector injector = (AbstractInjector)ServiceLocator.getInstance().getService("INJECTOR");
             if(injector != null && !fullClassName.equals("org.softauto.system.SystemServiceImpl")) {
                 serviceImpl = injector.inject(fullClassName);
             }else {

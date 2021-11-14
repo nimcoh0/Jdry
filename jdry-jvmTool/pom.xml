@@ -5,7 +5,7 @@
     <parent>
         <artifactId>jdry</artifactId>
         <groupId>org.softauto</groupId>
-        <version>beta-1.0</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-core</artifactId>
-            <version>beta-1.0</version>
+            <version>${jdry-core}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

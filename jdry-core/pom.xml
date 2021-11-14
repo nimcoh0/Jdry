@@ -5,7 +5,7 @@
     <parent>
         <artifactId>jdry</artifactId>
         <groupId>org.softauto</groupId>
-        <version>beta-1.0</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -14,58 +14,45 @@
         <dependency>
             <groupId>com.github.drapostolos</groupId>
             <artifactId>type-parser</artifactId>
-            <version>0.7.0</version>
+            <version>${type-parser}</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>5.0.1</version>
-        </dependency>
+
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-avro</artifactId>
-            <version>beta-1.0</version>
+            <version>${jdry-avro}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-serializer</artifactId>
-            <version>beta-1.0</version>
+            <version>${jdry-serializer}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>2.11.1</version>
+            <version>${jackson-dataformat-yaml}</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>1.9.6</version>
 
-        </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.14.1</version>
+            <version>${log4j-core}</version>
 
         </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
+
 
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-annotations</artifactId>
-            <version>beta-1.0</version>
+            <version>${jdry-annotations}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.10.0</version>
+            <version>${commons-io}</version>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
@@ -98,25 +85,19 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.11.3</version>
+            <version>${jackson-databind}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.avro</groupId>
             <artifactId>avro-ipc</artifactId>
-            <version>1.10.0</version>
+            <version>${avro-ipc}</version>
         </dependency>
-        <!--dependency>
-            <groupId>com.sun</groupId>
-            <artifactId>tools</artifactId>
-            <version>1.8.0_161</version>
-            <scope>system</scope>
-            <systemPath>${java.home}/../lib/tools.jar</systemPath>
-        </dependency-->
+
         <dependency>
             <groupId>com.github.olivergondza</groupId>
             <artifactId>maven-jdk-tools-wrapper</artifactId>
-            <version>0.1</version>
+            <version>${maven-jdk-tools-wrapper}</version>
         </dependency>
         <dependency>
             <groupId>net.java.dev.jna</groupId>

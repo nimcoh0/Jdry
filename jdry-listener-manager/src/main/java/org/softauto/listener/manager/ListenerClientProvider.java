@@ -22,7 +22,7 @@ public class ListenerClientProvider implements PluginProvider {
 
     @Override
     public String getName() {
-        return "LISTENER-CLIENT";
+        return "LISTENER-MANAGER";
     }
 
     @Override

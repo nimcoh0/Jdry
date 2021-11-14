@@ -6,12 +6,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-#if ($protocol.getDoc())
-/** $protocol.getDoc() */
-#end
-#foreach ($annotation in $this.javaAnnotations($protocol))
-@$annotation
-#end
 @org.apache.avro.specific.AvroGenerated
 public class $this.mangle($protocol.getName())Impl {
 
@@ -19,8 +13,8 @@ public class $this.mangle($protocol.getName())Impl {
 
     public $this.mangle($protocol.getName())Impl(){
           try {
-             if( Class.forName("org.softauto.dispatcher.ListenerObserver", false, this.getClass().getClassLoader())!= null){
-                 org.softauto.dispatcher.ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceImpl", this);
+             if( Class.forName("org.softauto.listener.server.ListenerObserver", false, this.getClass().getClassLoader())!= null){
+                 org.softauto.listener.server.ListenerObserver.getInstance().register("tests.infrastructure.ListenerServiceImpl", this);
              }
          }catch (Exception e){
            // e.printStackTrace();
@@ -29,8 +23,8 @@ public class $this.mangle($protocol.getName())Impl {
 
     public $this.mangle($protocol.getName())Impl(String name){
           try {
-             if( Class.forName("org.softauto.dispatcher.ListenerObserver", false, this.getClass().getClassLoader())!= null){
-                 org.softauto.dispatcher.ListenerObserver.getInstance().register(name, this);
+             if( Class.forName("org.softauto.listener.server.ListenerObserver", false, this.getClass().getClassLoader())!= null){
+                 org.softauto.listener.server.ListenerObserver.getInstance().register(name, this);
              }
          }catch (Exception e){
            // e.printStackTrace();
@@ -41,27 +35,13 @@ public class $this.mangle($protocol.getName())Impl {
 #set ($name = $e.getKey())
 #set ($message = $e.getValue())
 #set ($response = $message.getResponse())
-  /**
-#if ($message.getDoc())
-   * $this.escapeForJavadoc($message.getDoc())
-#end
-#foreach ($p in $message.getRequest().getFields())##
-#if ($p.doc())   * @param ${this.mangle($p.name())} $p.doc()
-#end
-#end
-   */
-#foreach ($annotation in $this.javaAnnotations($message))
-  @$annotation
-#end
+
 public ##
 java.lang.Object[] ${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
 #*      *#${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.hasNext), #end
 #end
 ){
-#if($message.hasContent())
-    $message.getContent()
-#else
  LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " ${this.mangle($name)} args :" ##
    #foreach ($p in $message.getRequest().getFields())##
    #*      *# +" ${this.mangle($p.name())}:" + ${this.mangle($p.name())}#if ($foreach.hasNext) #end
@@ -77,9 +57,17 @@ java.lang.Object[] ${this.mangle($name)}(##
    #else
    return new Object[]{};
    #end
- #end
+
 }
 
+#if (${this.javaUnbox($response, true)} != "void" )
+#if($message.getRequest().getFields().size() > 1 || ($message.getRequest().getFields().size() == 1 && !$response.getType().equals($message.getRequest().getFields()[0].schema().getType())))
+public void ${this.mangle($name)}(${this.javaUnbox($response, true)} result){
+ LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " ${this.mangle($name)} args :${this.javaUnbox($response, true)} " + result);
+
+}
+#end
+#end
 
 #end## (requests)
 }## End of protocol interface

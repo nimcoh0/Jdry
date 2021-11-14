@@ -1,11 +1,9 @@
 package org.softauto.grpc.schema;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.softauto.annotations.ListenerForTesting;
 import org.softauto.annotations.RPC;
 import org.softauto.core.AbstractMessage;
-import org.softauto.core.MargeJsonNode;
 import org.softauto.core.vistors.DefaultMethodVistor;
 
 import javax.lang.model.element.Element;
@@ -17,16 +15,14 @@ import javax.lang.model.element.Element;
 public class MessageHandler extends AbstractMessage {
 
     private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(MessageHandler.class);
-       Element element;
+
 
     @Override
     public JsonNode parser(Element element) {
         try {
             if (element.getAnnotation(RPC.class) != null) {
                 if(element.getAnnotation(ListenerForTesting.class) != null) {
-                    //JsonNode  listenerResult =  super.parseElement(element, new ListenerResultVistor("RPC"));
                     JsonNode  listenerData = super.parseElement(element, new ListenerDataVistor("RPC"));
-                    //return new MargeJsonNode().mergeNode((ObjectNode)listenerResult,(ObjectNode)listenerData);
                     return listenerData;
                 }else {
                     return super.parseElement(element, new DefaultMethodVistor("RPC"));

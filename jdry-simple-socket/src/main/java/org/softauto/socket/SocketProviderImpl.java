@@ -62,7 +62,8 @@ public class SocketProviderImpl implements Provider {
 
 
     @Override
-    public Provider initilize() throws IOException {
+    public Provider initialize() throws IOException {
+        logger.info("sock plugin initialize");
         return this;
     }
 

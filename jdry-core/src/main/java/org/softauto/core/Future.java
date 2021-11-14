@@ -20,4 +20,5 @@ public interface Future<T> extends AsyncResult<T>, java.util.concurrent.Future<T
     static <T> Future<T>  handleArgumentsType(Class[] argumentsType) {
         return (Future<T>) new CallFuture().handleArgumentsType(argumentsType);
     }
+
 }

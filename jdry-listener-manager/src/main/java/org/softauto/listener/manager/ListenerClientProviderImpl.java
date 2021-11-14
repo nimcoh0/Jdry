@@ -24,7 +24,7 @@ public class ListenerClientProviderImpl implements Provider {
     /**
      * this provider name
      */
-    String type = "LISTENER-CLIENT";
+    String type = "LISTENER-MANAGER";
 
     /**
      * the schema interface class
@@ -39,30 +39,24 @@ public class ListenerClientProviderImpl implements Provider {
         return listenerClientProviderImpl;
     }
 
-    public  Object getServiceImpl() {
-        return new ListenerServiceImpl();
-    }
-
     @Override
-    public Provider initilize() throws IOException {
+    public Provider initialize() throws IOException {
         try {
             Class iface = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Context.LISTENER_SERVICE, Configuration.get(Context.TEST_MACHINE).asText());
             ListenerServiceImpl listenerServiceImpl = new ListenerServiceImpl();
             Listener.addSchema(iface);
             Listener.init(listenerServiceImpl);
-            logger.info("successfully load listener");
+            logger.info("successfully load listener manager");
         }catch (Exception e){
-            logger.error("fail to load listener",e);
+            logger.error("fail to load listener manager",e);
         }
         return this;
     }
 
 
-
-
     @Override
     public void register() {
-        ServiceLocator.getInstance().register("LISTENER-CLIENT",this);
+        ServiceLocator.getInstance().register("LISTENER-MANAGER",this);
     }
 
     @Override

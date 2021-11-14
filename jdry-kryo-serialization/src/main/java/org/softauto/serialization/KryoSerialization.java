@@ -64,11 +64,9 @@ public class KryoSerialization extends AbstractSerialization {
         byte[] data = null;
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream(4096);
-            //output = new Output(new ObjectOutputStream(outputStream));
             output = new Output(outputStream);
             serialize(obj, output);
             data = output.toBytes();
-            //byte[] data =  outputStream.toByteArray();
 
         }catch (Exception e){
             e.printStackTrace();

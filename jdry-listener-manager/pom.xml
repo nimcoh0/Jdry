@@ -5,19 +5,13 @@
     <parent>
         <artifactId>jdry</artifactId>
         <groupId>org.softauto</groupId>
-        <version>beta-1.0</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jdry-listener-manager</artifactId>
     <dependencies>
 
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-grpc</artifactId>
-            <version>${jdry-grpc}</version>
-
-        </dependency>
 
         <dependency>
             <groupId>org.softauto</groupId>
@@ -28,7 +22,7 @@
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-listener</artifactId>
-            <version>beta-1.0</version>
+            <version>${jdry-listener}</version>
 
         </dependency>
 
@@ -41,36 +35,29 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
-            <version>1.9.6</version>
+            <version>${aspectjrt}</version>
 
         </dependency>
-        <!--dependency>
-            <groupId>com.sun</groupId>
-            <artifactId>tools</artifactId>
-            <version>1.8.0_161</version>
-            <scope>system</scope>
-            <systemPath>${java.home}/../lib/tools.jar</systemPath>
-        </dependency-->
         <dependency>
             <groupId>com.github.olivergondza</groupId>
             <artifactId>maven-jdk-tools-wrapper</artifactId>
-            <version>0.1</version>
+            <version>${maven-jdk-tools-wrapper}</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjtools</artifactId>
-            <version>1.9.6</version>
+            <version>${aspectjtools}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.14.1</version>
+            <version>${log4j-core}</version>
 
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.5</version>
+            <version>${commons-lang3}</version>
         </dependency>
     </dependencies>
 

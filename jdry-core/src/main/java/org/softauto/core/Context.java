@@ -39,4 +39,5 @@ public class Context {
     public final static Marker TRACER = MarkerManager.getMarker("TRACER");
     public final static Marker JDRY = MarkerManager.getMarker("JDRY");
     public static final String DEFUALT_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public final static String LOG4J2_SOCKET_TCP_SERVER_PORT = "log4j2_socket_tcp_server_port";
 }

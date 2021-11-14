@@ -6,11 +6,8 @@ package org.softauto.core;
 public enum ClassType {
 
     SINGLETON,
-    //INSTANCE,
     INITIALIZE,
     INITIALIZE_NO_PARAM,
-    //INNER_STATIC,
-    //INNER,
     NONE;
 
     private ClassType() {

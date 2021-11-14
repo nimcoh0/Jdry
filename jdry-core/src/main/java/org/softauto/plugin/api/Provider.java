@@ -14,7 +14,7 @@ public interface Provider {
       * @return
       * @throws IOException
       */
-     Provider initilize()throws IOException;
+     Provider initialize()throws IOException;
 
      /**
       * register plugin in the ServiceLocator

@@ -2,24 +2,17 @@ package org.softauto.core;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import org.apache.avro.Protocol;
 import org.apache.avro.Schema;
-import org.apache.avro.ipc.Callback;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.softauto.annotations.DefaultValue;
-//import org.softauto.jvm.HeapHelper;
 import org.softauto.serializer.CallFuture;
 import org.yaml.snakeyaml.Yaml;
-
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
@@ -35,8 +28,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Objects.isNull;
 
 public class Utils {
 
@@ -58,52 +49,6 @@ public class Utils {
 
 
 
-    /*
-    public static Object getClassInstance(String fullClassName,Protocol.Message msg,Object[] request,Method method){
-        List<Object>  objs = null;
-        try {
-
-            Class klass = findClass(fullClassName);
-            if(!msg.hasProp("type") || !msg.getProp("type").equals("static")) {
-                if (klass != null && msg.hasProp("type") && msg.getProp("type").equals("method")) {
-                    Object[] objects = HeapHelper.getInstances(klass);
-                    if (objects != null)
-                        objs = Arrays.asList(objects);
-                }
-                if (objs != null && objs.size() > 0) {
-                    return objs.get(0);
-                } else {
-                    logger.debug("instance not found for class " + fullClassName + " inject...");
-                    //AbstractInjector injector = (AbstractInjector) ServiceLocator.getInstance().getService("INJECTOR");
-                    //if (injector == null) {
-                     //   logger.error("no injector found");
-                     //   new Exception("no injector found ");
-                    //}
-                    ClassType initialize = getClassType(msg);
-                    Object[] result = null;
-                    if (msg.hasProp("type")  && msg.getProp("type").equals("constructor")) {
-                        result = Injector.inject(fullClassName,initialize,getConstructorDefaultValues(klass),method.getParameterTypes());
-                        //injector.UpdateClassDescriptorArgsValues(fullClassName, request);
-                    } else {
-                        result = Injector.inject(fullClassName,initialize,request,method.getParameterTypes());
-                        //injector.UpdateClassDescriptorArgsValues(fullClassName, getConstructorDefaultValues(klass));
-                    }
-
-
-                   // Object[] result = Injector.inject(fullClassName,initialize,request,method.getParameterTypes());
-                    return result[0];
-                }
-            }else {
-                return  klass;
-            }
-        }catch (Exception e){
-            logger.error("fail get Class Instances "+ fullClassName,e);
-        }
-        return null;
-    }
-
-
-     */
     private static ClassType getClassType(Protocol.Message msg){
         String initialize = null;
         if(msg.hasProp("class")) {
@@ -114,45 +59,7 @@ public class Utils {
         return ClassType.fromString(initialize);
     }
 
-    /*
-    public static Object getClassInstance(String fullClassName,Protocol.Message msg,Object[] request,Method method){
-        List<Object>  objs = null;
-        try {
 
-            Class klass = findClass(fullClassName);
-            if(!msg.hasProp("type") || !msg.getProp("type").equals("static")) {
-                if (klass != null && msg.hasProp("type") && msg.getProp("type").equals("method")) {
-                    Object[] objects = HeapHelper.getInstances(klass);
-                    if (objects != null)
-                        objs = Arrays.asList(objects);
-                }
-                if (objs != null && objs.size() > 0) {
-                    return objs.get(0);
-                } else {
-                    logger.debug("instance not found for class " + fullClassName + " inject...");
-                    AbstractInjector injector = (AbstractInjector) ServiceLocator.getInstance().getService("INJECTOR");
-                    if (injector == null) {
-                        logger.error("no injector found");
-                        new Exception("no injector found ");
-                    }
-                    if (msg.getProp("type") != null && msg.getProp("type").equals("constructor")) {
-                        injector.UpdateClassDescriptorArgsValues(fullClassName, request);
-                    } else {
-                        injector.UpdateClassDescriptorArgsValues(fullClassName, getConstructorDefaultValues(klass));
-                    }
-
-                    Object[] result = injector.inject(fullClassName);
-                    return result[0];
-                }
-            }else {
-                return  klass;
-            }
-        }catch (Exception e){
-            logger.error("fail get Class Instances "+ fullClassName,e);
-        }
-        return null;
-    }
-    */
 
 
     /**
@@ -638,30 +545,6 @@ public class Utils {
     }
 
 
-    /**
-     * extract object to String
-     * @param result
-     * @param logIgnoreList
-     * @return
-     */
-    public static String result2String(Object result,List<String> logIgnoreList){
-        try{
-
-            if(result != null){
-                if(logIgnoreList.contains(result.getClass().getName())){
-                    return "set as log ignore";
-                }
-                if(result instanceof List){
-                    return ToStringBuilder.reflectionToString(((List)result).toArray(), new MultipleRecursiveToStringStyle());
-                }else {
-                    return ToStringBuilder.reflectionToString(result, new MultipleRecursiveToStringStyle());
-                }
-            }
-        }catch(Exception e){
-            logger.warn("result to String fail on  ",e.getMessage());
-        }
-        return "";
-    }
 
     public static String result2String(Object result){
         try{
@@ -720,14 +603,8 @@ public class Utils {
     public static void addJarToClasspath(String f) {
         try {
             URLClassLoader classLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
-           // String path = f.substring(0,f.lastIndexOf("/"));
-           // String fileName = f.substring(f.lastIndexOf("/")+1);
             addURL(new File(f).toURL(),classLoader);
-            //File file = new File(classLoader.getResource(fileName).getFile());
-            //URL url = file.toURI().toURL();
-            //Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-            //method.setAccessible(true);
-            //method.invoke(classLoader, url);
+
         } catch (Exception e) {
             throw new RuntimeException("Unexpected exception", e);
         }
@@ -757,16 +634,7 @@ public class Utils {
         return false;
     }
 
-    /*
-    public static String getActualTypeArgumentName(String str) throws Exception {
-        if(str.contains("<")){
-            return  StringUtils.substringBetween(str, "<", ">");
-        }
-        return str;
-    }
 
-
-     */
     public static String getActualTypeArgumentName(Object obj) throws Exception {
         if(obj instanceof List) {
             Type type = ((List)obj).get(0).getClass().getFields()[0].getGenericType();
@@ -820,8 +688,7 @@ public class Utils {
                     for(int i=0;i<t.size();i++){
                         String t1 = parameterTypes[i].getTypeName().toLowerCase();
                         if(!t1.contains(t.get(i).toLowerCase())){
-                        //if(!t.get(i).equals(parameterTypes[i].getTypeName())){
-                            return null;
+                        return null;
                         }
                      }
                     return m;

@@ -5,84 +5,73 @@
     <parent>
         <artifactId>jdry</artifactId>
         <groupId>org.softauto</groupId>
-        <version>beta-1.0</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jdry-grpc</artifactId>
     <dependencies>
-
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-listener-manager</artifactId>
+            <version>${jdry-listener-manager}</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-core</artifactId>
-            <version>beta-1.0</version>
+            <version>${jdry-core}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-avro</artifactId>
-            <version>beta-1.0</version>
+            <version>${jdry-avro}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-injector</artifactId>
-            <version>beta-1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <!--dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-guice</artifactId>
-            <version>beta-1.0</version>
-            <scope>compile</scope>
-        </dependency-->
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-kryo-serialization</artifactId>
-            <version>beta-1.0</version>
+            <version>${jdry-injector}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.softauto</groupId>
+            <artifactId>jdry-kryo-serialization</artifactId>
+            <version>${jdry-kryo-serialization}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-jvmTool</artifactId>
+            <version>${jdry-jvmTool}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
             <artifactId>jdry-annotations</artifactId>
-            <version>beta-1.0</version>
+            <version>${jdry-annotations}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-serializer</artifactId>
-            <version>beta-1.0</version>
+            <version>${jdry-serializer}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-listener</artifactId>
+            <version>${jdry-listener}</version>
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>${aspectjweaver}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
-            <version>${aspectjrt}</version>
-
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjtools</artifactId>
-            <version>${aspectjtools}</version>
-        </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
+            <version>${log4j}</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>5.0.1</version>
-            <scope>compile</scope>
-        </dependency>
+
     </dependencies>
 
 

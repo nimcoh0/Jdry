@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>jdry</artifactId>
-        <version>beta-1.0</version>
+        <version>1.0.0</version>
         <groupId>org.softauto</groupId>
     </parent>
     <artifactId>jdry-testng-plugin</artifactId>
-    <version>beta-1.0</version>
+    <version>1.0.0</version>
 
     <dependencies>
         <dependency>
@@ -20,7 +20,13 @@
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-avro</artifactId>
-            <version>beta-1.0</version>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-tester</artifactId>
+            <version>1.0.0</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

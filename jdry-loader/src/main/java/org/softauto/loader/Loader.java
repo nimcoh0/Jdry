@@ -18,9 +18,9 @@ public class Loader {
 
     public static void agentmain(String agentArgs, Instrumentation instrumentation){
         try {
-            RpcProviderImpl.getInstance().initilize().register();
-            JvmProviderImpl.getInstance().initilize().register();
-
+            RpcProviderImpl.getInstance().initialize().register();
+            //JvmProviderImpl.getInstance().initialize().register();
+            logger.debug("agent load successfully ");
         }catch(Exception e){
             logger.fatal("jdry agent attach to vm fail ",e);
             System.exit(1);
@@ -34,8 +34,8 @@ public class Loader {
      */
     public static void premain(String agentArgument, Instrumentation instrumentation){
              try {
-                RpcProviderImpl.getInstance().initilize().register();
-
+                RpcProviderImpl.getInstance().initialize().register();
+                logger.debug("agent load successfully ");
             }catch(Exception e){
                 logger.fatal("jdry agent load fail ",e);
                 System.exit(1);

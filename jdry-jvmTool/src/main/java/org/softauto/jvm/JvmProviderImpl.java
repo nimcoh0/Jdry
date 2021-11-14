@@ -29,7 +29,7 @@ public class JvmProviderImpl implements Provider {
 
 
     @Override
-    public Provider initilize() throws IOException {
+    public Provider initialize() throws IOException {
         try {
             String path = System.getenv("temp");
             String name = "libHeapHelper.dll";
@@ -70,6 +70,7 @@ public class JvmProviderImpl implements Provider {
             }
         }
     }
+
 
     @Override
     public void register() {
