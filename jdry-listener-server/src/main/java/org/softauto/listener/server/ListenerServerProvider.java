@@ -1,5 +1,6 @@
 package org.softauto.listener.server;
 
+import org.softauto.plugin.ProviderScope;
 import org.softauto.plugin.api.Provider;
 import org.softauto.plugin.spi.PluginProvider;
 import org.softauto.plugin.spi.PluginTypes;
@@ -28,5 +29,10 @@ public class ListenerServerProvider implements PluginProvider {
     @Override
     public PluginTypes getType() {
         return PluginTypes.regular;
+    }
+
+    @Override
+    public ProviderScope scope() {
+        return ProviderScope.Tester;
     }
 }

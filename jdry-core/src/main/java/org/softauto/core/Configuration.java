@@ -1,6 +1,7 @@
 package org.softauto.core;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
@@ -10,7 +11,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class Configuration {
 
     private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Configuration.class);
-    static JsonNode configuration;
+    static JsonNode configuration = new ObjectMapper().createObjectNode();
+
 
     public static void setConfiguration(JsonNode configuration){
         Configuration.configuration = configuration;
@@ -32,4 +34,7 @@ public class Configuration {
         ((ObjectNode)configuration).put(key,value);
     }
 
+    public static void put(String key,Boolean value){
+        ((ObjectNode)configuration).put(key,value);
+    }
 }

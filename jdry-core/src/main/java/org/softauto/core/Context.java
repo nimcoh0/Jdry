@@ -16,7 +16,8 @@ public class Context {
     public static Object get(String key){
         return ctx.get(key);
     }
-
+    public final static String ENABLE_SESSION = "enable_session";
+    public final static String LOAD_WEAVER = "load_weaver";
     public final static String TEMP_DIRECTORY = "temp_directory";
     public final static String LIB_HEAP_HELPER_NAME = "lib_heap_helper_name";
     public final static String TEST_MACHINE = "test_machine";
@@ -40,4 +41,6 @@ public class Context {
     public final static Marker JDRY = MarkerManager.getMarker("JDRY");
     public static final String DEFUALT_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public final static String LOG4J2_SOCKET_TCP_SERVER_PORT = "log4j2_socket_tcp_server_port";
+
+
 }

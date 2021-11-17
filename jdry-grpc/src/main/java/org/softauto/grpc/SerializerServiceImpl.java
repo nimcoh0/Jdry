@@ -61,7 +61,7 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
             Object serviceImpl;
             AbstractInjector injector = (AbstractInjector)ServiceLocator.getInstance().getService("INJECTOR");
             if(injector != null && !fullClassName.equals("org.softauto.system.SystemServiceImpl")) {
-                serviceImpl = injector.inject(fullClassName);
+                serviceImpl = injector.inject(fullClassName)[0];
             }else {
                 serviceImpl = SystemServiceImpl.getInstance();
             }

@@ -1,0 +1,115 @@
+{
+  "protocol" : "StepService",
+  "version" : "1.0",
+  "namespace" : "tests.infrastructure",
+  "types" : [ {
+    "name" : "java.util.List<app.books.Book>",
+    "type" : "external"
+  }, {
+    "name" : "app.books.Book",
+    "type" : "external"
+  }, {
+    "name" : "java.util.Collection<app.books.Book>",
+    "type" : "external"
+  }, {
+    "name" : "java.util.Optional<app.books.Book>",
+    "type" : "external"
+  } ],
+  "messages" : {
+    "app_books_BookCatalog_getBooks" : {
+      "request" : [ ],
+      "method" : "getBooks",
+      "transceiver" : "RPC",
+      "response" : "java.util.List<app.books.Book>",
+      "namespace" : "app.books.BookCatalog",
+      "description" : "^I have the following books in the store$",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.books.BookCatalog",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "app_books_BookStore_addBook" : {
+      "request" : [ {
+        "name" : "book",
+        "type" : "app.books.Book"
+      } ],
+      "method" : "addBook",
+      "transceiver" : "RPC",
+      "response" : "void",
+      "namespace" : "app.books.BookStore",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "app_books_BookStore_addAllBooks" : {
+      "request" : [ {
+        "name" : "books",
+        "type" : "java.util.Collection<app.books.Book>"
+      } ],
+      "method" : "addAllBooks",
+      "transceiver" : "RPC",
+      "response" : "void",
+      "namespace" : "app.books.BookStore",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "app_books_BookStore_booksByAuthor" : {
+      "request" : [ {
+        "name" : "author",
+        "type" : "string"
+      } ],
+      "method" : "booksByAuthor",
+      "transceiver" : "RPC",
+      "response" : "java.util.List<app.books.Book>",
+      "namespace" : "app.books.BookStore",
+      "description" : "^I search for books by author (.+)$",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "app_books_BookStore_bookByTitle" : {
+      "request" : [ {
+        "name" : "title",
+        "type" : "string"
+      } ],
+      "method" : "bookByTitle",
+      "transceiver" : "RPC",
+      "response" : "java.util.Optional<app.books.Book>",
+      "namespace" : "app.books.BookStore",
+      "description" : "^I search for books by title (.+)$",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "app_books_Book_Book" : {
+      "request" : [ {
+        "default" : "blabla",
+        "name" : "title",
+        "type" : "string"
+      }, {
+        "default" : "Nim",
+        "name" : "author",
+        "type" : "string"
+      } ],
+      "method" : "Book",
+      "transceiver" : "RPC",
+      "response" : "app.books.Book",
+      "namespace" : "app.books.Book",
+      "type" : "constructor",
+      "class" : {
+        "fullClassName" : "app.books.Book",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    }
+  }
+}

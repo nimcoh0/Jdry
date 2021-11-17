@@ -5,8 +5,8 @@ import org.apache.avro.Protocol;
 import org.apache.avro.Schema;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.softauto.core.ClassType;
-import org.softauto.core.Utils;
+import org.softauto.core.*;
+import org.softauto.jvm.HeapHelper;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -73,7 +73,19 @@ public class ServerService {
     private static class NoneHandler implements ServiceCaller.UnaryClass  {
         @Override
         public Object[] invoke(ClassDescriptor classDescriptor) {
-            logger.error("Class not loaded by the SUT and no info for auto loading for  "+classDescriptor.getFullClassName());
+            try {
+                Class c = Class.forName(classDescriptor.getFullClassName());
+                if (Configuration.get(Context.ENABLE_SESSION).asBoolean()) {
+                    Object[] objects = HeapHelper.getInstances(c);
+                    if (objects != null && objects.length > 0) {
+                        logger.debug("found "+objects.length+" instances in jvm. for class "+ classDescriptor.getFullClassName());
+                        return objects;
+                    }
+                }
+                logger.error("Class not loaded by the SUT and no info for auto loading for  " + classDescriptor.getFullClassName());
+            }catch (Exception e){
+                logger.warn("fail get Instance Class for  "+classDescriptor.getFullClassName(),e.getMessage());
+            }
             return new Object[]{};
         }
     }
@@ -89,6 +101,13 @@ public class ServerService {
             Object obj = null;
             try {
                 Class c = Class.forName(classDescriptor.getFullClassName());
+                if(Configuration.get(Context.ENABLE_SESSION).asBoolean()){
+                    Object[] objects = HeapHelper.getInstances(c);
+                    if(objects != null && objects.length > 0){
+                        logger.debug("found "+objects.length+" instances in jvm. for class "+ classDescriptor.getFullClassName());
+                        return objects;
+                    }
+                }
                 Method singleton =  c.getDeclaredMethod("getInstance");
                 obj  = singleton.invoke(c);
                 logger.debug("invoke Singleton class  " + classDescriptor.getFullClassName());
@@ -112,6 +131,13 @@ public class ServerService {
             Object obj = null;
             try {
                 Class c = Class.forName(classDescriptor.getFullClassName());
+                if(Configuration.get(Context.ENABLE_SESSION).asBoolean()){
+                    Object[] objects = HeapHelper.getInstances(c);
+                    if(objects != null && objects.length > 0){
+                        logger.debug("found "+objects.length+" instances in jvm. for class "+ classDescriptor.getFullClassName());
+                        return objects;
+                    }
+                }
                 Class[] types =  classDescriptor.getTypes();
                 Object[] values = classDescriptor.getArgs();
                 Constructor constructor = c.getDeclaredConstructor(types);
@@ -134,6 +160,13 @@ public class ServerService {
             Object obj = null;
             try {
                 Class c = Utils.findClass(classDescriptor.getFullClassName()) ;
+                if(Configuration.get(Context.ENABLE_SESSION).asBoolean()){
+                    Object[] objects = HeapHelper.getInstances(c);
+                    if(objects != null && objects.length > 0){
+                        logger.debug("found "+objects.length+" instances in jvm. for class "+ classDescriptor.getFullClassName());
+                        return objects;
+                    }
+                }
                 obj  = c.newInstance();
                 logger.debug("invoke Initialize No Param Class "+ classDescriptor.getFullClassName());
             }catch (Exception e){

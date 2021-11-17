@@ -18,7 +18,7 @@ public class BookCatalog {
     }
 
     @RPC
-    @ExposedForTesting(description = "^I have the following books in the store$")
+    @ExposedForTesting
     public List<Book> getBooks() {
         return books;
     }

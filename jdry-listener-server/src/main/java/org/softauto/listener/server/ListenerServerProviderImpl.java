@@ -84,6 +84,12 @@ public class ListenerServerProviderImpl implements Provider {
            if(Configuration.get(Context.SERIALIZER_HOST) == null) {
                Configuration.put(Context.SERIALIZER_HOST,"localhost");
            }
+           if(Configuration.get(Context.ENABLE_SESSION) == null){
+               Configuration.put(Context.ENABLE_SESSION,true);
+           }
+           if(Configuration.get(Context.LOAD_WEAVER) == null){
+               Configuration.put(Context.LOAD_WEAVER,true);
+           }
            logger.debug("configuration load successfully " + Configuration.getConfiguration());
         }catch(Exception e){
             logger.error("fail load listener configuration ",e);

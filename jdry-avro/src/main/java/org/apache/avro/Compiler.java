@@ -1524,7 +1524,7 @@ public class Compiler {
       if(field.schema().isPrimitive()){
         types.add(this.convertToPrimitive(field.schema().getName().replaceAll("\\[|\\]","")).getName() + ".class");
       }else {
-        types.add(this.javaType(field.schema(), false) + ".class");
+        types.add(this.getOwnerTypeName(this.javaType(field.schema(), false)) + ".class");
       }
     }
     String joinedString = StringUtils.join(types,",");

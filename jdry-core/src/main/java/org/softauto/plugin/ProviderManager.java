@@ -36,6 +36,24 @@ public class ProviderManager {
         return services;
     }
 
+    public static List<PluginProvider> providers(ProviderScope scope) {
+        List<PluginProvider> services = new ArrayList<>();
+        try {
+            ServiceLoader<PluginProvider> loader = ServiceLoader.load(PluginProvider.class, ProviderManager.class.getClassLoader());
+            loader.forEach(provider -> {
+                if(provider.getType().equals(PluginTypes.regular)) {
+                    if(provider.scope().equals(scope)) {
+                        services.add(provider);
+                        logger.debug("found plugin " + provider.getName());
+                    }
+                }
+            });
+            logger.debug("found " + services.size() + " plugins");
+        }catch (Exception e){
+            logger.error("fail get providers ",e);
+        }
+        return services;
+    }
 
     /**
      * get  PluginProvider

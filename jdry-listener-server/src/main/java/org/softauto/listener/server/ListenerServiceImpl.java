@@ -1,6 +1,8 @@
 package org.softauto.listener.server;
 
 
+import org.softauto.core.Configuration;
+import org.softauto.core.Context;
 import org.softauto.serializer.service.Message;
 import org.softauto.core.Utils;
 import org.softauto.serializer.service.SerializerService;
@@ -11,6 +13,11 @@ import java.lang.reflect.Modifier;
 public class ListenerServiceImpl implements SerializerService{
 
     private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ListenerServiceImpl.class);
+    private Class listener = null;
+
+    public ListenerServiceImpl(){
+        this.listener =  Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , "Listener", Configuration.get(Context.TEST_MACHINE).asText());
+    }
 
 
     @Override
@@ -21,11 +28,11 @@ public class ListenerServiceImpl implements SerializerService{
             String fullServiceClassName = message.getService();
             Object o = ListenerObserver.getInstance().getLastChannel(message.getDescriptor());
             if(o == null) {
-                logger.debug(message.getDescriptor() +" not found in Observer . sending message to trying to tests.infrastructure.ListenerServiceImpl");
-                o = ListenerObserver.getInstance().getChannel("tests.infrastructure.ListenerServiceImpl");
+                logger.debug(message.getDescriptor() +" not found in Observer . using "+message.getDescriptor());
+                o = Utils.getSubClass(listener.getDeclaredClasses(),"tests.infrastructure.Listener$"+message.getDescriptor()).newInstance();
                 if(o == null){
-                    logger.error("fail getting class tests.infrastructure.ListenerServiceImpl");
-                    throw new Exception("fail getting class tests.infrastructure.ListenerServiceImpl");
+                    logger.error("fail getting class "+message.getDescriptor());
+                    throw new Exception("fail getting class "+message.getDescriptor());
                 }
 
             }

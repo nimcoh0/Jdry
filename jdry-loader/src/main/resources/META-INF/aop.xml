@@ -4,7 +4,7 @@
             <around pointcut="execution(* *(..)) AND !within(org.softauto..*)" invokeClass="org.softauto.listener.impl.Listener" invokeMethod="captureAll(ProceedingJoinPoint joinPoint)"/>
         </concrete-aspect>
     </aspects>
-    <weaver options="-verbose " >
+    <weaver options="-verbose -debug -showWeaveInfo" >
 
     </weaver>
 </aspectj>

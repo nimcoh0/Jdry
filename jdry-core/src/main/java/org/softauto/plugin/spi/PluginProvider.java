@@ -1,5 +1,6 @@
 package org.softauto.plugin.spi;
 
+import org.softauto.plugin.ProviderScope;
 import org.softauto.plugin.api.Provider;
 
 public interface PluginProvider {
@@ -30,6 +31,6 @@ public interface PluginProvider {
 
     PluginTypes getType();
 
-
+    ProviderScope scope();
 
 }

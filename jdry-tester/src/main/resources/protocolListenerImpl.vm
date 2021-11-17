@@ -20,8 +20,8 @@ public class Listener {
     public static long timeOutInMin = 1;
 
 
-    public void setTimeOut(long min){
-        this.timeOutInMin = min;
+    public static void setTimeOut(long min){
+        timeOutInMin = min;
     }
 
 #foreach ($e in $protocol.getMessages().entrySet())
@@ -41,7 +41,38 @@ public static class ${this.mangle($name)}{
     static ${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())} = $this.getDefaultValue($p.schema().getName());
 #end
 
+    public ##
+    java.lang.Object[] ${this.mangle($name)}(##
+#foreach ($p in $message.getRequest().getFields())##
+#*      *#${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.hasNext), #end
+#end
+    ){
+     LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " ${this.mangle($name)} args :" ##
+#foreach ($p in $message.getRequest().getFields())##
+#*      *# +" ${this.mangle($p.name())}:" + ${this.mangle($p.name())}#if ($foreach.hasNext) #end
+#end##
+       );
 
+#if (${this.javaUnbox($response, true)} != "void" )
+       return new Object[]{##
+#foreach ($p in $message.getRequest().getFields())##
+                ${this.mangle($p.name())}#if ($foreach.hasNext), #end##
+#end
+            };
+#else
+       return new Object[]{};
+#end
+
+    }
+
+#if (${this.javaUnbox($response, true)} != "void" )
+#if($message.getRequest().getFields().size() > 1 || ($message.getRequest().getFields().size() == 1 && !$response.getType().equals($message.getRequest().getFields()[0].schema().getType())))
+    public void ${this.mangle($name)}(${this.javaUnbox($response, true)} result){
+     LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " ${this.mangle($name)} args :${this.javaUnbox($response, true)} " + result);
+     _result = result;
+    }
+#end
+#end
 
     public static ${this.mangle($name)} waitTo(){
     if(${this.unCapitalizeFirstLetter(${this.mangle($name)})} == null){
@@ -49,7 +80,7 @@ public static class ${this.mangle($name)}{
                 logger.debug("waiting for ${this.mangle($name)}");
                 ${this.unCapitalizeFirstLetter(${this.mangle($name)})} = new ${this.mangle($name)}();
                 lock = new CountDownLatch(1);
-                 new ListenerServiceImpl("${this.mangle($name)}"){
+                ${this.mangle($name)} _waitTo =  new ${this.mangle($name)}(){
                         @Override
                         public Object[] ${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
@@ -75,9 +106,12 @@ ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
                         return new Object[]{};
                     }
                 };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("${this.mangle($name)}", _waitTo);
+                 }
                 lock.await(timeOutInMin, TimeUnit.MINUTES);
                 if(lock.getCount() > 0){
-                     logger.error("timeOut for lock ");
+                     throw new Exception("timeOut for lock ");
                 }
             }catch (Exception e){
                logger.error("fail waitTo ",e);
@@ -94,7 +128,7 @@ ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
                 ${this.unCapitalizeFirstLetter(${this.mangle($name)})} = new ${this.mangle($name)}();
                 lock = new CountDownLatch(1);
                 lock.await(timeOutInMin, TimeUnit.MINUTES);
-                new ListenerServiceImpl("${this.mangle($name)}"){
+                ${this.mangle($name)} _waitTo = new ${this.mangle($name)}(){
                      @Override
                      public Object[] ${this.mangle($name)}(##
 #foreach ($p in $message.getRequest().getFields())##
@@ -120,9 +154,12 @@ ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
                          return new Object[]{};
                     }
             };
+                {
+                    org.softauto.listener.server.ListenerObserver.getInstance().register("${this.mangle($name)}", _waitTo);
+                }
                 lock.await(timeOutInMin, TimeUnit.MINUTES);
                 if(lock.getCount() > 0){
-                     logger.error("timeOut for lock ");
+                     throw new Exception("timeOut for lock ");
                 }
                 logger.debug("successfully wait to ${this.mangle($name)}");
                 resultHandler.handle(Future.handleResult(${this.unCapitalizeFirstLetter(${this.mangle($name)})}));
@@ -134,89 +171,75 @@ ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
 
     }
 
+
+#if (${this.javaUnbox($response, true)} != "void" )
+#if($message.getRequest().getFields().size() == 0 || $message.getRequest().getFields().size() > 1 || ($message.getRequest().getFields().size() == 1 && !$response.getType().equals($message.getRequest().getFields()[0].schema().getType())))
     public static ${this.mangle($name)} waitToResult(){
     if(${this.unCapitalizeFirstLetter(${this.mangle($name)})} == null){
             try{
                 logger.debug("waiting for result of ${this.mangle($name)}");
                 ${this.unCapitalizeFirstLetter(${this.mangle($name)})} = new ${this.mangle($name)}();
                 lockForResult = new CountDownLatch(1);
-                 new ListenerServiceImpl(){
-                        @Override
-                        public Object[] ${this.mangle($name)}(##
-#foreach ($p in $message.getRequest().getFields())##
-${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.hasNext), #end
-#end
-){
+                ${this.mangle($name)} _waitToResult = new ${this.mangle($name)}(){
+                        public void ${this.mangle($name)}(${this.javaUnbox($response, true)} result){
                         try{
                             logger.debug("done waiting for ${this.mangle($name)}");
-                            if(seen){
                             lockForResult.countDown();
-#foreach ($p in $message.getRequest().getFields())##
-                            ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($name)}.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : ${this.mangle($name)}.${this.mangle($p.name())};
-#end
-#if($message.getRequest().getFields().size() == 1 && $response.getType().equals($message.getRequest().getFields()[0].schema().getType()))
-                            ${this.mangle($name)}._result = $message.getRequest().getFields()[0].name();
-#end
-                                }else {
-                                    seen = true;
-                                }
-                            return new Object[]{##
-#foreach ($p in $message.getRequest().getFields())##
-${this.mangle($p.name())}#if($foreach.hasNext),#end##
-#end
-            };
-
+                            ${this.mangle($name)}._result = result;
                         }catch (Exception e){
                                 logger.error("fail waitTo ",e);
                         }
-                        return new Object[]{};
                     }
                 };
+                {
+                    org.softauto.listener.server.ListenerObserver.getInstance().register("${this.mangle($name)}", _waitToResult);
+                }
                 lockForResult.await(timeOutInMin, TimeUnit.MINUTES);
-                if(lock.getCount() > 0){
-                     logger.error("timeOut for lock ");
+                if(lockForResult.getCount() > 0){
+                     throw new Exception("timeOut for lockForResult ");
+                }else {
+                    logger.debug("successfully wait to ${this.mangle($name)}");
                 }
             }catch (Exception e){
                logger.error("fail waitTo ",e);
             }
         }
-        logger.debug("successfully wait to ${this.mangle($name)}");
         return ${this.unCapitalizeFirstLetter(${this.mangle($name)})};
     }
 
-#if (${this.javaUnbox($response, true)} != "void" )
-#if($message.getRequest().getFields().size() > 1 || ($message.getRequest().getFields().size() == 1 && !$response.getType().equals($message.getRequest().getFields()[0].schema().getType())))
+
     public static void waitToResult(Handler<AsyncResult<${this.mangle($name)}>> resultHandler){
     if(${this.unCapitalizeFirstLetter(${this.mangle($name)})} == null){
             try{
                 logger.debug("waiting for result of ${this.mangle($name)}");
                 ${this.unCapitalizeFirstLetter(${this.mangle($name)})} = new ${this.mangle($name)}();
                 lockForResult = new CountDownLatch(1);
-                new ListenerServiceImpl(){
-                @Override
+                ${this.mangle($name)} _waitToResult = new ${this.mangle($name)}(){
                 public void ${this.mangle($name)}(${this.javaUnbox($response, true)} result){
                 try{
                    logger.debug("done waiting for ${this.mangle($name)}");
                    lockForResult.countDown();
                    ${this.mangle($name)}._result = result;
-
                 }catch (Exception e){
                      logger.error("fail waitToResult ",e);
                 }
          }
     };
-                lockForResult.await(timeOutInMin, TimeUnit.MINUTES);
-                if(lock.getCount() > 0){
-                   logger.error("timeOut for lock ");
+                {
+                   org.softauto.listener.server.ListenerObserver.getInstance().register("${this.mangle($name)}", _waitToResult);
                 }
-                logger.debug("successfully wait to ${this.mangle($name)}");
+                lockForResult.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lockForResult.getCount() > 0){
+                   throw new Exception("timeOut for lockForResult ");
+                }else {
+                    logger.debug("successfully wait to ${this.mangle($name)}");
+                }
                 resultHandler.handle(Future.handleResult(${this.unCapitalizeFirstLetter(${this.mangle($name)})}));
             }catch (Exception e){
                logger.error("fail waitTo ",e);
                resultHandler.handle(Future.handleError(e));
             }
         }
-
     }
 #end
 

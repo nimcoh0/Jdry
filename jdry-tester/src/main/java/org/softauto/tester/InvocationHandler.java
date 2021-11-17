@@ -15,7 +15,7 @@ public class InvocationHandler {
 
     private  org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(InvocationHandler.class);
 
-    public Object invoke(String methodName, Object[] args, Class[] types, CallFuture callback,String transceiver)  {
+    public  void invoke(String methodName, Object[] args, Class[] types, CallFuture callback,String transceiver)  {
         try {
             Provider provider = ProviderManager.provider(transceiver).create();
             logger.debug("invoke method " + methodName+ " using protocol "+ transceiver);
@@ -23,7 +23,7 @@ public class InvocationHandler {
         } catch (Exception e) {
             logger.error("fail invoke method "+ methodName+ " with args "+ Arrays.toString(args),e);
         }
-        return null;
+
     }
 
     public <T> T invoke(String methodName, Object[] args, Class[] types)  {

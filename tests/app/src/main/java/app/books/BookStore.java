@@ -11,18 +11,20 @@ public class BookStore {
 
     @RPC
     @ExposedForTesting
-    public void addBook(Book book) {
+    public BookStore addBook(Book book) {
         books.add(book);
+        return this;
     }
 
     @RPC
     @ExposedForTesting
-    public void addAllBooks(Collection<Book> books) {
+    public BookStore addAllBooks(Collection<Book> books) {
         this.books.addAll(books);
+        return this;
     }
 
     @RPC
-    @ExposedForTesting(description = "^I search for books by author (.+)$")
+    @ExposedForTesting
     public List<Book> booksByAuthor(String author) {
         return books.stream()
           .filter(book -> Objects.equals(author, book.getAuthor()))
@@ -30,10 +32,22 @@ public class BookStore {
     }
 
     @RPC
-    @ExposedForTesting(description = "^I search for books by title (.+)$")
+    @ExposedForTesting
     public Optional<Book> bookByTitle(String title) {
         return books.stream()
                 .filter(book -> book.getTitle().equals(title))
                 .findFirst();
+    }
+
+    public List<Book> getBooks(){
+        return books;
+    }
+
+    @RPC
+    @ExposedForTesting
+    public void loopOverBooks(){
+        for(Book book : books){
+            book.getTitle();
+        }
     }
 }

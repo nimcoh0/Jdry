@@ -1,0 +1,75 @@
+{
+  "protocol" : "ListenerService",
+  "version" : "1.0",
+  "namespace" : "tests.infrastructure",
+  "types" : [ {
+    "name" : "app.books.Book",
+    "type" : "external"
+  }, {
+    "name" : "java.lang.Object[]",
+    "type" : "external"
+  } ],
+  "messages" : {
+    "app_books_BookCatalog_addBook" : {
+      "request" : [ {
+        "name" : "book",
+        "type" : "app.books.Book"
+      } ],
+      "method" : "addBook",
+      "transceiver" : "RPC",
+      "response" : "void",
+      "namespace" : "app.books.BookCatalog"
+    },
+    "app_books_Book_getTitle" : {
+      "request" : [ ],
+      "method" : "getTitle",
+      "transceiver" : "RPC",
+      "response" : "string",
+      "namespace" : "app.books.Book"
+    },
+    "app_books_Book_setTitle" : {
+      "request" : [ {
+        "name" : "title",
+        "type" : "string"
+      } ],
+      "method" : "setTitle",
+      "transceiver" : "RPC",
+      "response" : "void",
+      "namespace" : "app.books.Book"
+    },
+    "app_books_Book_getAuthor" : {
+      "request" : [ ],
+      "method" : "getAuthor",
+      "transceiver" : "RPC",
+      "response" : "string",
+      "namespace" : "app.books.Book"
+    },
+    "app_books_Book_setAuthor" : {
+      "request" : [ {
+        "name" : "author",
+        "type" : "string"
+      } ],
+      "method" : "setAuthor",
+      "transceiver" : "RPC",
+      "response" : "void",
+      "namespace" : "app.books.Book"
+    },
+    "app_books_Book_getId" : {
+      "request" : [ ],
+      "method" : "getId",
+      "transceiver" : "RPC",
+      "response" : "int",
+      "namespace" : "app.books.Book"
+    },
+    "app_books_Book_setId" : {
+      "request" : [ {
+        "name" : "id",
+        "type" : "int"
+      } ],
+      "method" : "setId",
+      "transceiver" : "RPC",
+      "response" : "void",
+      "namespace" : "app.books.Book"
+    }
+  }
+}

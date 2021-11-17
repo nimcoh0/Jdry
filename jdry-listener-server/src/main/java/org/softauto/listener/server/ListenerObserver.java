@@ -25,9 +25,7 @@ public class ListenerObserver {
      * clear the channels list
      */
     public void reset(){
-        HashMap<String,Object> channel = channels.get(0);
-        channels = new ArrayList<>();
-        channels.add(channel);
+          channels = new ArrayList<>();
     }
 
     private ListenerObserver(){
