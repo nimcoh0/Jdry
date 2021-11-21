@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 public class BookStore {
     private List<Book> books = new ArrayList<>();
+    int counter = 0;
 
     @RPC
     @ExposedForTesting
@@ -26,8 +27,12 @@ public class BookStore {
     @RPC
     @ExposedForTesting
     public BookStore addAllBooks(Collection<Book> books) {
-        this.books.addAll(books);
-        return this;
+        for(Book book : books){
+            book.setId(counter);
+            ++counter;
+            this.books.add(book);
+        }
+       return this;
     }
 
     @RPC
