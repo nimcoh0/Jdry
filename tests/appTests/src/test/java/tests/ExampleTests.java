@@ -3,6 +3,8 @@ package tests;
 
 import app.example.books.Book;
 import app.example.books.BookStore;
+import org.softauto.espl.ExpressionBuilder;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -16,6 +18,7 @@ import java.util.List;
 @Listeners(org.softauto.testng.JdryTestListener.class)
 public class ExampleTests extends AbstractTesterImpl {
 
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ExampleTests.class);
     private List<Book> books = null;
 
 
@@ -33,18 +36,74 @@ public class ExampleTests extends AbstractTesterImpl {
 
     }
 
+    @AfterMethod
+    public void finish(){
+        logger.info("end test");
+    }
+
+
     @Test
-    public void add_All_Books(){
+    public void call_method(){
         BookStore bookStore =  new Step.App_example_books_BookStore_addAllBooks(books).get_Result();
         Assert.assertTrue(bookStore.getBooks().size() == 2);
     }
 
     @Test
-    public void listenToTitle(){
+    public void listen_for_method_after(){
         try {
             BookStore bookStore =  new Step.App_example_books_BookStore_addAllBooks(books).get_Result();
             new Step.App_example_books_BookStore_loopOverBooks().then(
                     Listener.app_example_books_Book_getTitle.waitToResult().get_Result(),res ->{
+                        Assert.assertTrue(res.result().equals("t1"));
+                    });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void listen_for_method_before(){
+        try {
+            BookStore bookStore =  new Step.App_example_books_BookStore_addAllBooks(books).get_Result();
+            new Step.App_example_books_BookStore_printBooks().then(
+                    Listener.app_example_books_BookCatalog_printBook.waitTo().getBook().getTitle(),res ->{
+                        if(res.result().toString().equals("t1")){
+                            System.out.println("found t1");
+                        }else {
+                            System.out.println("not found t1, but found "+ res.result());
+                        }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void listen_for_method_before_until(){
+        try {
+            Listener.setTimeOut(4);
+            BookStore bookStore =  new Step.App_example_books_BookStore_addAllBooks(books).get_Result();
+            new Step.App_example_books_BookStore_printBooks().then(
+                    Listener.app_example_books_BookCatalog_printBook.waitUntil(new ExpressionBuilder().newExpression("book.getAuthor().equals('a1')").build().build()).getBook().getTitle(), res ->{
+                        Assert.assertTrue(res.result().equals("t1"));
+                    });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void listen_for_method_before_until1(){
+        try {
+            Listener.setTimeOut(4);
+            BookStore bookStore =  new Step.App_example_books_BookStore_addAllBooks(books).get_Result();
+            new Step.App_example_books_BookStore_printBooks().then(
+                    Listener.app_example_books_BookCatalog_printBook.waitUntil(new ExpressionBuilder().newExpression().setContext("book").setStatement("getId()").build()
+                                                                                                .setOperator("==")
+                                                                                                .newExpression().setContext(bookStore).setStatement("bookByTitle('t1').get().getId()").build()
+                                                                                                .build()
+
+                    ).getBook(),res ->{
                         Assert.assertTrue(res.result().equals("t1"));
                     });
         }catch (Exception e){

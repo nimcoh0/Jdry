@@ -48,6 +48,17 @@ public class ListenerObserver {
         }
     }
 
+    public void unRegister(String key){
+        channels.forEach(i->{
+          i.forEach((k,v)->{
+            if(k.equals(key)){
+                v = null;
+                i.put(k,v);
+            }
+          });
+        });
+    }
+
 
     /**
      * get channel

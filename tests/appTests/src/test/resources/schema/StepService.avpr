@@ -34,6 +34,24 @@
         "initialize" : "INITIALIZE_NO_PARAM"
       }
     },
+    "app_example_books_BookStore_updateBook" : {
+      "request" : [ {
+        "name" : "book",
+        "type" : "app.example.books.Book"
+      }, {
+        "name" : "newTitle",
+        "type" : "string"
+      } ],
+      "method" : "updateBook",
+      "transceiver" : "RPC",
+      "response" : "app.example.books.BookStore",
+      "namespace" : "app.example.books.BookStore",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.example.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
     "app_example_books_BookStore_addAllBooks" : {
       "request" : [ {
         "name" : "books",
@@ -91,15 +109,15 @@
         "initialize" : "INITIALIZE_NO_PARAM"
       }
     },
-    "app_example_books_BookCatalog_getBooks" : {
+    "app_example_books_BookStore_printBooks" : {
       "request" : [ ],
-      "method" : "getBooks",
+      "method" : "printBooks",
       "transceiver" : "RPC",
-      "response" : "java.util.List<app.example.books.Book>",
-      "namespace" : "app.example.books.BookCatalog",
+      "response" : "void",
+      "namespace" : "app.example.books.BookStore",
       "type" : "method",
       "class" : {
-        "fullClassName" : "app.example.books.BookCatalog",
+        "fullClassName" : "app.example.books.BookStore",
         "initialize" : "INITIALIZE_NO_PARAM"
       }
     },

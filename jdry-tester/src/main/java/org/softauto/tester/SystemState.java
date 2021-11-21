@@ -44,19 +44,27 @@ public class SystemState {
 
 
     private void sayHello(Handler<AsyncResult<Integer>> resultHandler){
-        int result = new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_hello", new Object[]{}, new Class[]{});
-        if (Integer.valueOf(result) == 0) {
-            resultHandler.handle(Future.handleResult(Integer.valueOf(result)));
-        }else
-            resultHandler.handle(Future.handleError(new Exception("fail sayHello")));
+        try {
+            int result = new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_hello", new Object[]{}, new Class[]{});
+            if (Integer.valueOf(result) == 0) {
+                resultHandler.handle(Future.handleResult(Integer.valueOf(result)));
+            } else
+                resultHandler.handle(Future.handleError(new Exception("fail sayHello")));
+        }catch (Exception e){
+            logger.error("fail sayHello",e);
+        }
     }
 
     public void sendConfiguration(Handler<AsyncResult<Integer>> resultHandler){
-        int result = new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_configuration", new Object[]{Configuration.getConfiguration()}, new Class[]{JsonNode.class});
-        if (Integer.valueOf(result) == 0) {
-            resultHandler.handle(Future.handleResult(Integer.valueOf(result)));
-        }else
-            resultHandler.handle(Future.handleError(new Exception("fail send configuration")));
+        try {
+            int result = new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_configuration", new Object[]{Configuration.getConfiguration()}, new Class[]{JsonNode.class});
+            if (Integer.valueOf(result) == 0) {
+                resultHandler.handle(Future.handleResult(Integer.valueOf(result)));
+            } else
+                resultHandler.handle(Future.handleError(new Exception("fail send configuration")));
+        }catch (Exception e){
+            logger.error("fail send configuration",e);
+        }
     }
 
     public void shutdown(Handler<AsyncResult<Boolean>> resultHandler) {

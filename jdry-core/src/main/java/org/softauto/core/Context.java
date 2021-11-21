@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class Context {
 
     static HashMap<String,Object> ctx = new HashMap();
-
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Context.class);
     public static void add(String key,Object value){
         ctx.put(key,value);
     }
@@ -41,6 +41,14 @@ public class Context {
     public final static Marker JDRY = MarkerManager.getMarker("JDRY");
     public static final String DEFUALT_DATETIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public final static String LOG4J2_SOCKET_TCP_SERVER_PORT = "log4j2_socket_tcp_server_port";
+    public static TestLifeCycle TestState = TestLifeCycle.NONE;
 
+    public static TestLifeCycle getTestState() {
+        return TestState;
+    }
 
+    public static void setTestState(TestLifeCycle testState) {
+        TestState = testState;
+        logger.debug("test state change to "+ testState);
+    }
 }

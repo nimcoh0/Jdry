@@ -1,6 +1,5 @@
-package app.books;
+package app.example.books;
 
-import org.softauto.annotations.ExposedForTesting;
 import org.softauto.annotations.ListenerForTesting;
 import org.softauto.annotations.RPC;
 
@@ -18,9 +17,15 @@ public class BookCatalog {
     }
 
     @RPC
-    @ExposedForTesting
+    @ListenerForTesting
     public List<Book> getBooks() {
         return books;
+    }
+
+    @RPC
+    @ListenerForTesting
+    public void printBook(Book book){
+        System.out.print(book.getTitle());
     }
 
     @Override

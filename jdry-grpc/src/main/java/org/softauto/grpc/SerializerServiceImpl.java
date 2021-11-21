@@ -41,7 +41,7 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
                 methodResponse = m.invoke(serviceImpl, message.getArgs());
             }
 
-
+            logger.debug("successfully invoke "+message.getDescriptor()+ " with args "+ Utils.result2String(message.getArgs())+ " on " +serviceImpl.getClass().getName());
         } catch (
             InvocationTargetException e) {
                 logger.error("fail invoke method "+ message.getDescriptor(),e );
@@ -75,7 +75,7 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
                 methodResponse = m.invoke(serviceImpl, message.getArgs());
             }
 
-
+        logger.debug("successfully invoke "+message.getDescriptor()+ " with args "+ Utils.result2String(message.getArgs())+ " on " +serviceImpl.getClass().getName());
         } catch (
                 InvocationTargetException e) {
             logger.error("fail invoke method "+ message.getDescriptor(),e );

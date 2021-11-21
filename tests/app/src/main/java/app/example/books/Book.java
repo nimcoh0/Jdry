@@ -1,4 +1,4 @@
-package app.books;
+package app.example.books;
 
 
 import org.softauto.annotations.DefaultValue;

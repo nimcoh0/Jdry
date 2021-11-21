@@ -15,7 +15,11 @@ public class Configuration {
 
 
     public static void setConfiguration(JsonNode configuration){
-        Configuration.configuration = configuration;
+        try {
+            Configuration.configuration = configuration;
+        }catch (Exception e){
+            logger.error("fail update configuration ", e);
+        }
     }
 
     public static JsonNode getConfiguration() {

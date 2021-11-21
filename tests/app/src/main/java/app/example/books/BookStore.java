@@ -1,4 +1,4 @@
-package app.books;
+package app.example.books;
 
 import org.softauto.annotations.ExposedForTesting;
 import org.softauto.annotations.RPC;
@@ -13,6 +13,13 @@ public class BookStore {
     @ExposedForTesting
     public BookStore addBook(Book book) {
         books.add(book);
+        return this;
+    }
+
+    @RPC
+    @ExposedForTesting
+    public BookStore updateBook(Book book,String newTitle) {
+       book.setTitle(newTitle);
         return this;
     }
 
@@ -48,6 +55,15 @@ public class BookStore {
     public void loopOverBooks(){
         for(Book book : books){
             book.getTitle();
+        }
+    }
+
+
+    @RPC
+    @ExposedForTesting
+    public void printBooks(){
+        for(Book book : books){
+            new BookCatalog().printBook(book);
         }
     }
 }

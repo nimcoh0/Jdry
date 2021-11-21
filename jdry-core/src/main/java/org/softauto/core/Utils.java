@@ -11,7 +11,12 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.softauto.annotations.DefaultValue;
+import org.softauto.espl.ExpressionBuilder;
 import org.softauto.serializer.CallFuture;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.yaml.snakeyaml.Yaml;
 import java.io.*;
 import java.lang.annotation.Annotation;
@@ -22,10 +27,7 @@ import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -719,10 +721,18 @@ public class Utils {
     public static Class<?> getSubClass(Class<?>[] classes, String name){
         for(Class<?> c : classes){
             if(c.getName().equals(name)){
+                logger.debug("successfully found subclass for "+name);
                 return c;
             }
         }
+        logger.warn("subclass not found for "+name);
         return null;
     }
+
+
+
+
+
+
 
 }

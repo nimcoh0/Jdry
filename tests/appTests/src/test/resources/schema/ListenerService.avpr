@@ -8,6 +8,9 @@
   }, {
     "name" : "java.lang.Object[]",
     "type" : "external"
+  }, {
+    "name" : "java.util.List<app.example.books.Book>",
+    "type" : "external"
   } ],
   "messages" : {
     "app_example_books_BookCatalog_addBook" : {
@@ -16,6 +19,23 @@
         "type" : "app.example.books.Book"
       } ],
       "method" : "addBook",
+      "transceiver" : "RPC",
+      "response" : "void",
+      "namespace" : "app.example.books.BookCatalog"
+    },
+    "app_example_books_BookCatalog_getBooks" : {
+      "request" : [ ],
+      "method" : "getBooks",
+      "transceiver" : "RPC",
+      "response" : "java.util.List<app.example.books.Book>",
+      "namespace" : "app.example.books.BookCatalog"
+    },
+    "app_example_books_BookCatalog_printBook" : {
+      "request" : [ {
+        "name" : "book",
+        "type" : "app.example.books.Book"
+      } ],
+      "method" : "printBook",
       "transceiver" : "RPC",
       "response" : "void",
       "namespace" : "app.example.books.BookCatalog"

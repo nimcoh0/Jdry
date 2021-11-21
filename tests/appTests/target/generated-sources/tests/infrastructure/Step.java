@@ -92,6 +92,74 @@ public static class App_example_books_BookStore_addBook {
 
  }
 
+public static class App_example_books_BookStore_updateBook {
+
+
+    CallFuture< app.example.books.BookStore> future = new CallFuture<>();
+    public app.example.books.BookStore get_Result(){
+            try {
+                logger.debug("successfully get_Result() ");
+                return future.get();
+             }catch (Exception e){
+                logger.error("fail get_Result() "+ e);
+             }
+             logger.debug("successfully DefaultValue for get_Result() ");
+             return null;
+        }
+
+    public  App_example_books_BookStore_updateBook then(Object o){
+        future.handleResult((app.example.books.BookStore)o);
+
+        return this;
+    }
+
+    public  App_example_books_BookStore_updateBook then(Object o,Handler<AsyncResult<java.lang.Object>> resultHandler){
+        resultHandler.handle(Future.handleResult(o));
+        return this;
+    }
+
+    public  App_example_books_BookStore_updateBook then(Object o ,CallFuture<java.lang.Object> future){
+        future.handleResult(o);
+        return this;
+    }
+
+
+
+    public App_example_books_BookStore_updateBook(app.example.books.Book book, java.lang.String newTitle    ){
+        try {
+            logger.debug("invoking proxy for app_example_books_BookStore_updateBook");
+            new InvocationHandler().invoke("app_example_books_BookStore_updateBook",new Object[]{book,newTitle},new Class[]{app.example.books.Book.class,java.lang.String.class},future,"RPC");
+        }catch (Exception e){
+             logger.error("fail invoke for app_example_books_BookStore_updateBook"+ e);
+        }
+    }
+
+
+
+    public App_example_books_BookStore_updateBook(app.example.books.Book book, java.lang.String newTitle,CallFuture<app.example.books.BookStore> future){
+        try {
+            logger.debug("invoking proxy for app_example_books_BookStore_updateBook");
+            new InvocationHandler().invoke("app_example_books_BookStore_updateBook",new Object[]{book,newTitle},new Class[]{app.example.books.Book.class,java.lang.String.class},future,"RPC");
+        }catch (Exception e){
+             logger.error("fail invoke for app_example_books_BookStore_updateBook"+ e);
+        }
+ }
+
+
+    public  App_example_books_BookStore_updateBook(app.example.books.Book book, java.lang.String newTitle,Handler<AsyncResult<app.example.books.BookStore>> resultHandler  ){
+        try {
+            CallFuture<app.example.books.BookStore> future = new CallFuture<>();
+            logger.debug("invoking proxy for app_example_books_BookStore_updateBook");
+            new InvocationHandler().invoke("app_example_books_BookStore_updateBook",new Object[]{book,newTitle},new Class[]{app.example.books.Book.class,java.lang.String.class},future,"RPC");
+            resultHandler.handle(Future.handleResult(future.get()));
+       }catch (Exception e){
+          logger.error("fail invoke for app_example_books_BookStore_updateBook"+ e);
+          resultHandler.handle(Future.handleError(e));
+       }
+    }
+
+ }
+
 public static class App_example_books_BookStore_addAllBooks {
 
 
@@ -360,68 +428,64 @@ public static class App_example_books_BookStore_loopOverBooks {
 
  }
 
-public static class App_example_books_BookCatalog_getBooks {
+public static class App_example_books_BookStore_printBooks {
 
 
-    CallFuture< java.util.List<app.example.books.Book>> future = new CallFuture<>();
-    public java.util.List<app.example.books.Book> get_Result(){
+    CallFuture<java.lang.Void> future = new CallFuture<>();
+    public void get_Result(){
             try {
                 logger.debug("successfully get_Result() ");
-                return future.get();
+                future.get();
              }catch (Exception e){
-                logger.error("fail get_Result() "+ e);
+                 logger.error("fail get_Result() "+ e);
              }
-             logger.debug("successfully DefaultValue for get_Result() ");
-             return null;
         }
 
-    public  App_example_books_BookCatalog_getBooks then(Object o){
-        future.handleResult((java.util.List<app.example.books.Book>)o);
-
+    public  App_example_books_BookStore_printBooks then(Object o){
         return this;
     }
 
-    public  App_example_books_BookCatalog_getBooks then(Object o,Handler<AsyncResult<java.lang.Object>> resultHandler){
+    public  App_example_books_BookStore_printBooks then(Object o,Handler<AsyncResult<java.lang.Object>> resultHandler){
         resultHandler.handle(Future.handleResult(o));
         return this;
     }
 
-    public  App_example_books_BookCatalog_getBooks then(Object o ,CallFuture<java.lang.Object> future){
+    public  App_example_books_BookStore_printBooks then(Object o ,CallFuture<java.lang.Object> future){
         future.handleResult(o);
         return this;
     }
 
 
 
-    public App_example_books_BookCatalog_getBooks(    ){
+    public App_example_books_BookStore_printBooks(    ){
         try {
-            logger.debug("invoking proxy for app_example_books_BookCatalog_getBooks");
-            new InvocationHandler().invoke("app_example_books_BookCatalog_getBooks",new Object[]{},new Class[]{},future,"RPC");
+            logger.debug("invoking proxy for app_example_books_BookStore_printBooks");
+            new InvocationHandler().invoke("app_example_books_BookStore_printBooks",new Object[]{},new Class[]{},future,"RPC");
         }catch (Exception e){
-             logger.error("fail invoke for app_example_books_BookCatalog_getBooks"+ e);
+             logger.error("fail invoke for app_example_books_BookStore_printBooks"+ e);
         }
     }
 
 
 
-    public App_example_books_BookCatalog_getBooks(CallFuture<java.util.List<app.example.books.Book>> future){
+    public App_example_books_BookStore_printBooks(CallFuture<java.lang.Void> future){
         try {
-            logger.debug("invoking proxy for app_example_books_BookCatalog_getBooks");
-            new InvocationHandler().invoke("app_example_books_BookCatalog_getBooks",new Object[]{},new Class[]{},future,"RPC");
+            logger.debug("invoking proxy for app_example_books_BookStore_printBooks");
+            new InvocationHandler().invoke("app_example_books_BookStore_printBooks",new Object[]{},new Class[]{},future,"RPC");
         }catch (Exception e){
-             logger.error("fail invoke for app_example_books_BookCatalog_getBooks"+ e);
+             logger.error("fail invoke for app_example_books_BookStore_printBooks"+ e);
         }
  }
 
 
-    public  App_example_books_BookCatalog_getBooks(Handler<AsyncResult<java.util.List<app.example.books.Book>>> resultHandler  ){
+    public  App_example_books_BookStore_printBooks(Handler<AsyncResult<java.lang.Void>> resultHandler  ){
         try {
-            CallFuture<java.util.List<app.example.books.Book>> future = new CallFuture<>();
-            logger.debug("invoking proxy for app_example_books_BookCatalog_getBooks");
-            new InvocationHandler().invoke("app_example_books_BookCatalog_getBooks",new Object[]{},new Class[]{},future,"RPC");
+            CallFuture<java.lang.Void> future = new CallFuture<>();
+            logger.debug("invoking proxy for app_example_books_BookStore_printBooks");
+            new InvocationHandler().invoke("app_example_books_BookStore_printBooks",new Object[]{},new Class[]{},future,"RPC");
             resultHandler.handle(Future.handleResult(future.get()));
        }catch (Exception e){
-          logger.error("fail invoke for app_example_books_BookCatalog_getBooks"+ e);
+          logger.error("fail invoke for app_example_books_BookStore_printBooks"+ e);
           resultHandler.handle(Future.handleError(e));
        }
     }

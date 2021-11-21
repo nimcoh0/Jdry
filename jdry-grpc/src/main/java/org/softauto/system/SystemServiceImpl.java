@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 import org.softauto.core.Configuration;
+import org.softauto.core.Context;
+import org.softauto.core.TestLifeCycle;
 import org.softauto.injector.InjectorProviderImpl;
 import org.softauto.jvm.JvmProviderImpl;
 import org.softauto.listener.manager.ListenerClientProviderImpl;
@@ -46,6 +48,7 @@ public class SystemServiceImpl {
      * @param testname
      */
     public void startTest(String testname){
+        Context.setTestState(TestLifeCycle.START);
         logger.info(" **************** start test "+ testname+ " ******************");
         logger.info(TRACER," **************** start test "+ testname+ " ******************");
 
@@ -57,6 +60,7 @@ public class SystemServiceImpl {
      */
     public void endTest(String testname){
         try {
+            Context.setTestState(TestLifeCycle.STOP);
             SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
             Date date = new Date(System.currentTimeMillis());
             String d = formatter.format(date);
@@ -76,32 +80,22 @@ public class SystemServiceImpl {
      * @return
      */
     public int configuration(JsonNode configuration) {
-        Configuration.setConfiguration(configuration);
-        if(!loaded) {
-            load();
-            loaded = true;
-        }else {
-            setConnection(true);
+        try {
+            Context.setTestState(TestLifeCycle.INITIALIZE);
+            Configuration.setConfiguration(configuration);
+            if (!loaded) {
+                load();
+                loaded = true;
+            }
+        }catch (Exception e){
+            logger.error("fail set configuration  ",e);
         }
+        logger.debug("successfully  set configuration  ");
         return 0;
     }
 
-
-    /**
-     * shutdown at the test end
-     */
     public void shutdown() {
-        try {
-            setConnection(false);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
 
-
-
-    private void setConnection(boolean status){
-        logger.debug("set listener client connection to "+ status);
     }
 
     private  void load()  {
@@ -109,7 +103,6 @@ public class SystemServiceImpl {
             InjectorProviderImpl.getInstance().initialize().register();
             ListenerClientProviderImpl.getInstance().initialize().register();
             JvmProviderImpl.getInstance().initialize().register();
-            setConnection(true);
         }catch(Exception e){
             logger.fatal("init fail ",e);
             System.exit(1);

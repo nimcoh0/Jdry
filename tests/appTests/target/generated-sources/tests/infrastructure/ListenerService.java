@@ -7,10 +7,16 @@ package tests.infrastructure;
 
 @org.apache.avro.specific.AvroGenerated
 public interface ListenerService {
-  public static final org.apache.avro.Protocol PROTOCOL = org.apache.avro.Protocol.parse("{\"protocol\":\"ListenerService\",\"namespace\":\"tests.infrastructure\",\"version\":\"1.0\",\"types\":[{\"type\":\"external\",\"name\":\"Book\",\"namespace\":\"app.example.books\",\"fields\":[]},{\"type\":\"external\",\"name\":\"Object[]\",\"namespace\":\"java.lang\",\"fields\":[]}],\"messages\":{\"app_example_books_BookCatalog_addBook\":{\"method\":\"addBook\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.BookCatalog\",\"request\":[{\"name\":\"book\",\"type\":\"app.example.books.Book\"}],\"response\":\"void\"},\"app_example_books_Book_getTitle\":{\"method\":\"getTitle\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.Book\",\"request\":[],\"response\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},\"app_example_books_Book_setTitle\":{\"method\":\"setTitle\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.Book\",\"request\":[{\"name\":\"title\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}],\"response\":\"void\"},\"app_example_books_Book_getAuthor\":{\"method\":\"getAuthor\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.Book\",\"request\":[],\"response\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},\"app_example_books_Book_setAuthor\":{\"method\":\"setAuthor\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.Book\",\"request\":[{\"name\":\"author\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}],\"response\":\"void\"},\"app_example_books_Book_getId\":{\"method\":\"getId\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.Book\",\"request\":[],\"response\":\"int\"},\"app_example_books_Book_setId\":{\"method\":\"setId\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.Book\",\"request\":[{\"name\":\"id\",\"type\":\"int\"}],\"response\":\"void\"}}}");
+  public static final org.apache.avro.Protocol PROTOCOL = org.apache.avro.Protocol.parse("{\"protocol\":\"ListenerService\",\"namespace\":\"tests.infrastructure\",\"version\":\"1.0\",\"types\":[{\"type\":\"external\",\"name\":\"Book\",\"namespace\":\"app.example.books\",\"fields\":[]},{\"type\":\"external\",\"name\":\"Object[]\",\"namespace\":\"java.lang\",\"fields\":[]},{\"type\":\"external\",\"name\":\"List<app.example.books.Book>\",\"namespace\":\"java.util\",\"fields\":[]}],\"messages\":{\"app_example_books_BookCatalog_addBook\":{\"method\":\"addBook\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.BookCatalog\",\"request\":[{\"name\":\"book\",\"type\":\"app.example.books.Book\"}],\"response\":\"void\"},\"app_example_books_BookCatalog_getBooks\":{\"method\":\"getBooks\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.BookCatalog\",\"request\":[],\"response\":\"java.util.List<app.example.books.Book>\"},\"app_example_books_BookCatalog_printBook\":{\"method\":\"printBook\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.BookCatalog\",\"request\":[{\"name\":\"book\",\"type\":\"app.example.books.Book\"}],\"response\":\"void\"},\"app_example_books_Book_getTitle\":{\"method\":\"getTitle\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.Book\",\"request\":[],\"response\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},\"app_example_books_Book_setTitle\":{\"method\":\"setTitle\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.Book\",\"request\":[{\"name\":\"title\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}],\"response\":\"void\"},\"app_example_books_Book_getAuthor\":{\"method\":\"getAuthor\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.Book\",\"request\":[],\"response\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},\"app_example_books_Book_setAuthor\":{\"method\":\"setAuthor\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.Book\",\"request\":[{\"name\":\"author\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}],\"response\":\"void\"},\"app_example_books_Book_getId\":{\"method\":\"getId\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.Book\",\"request\":[],\"response\":\"int\"},\"app_example_books_Book_setId\":{\"method\":\"setId\",\"transceiver\":\"RPC\",\"namespace\":\"app.example.books.Book\",\"request\":[{\"name\":\"id\",\"type\":\"int\"}],\"response\":\"void\"}}}");
   /**
    */
    void app_example_books_BookCatalog_addBook(app.example.books.Book book);
+  /**
+   */
+   java.util.List<app.example.books.Book> app_example_books_BookCatalog_getBooks();
+  /**
+   */
+   void app_example_books_BookCatalog_printBook(app.example.books.Book book);
   /**
    */
    java.lang.String app_example_books_Book_getTitle();
@@ -37,6 +43,14 @@ public interface ListenerService {
      * @throws java.io.IOException The async call could not be completed.
      */
     void app_example_books_BookCatalog_addBook(app.example.books.Book book, org.softauto.serializer.CallFuture<Void> callback) throws java.io.IOException;
+    /**
+     * @throws java.io.IOException The async call could not be completed.
+     */
+    void app_example_books_BookCatalog_getBooks(org.softauto.serializer.CallFuture<java.util.List<app.example.books.Book>> callback) throws java.io.IOException;
+    /**
+     * @throws java.io.IOException The async call could not be completed.
+     */
+    void app_example_books_BookCatalog_printBook(app.example.books.Book book, org.softauto.serializer.CallFuture<Void> callback) throws java.io.IOException;
     /**
      * @throws java.io.IOException The async call could not be completed.
      */

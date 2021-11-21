@@ -16,7 +16,11 @@
             <artifactId>type-parser</artifactId>
             <version>${type-parser}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+            <version>3.0.1.RELEASE</version>
+        </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-avro</artifactId>

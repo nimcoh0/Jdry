@@ -164,11 +164,14 @@ public class ServerService {
                     Object[] objects = HeapHelper.getInstances(c);
                     if(objects != null && objects.length > 0){
                         logger.debug("found "+objects.length+" instances in jvm. for class "+ classDescriptor.getFullClassName());
+                        logger.debug("invoke Initialize No Param Class "+ classDescriptor.getFullClassName()+ " using classLoader "+ c.getClassLoader());
+                        logger.debug("current thread classLoader thread: "+Thread.currentThread().getName() + " classloader: "+ Thread.currentThread().getContextClassLoader());
                         return objects;
                     }
                 }
                 obj  = c.newInstance();
-                logger.debug("invoke Initialize No Param Class "+ classDescriptor.getFullClassName());
+                logger.debug("invoke Initialize No Param Class "+ classDescriptor.getFullClassName()+ " using classLoader "+ c.getClassLoader());
+                logger.debug("current thread classLoader thread: "+Thread.currentThread().getName() + " classloader: "+ Thread.currentThread().getContextClassLoader());
             }catch (Exception e){
                 logger.warn("fail get Instance Class for  "+classDescriptor.getFullClassName(),e.getMessage());
             }

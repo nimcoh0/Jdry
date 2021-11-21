@@ -1,5 +1,10 @@
 package org.softauto.testng;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.softauto.core.Context;
+import org.softauto.core.TestLifeCycle;
 import org.softauto.listener.server.ListenerObserver;
 import org.softauto.listener.server.ListenerServerProviderImpl;
 import org.softauto.tester.SystemState;
@@ -13,6 +18,7 @@ public class JdryTestListener implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult result) {
+        Context.setTestState(TestLifeCycle.START);
         SystemState.getInstance().startTest(result.getName(),res ->{
             if(res.succeeded()){
                 logger.debug("successfully start test ");
@@ -50,6 +56,7 @@ public class JdryTestListener implements ITestListener {
 
     @Override
     public void onFinish(ITestContext context) {
+        Context.setTestState(TestLifeCycle.STOP);
         SystemState.getInstance().endTest(context.getName(),res ->{
             if(res.succeeded()){
                 logger.debug("successfully end test");
@@ -66,6 +73,9 @@ public class JdryTestListener implements ITestListener {
                 logger.error("fail shutdown",res.cause());
             }
         });
-
+        final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+        final Configuration config = ctx.getConfiguration();
+        config.getRootLogger().removeAppender("console");
+        ctx.updateLoggers();
     }
 }
