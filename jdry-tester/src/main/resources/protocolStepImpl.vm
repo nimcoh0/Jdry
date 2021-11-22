@@ -123,6 +123,9 @@ Handler<AsyncResult<$this.javaType($response,false)>> resultHandler  ){
        }
     }
 
+
+
+
  }
 #end## (requests)
 }## End of protocol interface

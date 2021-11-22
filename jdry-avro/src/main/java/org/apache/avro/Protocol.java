@@ -203,6 +203,13 @@ public class Protocol extends JsonProperties {
       return getObjectProp(name).toString();
     }
 
+    public boolean isConstructor(){
+      if(this.getProp("type").equals("constructor")){
+        return true;
+      }
+      return false;
+    }
+
     public boolean hasGivenDescription(){
       if(this.getObjectProp("cucumber") != null)
         if(((JsonNode)this.getObjectProp("cucumber")).get("given") != null){

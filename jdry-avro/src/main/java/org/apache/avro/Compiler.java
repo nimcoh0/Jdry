@@ -1574,6 +1574,20 @@ public class Compiler {
   }
 
 
+  public Object convertDefaultValueToObject(String defaultValue,Schema schema)throws Exception{
+    if (schema.isPrimitive()) {
+        Object result =  convertToPrimitive(schema.getType().getName()).cast(defaultValue);
+        if(schema.getType().getName().contains("string") || schema.getType().getName().contains("String")){
+          return "\""+result+"\"";
+        }
+        return result;
+      } else if(isJson(defaultValue)){
+        return new ObjectMapper().readValue(defaultValue, schema.getType().getClass());
+      }else {
+        throw new Exception("defaultValue must be primitive or json ");
+      }
+   }
+
   public static void main(String[] args) throws Exception {
     compileProtocol(new File(args[0]), new File(args[1]),args[2],args[3]);
 

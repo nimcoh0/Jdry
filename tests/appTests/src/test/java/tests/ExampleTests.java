@@ -25,8 +25,8 @@ public class ExampleTests extends AbstractTesterImpl {
     @BeforeSuite
     public void setup()throws Exception{
         books = new ArrayList<>();
-        Book book1 = new Book();
-        Book book2 = new Book();
+        Book book1 = new Book("blabla","Nim");
+        Book book2 = new Book("blabla","Nim");
         book1.setAuthor("a1");
         book1.setTitle("t1");
         book2.setAuthor("a2");
@@ -109,6 +109,31 @@ public class ExampleTests extends AbstractTesterImpl {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+   @Test
+   public void auto_initialize_class(){
+       Listener.setTimeOut(4);
+       String msg = new Step.App_example_books_Book_hello().get_Result();
+       Assert.assertTrue(msg.equals("hello"));
+   }
+
+    @Test
+    public void manually_initialize_class(){
+        Listener.setTimeOut(4);
+        new Step.App_example_books_Book_Book("blabla","nim").then(
+                new Step.App_example_books_Book_hello().get_Result(),res ->{
+                    Assert.assertTrue(res.result().equals("hello"));
+                }
+        );
+    }
+
+    @Test
+    public void check_session(){
+        Listener.setTimeOut(4);
+        new Step.App_example_books_BookStore_addAllBooks(books);
+        Book book = new Step.App_example_books_BookStore_bookByTitle("t1").get_Result().get();
+        Assert.assertTrue(book.getTitle().equals("t1"));
     }
 
 }

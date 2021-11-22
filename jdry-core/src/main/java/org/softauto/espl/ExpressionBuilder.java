@@ -1,10 +1,6 @@
 package org.softauto.espl;
 
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.softauto.core.vistors.builders.ClazzBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +66,15 @@ public class ExpressionBuilder {
 
         public String getStatement() {
             return statement;
+        }
+
+        public String toString(){
+            try{
+               return new ObjectMapper().writeValueAsString(this);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
         }
 
         public ExpressionBuilder build(){

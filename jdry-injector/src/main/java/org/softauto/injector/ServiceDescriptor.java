@@ -75,6 +75,7 @@ class ServiceDescriptor {
 
   }
 
+
   public ClassDescriptor getClasses(Protocol.Message msg, ClassType classType) {
     String className = ((HashMap)msg.getObjectProp("class")).get("fullClassName").toString();
     return classes.computeIfAbsent(className,
@@ -82,8 +83,11 @@ class ServiceDescriptor {
                     .setFullClassName(className)
                     .setType(classType)
                     .setTypes(Utils.extractConstructorDefaultArgsTypes(className))
+                    .setArgs(Utils.getConstructorDefaultValues(className))
                     .setMsg(msg)
                     .build0());
 
   }
+
+
 }

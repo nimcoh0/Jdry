@@ -160,6 +160,12 @@ public class Utils {
     public static String getFullClassName2(String descriptor){
         return  descriptor.substring(0,descriptor.lastIndexOf("_"));
     }
+
+    public static String getClassName(String descriptor){
+       String str = getFullClassName2(descriptor);
+       return  str.substring(str.lastIndexOf("_")+1);
+    }
+
     /**
      * get Method Name from FQMN
      * @param descriptor
@@ -461,28 +467,32 @@ public class Utils {
 
     /**
      * get Constructor Default Values
-     * @param klazz
      * @return
      */
-    public static Object[] getConstructorDefaultValues(Class klazz){
+    public static Object[] getConstructorDefaultValues(String fullClassName){
         List<Object> defaultValues = new ArrayList<>();
-        Constructor<?>[]  constructors = klazz.getConstructors();
-        for(Constructor constructor : constructors){
-            Annotation[][] annotations = constructor.getParameterAnnotations();
-            for(int i=0;i<annotations.length;i++){
-                for(int j=0;j<annotations[i].length;j++) {
-                    if(annotations[i][j].annotationType().getName().equals("org.softauto.annotations.DefaultValue")){
-                        String value = ((org.softauto.annotations.DefaultValue)annotations[i][j]).value();
-                        String name = constructor.getParameters()[i].getName();
-                        if(constructor.getParameters()[i].getAnnotation(DefaultValue.class).type() != null && !constructor.getParameters()[i].getAnnotation(DefaultValue.class).type().isEmpty()) {
-                            String type = constructor.getParameters()[i].getAnnotation(DefaultValue.class).type().toString();
-                            defaultValues.add (ObjectConverter.convert(value,constructor.getParameters()[i].getType(),type));
-                        }else {
-                            defaultValues.add(value);
+        try {
+            Class klazz = Class.forName(fullClassName);
+            Constructor<?>[] constructors = klazz.getConstructors();
+            for (Constructor constructor : constructors) {
+                Annotation[][] annotations = constructor.getParameterAnnotations();
+                for (int i = 0; i < annotations.length; i++) {
+                    for (int j = 0; j < annotations[i].length; j++) {
+                        if (annotations[i][j].annotationType().getName().equals("org.softauto.annotations.DefaultValue")) {
+                            String value = ((org.softauto.annotations.DefaultValue) annotations[i][j]).value();
+                            String name = constructor.getParameters()[i].getName();
+                            if (constructor.getParameters()[i].getAnnotation(DefaultValue.class).type() != null && !constructor.getParameters()[i].getAnnotation(DefaultValue.class).type().isEmpty()) {
+                                String type = constructor.getParameters()[i].getAnnotation(DefaultValue.class).type().toString();
+                                defaultValues.add(ObjectConverter.convert(value, constructor.getParameters()[i].getType(), type));
+                            } else {
+                                defaultValues.add(value);
+                            }
                         }
-                     }
+                    }
                 }
             }
+        }catch (Exception e){
+
         }
         return defaultValues.toArray();
     }

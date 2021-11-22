@@ -47,5 +47,18 @@ public class Injector implements AbstractInjector {
         return null;
     }
 
+    public  Object[] inject(String fullClassName,Object[] args){
+        try {
+            ClassDefinition md = service.getClazz(fullClassName);
+            ClassDescriptor cd = md.getClassDescriptor();
+            cd.setArgs(args);
+            Object[] objs = md.getCallHandler().startCall(cd);
+            logger.debug("successfully inject "+ fullClassName);
+            return objs;
+        }catch (Exception e){
+            logger.error("fail inject "+ fullClassName,e);
+        }
+        return null;
+    }
 
 }

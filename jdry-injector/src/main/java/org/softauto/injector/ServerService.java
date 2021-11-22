@@ -45,7 +45,7 @@ public class ServerService {
                             serviceDefinitionBuilder.addClass(serviceDescriptor.getClasses(ClassType.SINGLETON, msg),
                                     ServiceCaller.call(new SingletonClassHandler()));
                         } else if (initializeClass != null && initializeClass.equals(ClassType.INITIALIZE.toString())) {
-                                    serviceDefinitionBuilder.addClass(serviceDescriptor.getClasses(msg, ClassType.INITIALIZE),
+                                    serviceDefinitionBuilder.addClass(serviceDescriptor.getClasses(msg,ClassType.INITIALIZE),
                                             ServiceCaller.call(new InitializeClassHandler()));
                               } else if (initializeClass != null && initializeClass.equals(ClassType.INITIALIZE_NO_PARAM.toString())) {
                                         serviceDefinitionBuilder.addClass(serviceDescriptor.getClasses(ClassType.INITIALIZE_NO_PARAM, msg),
@@ -164,14 +164,11 @@ public class ServerService {
                     Object[] objects = HeapHelper.getInstances(c);
                     if(objects != null && objects.length > 0){
                         logger.debug("found "+objects.length+" instances in jvm. for class "+ classDescriptor.getFullClassName());
-                        logger.debug("invoke Initialize No Param Class "+ classDescriptor.getFullClassName()+ " using classLoader "+ c.getClassLoader());
-                        logger.debug("current thread classLoader thread: "+Thread.currentThread().getName() + " classloader: "+ Thread.currentThread().getContextClassLoader());
                         return objects;
                     }
                 }
                 obj  = c.newInstance();
                 logger.debug("invoke Initialize No Param Class "+ classDescriptor.getFullClassName()+ " using classLoader "+ c.getClassLoader());
-                logger.debug("current thread classLoader thread: "+Thread.currentThread().getName() + " classloader: "+ Thread.currentThread().getContextClassLoader());
             }catch (Exception e){
                 logger.warn("fail get Instance Class for  "+classDescriptor.getFullClassName(),e.getMessage());
             }
