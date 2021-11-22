@@ -20,8 +20,6 @@ public class Book {
         this.author = author;
 
     }
-    
-    public Book() {}
 
     @RPC
     @ListenerForTesting
@@ -51,6 +49,12 @@ public class Book {
     @ListenerForTesting
     public int getId() {
         return id;
+    }
+
+    @RPC
+    @ExposedForTesting
+    public String hello() {
+         return "hello";
     }
 
     @RPC
