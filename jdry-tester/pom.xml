@@ -22,17 +22,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-serializer</artifactId>
-            <version>${jdry-serializer}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.softauto</groupId>
-                    <artifactId>jdry-grpc</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-core</artifactId>
@@ -84,6 +74,17 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
             <version>3.0.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-serializer</artifactId>
+            <version>${jdry-serializer}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.softauto</groupId>
+                    <artifactId>jdry-grpc</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

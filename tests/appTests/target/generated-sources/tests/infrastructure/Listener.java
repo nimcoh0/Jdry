@@ -29,6 +29,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.HashMap;
 import org.softauto.espl.ExpressionBuilder;
 import org.softauto.espl.EvulExp;
+import org.softauto.core.IListener;
 
 @org.apache.avro.specific.AvroGenerated
 public class Listener {
@@ -45,7 +46,7 @@ public class Listener {
 
 
 
-public static class app_example_books_BookCatalog_addBook{
+public static class app_example_books_BookCatalog_addBook implements IListener{
     private static app_example_books_BookCatalog_addBook app_example_books_BookCatalog_addBook= null;
     static boolean seen = false;
     static Map<String, Object> map = null;
@@ -75,11 +76,11 @@ public static class app_example_books_BookCatalog_addBook{
                         params.put("book", book);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_BookCatalog_addBook");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_addBook seen:"+seen);
                             app_example_books_BookCatalog_addBook.book = app_example_books_BookCatalog_addBook.book == null ? book : app_example_books_BookCatalog_addBook.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_addBook");
+                            lock.countDown();
                             return new Object[]{app_example_books_BookCatalog_addBook.book};
                         }
                         }catch (Exception e){
@@ -105,7 +106,7 @@ public static class app_example_books_BookCatalog_addBook{
     }
 
 
-    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_BookCatalog_addBook>> resultHandler){
+    public static app_example_books_BookCatalog_addBook waitUntil(ExpressionBuilder exp,CallFuture<Object[]> future){
     app_example_books_BookCatalog_addBook _waitUntil = null;
     //if(app_example_books_BookCatalog_addBook == null){
             try{
@@ -120,11 +121,58 @@ public static class app_example_books_BookCatalog_addBook{
                         params.put("book", book);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_BookCatalog_addBook");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_addBook seen:"+seen);
                             app_example_books_BookCatalog_addBook.book = app_example_books_BookCatalog_addBook.book == null ? book : app_example_books_BookCatalog_addBook.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_addBook");
+                            future.handleResult(new Object[]{app_example_books_BookCatalog_addBook.book});
+                             lock.countDown();
+                             return new Object[]{app_example_books_BookCatalog_addBook.book};
+                        }
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                         future.handleResult(new Object[]{book});
+                        return new Object[]{book};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_BookCatalog_addBook", _waitUntil);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_BookCatalog_addBook");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitUntil;
+    }
+
+
+    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_BookCatalog_addBook>> resultHandler)throws Exception{
+    app_example_books_BookCatalog_addBook _waitUntil = null;
+    //if(app_example_books_BookCatalog_addBook == null){
+            try{
+                logger.debug("waiting for app_example_books_BookCatalog_addBook");
+                //app_example_books_BookCatalog_addBook = new app_example_books_BookCatalog_addBook();
+                lock = new CountDownLatch(1);
+                _waitUntil =  new app_example_books_BookCatalog_addBook(){
+                        @Override
+                        public synchronized Object[] app_example_books_BookCatalog_addBook(app.example.books.Book book){
+                        try{
+                        Map<String, Object> params = new LinkedHashMap<String, Object>(1);
+                        params.put("book", book);
+                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                            logger.debug("done waiting for app_example_books_BookCatalog_addBook");
+                            seen = true;
+                            logger.debug("got call for app_example_books_BookCatalog_addBook seen:"+seen);
+                            app_example_books_BookCatalog_addBook.book = app_example_books_BookCatalog_addBook.book == null ? book : app_example_books_BookCatalog_addBook.book;
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_addBook");
+                            lock.countDown();
                             return new Object[]{app_example_books_BookCatalog_addBook.book};
                         }
                         }catch (Exception e){
@@ -151,7 +199,47 @@ public static class app_example_books_BookCatalog_addBook{
 
     }
 
-
+    public static app_example_books_BookCatalog_addBook waitTo(CallFuture<Object[]> future){
+    app_example_books_BookCatalog_addBook _waitTo = null;
+    //if(app_example_books_BookCatalog_addBook == null){
+            try{
+                logger.debug("waiting for app_example_books_BookCatalog_addBook");
+                //app_example_books_BookCatalog_addBook = new app_example_books_BookCatalog_addBook();
+                lock = new CountDownLatch(1);
+                _waitTo =  new app_example_books_BookCatalog_addBook(){
+                        @Override
+                        public Object[] app_example_books_BookCatalog_addBook(app.example.books.Book book){
+                        try{
+                            logger.debug("done waiting for app_example_books_BookCatalog_addBook");
+                            seen = true;
+                            logger.debug("got call for app_example_books_BookCatalog_addBook seen:"+seen);
+                            app_example_books_BookCatalog_addBook.book = app_example_books_BookCatalog_addBook.book == null ? book : app_example_books_BookCatalog_addBook.book;
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_addBook");
+                            future.handleResult(new Object[]{app_example_books_BookCatalog_addBook.book});
+                            lock.countDown();
+                            return new Object[]{app_example_books_BookCatalog_addBook.book};
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                        future.handleResult(new Object[]{});
+                        return new Object[]{};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_BookCatalog_addBook", _waitTo);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_BookCatalog_addBook");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitTo;
+    }
 
     public static app_example_books_BookCatalog_addBook waitTo(){
     app_example_books_BookCatalog_addBook _waitTo = null;
@@ -165,11 +253,11 @@ public static class app_example_books_BookCatalog_addBook{
                         public Object[] app_example_books_BookCatalog_addBook(app.example.books.Book book){
                         try{
                             logger.debug("done waiting for app_example_books_BookCatalog_addBook");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_addBook seen:"+seen);
                             app_example_books_BookCatalog_addBook.book = app_example_books_BookCatalog_addBook.book == null ? book : app_example_books_BookCatalog_addBook.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_addBook");
+                            lock.countDown();
                             return new Object[]{app_example_books_BookCatalog_addBook.book            };
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -193,7 +281,7 @@ public static class app_example_books_BookCatalog_addBook{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_BookCatalog_addBook>> resultHandler){
+    public static void waitTo(Handler<AsyncResult<app_example_books_BookCatalog_addBook>> resultHandler)throws Exception{
     app_example_books_BookCatalog_addBook _waitTo = null;
     //if(app_example_books_BookCatalog_addBook == null){
             try{
@@ -206,11 +294,11 @@ public static class app_example_books_BookCatalog_addBook{
                      public Object[] app_example_books_BookCatalog_addBook(                        app.example.books.Book book){
                     try{
                         logger.debug("done waiting for app_example_books_BookCatalog_addBook");
-                        lock.countDown();
                         seen = true;
                         logger.debug("got call for app_example_books_BookCatalog_addBook seen:"+seen);
                          app_example_books_BookCatalog_addBook.book = app_example_books_BookCatalog_addBook.book == null ? book : app_example_books_BookCatalog_addBook.book;
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_addBook");
+                         lock.countDown();
                          return new Object[]{app_example_books_BookCatalog_addBook.book                            };
                          }catch (Exception e){
                                logger.error("fail waitTo ",e);
@@ -239,21 +327,21 @@ public static class app_example_books_BookCatalog_addBook{
 
 
 
-    public app.example.books.Book getBook(){
+    public app.example.books.Book getBook()throws Exception{
         return app_example_books_BookCatalog_addBook.book;
     }
 
-    public app_example_books_BookCatalog_addBook getBook(Handler<AsyncResult<app.example.books.Book>> resultHandler){
+    public app_example_books_BookCatalog_addBook getBook(Handler<AsyncResult<app.example.books.Book>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(app_example_books_BookCatalog_addBook.book));
         return this;
     }
 
-    public app_example_books_BookCatalog_addBook getBook(CallFuture<app.example.books.Book> future){
+    public app_example_books_BookCatalog_addBook getBook(CallFuture<app.example.books.Book> future)throws Exception{
        future.handleResult(app_example_books_BookCatalog_addBook.book);
        return this;
     }
 
-    public app_example_books_BookCatalog_addBook setBook(app.example.books.Book book){
+    public app_example_books_BookCatalog_addBook setBook(app.example.books.Book book)throws Exception{
         app_example_books_BookCatalog_addBook.book = book;
         return this;
     }
@@ -265,7 +353,7 @@ public static class app_example_books_BookCatalog_addBook{
 }
 
 
-public static class app_example_books_BookCatalog_getBooks{
+public static class app_example_books_BookCatalog_getBooks implements IListener{
     private static app_example_books_BookCatalog_getBooks app_example_books_BookCatalog_getBooks= null;
     static boolean seen = false;
     static Map<String, Object> map = null;
@@ -298,10 +386,10 @@ public static class app_example_books_BookCatalog_getBooks{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_BookCatalog_getBooks");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_getBooks seen:"+seen);
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_getBooks");
+                            lock.countDown();
                             return new Object[]{};
                         }
                         }catch (Exception e){
@@ -327,7 +415,7 @@ public static class app_example_books_BookCatalog_getBooks{
     }
 
 
-    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_BookCatalog_getBooks>> resultHandler){
+    public static app_example_books_BookCatalog_getBooks waitUntil(ExpressionBuilder exp,CallFuture<Object[]> future){
     app_example_books_BookCatalog_getBooks _waitUntil = null;
     //if(app_example_books_BookCatalog_getBooks == null){
             try{
@@ -341,10 +429,55 @@ public static class app_example_books_BookCatalog_getBooks{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_BookCatalog_getBooks");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_getBooks seen:"+seen);
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_getBooks");
+                            future.handleResult(new Object[]{});
+                             lock.countDown();
+                             return new Object[]{};
+                        }
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                         future.handleResult(new Object[]{});
+                        return new Object[]{};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_BookCatalog_getBooks", _waitUntil);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_BookCatalog_getBooks");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitUntil;
+    }
+
+
+    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_BookCatalog_getBooks>> resultHandler)throws Exception{
+    app_example_books_BookCatalog_getBooks _waitUntil = null;
+    //if(app_example_books_BookCatalog_getBooks == null){
+            try{
+                logger.debug("waiting for app_example_books_BookCatalog_getBooks");
+                //app_example_books_BookCatalog_getBooks = new app_example_books_BookCatalog_getBooks();
+                lock = new CountDownLatch(1);
+                _waitUntil =  new app_example_books_BookCatalog_getBooks(){
+                        @Override
+                        public synchronized Object[] app_example_books_BookCatalog_getBooks(){
+                        try{
+                        Map<String, Object> params = new LinkedHashMap<String, Object>(0);
+                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                            logger.debug("done waiting for app_example_books_BookCatalog_getBooks");
+                            seen = true;
+                            logger.debug("got call for app_example_books_BookCatalog_getBooks seen:"+seen);
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_getBooks");
+                            lock.countDown();
                             return new Object[]{};
                         }
                         }catch (Exception e){
@@ -371,7 +504,46 @@ public static class app_example_books_BookCatalog_getBooks{
 
     }
 
-
+    public static app_example_books_BookCatalog_getBooks waitTo(CallFuture<Object[]> future){
+    app_example_books_BookCatalog_getBooks _waitTo = null;
+    //if(app_example_books_BookCatalog_getBooks == null){
+            try{
+                logger.debug("waiting for app_example_books_BookCatalog_getBooks");
+                //app_example_books_BookCatalog_getBooks = new app_example_books_BookCatalog_getBooks();
+                lock = new CountDownLatch(1);
+                _waitTo =  new app_example_books_BookCatalog_getBooks(){
+                        @Override
+                        public Object[] app_example_books_BookCatalog_getBooks(){
+                        try{
+                            logger.debug("done waiting for app_example_books_BookCatalog_getBooks");
+                            seen = true;
+                            logger.debug("got call for app_example_books_BookCatalog_getBooks seen:"+seen);
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_getBooks");
+                            future.handleResult(new Object[]{});
+                            lock.countDown();
+                            return new Object[]{};
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                        future.handleResult(new Object[]{});
+                        return new Object[]{};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_BookCatalog_getBooks", _waitTo);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_BookCatalog_getBooks");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitTo;
+    }
 
     public static app_example_books_BookCatalog_getBooks waitTo(){
     app_example_books_BookCatalog_getBooks _waitTo = null;
@@ -385,10 +557,10 @@ public static class app_example_books_BookCatalog_getBooks{
                         public Object[] app_example_books_BookCatalog_getBooks(){
                         try{
                             logger.debug("done waiting for app_example_books_BookCatalog_getBooks");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_getBooks seen:"+seen);
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_getBooks");
+                            lock.countDown();
                             return new Object[]{            };
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -412,7 +584,7 @@ public static class app_example_books_BookCatalog_getBooks{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_BookCatalog_getBooks>> resultHandler){
+    public static void waitTo(Handler<AsyncResult<app_example_books_BookCatalog_getBooks>> resultHandler)throws Exception{
     app_example_books_BookCatalog_getBooks _waitTo = null;
     //if(app_example_books_BookCatalog_getBooks == null){
             try{
@@ -425,10 +597,10 @@ public static class app_example_books_BookCatalog_getBooks{
                      public Object[] app_example_books_BookCatalog_getBooks(){
                     try{
                         logger.debug("done waiting for app_example_books_BookCatalog_getBooks");
-                        lock.countDown();
                         seen = true;
                         logger.debug("got call for app_example_books_BookCatalog_getBooks seen:"+seen);
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_getBooks");
+                         lock.countDown();
                          return new Object[]{                            };
                          }catch (Exception e){
                                logger.error("fail waitTo ",e);
@@ -466,9 +638,9 @@ public static class app_example_books_BookCatalog_getBooks{
                         public void app_example_books_BookCatalog_getBooks(java.util.List<app.example.books.Book> result){
                         try{
                             logger.debug("done waiting for app_example_books_BookCatalog_getBooks");
-                            lockForResult.countDown();
-                            app_example_books_BookCatalog_getBooks._result = result;
+                            _result = result;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_getBooks");
+                            lockForResult.countDown();
                         }catch (Exception e){
                                 logger.error("fail waitTo ",e);
                         }
@@ -490,8 +662,43 @@ public static class app_example_books_BookCatalog_getBooks{
         return _waitToResult;
     }
 
+public static app_example_books_BookCatalog_getBooks waitToResult(CallFuture<java.util.List<app.example.books.Book>> future){
+    app_example_books_BookCatalog_getBooks _waitToResult = null;
+    //if(app_example_books_BookCatalog_getBooks == null){
+            try{
+                logger.debug("waiting for result of app_example_books_BookCatalog_getBooks");
+                //app_example_books_BookCatalog_getBooks = new app_example_books_BookCatalog_getBooks();
+                lockForResult = new CountDownLatch(1);
+                _waitToResult = new app_example_books_BookCatalog_getBooks(){
+                        public void app_example_books_BookCatalog_getBooks(java.util.List<app.example.books.Book> result){
+                        try{
+                            logger.debug("done waiting for app_example_books_BookCatalog_getBooks");
+                            _result = result;
+                            future.handleResult(result);
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_getBooks");
+                            lockForResult.countDown();
+                        }catch (Exception e){
+                                logger.error("fail waitTo ",e);
+                        }
+                    }
+                };
+                {
+                    org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_BookCatalog_getBooks", _waitToResult);
+                }
+                lockForResult.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lockForResult.getCount() > 0){
+                     throw new Exception("timeOut for lockForResult ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_BookCatalog_getBooks");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitToResult;
+    }
 
-    public static void waitToResult(Handler<AsyncResult<app_example_books_BookCatalog_getBooks>> resultHandler){
+    public static void waitToResult(Handler<AsyncResult<app_example_books_BookCatalog_getBooks>> resultHandler)throws Exception{
     app_example_books_BookCatalog_getBooks _waitToResult = null;
     //if(app_example_books_BookCatalog_getBooks == null){
             try{
@@ -502,9 +709,9 @@ public static class app_example_books_BookCatalog_getBooks{
                 public void app_example_books_BookCatalog_getBooks(java.util.List<app.example.books.Book> result){
                 try{
                    logger.debug("done waiting for app_example_books_BookCatalog_getBooks");
-                   lockForResult.countDown();
-                   app_example_books_BookCatalog_getBooks._result = result;
+                   _result = result;
                    org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_getBooks");
+                   lockForResult.countDown();
                 }catch (Exception e){
                      logger.error("fail waitToResult ",e);
                 }
@@ -533,7 +740,7 @@ public static class app_example_books_BookCatalog_getBooks{
         return _result;
     }
 
-    public app_example_books_BookCatalog_getBooks get_Result(Handler<AsyncResult<java.util.List<app.example.books.Book>>> resultHandler){
+    public app_example_books_BookCatalog_getBooks get_Result(Handler<AsyncResult<java.util.List<app.example.books.Book>>> resultHandler)throws Exception{
         try{
             resultHandler.handle(Future.handleResult(_result));
         }catch (Exception e){
@@ -559,7 +766,7 @@ public static class app_example_books_BookCatalog_getBooks{
 }
 
 
-public static class app_example_books_BookCatalog_printBook{
+public static class app_example_books_BookCatalog_printBook implements IListener{
     private static app_example_books_BookCatalog_printBook app_example_books_BookCatalog_printBook= null;
     static boolean seen = false;
     static Map<String, Object> map = null;
@@ -589,11 +796,11 @@ public static class app_example_books_BookCatalog_printBook{
                         params.put("book", book);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_BookCatalog_printBook");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_printBook seen:"+seen);
                             app_example_books_BookCatalog_printBook.book = app_example_books_BookCatalog_printBook.book == null ? book : app_example_books_BookCatalog_printBook.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_printBook");
+                            lock.countDown();
                             return new Object[]{app_example_books_BookCatalog_printBook.book};
                         }
                         }catch (Exception e){
@@ -619,7 +826,7 @@ public static class app_example_books_BookCatalog_printBook{
     }
 
 
-    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_BookCatalog_printBook>> resultHandler){
+    public static app_example_books_BookCatalog_printBook waitUntil(ExpressionBuilder exp,CallFuture<Object[]> future){
     app_example_books_BookCatalog_printBook _waitUntil = null;
     //if(app_example_books_BookCatalog_printBook == null){
             try{
@@ -634,11 +841,58 @@ public static class app_example_books_BookCatalog_printBook{
                         params.put("book", book);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_BookCatalog_printBook");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_printBook seen:"+seen);
                             app_example_books_BookCatalog_printBook.book = app_example_books_BookCatalog_printBook.book == null ? book : app_example_books_BookCatalog_printBook.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_printBook");
+                            future.handleResult(new Object[]{app_example_books_BookCatalog_printBook.book});
+                             lock.countDown();
+                             return new Object[]{app_example_books_BookCatalog_printBook.book};
+                        }
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                         future.handleResult(new Object[]{book});
+                        return new Object[]{book};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_BookCatalog_printBook", _waitUntil);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_BookCatalog_printBook");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitUntil;
+    }
+
+
+    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_BookCatalog_printBook>> resultHandler)throws Exception{
+    app_example_books_BookCatalog_printBook _waitUntil = null;
+    //if(app_example_books_BookCatalog_printBook == null){
+            try{
+                logger.debug("waiting for app_example_books_BookCatalog_printBook");
+                //app_example_books_BookCatalog_printBook = new app_example_books_BookCatalog_printBook();
+                lock = new CountDownLatch(1);
+                _waitUntil =  new app_example_books_BookCatalog_printBook(){
+                        @Override
+                        public synchronized Object[] app_example_books_BookCatalog_printBook(app.example.books.Book book){
+                        try{
+                        Map<String, Object> params = new LinkedHashMap<String, Object>(1);
+                        params.put("book", book);
+                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                            logger.debug("done waiting for app_example_books_BookCatalog_printBook");
+                            seen = true;
+                            logger.debug("got call for app_example_books_BookCatalog_printBook seen:"+seen);
+                            app_example_books_BookCatalog_printBook.book = app_example_books_BookCatalog_printBook.book == null ? book : app_example_books_BookCatalog_printBook.book;
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_printBook");
+                            lock.countDown();
                             return new Object[]{app_example_books_BookCatalog_printBook.book};
                         }
                         }catch (Exception e){
@@ -665,7 +919,47 @@ public static class app_example_books_BookCatalog_printBook{
 
     }
 
-
+    public static app_example_books_BookCatalog_printBook waitTo(CallFuture<Object[]> future){
+    app_example_books_BookCatalog_printBook _waitTo = null;
+    //if(app_example_books_BookCatalog_printBook == null){
+            try{
+                logger.debug("waiting for app_example_books_BookCatalog_printBook");
+                //app_example_books_BookCatalog_printBook = new app_example_books_BookCatalog_printBook();
+                lock = new CountDownLatch(1);
+                _waitTo =  new app_example_books_BookCatalog_printBook(){
+                        @Override
+                        public Object[] app_example_books_BookCatalog_printBook(app.example.books.Book book){
+                        try{
+                            logger.debug("done waiting for app_example_books_BookCatalog_printBook");
+                            seen = true;
+                            logger.debug("got call for app_example_books_BookCatalog_printBook seen:"+seen);
+                            app_example_books_BookCatalog_printBook.book = app_example_books_BookCatalog_printBook.book == null ? book : app_example_books_BookCatalog_printBook.book;
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_printBook");
+                            future.handleResult(new Object[]{app_example_books_BookCatalog_printBook.book});
+                            lock.countDown();
+                            return new Object[]{app_example_books_BookCatalog_printBook.book};
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                        future.handleResult(new Object[]{});
+                        return new Object[]{};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_BookCatalog_printBook", _waitTo);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_BookCatalog_printBook");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitTo;
+    }
 
     public static app_example_books_BookCatalog_printBook waitTo(){
     app_example_books_BookCatalog_printBook _waitTo = null;
@@ -679,11 +973,11 @@ public static class app_example_books_BookCatalog_printBook{
                         public Object[] app_example_books_BookCatalog_printBook(app.example.books.Book book){
                         try{
                             logger.debug("done waiting for app_example_books_BookCatalog_printBook");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_printBook seen:"+seen);
                             app_example_books_BookCatalog_printBook.book = app_example_books_BookCatalog_printBook.book == null ? book : app_example_books_BookCatalog_printBook.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_printBook");
+                            lock.countDown();
                             return new Object[]{app_example_books_BookCatalog_printBook.book            };
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -707,7 +1001,7 @@ public static class app_example_books_BookCatalog_printBook{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_BookCatalog_printBook>> resultHandler){
+    public static void waitTo(Handler<AsyncResult<app_example_books_BookCatalog_printBook>> resultHandler)throws Exception{
     app_example_books_BookCatalog_printBook _waitTo = null;
     //if(app_example_books_BookCatalog_printBook == null){
             try{
@@ -720,11 +1014,11 @@ public static class app_example_books_BookCatalog_printBook{
                      public Object[] app_example_books_BookCatalog_printBook(                        app.example.books.Book book){
                     try{
                         logger.debug("done waiting for app_example_books_BookCatalog_printBook");
-                        lock.countDown();
                         seen = true;
                         logger.debug("got call for app_example_books_BookCatalog_printBook seen:"+seen);
                          app_example_books_BookCatalog_printBook.book = app_example_books_BookCatalog_printBook.book == null ? book : app_example_books_BookCatalog_printBook.book;
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_printBook");
+                         lock.countDown();
                          return new Object[]{app_example_books_BookCatalog_printBook.book                            };
                          }catch (Exception e){
                                logger.error("fail waitTo ",e);
@@ -753,21 +1047,21 @@ public static class app_example_books_BookCatalog_printBook{
 
 
 
-    public app.example.books.Book getBook(){
+    public app.example.books.Book getBook()throws Exception{
         return app_example_books_BookCatalog_printBook.book;
     }
 
-    public app_example_books_BookCatalog_printBook getBook(Handler<AsyncResult<app.example.books.Book>> resultHandler){
+    public app_example_books_BookCatalog_printBook getBook(Handler<AsyncResult<app.example.books.Book>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(app_example_books_BookCatalog_printBook.book));
         return this;
     }
 
-    public app_example_books_BookCatalog_printBook getBook(CallFuture<app.example.books.Book> future){
+    public app_example_books_BookCatalog_printBook getBook(CallFuture<app.example.books.Book> future)throws Exception{
        future.handleResult(app_example_books_BookCatalog_printBook.book);
        return this;
     }
 
-    public app_example_books_BookCatalog_printBook setBook(app.example.books.Book book){
+    public app_example_books_BookCatalog_printBook setBook(app.example.books.Book book)throws Exception{
         app_example_books_BookCatalog_printBook.book = book;
         return this;
     }
@@ -779,7 +1073,7 @@ public static class app_example_books_BookCatalog_printBook{
 }
 
 
-public static class app_example_books_Book_getTitle{
+public static class app_example_books_Book_getTitle implements IListener{
     private static app_example_books_Book_getTitle app_example_books_Book_getTitle= null;
     static boolean seen = false;
     static Map<String, Object> map = null;
@@ -812,10 +1106,10 @@ public static class app_example_books_Book_getTitle{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_getTitle");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_getTitle seen:"+seen);
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getTitle");
+                            lock.countDown();
                             return new Object[]{};
                         }
                         }catch (Exception e){
@@ -841,7 +1135,7 @@ public static class app_example_books_Book_getTitle{
     }
 
 
-    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_Book_getTitle>> resultHandler){
+    public static app_example_books_Book_getTitle waitUntil(ExpressionBuilder exp,CallFuture<Object[]> future){
     app_example_books_Book_getTitle _waitUntil = null;
     //if(app_example_books_Book_getTitle == null){
             try{
@@ -855,10 +1149,55 @@ public static class app_example_books_Book_getTitle{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_getTitle");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_getTitle seen:"+seen);
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getTitle");
+                            future.handleResult(new Object[]{});
+                             lock.countDown();
+                             return new Object[]{};
+                        }
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                         future.handleResult(new Object[]{});
+                        return new Object[]{};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_Book_getTitle", _waitUntil);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_Book_getTitle");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitUntil;
+    }
+
+
+    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_Book_getTitle>> resultHandler)throws Exception{
+    app_example_books_Book_getTitle _waitUntil = null;
+    //if(app_example_books_Book_getTitle == null){
+            try{
+                logger.debug("waiting for app_example_books_Book_getTitle");
+                //app_example_books_Book_getTitle = new app_example_books_Book_getTitle();
+                lock = new CountDownLatch(1);
+                _waitUntil =  new app_example_books_Book_getTitle(){
+                        @Override
+                        public synchronized Object[] app_example_books_Book_getTitle(){
+                        try{
+                        Map<String, Object> params = new LinkedHashMap<String, Object>(0);
+                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                            logger.debug("done waiting for app_example_books_Book_getTitle");
+                            seen = true;
+                            logger.debug("got call for app_example_books_Book_getTitle seen:"+seen);
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getTitle");
+                            lock.countDown();
                             return new Object[]{};
                         }
                         }catch (Exception e){
@@ -885,7 +1224,46 @@ public static class app_example_books_Book_getTitle{
 
     }
 
-
+    public static app_example_books_Book_getTitle waitTo(CallFuture<Object[]> future){
+    app_example_books_Book_getTitle _waitTo = null;
+    //if(app_example_books_Book_getTitle == null){
+            try{
+                logger.debug("waiting for app_example_books_Book_getTitle");
+                //app_example_books_Book_getTitle = new app_example_books_Book_getTitle();
+                lock = new CountDownLatch(1);
+                _waitTo =  new app_example_books_Book_getTitle(){
+                        @Override
+                        public Object[] app_example_books_Book_getTitle(){
+                        try{
+                            logger.debug("done waiting for app_example_books_Book_getTitle");
+                            seen = true;
+                            logger.debug("got call for app_example_books_Book_getTitle seen:"+seen);
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getTitle");
+                            future.handleResult(new Object[]{});
+                            lock.countDown();
+                            return new Object[]{};
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                        future.handleResult(new Object[]{});
+                        return new Object[]{};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_Book_getTitle", _waitTo);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_Book_getTitle");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitTo;
+    }
 
     public static app_example_books_Book_getTitle waitTo(){
     app_example_books_Book_getTitle _waitTo = null;
@@ -899,10 +1277,10 @@ public static class app_example_books_Book_getTitle{
                         public Object[] app_example_books_Book_getTitle(){
                         try{
                             logger.debug("done waiting for app_example_books_Book_getTitle");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_getTitle seen:"+seen);
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getTitle");
+                            lock.countDown();
                             return new Object[]{            };
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -926,7 +1304,7 @@ public static class app_example_books_Book_getTitle{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_Book_getTitle>> resultHandler){
+    public static void waitTo(Handler<AsyncResult<app_example_books_Book_getTitle>> resultHandler)throws Exception{
     app_example_books_Book_getTitle _waitTo = null;
     //if(app_example_books_Book_getTitle == null){
             try{
@@ -939,10 +1317,10 @@ public static class app_example_books_Book_getTitle{
                      public Object[] app_example_books_Book_getTitle(){
                     try{
                         logger.debug("done waiting for app_example_books_Book_getTitle");
-                        lock.countDown();
                         seen = true;
                         logger.debug("got call for app_example_books_Book_getTitle seen:"+seen);
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getTitle");
+                         lock.countDown();
                          return new Object[]{                            };
                          }catch (Exception e){
                                logger.error("fail waitTo ",e);
@@ -980,9 +1358,9 @@ public static class app_example_books_Book_getTitle{
                         public void app_example_books_Book_getTitle(java.lang.String result){
                         try{
                             logger.debug("done waiting for app_example_books_Book_getTitle");
-                            lockForResult.countDown();
-                            app_example_books_Book_getTitle._result = result;
+                            _result = result;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getTitle");
+                            lockForResult.countDown();
                         }catch (Exception e){
                                 logger.error("fail waitTo ",e);
                         }
@@ -1004,8 +1382,43 @@ public static class app_example_books_Book_getTitle{
         return _waitToResult;
     }
 
+public static app_example_books_Book_getTitle waitToResult(CallFuture<java.lang.String> future){
+    app_example_books_Book_getTitle _waitToResult = null;
+    //if(app_example_books_Book_getTitle == null){
+            try{
+                logger.debug("waiting for result of app_example_books_Book_getTitle");
+                //app_example_books_Book_getTitle = new app_example_books_Book_getTitle();
+                lockForResult = new CountDownLatch(1);
+                _waitToResult = new app_example_books_Book_getTitle(){
+                        public void app_example_books_Book_getTitle(java.lang.String result){
+                        try{
+                            logger.debug("done waiting for app_example_books_Book_getTitle");
+                            _result = result;
+                            future.handleResult(result);
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getTitle");
+                            lockForResult.countDown();
+                        }catch (Exception e){
+                                logger.error("fail waitTo ",e);
+                        }
+                    }
+                };
+                {
+                    org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_Book_getTitle", _waitToResult);
+                }
+                lockForResult.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lockForResult.getCount() > 0){
+                     throw new Exception("timeOut for lockForResult ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_Book_getTitle");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitToResult;
+    }
 
-    public static void waitToResult(Handler<AsyncResult<app_example_books_Book_getTitle>> resultHandler){
+    public static void waitToResult(Handler<AsyncResult<app_example_books_Book_getTitle>> resultHandler)throws Exception{
     app_example_books_Book_getTitle _waitToResult = null;
     //if(app_example_books_Book_getTitle == null){
             try{
@@ -1016,9 +1429,9 @@ public static class app_example_books_Book_getTitle{
                 public void app_example_books_Book_getTitle(java.lang.String result){
                 try{
                    logger.debug("done waiting for app_example_books_Book_getTitle");
-                   lockForResult.countDown();
-                   app_example_books_Book_getTitle._result = result;
+                   _result = result;
                    org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getTitle");
+                   lockForResult.countDown();
                 }catch (Exception e){
                      logger.error("fail waitToResult ",e);
                 }
@@ -1047,7 +1460,7 @@ public static class app_example_books_Book_getTitle{
         return _result;
     }
 
-    public app_example_books_Book_getTitle get_Result(Handler<AsyncResult<java.lang.String>> resultHandler){
+    public app_example_books_Book_getTitle get_Result(Handler<AsyncResult<java.lang.String>> resultHandler)throws Exception{
         try{
             resultHandler.handle(Future.handleResult(_result));
         }catch (Exception e){
@@ -1073,7 +1486,7 @@ public static class app_example_books_Book_getTitle{
 }
 
 
-public static class app_example_books_Book_setTitle{
+public static class app_example_books_Book_setTitle implements IListener{
     private static app_example_books_Book_setTitle app_example_books_Book_setTitle= null;
     static boolean seen = false;
     static Map<String, Object> map = null;
@@ -1103,11 +1516,11 @@ public static class app_example_books_Book_setTitle{
                         params.put("title", title);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_setTitle");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_setTitle seen:"+seen);
                             app_example_books_Book_setTitle.title = app_example_books_Book_setTitle.title == null ? title : app_example_books_Book_setTitle.title;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setTitle");
+                            lock.countDown();
                             return new Object[]{app_example_books_Book_setTitle.title};
                         }
                         }catch (Exception e){
@@ -1133,7 +1546,7 @@ public static class app_example_books_Book_setTitle{
     }
 
 
-    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_Book_setTitle>> resultHandler){
+    public static app_example_books_Book_setTitle waitUntil(ExpressionBuilder exp,CallFuture<Object[]> future){
     app_example_books_Book_setTitle _waitUntil = null;
     //if(app_example_books_Book_setTitle == null){
             try{
@@ -1148,11 +1561,58 @@ public static class app_example_books_Book_setTitle{
                         params.put("title", title);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_setTitle");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_setTitle seen:"+seen);
                             app_example_books_Book_setTitle.title = app_example_books_Book_setTitle.title == null ? title : app_example_books_Book_setTitle.title;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setTitle");
+                            future.handleResult(new Object[]{app_example_books_Book_setTitle.title});
+                             lock.countDown();
+                             return new Object[]{app_example_books_Book_setTitle.title};
+                        }
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                         future.handleResult(new Object[]{title});
+                        return new Object[]{title};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_Book_setTitle", _waitUntil);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_Book_setTitle");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitUntil;
+    }
+
+
+    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_Book_setTitle>> resultHandler)throws Exception{
+    app_example_books_Book_setTitle _waitUntil = null;
+    //if(app_example_books_Book_setTitle == null){
+            try{
+                logger.debug("waiting for app_example_books_Book_setTitle");
+                //app_example_books_Book_setTitle = new app_example_books_Book_setTitle();
+                lock = new CountDownLatch(1);
+                _waitUntil =  new app_example_books_Book_setTitle(){
+                        @Override
+                        public synchronized Object[] app_example_books_Book_setTitle(java.lang.String title){
+                        try{
+                        Map<String, Object> params = new LinkedHashMap<String, Object>(1);
+                        params.put("title", title);
+                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                            logger.debug("done waiting for app_example_books_Book_setTitle");
+                            seen = true;
+                            logger.debug("got call for app_example_books_Book_setTitle seen:"+seen);
+                            app_example_books_Book_setTitle.title = app_example_books_Book_setTitle.title == null ? title : app_example_books_Book_setTitle.title;
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setTitle");
+                            lock.countDown();
                             return new Object[]{app_example_books_Book_setTitle.title};
                         }
                         }catch (Exception e){
@@ -1179,7 +1639,47 @@ public static class app_example_books_Book_setTitle{
 
     }
 
-
+    public static app_example_books_Book_setTitle waitTo(CallFuture<Object[]> future){
+    app_example_books_Book_setTitle _waitTo = null;
+    //if(app_example_books_Book_setTitle == null){
+            try{
+                logger.debug("waiting for app_example_books_Book_setTitle");
+                //app_example_books_Book_setTitle = new app_example_books_Book_setTitle();
+                lock = new CountDownLatch(1);
+                _waitTo =  new app_example_books_Book_setTitle(){
+                        @Override
+                        public Object[] app_example_books_Book_setTitle(java.lang.String title){
+                        try{
+                            logger.debug("done waiting for app_example_books_Book_setTitle");
+                            seen = true;
+                            logger.debug("got call for app_example_books_Book_setTitle seen:"+seen);
+                            app_example_books_Book_setTitle.title = app_example_books_Book_setTitle.title == null ? title : app_example_books_Book_setTitle.title;
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setTitle");
+                            future.handleResult(new Object[]{app_example_books_Book_setTitle.title});
+                            lock.countDown();
+                            return new Object[]{app_example_books_Book_setTitle.title};
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                        future.handleResult(new Object[]{});
+                        return new Object[]{};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_Book_setTitle", _waitTo);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_Book_setTitle");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitTo;
+    }
 
     public static app_example_books_Book_setTitle waitTo(){
     app_example_books_Book_setTitle _waitTo = null;
@@ -1193,11 +1693,11 @@ public static class app_example_books_Book_setTitle{
                         public Object[] app_example_books_Book_setTitle(java.lang.String title){
                         try{
                             logger.debug("done waiting for app_example_books_Book_setTitle");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_setTitle seen:"+seen);
                             app_example_books_Book_setTitle.title = app_example_books_Book_setTitle.title == null ? title : app_example_books_Book_setTitle.title;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setTitle");
+                            lock.countDown();
                             return new Object[]{app_example_books_Book_setTitle.title            };
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -1221,7 +1721,7 @@ public static class app_example_books_Book_setTitle{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_Book_setTitle>> resultHandler){
+    public static void waitTo(Handler<AsyncResult<app_example_books_Book_setTitle>> resultHandler)throws Exception{
     app_example_books_Book_setTitle _waitTo = null;
     //if(app_example_books_Book_setTitle == null){
             try{
@@ -1234,11 +1734,11 @@ public static class app_example_books_Book_setTitle{
                      public Object[] app_example_books_Book_setTitle(                        java.lang.String title){
                     try{
                         logger.debug("done waiting for app_example_books_Book_setTitle");
-                        lock.countDown();
                         seen = true;
                         logger.debug("got call for app_example_books_Book_setTitle seen:"+seen);
                          app_example_books_Book_setTitle.title = app_example_books_Book_setTitle.title == null ? title : app_example_books_Book_setTitle.title;
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setTitle");
+                         lock.countDown();
                          return new Object[]{app_example_books_Book_setTitle.title                            };
                          }catch (Exception e){
                                logger.error("fail waitTo ",e);
@@ -1267,21 +1767,21 @@ public static class app_example_books_Book_setTitle{
 
 
 
-    public java.lang.String getTitle(){
+    public java.lang.String getTitle()throws Exception{
         return app_example_books_Book_setTitle.title;
     }
 
-    public app_example_books_Book_setTitle getTitle(Handler<AsyncResult<java.lang.String>> resultHandler){
+    public app_example_books_Book_setTitle getTitle(Handler<AsyncResult<java.lang.String>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(app_example_books_Book_setTitle.title));
         return this;
     }
 
-    public app_example_books_Book_setTitle getTitle(CallFuture<java.lang.String> future){
+    public app_example_books_Book_setTitle getTitle(CallFuture<java.lang.String> future)throws Exception{
        future.handleResult(app_example_books_Book_setTitle.title);
        return this;
     }
 
-    public app_example_books_Book_setTitle setTitle(java.lang.String title){
+    public app_example_books_Book_setTitle setTitle(java.lang.String title)throws Exception{
         app_example_books_Book_setTitle.title = title;
         return this;
     }
@@ -1293,7 +1793,7 @@ public static class app_example_books_Book_setTitle{
 }
 
 
-public static class app_example_books_Book_getAuthor{
+public static class app_example_books_Book_getAuthor implements IListener{
     private static app_example_books_Book_getAuthor app_example_books_Book_getAuthor= null;
     static boolean seen = false;
     static Map<String, Object> map = null;
@@ -1326,10 +1826,10 @@ public static class app_example_books_Book_getAuthor{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_getAuthor");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_getAuthor seen:"+seen);
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getAuthor");
+                            lock.countDown();
                             return new Object[]{};
                         }
                         }catch (Exception e){
@@ -1355,7 +1855,7 @@ public static class app_example_books_Book_getAuthor{
     }
 
 
-    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_Book_getAuthor>> resultHandler){
+    public static app_example_books_Book_getAuthor waitUntil(ExpressionBuilder exp,CallFuture<Object[]> future){
     app_example_books_Book_getAuthor _waitUntil = null;
     //if(app_example_books_Book_getAuthor == null){
             try{
@@ -1369,10 +1869,55 @@ public static class app_example_books_Book_getAuthor{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_getAuthor");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_getAuthor seen:"+seen);
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getAuthor");
+                            future.handleResult(new Object[]{});
+                             lock.countDown();
+                             return new Object[]{};
+                        }
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                         future.handleResult(new Object[]{});
+                        return new Object[]{};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_Book_getAuthor", _waitUntil);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_Book_getAuthor");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitUntil;
+    }
+
+
+    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_Book_getAuthor>> resultHandler)throws Exception{
+    app_example_books_Book_getAuthor _waitUntil = null;
+    //if(app_example_books_Book_getAuthor == null){
+            try{
+                logger.debug("waiting for app_example_books_Book_getAuthor");
+                //app_example_books_Book_getAuthor = new app_example_books_Book_getAuthor();
+                lock = new CountDownLatch(1);
+                _waitUntil =  new app_example_books_Book_getAuthor(){
+                        @Override
+                        public synchronized Object[] app_example_books_Book_getAuthor(){
+                        try{
+                        Map<String, Object> params = new LinkedHashMap<String, Object>(0);
+                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                            logger.debug("done waiting for app_example_books_Book_getAuthor");
+                            seen = true;
+                            logger.debug("got call for app_example_books_Book_getAuthor seen:"+seen);
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getAuthor");
+                            lock.countDown();
                             return new Object[]{};
                         }
                         }catch (Exception e){
@@ -1399,7 +1944,46 @@ public static class app_example_books_Book_getAuthor{
 
     }
 
-
+    public static app_example_books_Book_getAuthor waitTo(CallFuture<Object[]> future){
+    app_example_books_Book_getAuthor _waitTo = null;
+    //if(app_example_books_Book_getAuthor == null){
+            try{
+                logger.debug("waiting for app_example_books_Book_getAuthor");
+                //app_example_books_Book_getAuthor = new app_example_books_Book_getAuthor();
+                lock = new CountDownLatch(1);
+                _waitTo =  new app_example_books_Book_getAuthor(){
+                        @Override
+                        public Object[] app_example_books_Book_getAuthor(){
+                        try{
+                            logger.debug("done waiting for app_example_books_Book_getAuthor");
+                            seen = true;
+                            logger.debug("got call for app_example_books_Book_getAuthor seen:"+seen);
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getAuthor");
+                            future.handleResult(new Object[]{});
+                            lock.countDown();
+                            return new Object[]{};
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                        future.handleResult(new Object[]{});
+                        return new Object[]{};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_Book_getAuthor", _waitTo);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_Book_getAuthor");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitTo;
+    }
 
     public static app_example_books_Book_getAuthor waitTo(){
     app_example_books_Book_getAuthor _waitTo = null;
@@ -1413,10 +1997,10 @@ public static class app_example_books_Book_getAuthor{
                         public Object[] app_example_books_Book_getAuthor(){
                         try{
                             logger.debug("done waiting for app_example_books_Book_getAuthor");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_getAuthor seen:"+seen);
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getAuthor");
+                            lock.countDown();
                             return new Object[]{            };
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -1440,7 +2024,7 @@ public static class app_example_books_Book_getAuthor{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_Book_getAuthor>> resultHandler){
+    public static void waitTo(Handler<AsyncResult<app_example_books_Book_getAuthor>> resultHandler)throws Exception{
     app_example_books_Book_getAuthor _waitTo = null;
     //if(app_example_books_Book_getAuthor == null){
             try{
@@ -1453,10 +2037,10 @@ public static class app_example_books_Book_getAuthor{
                      public Object[] app_example_books_Book_getAuthor(){
                     try{
                         logger.debug("done waiting for app_example_books_Book_getAuthor");
-                        lock.countDown();
                         seen = true;
                         logger.debug("got call for app_example_books_Book_getAuthor seen:"+seen);
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getAuthor");
+                         lock.countDown();
                          return new Object[]{                            };
                          }catch (Exception e){
                                logger.error("fail waitTo ",e);
@@ -1494,9 +2078,9 @@ public static class app_example_books_Book_getAuthor{
                         public void app_example_books_Book_getAuthor(java.lang.String result){
                         try{
                             logger.debug("done waiting for app_example_books_Book_getAuthor");
-                            lockForResult.countDown();
-                            app_example_books_Book_getAuthor._result = result;
+                            _result = result;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getAuthor");
+                            lockForResult.countDown();
                         }catch (Exception e){
                                 logger.error("fail waitTo ",e);
                         }
@@ -1518,8 +2102,43 @@ public static class app_example_books_Book_getAuthor{
         return _waitToResult;
     }
 
+public static app_example_books_Book_getAuthor waitToResult(CallFuture<java.lang.String> future){
+    app_example_books_Book_getAuthor _waitToResult = null;
+    //if(app_example_books_Book_getAuthor == null){
+            try{
+                logger.debug("waiting for result of app_example_books_Book_getAuthor");
+                //app_example_books_Book_getAuthor = new app_example_books_Book_getAuthor();
+                lockForResult = new CountDownLatch(1);
+                _waitToResult = new app_example_books_Book_getAuthor(){
+                        public void app_example_books_Book_getAuthor(java.lang.String result){
+                        try{
+                            logger.debug("done waiting for app_example_books_Book_getAuthor");
+                            _result = result;
+                            future.handleResult(result);
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getAuthor");
+                            lockForResult.countDown();
+                        }catch (Exception e){
+                                logger.error("fail waitTo ",e);
+                        }
+                    }
+                };
+                {
+                    org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_Book_getAuthor", _waitToResult);
+                }
+                lockForResult.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lockForResult.getCount() > 0){
+                     throw new Exception("timeOut for lockForResult ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_Book_getAuthor");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitToResult;
+    }
 
-    public static void waitToResult(Handler<AsyncResult<app_example_books_Book_getAuthor>> resultHandler){
+    public static void waitToResult(Handler<AsyncResult<app_example_books_Book_getAuthor>> resultHandler)throws Exception{
     app_example_books_Book_getAuthor _waitToResult = null;
     //if(app_example_books_Book_getAuthor == null){
             try{
@@ -1530,9 +2149,9 @@ public static class app_example_books_Book_getAuthor{
                 public void app_example_books_Book_getAuthor(java.lang.String result){
                 try{
                    logger.debug("done waiting for app_example_books_Book_getAuthor");
-                   lockForResult.countDown();
-                   app_example_books_Book_getAuthor._result = result;
+                   _result = result;
                    org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getAuthor");
+                   lockForResult.countDown();
                 }catch (Exception e){
                      logger.error("fail waitToResult ",e);
                 }
@@ -1561,7 +2180,7 @@ public static class app_example_books_Book_getAuthor{
         return _result;
     }
 
-    public app_example_books_Book_getAuthor get_Result(Handler<AsyncResult<java.lang.String>> resultHandler){
+    public app_example_books_Book_getAuthor get_Result(Handler<AsyncResult<java.lang.String>> resultHandler)throws Exception{
         try{
             resultHandler.handle(Future.handleResult(_result));
         }catch (Exception e){
@@ -1587,7 +2206,7 @@ public static class app_example_books_Book_getAuthor{
 }
 
 
-public static class app_example_books_Book_setAuthor{
+public static class app_example_books_Book_setAuthor implements IListener{
     private static app_example_books_Book_setAuthor app_example_books_Book_setAuthor= null;
     static boolean seen = false;
     static Map<String, Object> map = null;
@@ -1617,11 +2236,11 @@ public static class app_example_books_Book_setAuthor{
                         params.put("author", author);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_setAuthor");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_setAuthor seen:"+seen);
                             app_example_books_Book_setAuthor.author = app_example_books_Book_setAuthor.author == null ? author : app_example_books_Book_setAuthor.author;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setAuthor");
+                            lock.countDown();
                             return new Object[]{app_example_books_Book_setAuthor.author};
                         }
                         }catch (Exception e){
@@ -1647,7 +2266,7 @@ public static class app_example_books_Book_setAuthor{
     }
 
 
-    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_Book_setAuthor>> resultHandler){
+    public static app_example_books_Book_setAuthor waitUntil(ExpressionBuilder exp,CallFuture<Object[]> future){
     app_example_books_Book_setAuthor _waitUntil = null;
     //if(app_example_books_Book_setAuthor == null){
             try{
@@ -1662,11 +2281,58 @@ public static class app_example_books_Book_setAuthor{
                         params.put("author", author);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_setAuthor");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_setAuthor seen:"+seen);
                             app_example_books_Book_setAuthor.author = app_example_books_Book_setAuthor.author == null ? author : app_example_books_Book_setAuthor.author;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setAuthor");
+                            future.handleResult(new Object[]{app_example_books_Book_setAuthor.author});
+                             lock.countDown();
+                             return new Object[]{app_example_books_Book_setAuthor.author};
+                        }
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                         future.handleResult(new Object[]{author});
+                        return new Object[]{author};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_Book_setAuthor", _waitUntil);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_Book_setAuthor");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitUntil;
+    }
+
+
+    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_Book_setAuthor>> resultHandler)throws Exception{
+    app_example_books_Book_setAuthor _waitUntil = null;
+    //if(app_example_books_Book_setAuthor == null){
+            try{
+                logger.debug("waiting for app_example_books_Book_setAuthor");
+                //app_example_books_Book_setAuthor = new app_example_books_Book_setAuthor();
+                lock = new CountDownLatch(1);
+                _waitUntil =  new app_example_books_Book_setAuthor(){
+                        @Override
+                        public synchronized Object[] app_example_books_Book_setAuthor(java.lang.String author){
+                        try{
+                        Map<String, Object> params = new LinkedHashMap<String, Object>(1);
+                        params.put("author", author);
+                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                            logger.debug("done waiting for app_example_books_Book_setAuthor");
+                            seen = true;
+                            logger.debug("got call for app_example_books_Book_setAuthor seen:"+seen);
+                            app_example_books_Book_setAuthor.author = app_example_books_Book_setAuthor.author == null ? author : app_example_books_Book_setAuthor.author;
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setAuthor");
+                            lock.countDown();
                             return new Object[]{app_example_books_Book_setAuthor.author};
                         }
                         }catch (Exception e){
@@ -1693,7 +2359,47 @@ public static class app_example_books_Book_setAuthor{
 
     }
 
-
+    public static app_example_books_Book_setAuthor waitTo(CallFuture<Object[]> future){
+    app_example_books_Book_setAuthor _waitTo = null;
+    //if(app_example_books_Book_setAuthor == null){
+            try{
+                logger.debug("waiting for app_example_books_Book_setAuthor");
+                //app_example_books_Book_setAuthor = new app_example_books_Book_setAuthor();
+                lock = new CountDownLatch(1);
+                _waitTo =  new app_example_books_Book_setAuthor(){
+                        @Override
+                        public Object[] app_example_books_Book_setAuthor(java.lang.String author){
+                        try{
+                            logger.debug("done waiting for app_example_books_Book_setAuthor");
+                            seen = true;
+                            logger.debug("got call for app_example_books_Book_setAuthor seen:"+seen);
+                            app_example_books_Book_setAuthor.author = app_example_books_Book_setAuthor.author == null ? author : app_example_books_Book_setAuthor.author;
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setAuthor");
+                            future.handleResult(new Object[]{app_example_books_Book_setAuthor.author});
+                            lock.countDown();
+                            return new Object[]{app_example_books_Book_setAuthor.author};
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                        future.handleResult(new Object[]{});
+                        return new Object[]{};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_Book_setAuthor", _waitTo);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_Book_setAuthor");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitTo;
+    }
 
     public static app_example_books_Book_setAuthor waitTo(){
     app_example_books_Book_setAuthor _waitTo = null;
@@ -1707,11 +2413,11 @@ public static class app_example_books_Book_setAuthor{
                         public Object[] app_example_books_Book_setAuthor(java.lang.String author){
                         try{
                             logger.debug("done waiting for app_example_books_Book_setAuthor");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_setAuthor seen:"+seen);
                             app_example_books_Book_setAuthor.author = app_example_books_Book_setAuthor.author == null ? author : app_example_books_Book_setAuthor.author;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setAuthor");
+                            lock.countDown();
                             return new Object[]{app_example_books_Book_setAuthor.author            };
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -1735,7 +2441,7 @@ public static class app_example_books_Book_setAuthor{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_Book_setAuthor>> resultHandler){
+    public static void waitTo(Handler<AsyncResult<app_example_books_Book_setAuthor>> resultHandler)throws Exception{
     app_example_books_Book_setAuthor _waitTo = null;
     //if(app_example_books_Book_setAuthor == null){
             try{
@@ -1748,11 +2454,11 @@ public static class app_example_books_Book_setAuthor{
                      public Object[] app_example_books_Book_setAuthor(                        java.lang.String author){
                     try{
                         logger.debug("done waiting for app_example_books_Book_setAuthor");
-                        lock.countDown();
                         seen = true;
                         logger.debug("got call for app_example_books_Book_setAuthor seen:"+seen);
                          app_example_books_Book_setAuthor.author = app_example_books_Book_setAuthor.author == null ? author : app_example_books_Book_setAuthor.author;
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setAuthor");
+                         lock.countDown();
                          return new Object[]{app_example_books_Book_setAuthor.author                            };
                          }catch (Exception e){
                                logger.error("fail waitTo ",e);
@@ -1781,21 +2487,21 @@ public static class app_example_books_Book_setAuthor{
 
 
 
-    public java.lang.String getAuthor(){
+    public java.lang.String getAuthor()throws Exception{
         return app_example_books_Book_setAuthor.author;
     }
 
-    public app_example_books_Book_setAuthor getAuthor(Handler<AsyncResult<java.lang.String>> resultHandler){
+    public app_example_books_Book_setAuthor getAuthor(Handler<AsyncResult<java.lang.String>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(app_example_books_Book_setAuthor.author));
         return this;
     }
 
-    public app_example_books_Book_setAuthor getAuthor(CallFuture<java.lang.String> future){
+    public app_example_books_Book_setAuthor getAuthor(CallFuture<java.lang.String> future)throws Exception{
        future.handleResult(app_example_books_Book_setAuthor.author);
        return this;
     }
 
-    public app_example_books_Book_setAuthor setAuthor(java.lang.String author){
+    public app_example_books_Book_setAuthor setAuthor(java.lang.String author)throws Exception{
         app_example_books_Book_setAuthor.author = author;
         return this;
     }
@@ -1807,7 +2513,7 @@ public static class app_example_books_Book_setAuthor{
 }
 
 
-public static class app_example_books_Book_getId{
+public static class app_example_books_Book_getId implements IListener{
     private static app_example_books_Book_getId app_example_books_Book_getId= null;
     static boolean seen = false;
     static Map<String, Object> map = null;
@@ -1840,10 +2546,10 @@ public static class app_example_books_Book_getId{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_getId");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_getId seen:"+seen);
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getId");
+                            lock.countDown();
                             return new Object[]{};
                         }
                         }catch (Exception e){
@@ -1869,7 +2575,7 @@ public static class app_example_books_Book_getId{
     }
 
 
-    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_Book_getId>> resultHandler){
+    public static app_example_books_Book_getId waitUntil(ExpressionBuilder exp,CallFuture<Object[]> future){
     app_example_books_Book_getId _waitUntil = null;
     //if(app_example_books_Book_getId == null){
             try{
@@ -1883,10 +2589,55 @@ public static class app_example_books_Book_getId{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_getId");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_getId seen:"+seen);
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getId");
+                            future.handleResult(new Object[]{});
+                             lock.countDown();
+                             return new Object[]{};
+                        }
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                         future.handleResult(new Object[]{});
+                        return new Object[]{};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_Book_getId", _waitUntil);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_Book_getId");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitUntil;
+    }
+
+
+    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_Book_getId>> resultHandler)throws Exception{
+    app_example_books_Book_getId _waitUntil = null;
+    //if(app_example_books_Book_getId == null){
+            try{
+                logger.debug("waiting for app_example_books_Book_getId");
+                //app_example_books_Book_getId = new app_example_books_Book_getId();
+                lock = new CountDownLatch(1);
+                _waitUntil =  new app_example_books_Book_getId(){
+                        @Override
+                        public synchronized Object[] app_example_books_Book_getId(){
+                        try{
+                        Map<String, Object> params = new LinkedHashMap<String, Object>(0);
+                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                            logger.debug("done waiting for app_example_books_Book_getId");
+                            seen = true;
+                            logger.debug("got call for app_example_books_Book_getId seen:"+seen);
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getId");
+                            lock.countDown();
                             return new Object[]{};
                         }
                         }catch (Exception e){
@@ -1913,7 +2664,46 @@ public static class app_example_books_Book_getId{
 
     }
 
-
+    public static app_example_books_Book_getId waitTo(CallFuture<Object[]> future){
+    app_example_books_Book_getId _waitTo = null;
+    //if(app_example_books_Book_getId == null){
+            try{
+                logger.debug("waiting for app_example_books_Book_getId");
+                //app_example_books_Book_getId = new app_example_books_Book_getId();
+                lock = new CountDownLatch(1);
+                _waitTo =  new app_example_books_Book_getId(){
+                        @Override
+                        public Object[] app_example_books_Book_getId(){
+                        try{
+                            logger.debug("done waiting for app_example_books_Book_getId");
+                            seen = true;
+                            logger.debug("got call for app_example_books_Book_getId seen:"+seen);
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getId");
+                            future.handleResult(new Object[]{});
+                            lock.countDown();
+                            return new Object[]{};
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                        future.handleResult(new Object[]{});
+                        return new Object[]{};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_Book_getId", _waitTo);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_Book_getId");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitTo;
+    }
 
     public static app_example_books_Book_getId waitTo(){
     app_example_books_Book_getId _waitTo = null;
@@ -1927,10 +2717,10 @@ public static class app_example_books_Book_getId{
                         public Object[] app_example_books_Book_getId(){
                         try{
                             logger.debug("done waiting for app_example_books_Book_getId");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_getId seen:"+seen);
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getId");
+                            lock.countDown();
                             return new Object[]{            };
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -1954,7 +2744,7 @@ public static class app_example_books_Book_getId{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_Book_getId>> resultHandler){
+    public static void waitTo(Handler<AsyncResult<app_example_books_Book_getId>> resultHandler)throws Exception{
     app_example_books_Book_getId _waitTo = null;
     //if(app_example_books_Book_getId == null){
             try{
@@ -1967,10 +2757,10 @@ public static class app_example_books_Book_getId{
                      public Object[] app_example_books_Book_getId(){
                     try{
                         logger.debug("done waiting for app_example_books_Book_getId");
-                        lock.countDown();
                         seen = true;
                         logger.debug("got call for app_example_books_Book_getId seen:"+seen);
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getId");
+                         lock.countDown();
                          return new Object[]{                            };
                          }catch (Exception e){
                                logger.error("fail waitTo ",e);
@@ -2008,9 +2798,9 @@ public static class app_example_books_Book_getId{
                         public void app_example_books_Book_getId(int result){
                         try{
                             logger.debug("done waiting for app_example_books_Book_getId");
-                            lockForResult.countDown();
-                            app_example_books_Book_getId._result = result;
+                            _result = result;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getId");
+                            lockForResult.countDown();
                         }catch (Exception e){
                                 logger.error("fail waitTo ",e);
                         }
@@ -2032,8 +2822,43 @@ public static class app_example_books_Book_getId{
         return _waitToResult;
     }
 
+public static app_example_books_Book_getId waitToResult(CallFuture<java.lang.Integer> future){
+    app_example_books_Book_getId _waitToResult = null;
+    //if(app_example_books_Book_getId == null){
+            try{
+                logger.debug("waiting for result of app_example_books_Book_getId");
+                //app_example_books_Book_getId = new app_example_books_Book_getId();
+                lockForResult = new CountDownLatch(1);
+                _waitToResult = new app_example_books_Book_getId(){
+                        public void app_example_books_Book_getId(int result){
+                        try{
+                            logger.debug("done waiting for app_example_books_Book_getId");
+                            _result = result;
+                            future.handleResult(result);
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getId");
+                            lockForResult.countDown();
+                        }catch (Exception e){
+                                logger.error("fail waitTo ",e);
+                        }
+                    }
+                };
+                {
+                    org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_Book_getId", _waitToResult);
+                }
+                lockForResult.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lockForResult.getCount() > 0){
+                     throw new Exception("timeOut for lockForResult ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_Book_getId");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitToResult;
+    }
 
-    public static void waitToResult(Handler<AsyncResult<app_example_books_Book_getId>> resultHandler){
+    public static void waitToResult(Handler<AsyncResult<app_example_books_Book_getId>> resultHandler)throws Exception{
     app_example_books_Book_getId _waitToResult = null;
     //if(app_example_books_Book_getId == null){
             try{
@@ -2044,9 +2869,9 @@ public static class app_example_books_Book_getId{
                 public void app_example_books_Book_getId(int result){
                 try{
                    logger.debug("done waiting for app_example_books_Book_getId");
-                   lockForResult.countDown();
-                   app_example_books_Book_getId._result = result;
+                   _result = result;
                    org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getId");
+                   lockForResult.countDown();
                 }catch (Exception e){
                      logger.error("fail waitToResult ",e);
                 }
@@ -2075,7 +2900,7 @@ public static class app_example_books_Book_getId{
         return _result;
     }
 
-    public app_example_books_Book_getId get_Result(Handler<AsyncResult<java.lang.Integer>> resultHandler){
+    public app_example_books_Book_getId get_Result(Handler<AsyncResult<java.lang.Integer>> resultHandler)throws Exception{
         try{
             resultHandler.handle(Future.handleResult(_result));
         }catch (Exception e){
@@ -2101,7 +2926,7 @@ public static class app_example_books_Book_getId{
 }
 
 
-public static class app_example_books_Book_setId{
+public static class app_example_books_Book_setId implements IListener{
     private static app_example_books_Book_setId app_example_books_Book_setId= null;
     static boolean seen = false;
     static Map<String, Object> map = null;
@@ -2131,11 +2956,11 @@ public static class app_example_books_Book_setId{
                         params.put("id", id);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_setId");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_setId seen:"+seen);
                             app_example_books_Book_setId.id = app_example_books_Book_setId.id == -1 ? id : app_example_books_Book_setId.id;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setId");
+                            lock.countDown();
                             return new Object[]{app_example_books_Book_setId.id};
                         }
                         }catch (Exception e){
@@ -2161,7 +2986,7 @@ public static class app_example_books_Book_setId{
     }
 
 
-    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_Book_setId>> resultHandler){
+    public static app_example_books_Book_setId waitUntil(ExpressionBuilder exp,CallFuture<Object[]> future){
     app_example_books_Book_setId _waitUntil = null;
     //if(app_example_books_Book_setId == null){
             try{
@@ -2176,11 +3001,58 @@ public static class app_example_books_Book_setId{
                         params.put("id", id);
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_setId");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_setId seen:"+seen);
                             app_example_books_Book_setId.id = app_example_books_Book_setId.id == -1 ? id : app_example_books_Book_setId.id;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setId");
+                            future.handleResult(new Object[]{app_example_books_Book_setId.id});
+                             lock.countDown();
+                             return new Object[]{app_example_books_Book_setId.id};
+                        }
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                         future.handleResult(new Object[]{id});
+                        return new Object[]{id};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_Book_setId", _waitUntil);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_Book_setId");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitUntil;
+    }
+
+
+    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<app_example_books_Book_setId>> resultHandler)throws Exception{
+    app_example_books_Book_setId _waitUntil = null;
+    //if(app_example_books_Book_setId == null){
+            try{
+                logger.debug("waiting for app_example_books_Book_setId");
+                //app_example_books_Book_setId = new app_example_books_Book_setId();
+                lock = new CountDownLatch(1);
+                _waitUntil =  new app_example_books_Book_setId(){
+                        @Override
+                        public synchronized Object[] app_example_books_Book_setId(int id){
+                        try{
+                        Map<String, Object> params = new LinkedHashMap<String, Object>(1);
+                        params.put("id", id);
+                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                            logger.debug("done waiting for app_example_books_Book_setId");
+                            seen = true;
+                            logger.debug("got call for app_example_books_Book_setId seen:"+seen);
+                            app_example_books_Book_setId.id = app_example_books_Book_setId.id == -1 ? id : app_example_books_Book_setId.id;
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setId");
+                            lock.countDown();
                             return new Object[]{app_example_books_Book_setId.id};
                         }
                         }catch (Exception e){
@@ -2207,7 +3079,47 @@ public static class app_example_books_Book_setId{
 
     }
 
-
+    public static app_example_books_Book_setId waitTo(CallFuture<Object[]> future){
+    app_example_books_Book_setId _waitTo = null;
+    //if(app_example_books_Book_setId == null){
+            try{
+                logger.debug("waiting for app_example_books_Book_setId");
+                //app_example_books_Book_setId = new app_example_books_Book_setId();
+                lock = new CountDownLatch(1);
+                _waitTo =  new app_example_books_Book_setId(){
+                        @Override
+                        public Object[] app_example_books_Book_setId(int id){
+                        try{
+                            logger.debug("done waiting for app_example_books_Book_setId");
+                            seen = true;
+                            logger.debug("got call for app_example_books_Book_setId seen:"+seen);
+                            app_example_books_Book_setId.id = app_example_books_Book_setId.id == -1 ? id : app_example_books_Book_setId.id;
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setId");
+                            future.handleResult(new Object[]{app_example_books_Book_setId.id});
+                            lock.countDown();
+                            return new Object[]{app_example_books_Book_setId.id};
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                        future.handleResult(new Object[]{});
+                        return new Object[]{};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("app_example_books_Book_setId", _waitTo);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to app_example_books_Book_setId");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitTo;
+    }
 
     public static app_example_books_Book_setId waitTo(){
     app_example_books_Book_setId _waitTo = null;
@@ -2221,11 +3133,11 @@ public static class app_example_books_Book_setId{
                         public Object[] app_example_books_Book_setId(int id){
                         try{
                             logger.debug("done waiting for app_example_books_Book_setId");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for app_example_books_Book_setId seen:"+seen);
                             app_example_books_Book_setId.id = app_example_books_Book_setId.id == -1 ? id : app_example_books_Book_setId.id;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setId");
+                            lock.countDown();
                             return new Object[]{app_example_books_Book_setId.id            };
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -2249,7 +3161,7 @@ public static class app_example_books_Book_setId{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_Book_setId>> resultHandler){
+    public static void waitTo(Handler<AsyncResult<app_example_books_Book_setId>> resultHandler)throws Exception{
     app_example_books_Book_setId _waitTo = null;
     //if(app_example_books_Book_setId == null){
             try{
@@ -2262,11 +3174,11 @@ public static class app_example_books_Book_setId{
                      public Object[] app_example_books_Book_setId(                        int id){
                     try{
                         logger.debug("done waiting for app_example_books_Book_setId");
-                        lock.countDown();
                         seen = true;
                         logger.debug("got call for app_example_books_Book_setId seen:"+seen);
                          app_example_books_Book_setId.id = app_example_books_Book_setId.id == -1 ? id : app_example_books_Book_setId.id;
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setId");
+                         lock.countDown();
                          return new Object[]{app_example_books_Book_setId.id                            };
                          }catch (Exception e){
                                logger.error("fail waitTo ",e);
@@ -2295,21 +3207,21 @@ public static class app_example_books_Book_setId{
 
 
 
-    public int getId(){
+    public int getId()throws Exception{
         return app_example_books_Book_setId.id;
     }
 
-    public app_example_books_Book_setId getId(Handler<AsyncResult<java.lang.Integer>> resultHandler){
+    public app_example_books_Book_setId getId(Handler<AsyncResult<java.lang.Integer>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(app_example_books_Book_setId.id));
         return this;
     }
 
-    public app_example_books_Book_setId getId(CallFuture<java.lang.Integer> future){
+    public app_example_books_Book_setId getId(CallFuture<java.lang.Integer> future)throws Exception{
        future.handleResult(app_example_books_Book_setId.id);
        return this;
     }
 
-    public app_example_books_Book_setId setId(int id){
+    public app_example_books_Book_setId setId(int id)throws Exception{
         app_example_books_Book_setId.id = id;
         return this;
     }

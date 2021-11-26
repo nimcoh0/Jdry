@@ -12,6 +12,7 @@ import org.softauto.core.Handler;
 import org.softauto.core.Future;
 import org.softauto.serializer.CallFuture;
 import org.softauto.tester.InvocationHandler;
+import org.softauto.core.IListener;
 
 @org.apache.avro.specific.AvroGenerated
 public class Step {
@@ -30,43 +31,58 @@ public static class ${this.capitalizeFirstLetter(${this.mangle($name)})} {
 
 #if (${this.javaUnbox($response, true)} != "void" )
     CallFuture< $this.javaType($response,false)> future = new CallFuture<>();
-    public ${this.javaUnbox($response, true)} get_Result(){
+    public ${this.javaUnbox($response, true)} get_Result() throws Exception{
             try {
+
+               if(!future.isDone()) {
+                  logger.debug("waiting to future to be done");
+                  future.await();
+               }
                 logger.debug("successfully get_Result() ");
                 return future.get();
              }catch (Exception e){
-                logger.error("fail get_Result() "+ e);
+                 logger.error("fail get_Result() "+ e);
+                 throw new Exception("fail get_Result() "+ e);
              }
-             logger.debug("successfully DefaultValue for get_Result() ");
-             return $this.getDefaultValue(${this.javaUnbox($response, true)});
         }
 #else
     CallFuture<java.lang.Void> future = new CallFuture<>();
-    public ${this.javaUnbox($response, true)} get_Result(){
+    public ${this.javaUnbox($response, true)} get_Result() throws Exception{
             try {
-                logger.debug("successfully get_Result() ");
-                future.get();
+                 if(!future.isDone()) {
+                    logger.debug("waiting to future to be done");
+                    future.await();
+                 }
+                 logger.debug("successfully get_Result() ");
+                 future.get();
              }catch (Exception e){
-                 logger.error("fail get_Result() "+ e);
+                logger.error("fail get_Result() "+ e);
+                throw new Exception("fail get_Result() "+ e);
              }
         }
 #end
 
-    public  ${this.capitalizeFirstLetter(${this.mangle($name)})} then(Object o){
+    public  ${this.capitalizeFirstLetter(${this.mangle($name)})} then(Handler<AsyncResult<$this.javaType($response,false)>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
+        return this;
+    }
+
+
+    public  ${this.capitalizeFirstLetter(${this.mangle($name)})} then(IListener o)throws Exception{
 #if (${this.javaUnbox($response, true)} != "void" )
-        future.handleResult(($this.javaType($response,false))o);
+        future.handleResult(future.get());
 
 #end
         return this;
     }
 
-    public  ${this.capitalizeFirstLetter(${this.mangle($name)})} then(Object o,Handler<AsyncResult<java.lang.Object>> resultHandler){
-        resultHandler.handle(Future.handleResult(o));
+    public  ${this.capitalizeFirstLetter(${this.mangle($name)})} then(IListener o,Handler<AsyncResult<$this.javaType($response,false)>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  ${this.capitalizeFirstLetter(${this.mangle($name)})} then(Object o ,CallFuture<java.lang.Object> future){
-        future.handleResult(o);
+    public  ${this.capitalizeFirstLetter(${this.mangle($name)})} then(IListener o ,CallFuture<$this.javaType($response,false)> future)throws Exception{
+        future.handleResult(future.get());
         return this;
     }
 
@@ -111,7 +127,7 @@ CallFuture<$this.javaType($response,false)> future){
 #if($message.getRequest().getFields().size() > 0)
 ,##
 #end
-Handler<AsyncResult<$this.javaType($response,false)>> resultHandler  ){
+Handler<AsyncResult<$this.javaType($response,false)>> resultHandler  )throws Exception{
         try {
             CallFuture<$this.javaType($response,false)> future = new CallFuture<>();
             logger.debug("invoking proxy for ${this.mangle($name)}");

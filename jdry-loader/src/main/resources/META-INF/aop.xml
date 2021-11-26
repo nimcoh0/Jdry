@@ -3,8 +3,18 @@
         <concrete-aspect name="Listener">
             <around pointcut="execution(* *(..)) AND !within(org.softauto..*)" invokeClass="org.softauto.listener.impl.Listener" invokeMethod="captureAll(ProceedingJoinPoint joinPoint)"/>
         </concrete-aspect>
+        <concrete-aspect name="Logger">
+            <before pointcut="call(* java.util.logging.Logger.log(..))" invokeClass="org.softauto.logger.impl.Logger" invokeMethod="javaLoggingLog(JoinPoint joinPoint)"/>
+            <before pointcut="call(* org.apache.log4j.Logger.info(..))" invokeClass="org.softauto.logger.impl.Logger" invokeMethod="log4jinfo(JoinPoint joinPoint)"/>
+            <before pointcut="call(* org.slf4j.Logger.info(..))" invokeClass="org.softauto.logger.impl.Logger" invokeMethod="slf4jinfo(JoinPoint joinPoint)"/>
+            <before pointcut="call(* org.apache.logging.log4j.Logger.log(..))" invokeClass="org.softauto.logger.impl.Logger" invokeMethod="jog4j2info(JoinPoint joinPoint)"/>
+            <before pointcut="call(* org.apache.log4j.Logger.error(..))" invokeClass="org.softauto.logger.impl.Logger" invokeMethod="log4jerror(JoinPoint joinPoint)"/>
+            <before pointcut="call(* org.slf4j.Logger.error(..))" invokeClass="org.softauto.logger.impl.Logger" invokeMethod="slf4jerror(JoinPoint joinPoint)"/>
+            <before pointcut="call(* org.apache.log4j.Logger.debug(..))" invokeClass="org.softauto.logger.impl.Logger" invokeMethod="log4jdebug(JoinPoint joinPoint)"/>
+            <before pointcut="call(* org.slf4j.Logger.debug(..))" invokeClass="org.softauto.logger.impl.Logger" invokeMethod="slf4jdebug(JoinPoint joinPoint)"/>
+        </concrete-aspect>
     </aspects>
-    <weaver options="-verbose" >
-
+    <weaver options="-verbose " >
+        <include within="org.apache.log4j.Logger..*"/>
     </weaver>
 </aspectj>

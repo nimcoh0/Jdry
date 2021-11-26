@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.HashMap;
 import org.softauto.espl.ExpressionBuilder;
 import org.softauto.espl.EvulExp;
+import org.softauto.core.IListener;
 
 @org.apache.avro.specific.AvroGenerated
 public class Listener {
@@ -46,7 +47,7 @@ public class Listener {
 #set ($message = $e.getValue())
 #set ($response = $message.getResponse())
 
-public static class ${this.mangle($name)}{
+public static class ${this.mangle($name)} implements IListener{
     private static ${this.mangle($name)} ${this.unCapitalizeFirstLetter(${this.mangle($name)})}= null;
     static boolean seen = false;
     static Map<String, Object> map = null;
@@ -108,13 +109,13 @@ ${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.has
 #end
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for ${this.mangle($name)}");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for ${this.mangle($name)} seen:"+seen);
 #foreach ($p in $message.getRequest().getFields())##
                             ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($name)}.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : ${this.mangle($name)}.${this.mangle($p.name())};
 #end
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("${this.mangle($name)}");
+                            lock.countDown();
                             return new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
 ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
@@ -148,7 +149,7 @@ ${this.mangle($p.name())}#if($foreach.hasNext),#end##
     }
 
 
-    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<${this.mangle($name)}>> resultHandler){
+    public static ${this.mangle($name)} waitUntil(ExpressionBuilder exp,CallFuture<Object[]> future){
     ${this.mangle($name)} _waitUntil = null;
     //if(${this.unCapitalizeFirstLetter(${this.mangle($name)})} == null){
             try{
@@ -169,13 +170,84 @@ ${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.has
 #end
                         if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
                             logger.debug("done waiting for ${this.mangle($name)}");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for ${this.mangle($name)} seen:"+seen);
 #foreach ($p in $message.getRequest().getFields())##
                             ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($name)}.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : ${this.mangle($name)}.${this.mangle($p.name())};
 #end
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("${this.mangle($name)}");
+                            future.handleResult(new Object[]{##
+#foreach ($p in $message.getRequest().getFields())##
+${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
+#end
+});
+                             lock.countDown();
+                             return new Object[]{##
+#foreach ($p in $message.getRequest().getFields())##
+${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
+#end
+};
+                        }
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                         future.handleResult(new Object[]{##
+#foreach ($p in $message.getRequest().getFields())##
+${this.mangle($p.name())}#if($foreach.hasNext),#end##
+#end
+});
+                        return new Object[]{##
+#foreach ($p in $message.getRequest().getFields())##
+${this.mangle($p.name())}#if($foreach.hasNext),#end##
+#end
+};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("${this.mangle($name)}", _waitUntil);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to ${this.mangle($name)}");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitUntil;
+    }
+
+
+    public static void waitUntil(ExpressionBuilder exp,Handler<AsyncResult<${this.mangle($name)}>> resultHandler)throws Exception{
+    ${this.mangle($name)} _waitUntil = null;
+    //if(${this.unCapitalizeFirstLetter(${this.mangle($name)})} == null){
+            try{
+                logger.debug("waiting for ${this.mangle($name)}");
+                //${this.unCapitalizeFirstLetter(${this.mangle($name)})} = new ${this.mangle($name)}();
+                lock = new CountDownLatch(1);
+                _waitUntil =  new ${this.mangle($name)}(){
+                        @Override
+                        public synchronized Object[] ${this.mangle($name)}(##
+#foreach ($p in $message.getRequest().getFields())##
+${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.hasNext), #end
+#end
+){
+                        try{
+                        Map<String, Object> params = new LinkedHashMap<String, Object>($message.getRequest().getFields().size());
+#foreach ($p in $message.getRequest().getFields())##
+                        params.put("$p.name()", $p.name());
+#end
+                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                            logger.debug("done waiting for ${this.mangle($name)}");
+                            seen = true;
+                            logger.debug("got call for ${this.mangle($name)} seen:"+seen);
+#foreach ($p in $message.getRequest().getFields())##
+                            ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($name)}.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : ${this.mangle($name)}.${this.mangle($p.name())};
+#end
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("${this.mangle($name)}");
+                            lock.countDown();
                             return new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
 ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
@@ -210,7 +282,61 @@ ${this.mangle($p.name())}#if($foreach.hasNext),#end##
 
     }
 
-
+    public static ${this.mangle($name)} waitTo(CallFuture<Object[]> future){
+    ${this.mangle($name)} _waitTo = null;
+    //if(${this.unCapitalizeFirstLetter(${this.mangle($name)})} == null){
+            try{
+                logger.debug("waiting for ${this.mangle($name)}");
+                //${this.unCapitalizeFirstLetter(${this.mangle($name)})} = new ${this.mangle($name)}();
+                lock = new CountDownLatch(1);
+                _waitTo =  new ${this.mangle($name)}(){
+                        @Override
+                        public Object[] ${this.mangle($name)}(##
+#foreach ($p in $message.getRequest().getFields())##
+${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.hasNext), #end
+#end
+){
+                        try{
+                            logger.debug("done waiting for ${this.mangle($name)}");
+                            seen = true;
+                            logger.debug("got call for ${this.mangle($name)} seen:"+seen);
+#foreach ($p in $message.getRequest().getFields())##
+                            ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($name)}.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : ${this.mangle($name)}.${this.mangle($p.name())};
+#end
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("${this.mangle($name)}");
+                            future.handleResult(new Object[]{##
+#foreach ($p in $message.getRequest().getFields())##
+${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
+#end
+});
+                            lock.countDown();
+                            return new Object[]{##
+#foreach ($p in $message.getRequest().getFields())##
+${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
+#end
+};
+                        }catch (Exception e){
+                                 logger.error("fail waitTo ",e);
+                        }
+                        future.handleResult(new Object[]{});
+                        return new Object[]{};
+                    }
+                };
+                 {
+                      org.softauto.listener.server.ListenerObserver.getInstance().register("${this.mangle($name)}", _waitTo);
+                 }
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lock.getCount() > 0){
+                     throw new Exception("timeOut for lock ");
+                }else {
+                    logger.debug("successfully wait to ${this.mangle($name)}");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitTo;
+    }
 
     public static ${this.mangle($name)} waitTo(){
     ${this.mangle($name)} _waitTo = null;
@@ -228,13 +354,13 @@ ${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.has
 ){
                         try{
                             logger.debug("done waiting for ${this.mangle($name)}");
-                            lock.countDown();
                             seen = true;
                             logger.debug("got call for ${this.mangle($name)} seen:"+seen);
 #foreach ($p in $message.getRequest().getFields())##
                             ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($name)}.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : ${this.mangle($name)}.${this.mangle($p.name())};
 #end
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("${this.mangle($name)}");
+                            lock.countDown();
                             return new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
 ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
@@ -262,7 +388,7 @@ ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<${this.mangle($name)}>> resultHandler){
+    public static void waitTo(Handler<AsyncResult<${this.mangle($name)}>> resultHandler)throws Exception{
     ${this.mangle($name)} _waitTo = null;
     //if(${this.unCapitalizeFirstLetter(${this.mangle($name)})} == null){
             try{
@@ -279,13 +405,13 @@ ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
 ){
                     try{
                         logger.debug("done waiting for ${this.mangle($name)}");
-                        lock.countDown();
                         seen = true;
                         logger.debug("got call for ${this.mangle($name)} seen:"+seen);
 #foreach ($p in $message.getRequest().getFields())##
                          ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($name)}.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : ${this.mangle($name)}.${this.mangle($p.name())};
 #end
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("${this.mangle($name)}");
+                         lock.countDown();
                          return new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
 ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
@@ -329,9 +455,9 @@ ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
                         public void ${this.mangle($name)}(${this.javaUnbox($response, true)} result){
                         try{
                             logger.debug("done waiting for ${this.mangle($name)}");
-                            lockForResult.countDown();
-                            ${this.mangle($name)}._result = result;
+                            _result = result;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("${this.mangle($name)}");
+                            lockForResult.countDown();
                         }catch (Exception e){
                                 logger.error("fail waitTo ",e);
                         }
@@ -353,8 +479,43 @@ ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
         return _waitToResult;
     }
 
+public static ${this.mangle($name)} waitToResult(CallFuture<$this.javaType($response,false)> future){
+    ${this.mangle($name)} _waitToResult = null;
+    //if(${this.unCapitalizeFirstLetter(${this.mangle($name)})} == null){
+            try{
+                logger.debug("waiting for result of ${this.mangle($name)}");
+                //${this.unCapitalizeFirstLetter(${this.mangle($name)})} = new ${this.mangle($name)}();
+                lockForResult = new CountDownLatch(1);
+                _waitToResult = new ${this.mangle($name)}(){
+                        public void ${this.mangle($name)}(${this.javaUnbox($response, true)} result){
+                        try{
+                            logger.debug("done waiting for ${this.mangle($name)}");
+                            _result = result;
+                            future.handleResult(result);
+                            org.softauto.listener.server.ListenerObserver.getInstance().unRegister("${this.mangle($name)}");
+                            lockForResult.countDown();
+                        }catch (Exception e){
+                                logger.error("fail waitTo ",e);
+                        }
+                    }
+                };
+                {
+                    org.softauto.listener.server.ListenerObserver.getInstance().register("${this.mangle($name)}", _waitToResult);
+                }
+                lockForResult.await(timeOutInMin, TimeUnit.MINUTES);
+                if(lockForResult.getCount() > 0){
+                     throw new Exception("timeOut for lockForResult ");
+                }else {
+                    logger.debug("successfully wait to ${this.mangle($name)}");
+                }
+            }catch (Exception e){
+               logger.error("fail waitTo ",e);
+            }
+        //}
+        return _waitToResult;
+    }
 
-    public static void waitToResult(Handler<AsyncResult<${this.mangle($name)}>> resultHandler){
+    public static void waitToResult(Handler<AsyncResult<${this.mangle($name)}>> resultHandler)throws Exception{
     ${this.mangle($name)} _waitToResult = null;
     //if(${this.unCapitalizeFirstLetter(${this.mangle($name)})} == null){
             try{
@@ -365,9 +526,9 @@ ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
                 public void ${this.mangle($name)}(${this.javaUnbox($response, true)} result){
                 try{
                    logger.debug("done waiting for ${this.mangle($name)}");
-                   lockForResult.countDown();
-                   ${this.mangle($name)}._result = result;
+                   _result = result;
                    org.softauto.listener.server.ListenerObserver.getInstance().unRegister("${this.mangle($name)}");
+                   lockForResult.countDown();
                 }catch (Exception e){
                      logger.error("fail waitToResult ",e);
                 }
@@ -397,7 +558,7 @@ ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
         return _result;
     }
 
-    public ${this.mangle($name)} get_Result(Handler<AsyncResult<$this.javaType($response,false)>> resultHandler){
+    public ${this.mangle($name)} get_Result(Handler<AsyncResult<$this.javaType($response,false)>> resultHandler)throws Exception{
         try{
             resultHandler.handle(Future.handleResult(_result));
         }catch (Exception e){
@@ -418,21 +579,21 @@ ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
 
 
 #foreach ($p in $message.getRequest().getFields())##
-    public ${this.javaUnbox($p.schema(), false)} get${this.capitalizeFirstLetter(${this.mangle($p.name())})}(){
+    public ${this.javaUnbox($p.schema(), false)} get${this.capitalizeFirstLetter(${this.mangle($p.name())})}()throws Exception{
         return ${this.mangle($name)}.${this.mangle($p.name())};
     }
 
-    public ${this.mangle($name)} get${this.capitalizeFirstLetter(${this.mangle($p.name())})}(Handler<AsyncResult<$this.javaType($p.schema(),false)>> resultHandler){
+    public ${this.mangle($name)} get${this.capitalizeFirstLetter(${this.mangle($p.name())})}(Handler<AsyncResult<$this.javaType($p.schema(),false)>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(${this.mangle($name)}.${this.mangle($p.name())}));
         return this;
     }
 
-    public ${this.mangle($name)} get${this.capitalizeFirstLetter(${this.mangle($p.name())})}(CallFuture<$this.javaType($p.schema(), false)> future){
+    public ${this.mangle($name)} get${this.capitalizeFirstLetter(${this.mangle($p.name())})}(CallFuture<$this.javaType($p.schema(), false)> future)throws Exception{
        future.handleResult(${this.mangle($name)}.${this.mangle($p.name())});
        return this;
     }
 
-    public ${this.unCapitalizeFirstLetter(${this.mangle($name)})} set${this.capitalizeFirstLetter(${this.mangle($p.name())})}(${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}){
+    public ${this.unCapitalizeFirstLetter(${this.mangle($name)})} set${this.capitalizeFirstLetter(${this.mangle($p.name())})}(${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())})throws Exception{
         ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($p.name())};
         return this;
     }

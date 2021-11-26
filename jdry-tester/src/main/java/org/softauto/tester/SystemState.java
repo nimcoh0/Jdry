@@ -1,10 +1,7 @@
 package org.softauto.tester;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.softauto.core.AsyncResult;
-import org.softauto.core.Configuration;
-import org.softauto.core.Future;
-import org.softauto.core.Handler;
+import org.softauto.core.*;
 
 import java.io.IOException;
 
@@ -57,6 +54,7 @@ public class SystemState {
 
     public void sendConfiguration(Handler<AsyncResult<Integer>> resultHandler){
         try {
+            Context.setTestState(TestLifeCycle.INITIALIZE);
             int result = new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_configuration", new Object[]{Configuration.getConfiguration()}, new Class[]{JsonNode.class});
             if (Integer.valueOf(result) == 0) {
                 resultHandler.handle(Future.handleResult(Integer.valueOf(result)));
@@ -67,18 +65,20 @@ public class SystemState {
         }
     }
 
-    public void shutdown(Handler<AsyncResult<Boolean>> resultHandler) {
+    public void shutdown(Handler<AsyncResult<Boolean>> resultHandler) throws Exception{
         new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_shutdown", new Object[]{}, new Class[]{});
         resultHandler.handle(Future.handleResult(true));
     }
 
-    public void startTest(String testname,Handler<AsyncResult<Boolean>> resultHandler){
+    public void startTest(String testname,Handler<AsyncResult<Boolean>> resultHandler)throws Exception{
         new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_startTest", new Object[]{testname}, new Class[]{String.class});
+        Context.setTestState(TestLifeCycle.START);
         resultHandler.handle(Future.handleResult(true));
     }
 
-    public void endTest(String testname,Handler<AsyncResult<Boolean>> resultHandler){
+    public void endTest(String testname,Handler<AsyncResult<Boolean>> resultHandler)throws Exception{
         new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_endTest", new Object[]{testname}, new Class[]{String.class});
+        Context.setTestState(TestLifeCycle.STOP);
         resultHandler.handle(Future.handleResult(true));
     }
 

@@ -25,7 +25,7 @@ public class EvulExp {
         return this;
     }
 
-    public static Object evulExp (String exp,Object ctx)throws Exception{
+    public  Object evulExp (String exp,Object ctx)throws Exception{
         logger.debug("evaluate "+exp +" using object context "+ ctx.getClass().getName());
         ExpressionParser parser = new SpelExpressionParser();
         StandardEvaluationContext itemContext = new StandardEvaluationContext(ctx);
@@ -38,7 +38,7 @@ public class EvulExp {
         return res;
     }
 
-    public static boolean evulExp (String exp)throws Exception{
+    public  boolean evulExp (String exp)throws Exception{
         logger.debug("evaluate "+exp);
         ExpressionParser parser = new SpelExpressionParser();
         StandardEvaluationContext itemContext = new StandardEvaluationContext();
@@ -59,10 +59,13 @@ public class EvulExp {
                 if(exp.getContext() instanceof String){
                     logger.debug("context is string ."+exp.getContext()+" getting Object from local param");
                     ctx = localParams.get(exp.getContext());
+                }else {
+                    logger.debug("context is Object  ."+ctx);
                 }
                 logger.debug("adding expression to the list "+ exp.getStatement() +" with context "+ ctx.getClass().getName());
                 objects.add(evulExp(exp.getStatement(),ctx));
             }
+            logger.debug("evaluating "+objects.size() + "expressions ");
             if(objects.size() <= 2) {
                 if (objects.size() > 1) {
                     logger.debug("evaluate expression " +exp.getExpressions().get(0).toString()+" evaluate to "+objects.get(0).toString() + " " + exp.getOperator()+" "+exp.getExpressions().get(1).toString()+" evaluate to "+objects.get(1).toString());

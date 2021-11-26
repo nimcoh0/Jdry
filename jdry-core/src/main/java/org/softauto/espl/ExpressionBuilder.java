@@ -25,7 +25,8 @@ public class ExpressionBuilder {
     }
 
     public ExpressionBuilder(){
-
+        expressions = new ArrayList<>();
+        operator = null;
     }
 
     public ExpressionBuilder(Expression expression){

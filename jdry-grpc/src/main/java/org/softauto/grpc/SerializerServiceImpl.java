@@ -50,6 +50,7 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
                 logger.error("fail invoke method "+ message.getDescriptor(),e );
                 callback.handleError(e);
               }
+            logger.debug("return in callback "+methodResponse);
             callback.handleResult(methodResponse);
     }
 
@@ -63,6 +64,7 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
             if(injector != null && !fullClassName.equals("org.softauto.system.SystemServiceImpl")) {
                 if(Utils.getClassName(message.getDescriptor()).equals(Utils.getMethodName(message.getDescriptor())) && message.getArgs().length > 0) {
                     serviceImpl = injector.inject(fullClassName,message.getArgs())[0];
+                    return serviceImpl;
                 }else {
                     serviceImpl = injector.inject(fullClassName)[0];
                 }
@@ -89,6 +91,7 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
             logger.error("fail invoke method "+ message.getDescriptor(),e );
             methodResponse = e;
         }
+        logger.debug("return "+methodResponse);
         return methodResponse;
     }
 }

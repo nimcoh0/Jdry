@@ -18,30 +18,33 @@ public class JdryTestListener implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult result) {
-        Context.setTestState(TestLifeCycle.START);
-        SystemState.getInstance().startTest(result.getName(),res ->{
-            if(res.succeeded()){
-                logger.debug("successfully start test ");
-            }else {
-                logger.error("fail start test ",res.cause());
-            }
-        });
-
+        try {
+            Context.setTestState(TestLifeCycle.START);
+            SystemState.getInstance().startTest(result.getName(), res -> {
+                if (res.succeeded()) {
+                    logger.debug("successfully start test " + result.getName());
+                } else {
+                    logger.error("fail start test "+result.getName(), res.cause());
+                }
+            });
+        }catch (Exception e){
+            logger.error("fail onTestStart "+result.getName(),e);
+        }
     }
 
     @Override
     public void onTestSuccess(ITestResult result) {
-
+        logger.debug(result.getName()+" end successfully");
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
-
+        logger.debug(result.getName()+" fail");
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
-
+        logger.debug(result.getName()+" skipped");
     }
 
     @Override
@@ -56,26 +59,30 @@ public class JdryTestListener implements ITestListener {
 
     @Override
     public void onFinish(ITestContext context) {
-        Context.setTestState(TestLifeCycle.STOP);
-        SystemState.getInstance().endTest(context.getName(),res ->{
-            if(res.succeeded()){
-                logger.debug("successfully end test");
-            }else {
-                logger.error("fail end test",res.cause());
-            }
-        });
-        ListenerObserver.getInstance().reset();
-        ListenerServerProviderImpl.getInstance().shutdown();
-        SystemState.getInstance().shutdown(res ->{
-            if(res.succeeded()){
-                logger.debug("successfully shutdown");
-            }else {
-                logger.error("fail shutdown",res.cause());
-            }
-        });
-        final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
-        final Configuration config = ctx.getConfiguration();
-        config.getRootLogger().removeAppender("console");
-        ctx.updateLoggers();
+        try {
+            Context.setTestState(TestLifeCycle.STOP);
+            SystemState.getInstance().endTest(context.getName(), res -> {
+                if (res.succeeded()) {
+                    logger.debug("successfully end test ");
+                } else {
+                    logger.error("fail end test" , res.cause());
+                }
+            });
+            ListenerObserver.getInstance().reset();
+            ListenerServerProviderImpl.getInstance().shutdown();
+            SystemState.getInstance().shutdown(res -> {
+                if (res.succeeded()) {
+                    logger.debug("successfully shutdown ");
+                } else {
+                    logger.error("fail shutdown ", res.cause());
+                }
+            });
+            final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+            final Configuration config = ctx.getConfiguration();
+            config.getRootLogger().removeAppender("console");
+            ctx.updateLoggers();
+        }catch (Exception e){
+            logger.error("fail onFinish ",e);
+        }
     }
 }

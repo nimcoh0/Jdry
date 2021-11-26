@@ -90,6 +90,12 @@ public class ListenerServerProviderImpl implements Provider {
            if(Configuration.get(Context.LOAD_WEAVER) == null){
                Configuration.put(Context.LOAD_WEAVER,true);
            }
+           if(Configuration.get(Context.SEND_LOG_TO_TESTER) == null){
+               Configuration.put(Context.SEND_LOG_TO_TESTER,false);
+           }
+           if(Configuration.get(Context.SEND_JDRY_LOG_TO_TESTER) == null){
+               Configuration.put(Context.SEND_JDRY_LOG_TO_TESTER,false);
+           }
            logger.debug("configuration load successfully " + Configuration.getConfiguration());
         }catch(Exception e){
             logger.error("fail load listener configuration ",e);

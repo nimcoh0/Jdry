@@ -172,6 +172,7 @@ public class RpcProviderImpl implements Provider {
             }
             Message message = Message.newBuilder().setDescriptor(methodName).setArgs((Object[]) args[0]).setTypes((Class[]) args[1]).build();
             serializer.write(message,callback);
+            logger.debug("callback value "+callback.getResult()+" get error "+callback.getError());
         }catch (Exception e){
             logger.error("fail exec rpc call "+ methodName, e);
         }

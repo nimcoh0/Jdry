@@ -1,6 +1,9 @@
 package org.softauto.listener.server;
 
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.softauto.core.Configuration;
 import org.softauto.core.Context;
 import org.softauto.core.TestLifeCycle;
@@ -26,6 +29,10 @@ public class ListenerServiceImpl implements SerializerService{
         Object methodResponse = null;
         try {
             if (Context.getTestState().equals(TestLifeCycle.START)) {
+                if(message.getDescriptor().equals("log") || message.getDescriptor().equals("logError")){
+                    printLog(message);
+                    return null;
+                }
                 logger.debug("execute message " + message.toJson());
                 //String fullServiceClassName = message.getService();
                 Object o = ListenerObserver.getInstance().getLastChannel(message.getDescriptor());
@@ -64,6 +71,18 @@ public class ListenerServiceImpl implements SerializerService{
 
         return methodResponse;
 
+    }
+
+    private void printLog(Message message){
+        Marker marker = MarkerManager.getMarker(message.getData("marker").toString());
+        if(marker == null){
+            marker = MarkerManager.getMarker("SUT");
+        }
+        if(message.getData("ex") != null){
+            logger.log(Level.getLevel(message.getData("level").toString()), marker, message.getData("log").toString(), new Exception(message.getData("ex").toString()));
+        }else {
+            logger.log(Level.getLevel(message.getData("level").toString()), marker, message.getData("log").toString(), message.getData("clazz"));
+        }
     }
 
 

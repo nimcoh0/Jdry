@@ -1,5 +1,7 @@
 ---
 load_weaver: "false"
+send_log_to_tester: "false"
+send_jdry_log_to_tester: "false"
 
 
 

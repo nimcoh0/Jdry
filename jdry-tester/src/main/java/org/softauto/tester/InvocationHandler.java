@@ -20,13 +20,14 @@ public class InvocationHandler {
             Provider provider = ProviderManager.provider(transceiver).create();
             logger.debug("invoke method " + methodName+ " using protocol "+ transceiver);
             provider.exec( methodName, callback,null,new Object[]{args,types});
+            logger.debug("callback value "+callback.getResult()+" get error "+callback.getError());
         } catch (Exception e) {
             logger.error("fail invoke method "+ methodName+ " with args "+ Arrays.toString(args),e);
         }
 
     }
 
-    public <T> T invoke(String methodName, Object[] args, Class[] types)  {
+    public <T> T invoke(String methodName, Object[] args, Class[] types)  throws Exception{
         CallFuture<T> future = new CallFuture<>();
         T t = null;
         try {
@@ -34,8 +35,8 @@ public class InvocationHandler {
             int port = Configuration.get("serializer_port").asInt();
             Serializer serializer = new Serializer().setHost(host).setPort(port).build();
             Message message = Message.newBuilder().setDescriptor(methodName).setArgs(args).setTypes(types).build();
-            serializer.write(message,future);
-            t = future.get();
+            t = serializer.write(message);
+            //t = future.get();
         } catch (Exception e) {
             logger.error("fail invoke method "+ methodName+ " with args "+ Arrays.toString(args),e);
         }

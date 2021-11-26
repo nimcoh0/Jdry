@@ -7,6 +7,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class BookStore {
+
+    private static final org.apache.log4j.Logger logger = org.apache.log4j.LogManager.getLogger(BookStore.class);
     private List<Book> books = new ArrayList<>();
     int counter = 0;
 
@@ -32,6 +34,7 @@ public class BookStore {
             ++counter;
             this.books.add(book);
         }
+        logger.debug("execute addAllBooks");
        return this;
     }
 

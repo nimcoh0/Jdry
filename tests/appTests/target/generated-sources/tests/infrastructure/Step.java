@@ -15,6 +15,7 @@ import org.softauto.core.Handler;
 import org.softauto.core.Future;
 import org.softauto.serializer.CallFuture;
 import org.softauto.tester.InvocationHandler;
+import org.softauto.core.IListener;
 
 @org.apache.avro.specific.AvroGenerated
 public class Step {
@@ -28,30 +29,40 @@ public static class App_example_books_BookStore_addBook {
 
 
     CallFuture< app.example.books.BookStore> future = new CallFuture<>();
-    public app.example.books.BookStore get_Result(){
+    public app.example.books.BookStore get_Result() throws Exception{
             try {
+
+               if(!future.isDone()) {
+                  logger.debug("waiting to future to be done");
+                  future.await();
+               }
                 logger.debug("successfully get_Result() ");
                 return future.get();
              }catch (Exception e){
-                logger.error("fail get_Result() "+ e);
+                 logger.error("fail get_Result() "+ e);
+                 throw new Exception("fail get_Result() "+ e);
              }
-             logger.debug("successfully DefaultValue for get_Result() ");
-             return null;
         }
 
-    public  App_example_books_BookStore_addBook then(Object o){
-        future.handleResult((app.example.books.BookStore)o);
+    public  App_example_books_BookStore_addBook then(Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
+        return this;
+    }
+
+
+    public  App_example_books_BookStore_addBook then(IListener o)throws Exception{
+        future.handleResult(future.get());
 
         return this;
     }
 
-    public  App_example_books_BookStore_addBook then(Object o,Handler<AsyncResult<java.lang.Object>> resultHandler){
-        resultHandler.handle(Future.handleResult(o));
+    public  App_example_books_BookStore_addBook then(IListener o,Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_BookStore_addBook then(Object o ,CallFuture<java.lang.Object> future){
-        future.handleResult(o);
+    public  App_example_books_BookStore_addBook then(IListener o ,CallFuture<app.example.books.BookStore> future)throws Exception{
+        future.handleResult(future.get());
         return this;
     }
 
@@ -78,7 +89,7 @@ public static class App_example_books_BookStore_addBook {
  }
 
 
-    public  App_example_books_BookStore_addBook(app.example.books.Book book,Handler<AsyncResult<app.example.books.BookStore>> resultHandler  ){
+    public  App_example_books_BookStore_addBook(app.example.books.Book book,Handler<AsyncResult<app.example.books.BookStore>> resultHandler  )throws Exception{
         try {
             CallFuture<app.example.books.BookStore> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_BookStore_addBook");
@@ -99,30 +110,40 @@ public static class App_example_books_BookStore_updateBook {
 
 
     CallFuture< app.example.books.BookStore> future = new CallFuture<>();
-    public app.example.books.BookStore get_Result(){
+    public app.example.books.BookStore get_Result() throws Exception{
             try {
+
+               if(!future.isDone()) {
+                  logger.debug("waiting to future to be done");
+                  future.await();
+               }
                 logger.debug("successfully get_Result() ");
                 return future.get();
              }catch (Exception e){
-                logger.error("fail get_Result() "+ e);
+                 logger.error("fail get_Result() "+ e);
+                 throw new Exception("fail get_Result() "+ e);
              }
-             logger.debug("successfully DefaultValue for get_Result() ");
-             return null;
         }
 
-    public  App_example_books_BookStore_updateBook then(Object o){
-        future.handleResult((app.example.books.BookStore)o);
+    public  App_example_books_BookStore_updateBook then(Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
+        return this;
+    }
+
+
+    public  App_example_books_BookStore_updateBook then(IListener o)throws Exception{
+        future.handleResult(future.get());
 
         return this;
     }
 
-    public  App_example_books_BookStore_updateBook then(Object o,Handler<AsyncResult<java.lang.Object>> resultHandler){
-        resultHandler.handle(Future.handleResult(o));
+    public  App_example_books_BookStore_updateBook then(IListener o,Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_BookStore_updateBook then(Object o ,CallFuture<java.lang.Object> future){
-        future.handleResult(o);
+    public  App_example_books_BookStore_updateBook then(IListener o ,CallFuture<app.example.books.BookStore> future)throws Exception{
+        future.handleResult(future.get());
         return this;
     }
 
@@ -149,7 +170,7 @@ public static class App_example_books_BookStore_updateBook {
  }
 
 
-    public  App_example_books_BookStore_updateBook(app.example.books.Book book, java.lang.String newTitle,Handler<AsyncResult<app.example.books.BookStore>> resultHandler  ){
+    public  App_example_books_BookStore_updateBook(app.example.books.Book book, java.lang.String newTitle,Handler<AsyncResult<app.example.books.BookStore>> resultHandler  )throws Exception{
         try {
             CallFuture<app.example.books.BookStore> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_BookStore_updateBook");
@@ -170,30 +191,40 @@ public static class App_example_books_BookStore_addAllBooks {
 
 
     CallFuture< app.example.books.BookStore> future = new CallFuture<>();
-    public app.example.books.BookStore get_Result(){
+    public app.example.books.BookStore get_Result() throws Exception{
             try {
+
+               if(!future.isDone()) {
+                  logger.debug("waiting to future to be done");
+                  future.await();
+               }
                 logger.debug("successfully get_Result() ");
                 return future.get();
              }catch (Exception e){
-                logger.error("fail get_Result() "+ e);
+                 logger.error("fail get_Result() "+ e);
+                 throw new Exception("fail get_Result() "+ e);
              }
-             logger.debug("successfully DefaultValue for get_Result() ");
-             return null;
         }
 
-    public  App_example_books_BookStore_addAllBooks then(Object o){
-        future.handleResult((app.example.books.BookStore)o);
+    public  App_example_books_BookStore_addAllBooks then(Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
+        return this;
+    }
+
+
+    public  App_example_books_BookStore_addAllBooks then(IListener o)throws Exception{
+        future.handleResult(future.get());
 
         return this;
     }
 
-    public  App_example_books_BookStore_addAllBooks then(Object o,Handler<AsyncResult<java.lang.Object>> resultHandler){
-        resultHandler.handle(Future.handleResult(o));
+    public  App_example_books_BookStore_addAllBooks then(IListener o,Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_BookStore_addAllBooks then(Object o ,CallFuture<java.lang.Object> future){
-        future.handleResult(o);
+    public  App_example_books_BookStore_addAllBooks then(IListener o ,CallFuture<app.example.books.BookStore> future)throws Exception{
+        future.handleResult(future.get());
         return this;
     }
 
@@ -220,7 +251,7 @@ public static class App_example_books_BookStore_addAllBooks {
  }
 
 
-    public  App_example_books_BookStore_addAllBooks(java.util.Collection<app.example.books.Book> books,Handler<AsyncResult<app.example.books.BookStore>> resultHandler  ){
+    public  App_example_books_BookStore_addAllBooks(java.util.Collection<app.example.books.Book> books,Handler<AsyncResult<app.example.books.BookStore>> resultHandler  )throws Exception{
         try {
             CallFuture<app.example.books.BookStore> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_BookStore_addAllBooks");
@@ -241,30 +272,40 @@ public static class App_example_books_BookStore_booksByAuthor {
 
 
     CallFuture< java.util.List<app.example.books.Book>> future = new CallFuture<>();
-    public java.util.List<app.example.books.Book> get_Result(){
+    public java.util.List<app.example.books.Book> get_Result() throws Exception{
             try {
+
+               if(!future.isDone()) {
+                  logger.debug("waiting to future to be done");
+                  future.await();
+               }
                 logger.debug("successfully get_Result() ");
                 return future.get();
              }catch (Exception e){
-                logger.error("fail get_Result() "+ e);
+                 logger.error("fail get_Result() "+ e);
+                 throw new Exception("fail get_Result() "+ e);
              }
-             logger.debug("successfully DefaultValue for get_Result() ");
-             return null;
         }
 
-    public  App_example_books_BookStore_booksByAuthor then(Object o){
-        future.handleResult((java.util.List<app.example.books.Book>)o);
+    public  App_example_books_BookStore_booksByAuthor then(Handler<AsyncResult<java.util.List<app.example.books.Book>>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
+        return this;
+    }
+
+
+    public  App_example_books_BookStore_booksByAuthor then(IListener o)throws Exception{
+        future.handleResult(future.get());
 
         return this;
     }
 
-    public  App_example_books_BookStore_booksByAuthor then(Object o,Handler<AsyncResult<java.lang.Object>> resultHandler){
-        resultHandler.handle(Future.handleResult(o));
+    public  App_example_books_BookStore_booksByAuthor then(IListener o,Handler<AsyncResult<java.util.List<app.example.books.Book>>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_BookStore_booksByAuthor then(Object o ,CallFuture<java.lang.Object> future){
-        future.handleResult(o);
+    public  App_example_books_BookStore_booksByAuthor then(IListener o ,CallFuture<java.util.List<app.example.books.Book>> future)throws Exception{
+        future.handleResult(future.get());
         return this;
     }
 
@@ -291,7 +332,7 @@ public static class App_example_books_BookStore_booksByAuthor {
  }
 
 
-    public  App_example_books_BookStore_booksByAuthor(java.lang.String author,Handler<AsyncResult<java.util.List<app.example.books.Book>>> resultHandler  ){
+    public  App_example_books_BookStore_booksByAuthor(java.lang.String author,Handler<AsyncResult<java.util.List<app.example.books.Book>>> resultHandler  )throws Exception{
         try {
             CallFuture<java.util.List<app.example.books.Book>> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_BookStore_booksByAuthor");
@@ -312,30 +353,40 @@ public static class App_example_books_BookStore_bookByTitle {
 
 
     CallFuture< java.util.Optional<app.example.books.Book>> future = new CallFuture<>();
-    public java.util.Optional<app.example.books.Book> get_Result(){
+    public java.util.Optional<app.example.books.Book> get_Result() throws Exception{
             try {
+
+               if(!future.isDone()) {
+                  logger.debug("waiting to future to be done");
+                  future.await();
+               }
                 logger.debug("successfully get_Result() ");
                 return future.get();
              }catch (Exception e){
-                logger.error("fail get_Result() "+ e);
+                 logger.error("fail get_Result() "+ e);
+                 throw new Exception("fail get_Result() "+ e);
              }
-             logger.debug("successfully DefaultValue for get_Result() ");
-             return null;
         }
 
-    public  App_example_books_BookStore_bookByTitle then(Object o){
-        future.handleResult((java.util.Optional<app.example.books.Book>)o);
+    public  App_example_books_BookStore_bookByTitle then(Handler<AsyncResult<java.util.Optional<app.example.books.Book>>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
+        return this;
+    }
+
+
+    public  App_example_books_BookStore_bookByTitle then(IListener o)throws Exception{
+        future.handleResult(future.get());
 
         return this;
     }
 
-    public  App_example_books_BookStore_bookByTitle then(Object o,Handler<AsyncResult<java.lang.Object>> resultHandler){
-        resultHandler.handle(Future.handleResult(o));
+    public  App_example_books_BookStore_bookByTitle then(IListener o,Handler<AsyncResult<java.util.Optional<app.example.books.Book>>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_BookStore_bookByTitle then(Object o ,CallFuture<java.lang.Object> future){
-        future.handleResult(o);
+    public  App_example_books_BookStore_bookByTitle then(IListener o ,CallFuture<java.util.Optional<app.example.books.Book>> future)throws Exception{
+        future.handleResult(future.get());
         return this;
     }
 
@@ -362,7 +413,7 @@ public static class App_example_books_BookStore_bookByTitle {
  }
 
 
-    public  App_example_books_BookStore_bookByTitle(java.lang.String title,Handler<AsyncResult<java.util.Optional<app.example.books.Book>>> resultHandler  ){
+    public  App_example_books_BookStore_bookByTitle(java.lang.String title,Handler<AsyncResult<java.util.Optional<app.example.books.Book>>> resultHandler  )throws Exception{
         try {
             CallFuture<java.util.Optional<app.example.books.Book>> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_BookStore_bookByTitle");
@@ -383,26 +434,37 @@ public static class App_example_books_BookStore_loopOverBooks {
 
 
     CallFuture<java.lang.Void> future = new CallFuture<>();
-    public void get_Result(){
+    public void get_Result() throws Exception{
             try {
-                logger.debug("successfully get_Result() ");
-                future.get();
+                 if(!future.isDone()) {
+                    logger.debug("waiting to future to be done");
+                    future.await();
+                 }
+                 logger.debug("successfully get_Result() ");
+                 future.get();
              }catch (Exception e){
-                 logger.error("fail get_Result() "+ e);
+                logger.error("fail get_Result() "+ e);
+                throw new Exception("fail get_Result() "+ e);
              }
         }
 
-    public  App_example_books_BookStore_loopOverBooks then(Object o){
+    public  App_example_books_BookStore_loopOverBooks then(Handler<AsyncResult<java.lang.Void>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_BookStore_loopOverBooks then(Object o,Handler<AsyncResult<java.lang.Object>> resultHandler){
-        resultHandler.handle(Future.handleResult(o));
+
+    public  App_example_books_BookStore_loopOverBooks then(IListener o)throws Exception{
         return this;
     }
 
-    public  App_example_books_BookStore_loopOverBooks then(Object o ,CallFuture<java.lang.Object> future){
-        future.handleResult(o);
+    public  App_example_books_BookStore_loopOverBooks then(IListener o,Handler<AsyncResult<java.lang.Void>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
+        return this;
+    }
+
+    public  App_example_books_BookStore_loopOverBooks then(IListener o ,CallFuture<java.lang.Void> future)throws Exception{
+        future.handleResult(future.get());
         return this;
     }
 
@@ -429,7 +491,7 @@ public static class App_example_books_BookStore_loopOverBooks {
  }
 
 
-    public  App_example_books_BookStore_loopOverBooks(Handler<AsyncResult<java.lang.Void>> resultHandler  ){
+    public  App_example_books_BookStore_loopOverBooks(Handler<AsyncResult<java.lang.Void>> resultHandler  )throws Exception{
         try {
             CallFuture<java.lang.Void> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_BookStore_loopOverBooks");
@@ -450,26 +512,37 @@ public static class App_example_books_BookStore_printBooks {
 
 
     CallFuture<java.lang.Void> future = new CallFuture<>();
-    public void get_Result(){
+    public void get_Result() throws Exception{
             try {
-                logger.debug("successfully get_Result() ");
-                future.get();
+                 if(!future.isDone()) {
+                    logger.debug("waiting to future to be done");
+                    future.await();
+                 }
+                 logger.debug("successfully get_Result() ");
+                 future.get();
              }catch (Exception e){
-                 logger.error("fail get_Result() "+ e);
+                logger.error("fail get_Result() "+ e);
+                throw new Exception("fail get_Result() "+ e);
              }
         }
 
-    public  App_example_books_BookStore_printBooks then(Object o){
+    public  App_example_books_BookStore_printBooks then(Handler<AsyncResult<java.lang.Void>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_BookStore_printBooks then(Object o,Handler<AsyncResult<java.lang.Object>> resultHandler){
-        resultHandler.handle(Future.handleResult(o));
+
+    public  App_example_books_BookStore_printBooks then(IListener o)throws Exception{
         return this;
     }
 
-    public  App_example_books_BookStore_printBooks then(Object o ,CallFuture<java.lang.Object> future){
-        future.handleResult(o);
+    public  App_example_books_BookStore_printBooks then(IListener o,Handler<AsyncResult<java.lang.Void>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
+        return this;
+    }
+
+    public  App_example_books_BookStore_printBooks then(IListener o ,CallFuture<java.lang.Void> future)throws Exception{
+        future.handleResult(future.get());
         return this;
     }
 
@@ -496,7 +569,7 @@ public static class App_example_books_BookStore_printBooks {
  }
 
 
-    public  App_example_books_BookStore_printBooks(Handler<AsyncResult<java.lang.Void>> resultHandler  ){
+    public  App_example_books_BookStore_printBooks(Handler<AsyncResult<java.lang.Void>> resultHandler  )throws Exception{
         try {
             CallFuture<java.lang.Void> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_BookStore_printBooks");
@@ -517,30 +590,40 @@ public static class App_example_books_Book_Book {
 
 
     CallFuture< app.example.books.Book> future = new CallFuture<>();
-    public app.example.books.Book get_Result(){
+    public app.example.books.Book get_Result() throws Exception{
             try {
+
+               if(!future.isDone()) {
+                  logger.debug("waiting to future to be done");
+                  future.await();
+               }
                 logger.debug("successfully get_Result() ");
                 return future.get();
              }catch (Exception e){
-                logger.error("fail get_Result() "+ e);
+                 logger.error("fail get_Result() "+ e);
+                 throw new Exception("fail get_Result() "+ e);
              }
-             logger.debug("successfully DefaultValue for get_Result() ");
-             return null;
         }
 
-    public  App_example_books_Book_Book then(Object o){
-        future.handleResult((app.example.books.Book)o);
+    public  App_example_books_Book_Book then(Handler<AsyncResult<app.example.books.Book>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
+        return this;
+    }
+
+
+    public  App_example_books_Book_Book then(IListener o)throws Exception{
+        future.handleResult(future.get());
 
         return this;
     }
 
-    public  App_example_books_Book_Book then(Object o,Handler<AsyncResult<java.lang.Object>> resultHandler){
-        resultHandler.handle(Future.handleResult(o));
+    public  App_example_books_Book_Book then(IListener o,Handler<AsyncResult<app.example.books.Book>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_Book_Book then(Object o ,CallFuture<java.lang.Object> future){
-        future.handleResult(o);
+    public  App_example_books_Book_Book then(IListener o ,CallFuture<app.example.books.Book> future)throws Exception{
+        future.handleResult(future.get());
         return this;
     }
 
@@ -567,7 +650,7 @@ public static class App_example_books_Book_Book {
  }
 
 
-    public  App_example_books_Book_Book(java.lang.String title, java.lang.String author,Handler<AsyncResult<app.example.books.Book>> resultHandler  ){
+    public  App_example_books_Book_Book(java.lang.String title, java.lang.String author,Handler<AsyncResult<app.example.books.Book>> resultHandler  )throws Exception{
         try {
             CallFuture<app.example.books.Book> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_Book_Book");
@@ -588,30 +671,40 @@ public static class App_example_books_Book_hello {
 
 
     CallFuture< java.lang.String> future = new CallFuture<>();
-    public java.lang.String get_Result(){
+    public java.lang.String get_Result() throws Exception{
             try {
+
+               if(!future.isDone()) {
+                  logger.debug("waiting to future to be done");
+                  future.await();
+               }
                 logger.debug("successfully get_Result() ");
                 return future.get();
              }catch (Exception e){
-                logger.error("fail get_Result() "+ e);
+                 logger.error("fail get_Result() "+ e);
+                 throw new Exception("fail get_Result() "+ e);
              }
-             logger.debug("successfully DefaultValue for get_Result() ");
-             return null;
         }
 
-    public  App_example_books_Book_hello then(Object o){
-        future.handleResult((java.lang.String)o);
+    public  App_example_books_Book_hello then(Handler<AsyncResult<java.lang.String>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
+        return this;
+    }
+
+
+    public  App_example_books_Book_hello then(IListener o)throws Exception{
+        future.handleResult(future.get());
 
         return this;
     }
 
-    public  App_example_books_Book_hello then(Object o,Handler<AsyncResult<java.lang.Object>> resultHandler){
-        resultHandler.handle(Future.handleResult(o));
+    public  App_example_books_Book_hello then(IListener o,Handler<AsyncResult<java.lang.String>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_Book_hello then(Object o ,CallFuture<java.lang.Object> future){
-        future.handleResult(o);
+    public  App_example_books_Book_hello then(IListener o ,CallFuture<java.lang.String> future)throws Exception{
+        future.handleResult(future.get());
         return this;
     }
 
@@ -638,7 +731,7 @@ public static class App_example_books_Book_hello {
  }
 
 
-    public  App_example_books_Book_hello(Handler<AsyncResult<java.lang.String>> resultHandler  ){
+    public  App_example_books_Book_hello(Handler<AsyncResult<java.lang.String>> resultHandler  )throws Exception{
         try {
             CallFuture<java.lang.String> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_Book_hello");
