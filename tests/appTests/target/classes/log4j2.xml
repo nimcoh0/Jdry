@@ -29,7 +29,7 @@
         </RollingFile>
 
         <Console name="console" target="SYSTEM_OUT" follow="true">
-            <PatternLayout  disableAnsi="false" pattern="%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} %-3notEmpty{[%marker]} -  %highlight{${LOG_LEVEL_PATTERN:-%5p}}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green,  bold,DEBUG=green bold, TRACE=blue}   [%15.15t] %style{%logger}{cyan} : %msg%n"/>
+            <PatternLayout  disableAnsi="false" pattern="%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} %-6notEmpty{[%marker]} -  %highlight{${LOG_LEVEL_PATTERN:-%5p}}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green,  bold,DEBUG=green bold, TRACE=blue}   [%15.15t] %style{%logger}{cyan} : %msg%n"/>
 
         </Console>
 
@@ -46,12 +46,13 @@
         </Logger>
         <Logger name="org.softauto" level="debug" >
             <AppenderRef ref="jdry" level="debug"/>
+
         </Logger>
         <Logger name="io.grpc.netty" level="off" additivity="false">
-            <AppenderRef ref="Console" />
+            <AppenderRef ref="console" />
         </Logger>
         <Logger name="io.netty" level="off" additivity="false">
-            <AppenderRef ref="Console" />
+            <AppenderRef ref="console" />
         </Logger>
         <Root level="all">
             <AppenderRef ref="console" level="debug"/>

@@ -44,8 +44,14 @@ public class JdryAppender extends AbstractAppender {
 
     @Override
     public void append(LogEvent event) {
-        org.softauto.logger.impl.Logger.log(event.getLevel().name(),event.getMarker() != null ? event.getMarker().getName() : ""
+        String marker;
+        if(event.getSource().getClassName().contains("org.softauto")){
+            marker = "JDRY";
+        }else {
+            marker = "SUT";
+        }
+        org.softauto.logger.impl.Logger.log(event.getLevel().name(),event.getMarker() != null ? event.getMarker().getName() : marker
                 ,event.getMessage().getFormattedMessage(),event.getSource().getClassName(),
-                event.getThrown() != null ? event.getThrown().getMessage() : "");
+                event.getThrown() != null ? event.getThrown().getMessage() : null);
     }
 }

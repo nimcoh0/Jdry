@@ -28,11 +28,12 @@ public class ListenerServiceImpl implements SerializerService{
     public synchronized Object execute(Message message) throws Exception {
         Object methodResponse = null;
         try {
+            if(message.getDescriptor().equals("log") || message.getDescriptor().equals("logError")){
+                printLog(message);
+                return null;
+            }
             if (Context.getTestState().equals(TestLifeCycle.START)) {
-                if(message.getDescriptor().equals("log") || message.getDescriptor().equals("logError")){
-                    printLog(message);
-                    return null;
-                }
+
                 logger.debug("execute message " + message.toJson());
                 //String fullServiceClassName = message.getService();
                 Object o = ListenerObserver.getInstance().getLastChannel(message.getDescriptor());
@@ -81,7 +82,10 @@ public class ListenerServiceImpl implements SerializerService{
         if(message.getData("ex") != null){
             logger.log(Level.getLevel(message.getData("level").toString()), marker, message.getData("log").toString(), new Exception(message.getData("ex").toString()));
         }else {
-            logger.log(Level.getLevel(message.getData("level").toString()), marker, message.getData("log").toString(), message.getData("clazz"));
+            //logger.log(Level.getLevel(message.getData("level").toString()), marker, message.getData("log").toString(), message.getData("clazz"));
+            //logger.log(Level.getLevel(message.getData("level").toString()),  message.getData("log").toString());
+            org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Utils.findClass(message.getData("clazz").toString()));
+            logger.debug(marker,message.getData("log").toString(), message.getData("clazz"));
         }
     }
 
