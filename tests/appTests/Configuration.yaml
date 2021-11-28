@@ -1,8 +1,45 @@
 ---
+#load aspect weaver . default is true , if set to false the weaver must be load as java agent .
 load_weaver: "false"
-send_log_to_tester: "false"
-send_jdry_log_to_tester: "false"
 
+# send SUT logs to tester console
+#send_log_to_tester: "false"
+
+#send  jdry logs to tester console
+#send_jdry_log_to_tester: "false"
+
+# absolute path to 'tests/infrastructure' compiled classes
+#tests_infrastructure_path:  "{user dir}/target/test-classes/tests/infrastructure")
+
+#default listener server port
+#listener_port: "9091"
+
+#default grpc server port
+#serializer_port: "8085"
+
+# default grpc server host
+#serializer_host: "localhost"
+
+# enable session . default is true , for more details on "sessions" see wiki
+#enable_session: "true"
+
+#step service interface name
+#step_service_name: "StepService"
+
+#listener service interface name
+#listener_service_name: "ListenerService"
+
+#listener service class impl
+#listener_service_impl: "Listener"
+
+#step service class impl
+#step_service_impl: "Step"
+
+#aspectj weaver full path . the JDRY come with aspectjWeaver version 1.9.0
+#aspectj_weaver:
+
+#default datatime format
+#default_datatime_format: "yyyy-MM-dd HH:mm:ss"
 
 
 
