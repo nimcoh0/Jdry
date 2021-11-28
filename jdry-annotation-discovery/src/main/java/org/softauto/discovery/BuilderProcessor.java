@@ -81,12 +81,12 @@ public class BuilderProcessor extends AbstractProcessor {
                     for (Element element : k.getValue()) {
                          for (Provider provider : providers) {
                              JsonNode node = provider.parser(element);
-                             //if(node != null) {
-                             //    List<Provider> extProviders = ProviderManager.getExtendedProviders();
-                             //    for (Provider p : extProviders) {
-                             //        ((ObjectNode) node).setAll((ObjectNode) p.parser(element));
-                             //    }
-                             //}
+                             if(node != null) {
+                                 List<Provider> extProviders = ProviderManager.getExtendedProviders();
+                                 for (Provider p : extProviders) {
+                                     ((ObjectNode) node).setAll((ObjectNode) p.parser(element));
+                                 }
+                             }
                              Visitor v = new SchemaVisitor(getProtocolName(annotation),node,nodes);
                              this.accept(v);
                              logger.debug("new element for provider "+ provider.getClass().getName());
