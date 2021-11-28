@@ -120,66 +120,19 @@ and your SUT jar to the lib folder
 
 # Helper classes
 
-# How To Use It
+## How To Use It
+
 same as in SUT you can annotaed your local method in the helper classes with ExportForTesting . 
 
-> ListenerForTesting is not supported in the local helper classes . (no
-> need)
-> 
+> ListenerForTesting is not supported in the local helper classes . (no need)
+
 set the tester pom file according to tester setup and run
 mvn clean install -P schema ,
-it will produce   LocalTestService.avpr for ExportForTesting 
+it will produce   TestService.avpr for ExportForTesting . for marge the local tests service with the SUT tests service 
+just put the SUT tests service avpr file  in the tests.infrastructure and run the  `mvn clean install -P schema`
 
-Example test :
-	this test uses Async call ,Sync call and listener for change the method arg values at runtime .
-	no other classes needed .all the real impl is at the SUT code 
-	
-    public class packageProcessorEventTests extends AbstractTesterImpl {
-    
-   @Test
-    public void check_Event_Route_Trigger(){
-        try {
-            CountDownLatch lock = new CountDownLatch(1);
-            final CallFuture<Void> future = new CallFuture<>();
-            new LocalStepServiceImpl.Helper_Sock_send(data,1,future);
-            AtomicReference<Object[]> ref = new AtomicReference();
+for tests examples see [tests](https://github.com/nimcoh0/Jdry/blob/master/tests/appTests/src/test/java/tests/ExampleTests.java) 
 
-            new ListenerServiceImpl.org_pack_processor_process_events_EventHeadler_HandlerOverSpeed(){
-                @Override
-                public  java.lang.Object[] org_pack_processor_process_events_EventHeadler_HandlerOverSpeed(org.pack.processor.objects.UserEvent userEvent, org.pack.processor.objects.UserInfo userInfo, org.pack.processor.objects.ObjectInfo objectInfo, org.pack.processor.objects.DeviceWebLocationData location){
-                    lock.countDown();
-                    return new Object[]{userEvent,userInfo,objectInfo,location};
-                }
-
-            };
-            lock.await(10, TimeUnit.MINUTES);
-            future.get();
-            EventStatus eventStatus = tests.org_pack_processor_db_DBService_loadEventStatus(Integer.valueOf(ref.get()[0].toString()),String.valueOf(ref.get()[1]));
-
-            Assert.assertFalse(eventStatus.getDtServer().equals(String.valueOf(ref.get()[2])) );
-            logger.info("test check_Event_Route_Trigger finish successfully");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    public void check_Event_Route_Trigger1(){
-        try {
-
-            new LocalStepServiceImpl.Helper_Sock_send(data,1).then(
-                    ListenerServiceImpl.org_pack_processor_process_events_EventHeadler_HandlerOverSpeed.waitTo().getUserInfo(),res ->{
-                        Assert.assertTrue(((UserInfo)res.result()).getUserName() != null);
-                    });
-            logger.info("test check_Event_Route_Trigger finish successfully");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
- 
-in the above test we use LocalStepServiceImpl to invoke helper_Sock_send method (when package = helper , class = Sock and method = send ) in async way in conjunction with org_pack_processor_process_events_EventHeadler_HandlerOverSpeed  , we need to run it Async so the listener can be register before the send execute . at this example we wait to code to rich the HandlerOverSpeed method and then replace the value of userEvent CheckedValue filed . then return the args to the SUT to perform the real call with the update args  . after the Async finsih we call a sync method using the test proxy 
-to call org_pack_processor_db_DBService_loadEventStatus method for verify the result . 
-the second example is the same idea but hide the complexity in LocalStepServiceImpl that is generated automatically
 
 for list of current limitations see https://github.com/nimcoh0/Jdry/wiki/limitations
 
