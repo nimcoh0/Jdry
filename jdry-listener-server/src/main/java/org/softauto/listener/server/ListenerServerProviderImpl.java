@@ -61,54 +61,12 @@ public class ListenerServerProviderImpl implements Provider {
 
 
 
-    /**
-     * load configuration from Configuration.yaml . set Configuration class
-     * @return this
-     */
-    public ListenerServerProviderImpl loadConfiguration()  {
-       try {
-            if(new File(System.getProperty("user.dir")+"/Configuration.yaml").isFile()) {
-                Configuration.setConfiguration(objectMapper.readTree(new File(System.getProperty("user.dir") + "/Configuration.yaml")));
-            }
-            Configuration.put(Context.TEST_MACHINE,Utils.getMachineIp());
-            Configuration.put(Context.TEST_MACHINE_NAME,Utils.getMachineName());
-            if(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH) == null) {
-               Configuration.put(Context.TEST_INFRASTRUCTURE_PATH, System.getProperty("user.dir") + "/target/test-classes/tests/infrastructure");
-            }
-            if(Configuration.get(Context.LISTENER_PORT) == null) {
-               Configuration.put(Context.LISTENER_PORT,"9091");
-            }
-            if(Configuration.get(Context.SERIALIZER_PORT) == null) {
-               Configuration.put(Context.SERIALIZER_PORT,"8085");
-            }
-           if(Configuration.get(Context.SERIALIZER_HOST) == null) {
-               Configuration.put(Context.SERIALIZER_HOST,"localhost");
-           }
-           if(Configuration.get(Context.ENABLE_SESSION) == null){
-               Configuration.put(Context.ENABLE_SESSION,true);
-           }
-           if(Configuration.get(Context.LOAD_WEAVER) == null){
-               Configuration.put(Context.LOAD_WEAVER,true);
-           }
-           if(Configuration.get(Context.SEND_LOG_TO_TESTER) == null){
-               Configuration.put(Context.SEND_LOG_TO_TESTER,false);
-           }
-           if(Configuration.get(Context.SEND_JDRY_LOG_TO_TESTER) == null){
-               Configuration.put(Context.SEND_JDRY_LOG_TO_TESTER,false);
-           }
-           logger.debug("configuration load successfully " + Configuration.getConfiguration());
-        }catch(Exception e){
-            logger.error("fail load listener configuration ",e);
-        }
-         return this;
-    }
 
 
 
 
     public ListenerServerProviderImpl initialize()  {
         try {
-            loadConfiguration();
             server = ServerBuilder.forPort(Configuration.get(Context.LISTENER_PORT).asInt())
                     .addService(org.softauto.serializer.SoftautoGrpcServer.createServiceDefinition(SerializerService.class, ListenerServiceImpl.class))
                     .build();

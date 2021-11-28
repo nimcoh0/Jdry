@@ -40,8 +40,8 @@ public class AbstractTesterImpl {
     public void start(){
         try {
            //Log.set(LEVEL_TRACE);
-           loadPlugins();
            SystemState.getInstance().initialize();
+           loadPlugins();
         }catch (Exception e){
             logger.error("fail start listener ",e);
         }

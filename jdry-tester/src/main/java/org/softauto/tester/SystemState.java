@@ -1,8 +1,13 @@
 package org.softauto.tester;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.softauto.core.*;
+import org.softauto.listener.server.ListenerServerProviderImpl;
 
+import java.io.File;
 import java.io.IOException;
 
 
@@ -14,15 +19,20 @@ public class SystemState {
 
     private SystemState(){};
 
+    static ObjectMapper objectMapper;
+
     public static SystemState getInstance(){
         if(systemState == null){
             systemState = new SystemState();
+            objectMapper = new ObjectMapper(new YAMLFactory());
+            loadDefaultConfiguration();
         }
         return systemState;
     }
 
 
     public void initialize() throws IOException {
+        loadConfiguration();
         sayHello(res->{
            if(res.succeeded()){
                logger.debug("successfully say hello");
@@ -82,5 +92,27 @@ public class SystemState {
         resultHandler.handle(Future.handleResult(true));
     }
 
+    public static void loadDefaultConfiguration()  {
+        try {
+               Configuration.setConfiguration(DefaultConfiguration.getConfiguration());
 
+
+            logger.debug("default configuration load successfully " + Configuration.getConfiguration());
+        }catch(Exception e){
+            logger.error("fail load default configuration ",e);
+        }
+    }
+
+    public SystemState loadConfiguration()  {
+        try {
+            if(new File(System.getProperty("user.dir")+ "/Configuration.yaml").isFile()) {
+                JsonNode userConfiguration = objectMapper.readTree(new File(System.getProperty("user.dir") + "/Configuration.yaml"));
+                Configuration.setConfiguration(new MargeJsonNode().mergeNode((ObjectNode) Configuration.getConfiguration(),(ObjectNode) userConfiguration));
+            }
+            logger.debug("configuration load successfully " + Configuration.getConfiguration());
+        }catch(Exception e){
+            logger.error("fail load listener configuration ",e);
+        }
+        return this;
+    }
 }

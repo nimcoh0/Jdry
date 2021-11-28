@@ -87,7 +87,7 @@ public class JaxrsProviderImpl implements Provider {
 
     @Override
     public Provider initialize() throws IOException {
-        serviceDefinition =  RestService.createServiceDefinition(Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() ,Context.STEP_SERVICE,Configuration.get(Context.TEST_MACHINE).asText()));
+        serviceDefinition =  RestService.createServiceDefinition(Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() ,Configuration.get(Context.STEP_SERVICE_NAME).asText(),Configuration.get(Context.TEST_MACHINE).asText()));
         logger.debug("jaxrs plugin initialize successfully");
         return this;
     }

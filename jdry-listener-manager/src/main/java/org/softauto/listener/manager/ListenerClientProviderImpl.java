@@ -42,7 +42,7 @@ public class ListenerClientProviderImpl implements Provider {
     @Override
     public Provider initialize() throws IOException {
         try {
-            Class iface = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Context.LISTENER_SERVICE, Configuration.get(Context.TEST_MACHINE).asText());
+            Class iface = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Configuration.get(Context.LISTENER_SERVICE_NAME).asText(), Configuration.get(Context.TEST_MACHINE).asText());
             ListenerServiceImpl listenerServiceImpl = new ListenerServiceImpl();
             Listener.addSchema(iface);
             Listener.init(listenerServiceImpl);

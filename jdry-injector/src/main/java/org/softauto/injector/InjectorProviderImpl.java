@@ -44,7 +44,7 @@ public class InjectorProviderImpl implements Provider {
 
     public InjectorProviderImpl initialize() throws IOException {
         try {
-            this.iface =  Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , Context.STEP_SERVICE, Configuration.get(Context.TEST_MACHINE).asText());
+            this.iface =  Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , Configuration.get(Context.STEP_SERVICE_NAME).asText(), Configuration.get(Context.TEST_MACHINE).asText());
             injector = new Injector().createServiceDefinition(iface);
             logger.info("Injector successfully initilize");
         }catch (Throwable e){
