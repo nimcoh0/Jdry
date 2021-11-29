@@ -61,6 +61,9 @@ public static class app_example_books_BookCatalog_addBook implements IListener{
     }
 
 
+
+
+
     public static app_example_books_BookCatalog_addBook waitUntil(ExpressionBuilder exp){
     app_example_books_BookCatalog_addBook _waitUntil = null;
     //if(app_example_books_BookCatalog_addBook == null){
@@ -281,14 +284,13 @@ public static class app_example_books_BookCatalog_addBook implements IListener{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_BookCatalog_addBook>> resultHandler)throws Exception{
+    public static app_example_books_BookCatalog_addBook waitTo(Handler<AsyncResult<app_example_books_BookCatalog_addBook>> resultHandler)throws Exception{
     app_example_books_BookCatalog_addBook _waitTo = null;
     //if(app_example_books_BookCatalog_addBook == null){
             try{
                 logger.debug("waiting for app_example_books_BookCatalog_addBook");
                // app_example_books_BookCatalog_addBook = new app_example_books_BookCatalog_addBook();
                 lock = new CountDownLatch(1);
-                lock.await(timeOutInMin, TimeUnit.MINUTES);
                 _waitTo = new app_example_books_BookCatalog_addBook(){
                      @Override
                      public Object[] app_example_books_BookCatalog_addBook(                        app.example.books.Book book){
@@ -321,7 +323,7 @@ public static class app_example_books_BookCatalog_addBook implements IListener{
                resultHandler.handle(Future.handleError(e));
             }
         //}
-
+        return _waitTo;
     }
 
 
@@ -367,10 +369,14 @@ public static class app_example_books_BookCatalog_getBooks implements IListener{
        return new Object[]{            };
     }
 
+
+
+
     public void app_example_books_BookCatalog_getBooks(java.util.List<app.example.books.Book> result){
      LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_example_books_BookCatalog_getBooks args :java.util.List<app.example.books.Book> " + result);
      _result = result;
     }
+
 
     public static app_example_books_BookCatalog_getBooks waitUntil(ExpressionBuilder exp){
     app_example_books_BookCatalog_getBooks _waitUntil = null;
@@ -584,14 +590,13 @@ public static class app_example_books_BookCatalog_getBooks implements IListener{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_BookCatalog_getBooks>> resultHandler)throws Exception{
+    public static app_example_books_BookCatalog_getBooks waitTo(Handler<AsyncResult<app_example_books_BookCatalog_getBooks>> resultHandler)throws Exception{
     app_example_books_BookCatalog_getBooks _waitTo = null;
     //if(app_example_books_BookCatalog_getBooks == null){
             try{
                 logger.debug("waiting for app_example_books_BookCatalog_getBooks");
                // app_example_books_BookCatalog_getBooks = new app_example_books_BookCatalog_getBooks();
                 lock = new CountDownLatch(1);
-                lock.await(timeOutInMin, TimeUnit.MINUTES);
                 _waitTo = new app_example_books_BookCatalog_getBooks(){
                      @Override
                      public Object[] app_example_books_BookCatalog_getBooks(){
@@ -623,7 +628,7 @@ public static class app_example_books_BookCatalog_getBooks implements IListener{
                resultHandler.handle(Future.handleError(e));
             }
         //}
-
+        return _waitTo;
     }
 
 
@@ -736,7 +741,7 @@ public static app_example_books_BookCatalog_getBooks waitToResult(CallFuture<jav
 
 
 
-    public java.util.List<app.example.books.Book> get_Result(){
+    public java.util.List<app.example.books.Book> get_Result()throws Exception{
         return _result;
     }
 
@@ -779,6 +784,9 @@ public static class app_example_books_BookCatalog_printBook implements IListener
 
        return new Object[]{                book            };
     }
+
+
+
 
 
     public static app_example_books_BookCatalog_printBook waitUntil(ExpressionBuilder exp){
@@ -1001,14 +1009,13 @@ public static class app_example_books_BookCatalog_printBook implements IListener
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_BookCatalog_printBook>> resultHandler)throws Exception{
+    public static app_example_books_BookCatalog_printBook waitTo(Handler<AsyncResult<app_example_books_BookCatalog_printBook>> resultHandler)throws Exception{
     app_example_books_BookCatalog_printBook _waitTo = null;
     //if(app_example_books_BookCatalog_printBook == null){
             try{
                 logger.debug("waiting for app_example_books_BookCatalog_printBook");
                // app_example_books_BookCatalog_printBook = new app_example_books_BookCatalog_printBook();
                 lock = new CountDownLatch(1);
-                lock.await(timeOutInMin, TimeUnit.MINUTES);
                 _waitTo = new app_example_books_BookCatalog_printBook(){
                      @Override
                      public Object[] app_example_books_BookCatalog_printBook(                        app.example.books.Book book){
@@ -1041,7 +1048,7 @@ public static class app_example_books_BookCatalog_printBook implements IListener
                resultHandler.handle(Future.handleError(e));
             }
         //}
-
+        return _waitTo;
     }
 
 
@@ -1087,10 +1094,14 @@ public static class app_example_books_Book_getTitle implements IListener{
        return new Object[]{            };
     }
 
+
+
+
     public void app_example_books_Book_getTitle(java.lang.String result){
      LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_example_books_Book_getTitle args :java.lang.String " + result);
      _result = result;
     }
+
 
     public static app_example_books_Book_getTitle waitUntil(ExpressionBuilder exp){
     app_example_books_Book_getTitle _waitUntil = null;
@@ -1304,14 +1315,13 @@ public static class app_example_books_Book_getTitle implements IListener{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_Book_getTitle>> resultHandler)throws Exception{
+    public static app_example_books_Book_getTitle waitTo(Handler<AsyncResult<app_example_books_Book_getTitle>> resultHandler)throws Exception{
     app_example_books_Book_getTitle _waitTo = null;
     //if(app_example_books_Book_getTitle == null){
             try{
                 logger.debug("waiting for app_example_books_Book_getTitle");
                // app_example_books_Book_getTitle = new app_example_books_Book_getTitle();
                 lock = new CountDownLatch(1);
-                lock.await(timeOutInMin, TimeUnit.MINUTES);
                 _waitTo = new app_example_books_Book_getTitle(){
                      @Override
                      public Object[] app_example_books_Book_getTitle(){
@@ -1343,7 +1353,7 @@ public static class app_example_books_Book_getTitle implements IListener{
                resultHandler.handle(Future.handleError(e));
             }
         //}
-
+        return _waitTo;
     }
 
 
@@ -1456,7 +1466,7 @@ public static app_example_books_Book_getTitle waitToResult(CallFuture<java.lang.
 
 
 
-    public java.lang.String get_Result(){
+    public java.lang.String get_Result()throws Exception{
         return _result;
     }
 
@@ -1499,6 +1509,9 @@ public static class app_example_books_Book_setTitle implements IListener{
 
        return new Object[]{                title            };
     }
+
+
+
 
 
     public static app_example_books_Book_setTitle waitUntil(ExpressionBuilder exp){
@@ -1721,14 +1734,13 @@ public static class app_example_books_Book_setTitle implements IListener{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_Book_setTitle>> resultHandler)throws Exception{
+    public static app_example_books_Book_setTitle waitTo(Handler<AsyncResult<app_example_books_Book_setTitle>> resultHandler)throws Exception{
     app_example_books_Book_setTitle _waitTo = null;
     //if(app_example_books_Book_setTitle == null){
             try{
                 logger.debug("waiting for app_example_books_Book_setTitle");
                // app_example_books_Book_setTitle = new app_example_books_Book_setTitle();
                 lock = new CountDownLatch(1);
-                lock.await(timeOutInMin, TimeUnit.MINUTES);
                 _waitTo = new app_example_books_Book_setTitle(){
                      @Override
                      public Object[] app_example_books_Book_setTitle(                        java.lang.String title){
@@ -1761,7 +1773,7 @@ public static class app_example_books_Book_setTitle implements IListener{
                resultHandler.handle(Future.handleError(e));
             }
         //}
-
+        return _waitTo;
     }
 
 
@@ -1807,10 +1819,14 @@ public static class app_example_books_Book_getAuthor implements IListener{
        return new Object[]{            };
     }
 
+
+
+
     public void app_example_books_Book_getAuthor(java.lang.String result){
      LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_example_books_Book_getAuthor args :java.lang.String " + result);
      _result = result;
     }
+
 
     public static app_example_books_Book_getAuthor waitUntil(ExpressionBuilder exp){
     app_example_books_Book_getAuthor _waitUntil = null;
@@ -2024,14 +2040,13 @@ public static class app_example_books_Book_getAuthor implements IListener{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_Book_getAuthor>> resultHandler)throws Exception{
+    public static app_example_books_Book_getAuthor waitTo(Handler<AsyncResult<app_example_books_Book_getAuthor>> resultHandler)throws Exception{
     app_example_books_Book_getAuthor _waitTo = null;
     //if(app_example_books_Book_getAuthor == null){
             try{
                 logger.debug("waiting for app_example_books_Book_getAuthor");
                // app_example_books_Book_getAuthor = new app_example_books_Book_getAuthor();
                 lock = new CountDownLatch(1);
-                lock.await(timeOutInMin, TimeUnit.MINUTES);
                 _waitTo = new app_example_books_Book_getAuthor(){
                      @Override
                      public Object[] app_example_books_Book_getAuthor(){
@@ -2063,7 +2078,7 @@ public static class app_example_books_Book_getAuthor implements IListener{
                resultHandler.handle(Future.handleError(e));
             }
         //}
-
+        return _waitTo;
     }
 
 
@@ -2176,7 +2191,7 @@ public static app_example_books_Book_getAuthor waitToResult(CallFuture<java.lang
 
 
 
-    public java.lang.String get_Result(){
+    public java.lang.String get_Result()throws Exception{
         return _result;
     }
 
@@ -2219,6 +2234,9 @@ public static class app_example_books_Book_setAuthor implements IListener{
 
        return new Object[]{                author            };
     }
+
+
+
 
 
     public static app_example_books_Book_setAuthor waitUntil(ExpressionBuilder exp){
@@ -2441,14 +2459,13 @@ public static class app_example_books_Book_setAuthor implements IListener{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_Book_setAuthor>> resultHandler)throws Exception{
+    public static app_example_books_Book_setAuthor waitTo(Handler<AsyncResult<app_example_books_Book_setAuthor>> resultHandler)throws Exception{
     app_example_books_Book_setAuthor _waitTo = null;
     //if(app_example_books_Book_setAuthor == null){
             try{
                 logger.debug("waiting for app_example_books_Book_setAuthor");
                // app_example_books_Book_setAuthor = new app_example_books_Book_setAuthor();
                 lock = new CountDownLatch(1);
-                lock.await(timeOutInMin, TimeUnit.MINUTES);
                 _waitTo = new app_example_books_Book_setAuthor(){
                      @Override
                      public Object[] app_example_books_Book_setAuthor(                        java.lang.String author){
@@ -2481,7 +2498,7 @@ public static class app_example_books_Book_setAuthor implements IListener{
                resultHandler.handle(Future.handleError(e));
             }
         //}
-
+        return _waitTo;
     }
 
 
@@ -2527,10 +2544,14 @@ public static class app_example_books_Book_getId implements IListener{
        return new Object[]{            };
     }
 
+
+
+
     public void app_example_books_Book_getId(int result){
      LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_example_books_Book_getId args :int " + result);
      _result = result;
     }
+
 
     public static app_example_books_Book_getId waitUntil(ExpressionBuilder exp){
     app_example_books_Book_getId _waitUntil = null;
@@ -2744,14 +2765,13 @@ public static class app_example_books_Book_getId implements IListener{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_Book_getId>> resultHandler)throws Exception{
+    public static app_example_books_Book_getId waitTo(Handler<AsyncResult<app_example_books_Book_getId>> resultHandler)throws Exception{
     app_example_books_Book_getId _waitTo = null;
     //if(app_example_books_Book_getId == null){
             try{
                 logger.debug("waiting for app_example_books_Book_getId");
                // app_example_books_Book_getId = new app_example_books_Book_getId();
                 lock = new CountDownLatch(1);
-                lock.await(timeOutInMin, TimeUnit.MINUTES);
                 _waitTo = new app_example_books_Book_getId(){
                      @Override
                      public Object[] app_example_books_Book_getId(){
@@ -2783,7 +2803,7 @@ public static class app_example_books_Book_getId implements IListener{
                resultHandler.handle(Future.handleError(e));
             }
         //}
-
+        return _waitTo;
     }
 
 
@@ -2896,7 +2916,7 @@ public static app_example_books_Book_getId waitToResult(CallFuture<java.lang.Int
 
 
 
-    public int get_Result(){
+    public int get_Result()throws Exception{
         return _result;
     }
 
@@ -2939,6 +2959,9 @@ public static class app_example_books_Book_setId implements IListener{
 
        return new Object[]{                id            };
     }
+
+
+
 
 
     public static app_example_books_Book_setId waitUntil(ExpressionBuilder exp){
@@ -3161,14 +3184,13 @@ public static class app_example_books_Book_setId implements IListener{
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<app_example_books_Book_setId>> resultHandler)throws Exception{
+    public static app_example_books_Book_setId waitTo(Handler<AsyncResult<app_example_books_Book_setId>> resultHandler)throws Exception{
     app_example_books_Book_setId _waitTo = null;
     //if(app_example_books_Book_setId == null){
             try{
                 logger.debug("waiting for app_example_books_Book_setId");
                // app_example_books_Book_setId = new app_example_books_Book_setId();
                 lock = new CountDownLatch(1);
-                lock.await(timeOutInMin, TimeUnit.MINUTES);
                 _waitTo = new app_example_books_Book_setId(){
                      @Override
                      public Object[] app_example_books_Book_setId(                        int id){
@@ -3201,7 +3223,7 @@ public static class app_example_books_Book_setId implements IListener{
                resultHandler.handle(Future.handleError(e));
             }
         //}
-
+        return _waitTo;
     }
 
 

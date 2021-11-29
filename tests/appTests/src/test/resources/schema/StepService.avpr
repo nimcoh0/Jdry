@@ -110,7 +110,10 @@
       }
     },
     "app_example_books_BookStore_printBooks" : {
-      "request" : [ ],
+      "request" : [ {
+        "name" : "books",
+        "type" : "java.util.List<app.example.books.Book>"
+      } ],
       "method" : "printBooks",
       "transceiver" : "RPC",
       "response" : "void",

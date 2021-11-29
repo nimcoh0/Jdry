@@ -4,6 +4,7 @@ package org.softauto.injector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.softauto.core.AbstractInjector;
+import org.softauto.core.Utils;
 
 /**
  * Injector  new class instance
@@ -51,12 +52,11 @@ public class Injector implements AbstractInjector {
         try {
             ClassDefinition md = service.getClazz(fullClassName);
             ClassDescriptor cd = md.getClassDescriptor();
-            cd.setArgs(args);
-            Object[] objs = md.getCallHandler().startCall(cd);
-            logger.debug("successfully inject "+ fullClassName);
+            Object[] objs = md.getCallHandler().startCall(cd,args);
+            logger.debug("successfully inject "+ fullClassName + " with args "+ Utils.result2String(args));
             return objs;
         }catch (Exception e){
-            logger.error("fail inject "+ fullClassName,e);
+            logger.error("fail inject "+ fullClassName+ " with args "+ Utils.result2String(args),e);
         }
         return null;
     }

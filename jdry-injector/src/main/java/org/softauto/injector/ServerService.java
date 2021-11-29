@@ -88,6 +88,12 @@ public class ServerService {
             }
             return new Object[]{};
         }
+
+        @Override
+        public Object[] invoke(ClassDescriptor classDescriptor, Object[] args) {
+            logger.error("not impl");
+            return null;
+        }
     }
 
 
@@ -117,6 +123,12 @@ public class ServerService {
             }
             return new Object[]{obj};
         }
+
+        @Override
+        public Object[] invoke(ClassDescriptor classDescriptor, Object[] args) {
+            logger.error("not impl");
+            return null;
+        }
     }
 
 
@@ -140,6 +152,29 @@ public class ServerService {
                 }
                 Class[] types =  classDescriptor.getTypes();
                 Object[] values = classDescriptor.getArgs();
+                Constructor constructor = c.getDeclaredConstructor(types);
+                obj  = constructor.newInstance(values);
+                logger.debug("invoke Initialize class "+classDescriptor.getFullClassName() + "with ares "+Utils.result2String(values) + "and types "+Utils.result2String(types));
+            }catch (Exception e){
+                logger.warn("fail get Instance Class for  "+classDescriptor.getFullClassName(),e.getMessage());
+            }
+            return new Object[]{obj};
+        }
+
+        @Override
+        public Object[] invoke(ClassDescriptor classDescriptor, Object[] args) {
+            Object obj = null;
+            try {
+                Class c = Class.forName(classDescriptor.getFullClassName());
+                if(Configuration.get(Context.ENABLE_SESSION).asBoolean()){
+                    Object[] objects = HeapHelper.getInstances(c);
+                    if(objects != null && objects.length > 0){
+                        logger.debug("found "+objects.length+" instances in jvm. for class "+ classDescriptor.getFullClassName());
+                        return objects;
+                    }
+                }
+                Class[] types =  classDescriptor.getTypes();
+                Object[] values = args;
                 Constructor constructor = c.getDeclaredConstructor(types);
                 obj  = constructor.newInstance(values);
                 logger.debug("invoke Initialize class "+classDescriptor.getFullClassName() + "with ares "+Utils.result2String(values) + "and types "+Utils.result2String(types));
@@ -173,6 +208,12 @@ public class ServerService {
                 logger.warn("fail get Instance Class for  "+classDescriptor.getFullClassName(),e.getMessage());
             }
             return new Object[]{obj};
+        }
+
+        @Override
+        public Object[] invoke(ClassDescriptor classDescriptor, Object[] args) {
+            logger.error("not impl");
+            return null;
         }
     }
 

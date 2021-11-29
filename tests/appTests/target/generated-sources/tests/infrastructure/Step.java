@@ -16,6 +16,8 @@ import org.softauto.core.Future;
 import org.softauto.serializer.CallFuture;
 import org.softauto.tester.InvocationHandler;
 import org.softauto.core.IListener;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 @org.apache.avro.specific.AvroGenerated
 public class Step {
@@ -26,6 +28,7 @@ public class Step {
 
 
 public static class App_example_books_BookStore_addBook {
+
 
 
     CallFuture< app.example.books.BookStore> future = new CallFuture<>();
@@ -65,6 +68,8 @@ public static class App_example_books_BookStore_addBook {
         future.handleResult(future.get());
         return this;
     }
+
+
 
 
 
@@ -109,6 +114,7 @@ public static class App_example_books_BookStore_addBook {
 public static class App_example_books_BookStore_updateBook {
 
 
+
     CallFuture< app.example.books.BookStore> future = new CallFuture<>();
     public app.example.books.BookStore get_Result() throws Exception{
             try {
@@ -146,6 +152,8 @@ public static class App_example_books_BookStore_updateBook {
         future.handleResult(future.get());
         return this;
     }
+
+
 
 
 
@@ -190,6 +198,7 @@ public static class App_example_books_BookStore_updateBook {
 public static class App_example_books_BookStore_addAllBooks {
 
 
+
     CallFuture< app.example.books.BookStore> future = new CallFuture<>();
     public app.example.books.BookStore get_Result() throws Exception{
             try {
@@ -227,6 +236,8 @@ public static class App_example_books_BookStore_addAllBooks {
         future.handleResult(future.get());
         return this;
     }
+
+
 
 
 
@@ -271,6 +282,7 @@ public static class App_example_books_BookStore_addAllBooks {
 public static class App_example_books_BookStore_booksByAuthor {
 
 
+
     CallFuture< java.util.List<app.example.books.Book>> future = new CallFuture<>();
     public java.util.List<app.example.books.Book> get_Result() throws Exception{
             try {
@@ -308,6 +320,8 @@ public static class App_example_books_BookStore_booksByAuthor {
         future.handleResult(future.get());
         return this;
     }
+
+
 
 
 
@@ -352,6 +366,7 @@ public static class App_example_books_BookStore_booksByAuthor {
 public static class App_example_books_BookStore_bookByTitle {
 
 
+
     CallFuture< java.util.Optional<app.example.books.Book>> future = new CallFuture<>();
     public java.util.Optional<app.example.books.Book> get_Result() throws Exception{
             try {
@@ -389,6 +404,8 @@ public static class App_example_books_BookStore_bookByTitle {
         future.handleResult(future.get());
         return this;
     }
+
+
 
 
 
@@ -433,6 +450,7 @@ public static class App_example_books_BookStore_bookByTitle {
 public static class App_example_books_BookStore_loopOverBooks {
 
 
+
     CallFuture<java.lang.Void> future = new CallFuture<>();
     public void get_Result() throws Exception{
             try {
@@ -467,6 +485,8 @@ public static class App_example_books_BookStore_loopOverBooks {
         future.handleResult(future.get());
         return this;
     }
+
+
 
 
 
@@ -511,6 +531,7 @@ public static class App_example_books_BookStore_loopOverBooks {
 public static class App_example_books_BookStore_printBooks {
 
 
+
     CallFuture<java.lang.Void> future = new CallFuture<>();
     public void get_Result() throws Exception{
             try {
@@ -548,10 +569,12 @@ public static class App_example_books_BookStore_printBooks {
 
 
 
-    public App_example_books_BookStore_printBooks(    ){
+
+
+    public App_example_books_BookStore_printBooks(java.util.List<app.example.books.Book> books    ){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_printBooks");
-            new InvocationHandler().invoke("app_example_books_BookStore_printBooks",new Object[]{},new Class[]{},future,"RPC");
+            new InvocationHandler().invoke("app_example_books_BookStore_printBooks",new Object[]{books},new Class[]{java.util.List.class},future,"RPC");
         }catch (Exception e){
              logger.error("fail invoke for app_example_books_BookStore_printBooks"+ e);
         }
@@ -559,21 +582,21 @@ public static class App_example_books_BookStore_printBooks {
 
 
 
-    public App_example_books_BookStore_printBooks(CallFuture<java.lang.Void> future){
+    public App_example_books_BookStore_printBooks(java.util.List<app.example.books.Book> books,CallFuture<java.lang.Void> future){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_printBooks");
-            new InvocationHandler().invoke("app_example_books_BookStore_printBooks",new Object[]{},new Class[]{},future,"RPC");
+            new InvocationHandler().invoke("app_example_books_BookStore_printBooks",new Object[]{books},new Class[]{java.util.List.class},future,"RPC");
         }catch (Exception e){
              logger.error("fail invoke for app_example_books_BookStore_printBooks"+ e);
         }
  }
 
 
-    public  App_example_books_BookStore_printBooks(Handler<AsyncResult<java.lang.Void>> resultHandler  )throws Exception{
+    public  App_example_books_BookStore_printBooks(java.util.List<app.example.books.Book> books,Handler<AsyncResult<java.lang.Void>> resultHandler  )throws Exception{
         try {
             CallFuture<java.lang.Void> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_BookStore_printBooks");
-            new InvocationHandler().invoke("app_example_books_BookStore_printBooks",new Object[]{},new Class[]{},future,"RPC");
+            new InvocationHandler().invoke("app_example_books_BookStore_printBooks",new Object[]{books},new Class[]{java.util.List.class},future,"RPC");
             resultHandler.handle(Future.handleResult(future.get()));
        }catch (Exception e){
           logger.error("fail invoke for app_example_books_BookStore_printBooks"+ e);
@@ -587,6 +610,7 @@ public static class App_example_books_BookStore_printBooks {
  }
 
 public static class App_example_books_Book_Book {
+
 
 
     CallFuture< app.example.books.Book> future = new CallFuture<>();
@@ -626,6 +650,8 @@ public static class App_example_books_Book_Book {
         future.handleResult(future.get());
         return this;
     }
+
+
 
 
 
@@ -670,6 +696,7 @@ public static class App_example_books_Book_Book {
 public static class App_example_books_Book_hello {
 
 
+
     CallFuture< java.lang.String> future = new CallFuture<>();
     public java.lang.String get_Result() throws Exception{
             try {
@@ -707,6 +734,8 @@ public static class App_example_books_Book_hello {
         future.handleResult(future.get());
         return this;
     }
+
+
 
 
 

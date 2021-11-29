@@ -79,12 +79,16 @@ public static class ${this.mangle($name)} implements IListener{
             };
     }
 
+
+
+
 #if (${this.javaUnbox($response, true)} != "void" )
 #if($message.getRequest().getFields().size() == 0 || $message.getRequest().getFields().size() > 1 || ($message.getRequest().getFields().size() == 1 && !$response.getType().equals($message.getRequest().getFields()[0].schema().getType())))
     public void ${this.mangle($name)}(${this.javaUnbox($response, true)} result){
      LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " ${this.mangle($name)} args :${this.javaUnbox($response, true)} " + result);
      _result = result;
     }
+
 #end
 #end
 
@@ -388,14 +392,13 @@ ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
         return _waitTo;
     }
 
-    public static void waitTo(Handler<AsyncResult<${this.mangle($name)}>> resultHandler)throws Exception{
+    public static ${this.mangle($name)} waitTo(Handler<AsyncResult<${this.mangle($name)}>> resultHandler)throws Exception{
     ${this.mangle($name)} _waitTo = null;
     //if(${this.unCapitalizeFirstLetter(${this.mangle($name)})} == null){
             try{
                 logger.debug("waiting for ${this.mangle($name)}");
                // ${this.unCapitalizeFirstLetter(${this.mangle($name)})} = new ${this.mangle($name)}();
                 lock = new CountDownLatch(1);
-                lock.await(timeOutInMin, TimeUnit.MINUTES);
                 _waitTo = new ${this.mangle($name)}(){
                      @Override
                      public Object[] ${this.mangle($name)}(##
@@ -438,7 +441,7 @@ ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
                resultHandler.handle(Future.handleError(e));
             }
         //}
-
+        return _waitTo;
     }
 
 
@@ -554,7 +557,7 @@ public static ${this.mangle($name)} waitToResult(CallFuture<$this.javaType($resp
 
 
 
-    public ${this.javaUnbox($response, true)} get_Result(){
+    public ${this.javaUnbox($response, true)} get_Result()throws Exception{
         return _result;
     }
 

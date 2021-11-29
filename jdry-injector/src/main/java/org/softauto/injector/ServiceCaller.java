@@ -8,6 +8,7 @@ public class ServiceCaller {
 
     public interface requestClass {
         Object[] invoke(ClassDescriptor classDescriptor);
+        Object[] invoke(ClassDescriptor classDescriptor,Object[] args);
     }
 
     public interface UnaryClass extends requestClass {
@@ -22,6 +23,11 @@ public class ServiceCaller {
 
         public Object[] startCall(ClassDescriptor classDescriptor) {
             return  this.clazz.invoke(classDescriptor);
+        }
+
+        @Override
+        public Object[] startCall(ClassDescriptor classDescriptor, Object[] args) {
+            return  this.clazz.invoke(classDescriptor,args);
         }
     }
 
