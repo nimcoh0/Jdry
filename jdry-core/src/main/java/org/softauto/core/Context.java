@@ -28,8 +28,10 @@ public class Context {
     public final static String TEST_INFRASTRUCTURE_PATH = "tests_infrastructure_path";
     public final static String STEP_SERVICE_NAME =  "step_service_name";
     public final static String STEP_SERVICE_IMPL =  "step_service_impl";
+    public final static String STEP_SERVICE_IMPL_FOR_PROXY =  "step_service_impl_for_proxy";
     public final static String LISTENER_SERVICE_NAME = "listener_service_name";
     public final static String LISTENER_SERVICE_IMPL = "listener_service_impl";
+    public final static String LISTENER_SERVICE_IMPL_FOR_PROXY = "listener_service_impl_for_proxy";
     //public final static String LISTENER_SERVICE_LOG_IMPL = "ListenerServiceLogImpl";
     //public final static String LISTENER_SERVICE_LOG = "ListenerServiceLog";
     public final static String SERIALIZER_PORT = "serializer_port";

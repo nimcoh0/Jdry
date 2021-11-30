@@ -2,15 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>jdry</artifactId>
-        <version>1.0.0</version>
         <groupId>org.softauto</groupId>
+        <version>1.0.0</version>
     </parent>
-    <artifactId>jdry-testng-plugin</artifactId>
-    <version>1.0.0</version>
+    <modelVersion>4.0.0</modelVersion>
 
+    <artifactId>jdry-testng-for-proxy-plugin</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.testng</groupId>
@@ -29,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
-            <artifactId>jdry-tester</artifactId>
+            <artifactId>jdry-tester-for-proxy</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>
         </dependency>
@@ -76,7 +75,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <finalName>jdry-testng-1.0.0-SNAPSHOT</finalName>
+                            <finalName>jdry-testng-for-proxy-1.0.0-SNAPSHOT</finalName>
 
                         </configuration>
                     </execution>

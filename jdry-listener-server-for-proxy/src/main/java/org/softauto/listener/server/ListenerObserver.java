@@ -10,14 +10,13 @@ import java.util.List;
 public class ListenerObserver {
 
     private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ListenerObserver.class);
-    private  List<HashMap<String,Object>> channels = null;
+    private List<HashMap<String,Object>> channels = null;
 
     private static ListenerObserver listenerObserver = null;
 
     public static ListenerObserver getInstance(){
         if(listenerObserver == null){
             listenerObserver =  new ListenerObserver();
-            //channels = new ArrayList<>();
         }
         return listenerObserver;
     }
@@ -26,7 +25,7 @@ public class ListenerObserver {
      * clear the channels list
      */
     public void reset(){
-        channels = new ArrayList<>();
+          channels = new ArrayList<>();
     }
 
     private ListenerObserver(){
@@ -55,11 +54,25 @@ public class ListenerObserver {
             if(k.equals(key)){
                 v = null;
                 i.put(k,v);
+                logger.debug("successfully unregister "+key );
             }
           });
         });
     }
 
+    public void unRegister(String key,Object value) {
+        this.channels.forEach((i) -> {
+            i.forEach((k, v) -> {
+                if (k.equals(key) && v.equals(value)) {
+                    v = null;
+                    i.put(k, v);
+                    logger.debug("successfully unregister "+key +":" + value);
+                }
+
+            });
+        });
+
+    }
 
     /**
      * get channel
@@ -70,7 +83,8 @@ public class ListenerObserver {
         try {
             for (HashMap<String, Object> chanel : channels) {
                 if (chanel.containsKey(key)) {
-                    return chanel.get(key);
+                    if(chanel.get(key) != null)
+                     return chanel.get(key);
                 }
             }
             logger.debug("observer channel for " + key + " fail ");
@@ -91,7 +105,8 @@ public class ListenerObserver {
         try {
             for (HashMap<String, Object> chanel : channels) {
                 if (chanel.containsKey(key)) {
-                    l.add(chanel.get(key));
+                    if(chanel.get(key) != null)
+                        l.add(chanel.get(key));
                 }
             }
             logger.debug("observer channel for " + key + " found " + l.size());
@@ -100,6 +115,8 @@ public class ListenerObserver {
         }
         return l;
     }
+
+
 
     /**
      * get all channels
@@ -128,4 +145,6 @@ public class ListenerObserver {
         }
         return null;
     }
+
+
 }

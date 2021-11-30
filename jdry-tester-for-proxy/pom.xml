@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>jdry</artifactId>
+        <groupId>org.softauto</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>jdry-tester-for-proxy</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-listener-server-for-proxy</artifactId>
+            <version>${jdry-listener-server}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.softauto</groupId>
+                    <artifactId>jdry-grpc</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-core</artifactId>
+            <version>${jdry-core}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.softauto</groupId>
+                    <artifactId>jdry-grpc</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-local</artifactId>
+            <version>${jdry-local}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.softauto</groupId>
+                    <artifactId>jdry-grpc</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-avro</artifactId>
+            <version>${jdry-avro}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.softauto</groupId>
+                    <artifactId>jdry-grpc</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-common</artifactId>
+            <version>4.1.53.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>${reflections}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+            <version>3.0.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-serializer</artifactId>
+            <version>${jdry-serializer}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.softauto</groupId>
+                    <artifactId>jdry-grpc</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+
+                            <finalName>jdry-tester-1.0.0-SNAPSHOT</finalName>
+
+                        </configuration>
+                    </execution>
+                </executions>
+
+            </plugin>
+        </plugins>
+
+    </build>
+</project>

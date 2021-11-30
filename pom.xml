@@ -28,7 +28,9 @@
         <module>jdry-listener-server</module>
         <module>jdry-injector</module>
         <module>jdry-jvmTool</module>
-
+        <module>jdry-tester-for-proxy</module>
+        <module>jdry-listener-server-for-proxy</module>
+        <module>jdry-testng-for-proxy-plugin</module>
 
 
     </modules>

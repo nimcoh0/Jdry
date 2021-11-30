@@ -1,0 +1,75 @@
+#if ($protocol.getNamespace())
+package $this.mangle($protocol.getNamespace());
+#end
+import java.util.function.Function;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+@org.apache.avro.specific.AvroGenerated
+public class Listener {
+
+    private static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Listener.class);
+
+    public Listener(){
+          try {
+             if( Class.forName("org.softauto.listener.server.ListenerObserver", false, this.getClass().getClassLoader())!= null){
+                 org.softauto.listener.server.ListenerObserver.getInstance().register("tests.infrastructure.Listener", this);
+                 logger.debug("successfully register tests.infrastructure.Listener to observer ");
+             }
+         }catch (Exception e){
+           logger.error("fail register tests.infrastructure.Listener to observer ", e);
+         }
+    }
+
+    public Listener(String name){
+          try {
+             if( Class.forName("org.softauto.listener.server.ListenerObserver", false, this.getClass().getClassLoader())!= null){
+                 org.softauto.listener.server.ListenerObserver.getInstance().register(name, this);
+                 logger.debug("successfully register tests.infrastructure.Listener to observer ");
+             }
+         }catch (Exception e){
+           logger.error("fail register "+name+" to observer ", e);
+         }
+    }
+
+#foreach ($e in $protocol.getMessages().entrySet())
+#set ($name = $e.getKey())
+#set ($message = $e.getValue())
+#set ($response = $message.getResponse())
+
+public ##
+java.lang.Object[] ${this.mangle($name)}(##
+#foreach ($p in $message.getRequest().getFields())##
+#*      *#${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.hasNext), #end
+#end
+){
+ LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " ${this.mangle($name)} args :" ##
+   #foreach ($p in $message.getRequest().getFields())##
+   #*      *# +" ${this.mangle($p.name())}:" + ${this.mangle($p.name())}#if ($foreach.hasNext) #end
+   #end##
+   );
+
+   #if (${this.javaUnbox($response, true)} != "void" )
+   return new Object[]{##
+        #foreach ($p in $message.getRequest().getFields())##
+            ${this.mangle($p.name())}#if ($foreach.hasNext), #end##
+        #end
+        };
+   #else
+   return new Object[]{};
+   #end
+
+}
+
+#if (${this.javaUnbox($response, true)} != "void" )
+#if($message.getRequest().getFields().size() == 0 || $message.getRequest().getFields().size() > 1 || ($message.getRequest().getFields().size() == 1 && !$response.getType().equals($message.getRequest().getFields()[0].schema().getType())))
+public void ${this.mangle($name)}(${this.javaUnbox($response, true)} result){
+ LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " ${this.mangle($name)} args :${this.javaUnbox($response, true)} " + result);
+
+}
+#end
+#end
+
+#end## (requests)
+}## End of protocol interface

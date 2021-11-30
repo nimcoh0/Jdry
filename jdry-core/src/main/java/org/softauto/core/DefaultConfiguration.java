@@ -19,7 +19,9 @@ public class DefaultConfiguration {
         configuration.put(Context.STEP_SERVICE_NAME,"StepService");
         configuration.put(Context.LISTENER_SERVICE_NAME,"ListenerService");
         configuration.put(Context.LISTENER_SERVICE_IMPL,"Listener");
+        configuration.put(Context.LISTENER_SERVICE_IMPL_FOR_PROXY,"tests.infrastructure.Listener");
         configuration.put(Context.STEP_SERVICE_IMPL,"Step");
+        configuration.put(Context.STEP_SERVICE_IMPL_FOR_PROXY,"tests.infrastructure.Step");
         configuration.put(Context.ASPECT_WEAVER,"aspectjweaver-1.9.6.jar");
         configuration.put(Context.DEFUALT_DATETIME_FORMAT,"yyyy-MM-dd HH:mm:ss");
         configuration.put(Context.TEST_MACHINE,Utils.getMachineIp());

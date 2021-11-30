@@ -1,0 +1,69 @@
+package tests.infrastructure;
+
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.softauto.tester.Client;
+import org.softauto.plugin.ProviderManager;
+import org.softauto.plugin.spi.PluginProvider;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.ITestContext;
+import java.lang.reflect.Method;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import org.softauto.core.Utils;
+import com.esotericsoftware.minlog.Log;
+import static com.esotericsoftware.minlog.Log.*;
+import org.softauto.plugin.ProviderScope;
+import org.softauto.tester.SystemState;
+
+@org.apache.avro.specific.AvroGenerated
+public class AbstractTesterImpl {
+
+    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(AbstractTesterImpl.class);
+    static boolean initialize = false;
+    public StepService tests;
+    public StepService.Callback asyncTests;
+    public ListenerService listeners;
+    public ListenerService.Callback asyncListeners;
+    public ObjectMapper objectMapper = new ObjectMapper();
+
+    @BeforeSuite
+    public void start(){
+        try {
+        if(!initialize){
+            initialize = true;
+            tests =  Client.create(tests.infrastructure.StepService.class);
+            asyncTests =  Client.create(tests.infrastructure.StepService.Callback.class);
+            listeners = Client.create(tests.infrastructure.ListenerService.class);
+            asyncListeners = Client.create(tests.infrastructure.ListenerService.Callback.class);
+            SystemState.getInstance().initialize();
+            loadPlugins();
+           }
+        }catch (Exception e){
+            logger.error("fail start listener ",e);
+        }
+    }
+
+
+
+
+
+
+
+    public  void loadPlugins(){
+            try {
+                for(PluginProvider provider : ProviderManager.providers(ProviderScope.Tester)){
+                      provider.create().initialize().register();
+                }
+            }catch (Exception e){
+                logger.error("fail to load plugins  ",e);
+            }
+        }
+
+}
+
