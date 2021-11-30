@@ -1,0 +1,160 @@
+{
+  "protocol" : "StepService",
+  "version" : "1.0",
+  "namespace" : "tests.infrastructure",
+  "types" : [ {
+    "name" : "app.example.books.BookStore",
+    "type" : "external"
+  }, {
+    "name" : "app.example.books.Book",
+    "type" : "external"
+  }, {
+    "name" : "java.util.Collection<app.example.books.Book>",
+    "type" : "external"
+  }, {
+    "name" : "java.util.List<app.example.books.Book>",
+    "type" : "external"
+  }, {
+    "name" : "java.util.Optional<app.example.books.Book>",
+    "type" : "external"
+  } ],
+  "messages" : {
+    "app_example_books_BookStore_addBook" : {
+      "request" : [ {
+        "name" : "book",
+        "type" : "app.example.books.Book"
+      } ],
+      "method" : "addBook",
+      "transceiver" : "RPC",
+      "response" : "app.example.books.BookStore",
+      "namespace" : "app.example.books.BookStore",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.example.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "app_example_books_BookStore_updateBook" : {
+      "request" : [ {
+        "name" : "book",
+        "type" : "app.example.books.Book"
+      }, {
+        "name" : "newTitle",
+        "type" : "string"
+      } ],
+      "method" : "updateBook",
+      "transceiver" : "RPC",
+      "response" : "app.example.books.BookStore",
+      "namespace" : "app.example.books.BookStore",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.example.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "app_example_books_BookStore_addAllBooks" : {
+      "request" : [ {
+        "name" : "books",
+        "type" : "java.util.Collection<app.example.books.Book>"
+      } ],
+      "method" : "addAllBooks",
+      "transceiver" : "RPC",
+      "response" : "app.example.books.BookStore",
+      "namespace" : "app.example.books.BookStore",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.example.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "app_example_books_BookStore_booksByAuthor" : {
+      "request" : [ {
+        "name" : "author",
+        "type" : "string"
+      } ],
+      "method" : "booksByAuthor",
+      "transceiver" : "RPC",
+      "response" : "java.util.List<app.example.books.Book>",
+      "namespace" : "app.example.books.BookStore",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.example.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "app_example_books_BookStore_bookByTitle" : {
+      "request" : [ {
+        "name" : "title",
+        "type" : "string"
+      } ],
+      "method" : "bookByTitle",
+      "transceiver" : "RPC",
+      "response" : "java.util.Optional<app.example.books.Book>",
+      "namespace" : "app.example.books.BookStore",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.example.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "app_example_books_BookStore_loopOverBooks" : {
+      "request" : [ ],
+      "method" : "loopOverBooks",
+      "transceiver" : "RPC",
+      "response" : "void",
+      "namespace" : "app.example.books.BookStore",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.example.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "app_example_books_BookStore_printBooks" : {
+      "request" : [ {
+        "name" : "books",
+        "type" : "java.util.List<app.example.books.Book>"
+      } ],
+      "method" : "printBooks",
+      "transceiver" : "RPC",
+      "response" : "void",
+      "namespace" : "app.example.books.BookStore",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.example.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "app_example_books_Book_Book" : {
+      "request" : [ {
+        "default" : "blabla",
+        "name" : "title",
+        "type" : "string"
+      }, {
+        "default" : "Nim",
+        "name" : "author",
+        "type" : "string"
+      } ],
+      "method" : "Book",
+      "transceiver" : "RPC",
+      "response" : "app.example.books.Book",
+      "namespace" : "app.example.books.Book",
+      "type" : "constructor",
+      "class" : {
+        "fullClassName" : "app.example.books.Book",
+        "initialize" : "INITIALIZE"
+      }
+    },
+    "app_example_books_Book_hello" : {
+      "request" : [ ],
+      "method" : "hello",
+      "transceiver" : "RPC",
+      "response" : "string",
+      "namespace" : "app.example.books.Book",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.example.books.Book",
+        "initialize" : "INITIALIZE"
+      }
+    }
+  }
+}
