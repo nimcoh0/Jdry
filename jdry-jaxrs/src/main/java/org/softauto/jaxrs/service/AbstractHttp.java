@@ -9,8 +9,8 @@ import java.util.Map;
 
 public class AbstractHttp {
 
-
-    protected URI buildUrl(String url,  String baseUrl , Object[] args){
+/*
+    protected static URI buildUrl(String url,  String baseUrl , Object[] args){
         if(!url.startsWith("/")){
             url = "/"+ url;
         }
@@ -20,7 +20,7 @@ public class AbstractHttp {
             return UriBuilder.fromUri(baseUrl + url).build();
         }
     }
-
+*/
     protected MultivaluedMap<String, Object> buildHeaders(Map<String, String> header) {
         MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
         header.forEach((k, v) -> {

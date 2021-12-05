@@ -3,6 +3,7 @@ package org.softauto.core;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 
 /**
  * generic class that hold the configuration
@@ -27,8 +28,8 @@ public class Configuration {
     }
 
     public static JsonNode get(String path){
-        if(configuration.at("/"+path) != null && !configuration.at("/"+path).asText().isEmpty()){
-                return  configuration.at("/"+path);
+        if(configuration.at("/"+path) != null && !configuration.at("/"+path).toString().isEmpty()){
+                return configuration.at("/"+path);
          }
 
         return null;
@@ -41,4 +42,7 @@ public class Configuration {
     public static void put(String key,Boolean value){
         ((ObjectNode)configuration).put(key,value);
     }
+
+
+
 }

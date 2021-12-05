@@ -37,7 +37,11 @@ public class JerseyHelper {
                     }else {
                         t = (T) res.readEntity(response);
                     }
+                }else {
+                    t = (T) res;
                 }
+            }else {
+                t = (T) res;
             }
         }catch(Exception e){
            logger.error("Get request fail for url "+ url + " status "+ res.getStatusInfo(),e);
@@ -60,7 +64,11 @@ public class JerseyHelper {
                     }else {
                         t = (T) res.readEntity(response);
                     }
+                }else {
+                    t = (T) res;
                 }
+            }else {
+                t = (T) res;
             }
         }catch(Exception e){
             logger.error("put request fail for url "+ url + " status "+ res.getStatusInfo(),e);
@@ -84,7 +92,11 @@ public class JerseyHelper {
                     }else {
                         t = (T) res.readEntity(response);
                     }
+                }else {
+                    t = (T) res;
                 }
+            }else {
+                t = (T) res;
             }
         }catch(Exception e){
             logger.error("post request fail for url "+ url + " status "+ res.getStatusInfo(),e);
@@ -107,7 +119,11 @@ public class JerseyHelper {
                     }else {
                         t = (T) res.readEntity(response);
                     }
+                }else {
+                    t = (T) res;
                 }
+            }else {
+                t = (T) res;
             }
         }catch(Exception e){
             logger.error("delete request fail for url "+ url + " status "+ res.getStatusInfo(),e);

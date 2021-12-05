@@ -19,6 +19,9 @@ public class JerseyClientFactory {
     }
 
     public javax.ws.rs.client.Client getClient() throws Exception{
+        if(Utils.getParam(Configuration.get("jaxrs"),"auth") == null){
+            return new None().getClient();
+        }
             switch (Utils.getParam(Configuration.get("jaxrs"),"auth")) {
                 case "BASIC": return  new Basic().getClient();
                 case "NONE" : return  new None().getClient();

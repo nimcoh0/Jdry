@@ -1,19 +1,21 @@
 package org.softauto.jaxrs.service;
 
+import java.util.Map;
+
 public class MethodDefinition {
 
     private  MethodDescriptor method;
     private CallerHandler handler;
-    private ChannelDescriptor channel;
+    private Map<String, Object> msg;
 
-    private MethodDefinition(MethodDescriptor method, CallerHandler callHandler,ChannelDescriptor channel) {
+    private MethodDefinition(MethodDescriptor method, CallerHandler callHandler,Map<String, Object> msg) {
         this.method = method;
         handler = callHandler;
-        this.channel = channel;
+        this.msg = msg;
     }
 
-    public static  MethodDefinition create(MethodDescriptor method, CallerHandler handler,ChannelDescriptor channel) {
-        return new MethodDefinition(method, handler,channel);
+    public static  MethodDefinition create(MethodDescriptor method, CallerHandler handler, Map<String, Object> msg) {
+        return new MethodDefinition(method, handler,msg);
     }
 
     public MethodDescriptor getMethodDescriptor() {
@@ -24,7 +26,11 @@ public class MethodDefinition {
         return handler;
     }
 
-    public ChannelDescriptor getChannel() {
-        return channel;
+    public Map<String, Object> getMsg(){
+        return msg;
     }
+
+    //public ChannelDescriptor getChannel() {
+       // return channel;
+    //}
 }

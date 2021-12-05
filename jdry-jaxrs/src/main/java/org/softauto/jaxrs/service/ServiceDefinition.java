@@ -47,8 +47,8 @@ public class ServiceDefinition {
 
         }
 
-        public Builder addMethod(MethodDescriptor method, CallerHandler handler,ChannelDescriptor channel) {
-            return this.addMethod(MethodDefinition.create((MethodDescriptor)Preconditions.checkNotNull(method, "method must not be null"), (CallerHandler)Preconditions.checkNotNull(handler, "handler must not be null"),channel));
+        public Builder addMethod(MethodDescriptor method, CallerHandler handler,Map<String, Object> msg) {
+            return this.addMethod(MethodDefinition.create((MethodDescriptor)Preconditions.checkNotNull(method, "method must not be null"), (CallerHandler)Preconditions.checkNotNull(handler, "handler must not be null"),msg));
         }
 
         public   Builder addMethod(MethodDefinition def) {

@@ -120,10 +120,13 @@ public class JaxRSMethodVisitor extends DefaultMethodVistor {
     public void visitReturnType(ExecutableElement e) {
         super.visitReturnType(e);
         if(e.getReturnType().toString().equals("void")){
-            if(hm.get("Produces").toString().equals(MediaType.APPLICATION_JSON)){
+            if(hm.get("Produces") != null) {
+                if (hm.get("Produces").toString().equals(MediaType.APPLICATION_JSON)) {
+                    super.getMessageBuilder().setResponse("java.lang.String");
+                }
+            }else {
                 super.getMessageBuilder().setResponse("java.lang.String");
             }
-
         }
     }
 

@@ -1,5 +1,7 @@
 package org.softauto.jaxrs.service;
 
+import java.util.Map;
+
 public class ServiceCaller {
 
     public static CallerHandler call(UnaryClass method) {
@@ -7,7 +9,7 @@ public class ServiceCaller {
     }
 
     public interface requestMethod {
-        <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,ChannelDescriptor channel,Class<T> res);
+        <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,Map<String, Object> msg,Class<T> res);
     }
 
     public interface UnaryClass extends requestMethod {
@@ -22,8 +24,8 @@ public class ServiceCaller {
 
         }
         @Override
-        public <T> T startCall(MethodDescriptor methodDescriptor,Object[] args,ChannelDescriptor channel,Class<T> res) {
-            return  (T)this.method.invoke(methodDescriptor,args,channel,res);
+        public <T> T startCall(MethodDescriptor methodDescriptor, Object[] args, Map<String, Object> msg,Class<T> res) {
+            return  (T)this.method.invoke(methodDescriptor,args,msg,res);
         }
 
 

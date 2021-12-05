@@ -10,7 +10,6 @@ import org.softauto.serializer.CallFuture;
 import org.softauto.serializer.Serializer;
 import org.softauto.serializer.service.Message;
 import org.softauto.serializer.service.SerializerService;
-
 import javax.lang.model.element.Element;
 import java.io.IOException;
 

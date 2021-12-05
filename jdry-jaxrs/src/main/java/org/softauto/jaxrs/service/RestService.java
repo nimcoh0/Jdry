@@ -2,14 +2,19 @@ package org.softauto.jaxrs.service;
 
 
 import org.apache.avro.Protocol;
+import org.softauto.core.Configuration;
 import org.softauto.core.Utils;
+import org.softauto.jaxrs.JerseyClientFactory;
 import org.softauto.jaxrs.JerseyHelper;
+import org.softauto.jaxrs.Options;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.UriBuilder;
 import java.lang.reflect.Method;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -28,32 +33,35 @@ public class RestService {
             Protocol protocol = Utils.getProtocol(iface);
             Map<String, Protocol.Message> messages = protocol.getMessages();
             ServiceDescriptor serviceDescriptor = ServiceDescriptor.create(iface);
-            serviceDefinitionBuilder = ServiceDefinition
-                    .builder(serviceDescriptor);
-
-            ChannelDescriptor channel = new ChannelDescriptor().build();
-            for (Method method : iface.getMethods()) {
+            serviceDefinitionBuilder = ServiceDefinition.builder(serviceDescriptor);
+           for (Method method : iface.getMethods()) {
                 Protocol.Message message = messages.get(method.getName());
                 if (message.getProp("transceiver").equals("JAXRS")) {
                     if (message != null) {
                         Map<String, Object> msg = message.getObjectProps();
                         Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
+                        //ChannelDescriptor channel = ChannelDescriptor.newBuilder()
+                                //.setHost(Configuration.get("jaxrs/host").asText())
+                                //.setPort(Configuration.get("jaxrs/port").asInt())
+                                //.setProtocol(Configuration.get("jaxrs/protocol").asText())
+                                //.setPath(jaxrs.get("Path").toString())
+                                //.build();
                         String httpMethod = jaxrs.get("HttpMethod").toString();
                         if (httpMethod.equals("GET")) {
                             serviceDefinitionBuilder.addMethod(serviceDescriptor.getMethods(method, message, MethodDescriptor.MethodType.GET),
-                                    ServiceCaller.call(new GETMethodHandler()), channel);
+                                    ServiceCaller.call(new GETMethodHandler()), msg);
                         }
                         if (httpMethod.equals("PUT")) {
                             serviceDefinitionBuilder.addMethod(serviceDescriptor.getMethods(method, message, MethodDescriptor.MethodType.PUT),
-                                    ServiceCaller.call(new PUTMethodHandler()), channel);
+                                    ServiceCaller.call(new PUTMethodHandler()), msg);
                         }
                         if (httpMethod.equals("POST")) {
                             serviceDefinitionBuilder.addMethod(serviceDescriptor.getMethods(method, message, MethodDescriptor.MethodType.POST),
-                                    ServiceCaller.call(new POSTMethodHandler()), channel);
+                                    ServiceCaller.call(new POSTMethodHandler()), msg);
                         }
                         if (httpMethod.equals("DELETE")) {
                             serviceDefinitionBuilder.addMethod(serviceDescriptor.getMethods(method, message, MethodDescriptor.MethodType.DELETE),
-                                    ServiceCaller.call(new DELETEMethodHandler()), channel);
+                                    ServiceCaller.call(new DELETEMethodHandler()), msg);
                         }
                     }
                 }
@@ -67,13 +75,29 @@ public class RestService {
     private static class GETMethodHandler implements ServiceCaller.UnaryClass  {
 
         @Override
-        public <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,ChannelDescriptor channel,Class<T> res) {
+        public <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,Map<String, Object> msg,Class<T> res) {
             try {
-                Client client = channel.getClient();
-                MultivaluedMap<String, Object> headers = channel.getHeaders();
-                URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
+                Client client = new JerseyClientFactory().getClient();
+                HashMap<String,Object> callOptions = (HashMap<String, Object>) args[2];
+                //Class[] types = (Class[])args[1];
+                //Object[] arguments = (Object[])args[0];
+                MultivaluedMap<String, Object> headers = (MultivaluedMap<String, Object>)callOptions.get(Options.headers.name());
+                //Entity<?> entity = (Entity<?>)callOptions.get(Options.entity.name());
+                String produces = callOptions.get(Options.produce.name()).toString();
+                //Class<T> response = (Class)callOptions.get(Options.response.name());
+                Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
+                ChannelDescriptor channel = ChannelDescriptor.newBuilder()
+                        .setHost(Configuration.get("jaxrs/host").asText())
+                        .setPort(Configuration.get("jaxrs/port").asInt())
+                        .setProtocol(Configuration.get("jaxrs/protocol").asText())
+                        .setPath(jaxrs.get("base_url")== null ? jaxrs.get("Path").toString():jaxrs.get("base_url").toString()+jaxrs.get("Path").toString() )
+                        .build((Object[]) args[0]);
+               // MultivaluedMap<String, Object> headers = HeaderBuilder.newBuilder().setHeader(Configuration.get("jaxrs/headers")).build().getHeaders();
+                URI uri =  channel.getUri();
+                //URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
                 logger.debug("invoke GET for "+ uri);
-                return new JerseyHelper(client).get(uri.toString(), methodDescriptor.getProduces(), headers, res);
+                //return new JerseyHelper(client).get(uri.toString(), methodDescriptor.getProduces(), headers, res);
+                return new JerseyHelper(client).get(uri.toString(), produces, headers, res);
             }catch (Exception e){
                 logger.error("fail invoke GET for uri "+ methodDescriptor.getPath()+ " with args "+ Utils.result2String((Object[])args[0]),e);
             }
@@ -84,14 +108,29 @@ public class RestService {
     private static class POSTMethodHandler implements ServiceCaller.UnaryClass  {
 
         @Override
-        public <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,ChannelDescriptor channel,Class<T> res) {
+        public <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,Map<String, Object> msg,Class<T> res) {
             try {
-                Client client = channel.getClient();
-                MultivaluedMap<String, Object> headers = channel.getHeaders();
-                URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
-                Entity<?> entity = methodDescriptor.buildEntity(methodDescriptor.getMessage(),(Object[])args[0]);
+                Client client = new JerseyClientFactory().getClient();
+                HashMap<String,Object> callOptions = (HashMap<String, Object>) args[2];
+                //Class[] types = (Class[])args[1];
+                //Object[] arguments = (Object[])args[0];
+                MultivaluedMap<String, Object> headers = (MultivaluedMap<String, Object>)callOptions.get(Options.headers.name());
+                //Entity<?> entity = (Entity<?>)callOptions.get(Options.entity.name());
+                String produces = callOptions.get(Options.produce.name()).toString();
+                //Class<T> response = (Class)callOptions.get(Options.response.name());
+                //MultivaluedMap<String, Object> headers = HeaderBuilder.newBuilder().setHeader(Configuration.get("jaxrs/headers")).build().getHeaders();
+                //URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
+                Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
+                ChannelDescriptor channel = ChannelDescriptor.newBuilder()
+                        .setHost(Configuration.get("jaxrs/host").asText())
+                        .setPort(Configuration.get("jaxrs/port").asInt())
+                        .setProtocol(Configuration.get("jaxrs/protocol").asText())
+                        .setPath(jaxrs.get("Path").toString())
+                        .build((Object[]) args[0]);
+                URI uri =  channel.getUri();
+                Entity<?> entity = org.softauto.jaxrs.Utils.buildEntity(produces,(Object[])args[0]);
                 logger.debug("invoke POST for "+ uri + " with headers "+ headers.values() + " entity");
-                return new JerseyHelper(client).post(uri.toString(), methodDescriptor.getProduces(), headers, res,entity);
+                return new JerseyHelper(client).post(uri.toString(), produces, headers, res,entity);
 
             }catch (Exception e){
                 logger.error("fail invoke POST for uri "+ methodDescriptor.getPath()+ " with args "+ Utils.result2String((Object[])args[0]),e);
@@ -103,14 +142,30 @@ public class RestService {
     private static class PUTMethodHandler implements ServiceCaller.UnaryClass  {
 
         @Override
-        public <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,ChannelDescriptor channel,Class<T> res) {
+        public <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,Map<String, Object> msg,Class<T> res ){
             try {
-                Client client = channel.getClient();
-                MultivaluedMap<String, Object> headers = channel.getHeaders();
-                URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
-                Entity<?> entity = methodDescriptor.buildEntity(methodDescriptor.getMessage(),(Object[])args[0]);
+                Client client = new JerseyClientFactory().getClient();
+                HashMap<String,Object> callOptions = (HashMap<String, Object>) args[2];
+                Class[] types = (Class[])args[1];
+                Object[] arguments = (Object[])args[0];
+                MultivaluedMap<String, Object> headers = (MultivaluedMap<String, Object>)callOptions.get(Options.headers.name());
+                //Entity<?> entity = (Entity<?>)callOptions.get(Options.entity.name());
+                String produces = callOptions.get(Options.produce.name()).toString();
+                //Class<T> response = (Class)callOptions.get(Options.response.name());
+               //MultivaluedMap<String, Object> headers = HeaderBuilder.newBuilder().setHeader(Configuration.get("jaxrs/headers")).build().getHeaders();
+                //URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
+                Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
+                ChannelDescriptor channel = ChannelDescriptor.newBuilder()
+                        .setHost(Configuration.get("jaxrs/host").asText())
+                        .setPort(Configuration.get("jaxrs/port").asInt())
+                        .setProtocol(Configuration.get("jaxrs/protocol").asText())
+                        .setPath(jaxrs.get("Path").toString())
+                        .build((Object[]) args[0]);
+                URI uri =  channel.getUri();
+                Entity<?> entity = org.softauto.jaxrs.Utils.buildEntity(produces,(Object[])args[0]);
                 logger.debug("invoke PUT for "+ uri + " with headers "+ headers.values() + " entity");
-                return new JerseyHelper(client).put(uri.toString(), methodDescriptor.getProduces(), headers, res,entity);
+                //return new JerseyHelper(client).put(uri.toString(), methodDescriptor.getProduces(), headers, res,entity);
+                return new JerseyHelper(client).put(uri.toString(), produces, headers, res,entity);
             }catch (Exception e){
                 logger.error("fail invoke PUT for uri "+ methodDescriptor.getPath()+ " with args "+ Utils.result2String((Object[])args[0]),e);
             }
@@ -121,13 +176,28 @@ public class RestService {
     private static class DELETEMethodHandler implements ServiceCaller.UnaryClass  {
 
         @Override
-        public <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,ChannelDescriptor channel,Class<T> res) {
+        public <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,Map<String, Object> msg,Class<T> res) {
             try {
-                Client client = channel.getClient();
-                MultivaluedMap<String, Object> headers = channel.getHeaders();
-                URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
+                Client client = new JerseyClientFactory().getClient();
+                HashMap<String,Object> callOptions = (HashMap<String, Object>) args[2];
+                //Class[] types = (Class[])args[1];
+                //Object[] arguments = (Object[])args[0];
+                MultivaluedMap<String, Object> headers = (MultivaluedMap<String, Object>)callOptions.get(Options.headers.name());
+                //Entity<?> entity = (Entity<?>)callOptions.get(Options.entity.name());
+                String produces = callOptions.get(Options.produce.name()).toString();
+                //Class<T> response = (Class)callOptions.get(Options.response.name());
+                //MultivaluedMap<String, Object> headers = HeaderBuilder.newBuilder().setHeader(Configuration.get("jaxrs/headers")).build().getHeaders();
+                //URI uri = channel.setPath(methodDescriptor.getPath()).getUri((Object[])args[0]);
+                Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
+                ChannelDescriptor channel = ChannelDescriptor.newBuilder()
+                        .setHost(Configuration.get("jaxrs/host").asText())
+                        .setPort(Configuration.get("jaxrs/port").asInt())
+                        .setProtocol(Configuration.get("jaxrs/protocol").asText())
+                        .setPath(jaxrs.get("Path").toString())
+                        .build((Object[]) args[0]);
+                URI uri =  channel.getUri();
                 logger.debug("invoke DELETE for "+ uri + " with headers "+ headers.values() );
-                return new JerseyHelper(client).delete(uri.toString(), methodDescriptor.getProduces(), headers, res);
+                return new JerseyHelper(client).delete(uri.toString(), produces, headers, res);
             }catch (Exception e){
                 logger.error("fail invoke DELETE for uri "+ methodDescriptor.getPath()+ " with args "+ Utils.result2String((Object[])args[0]),e);
             }

@@ -76,11 +76,11 @@
         <jna>5.6.0</jna>
         <jdry-jaxrs-annotations>beta-1.0</jdry-jaxrs-annotations>
         <javax.ws.rs-api>2.0</javax.ws.rs-api>
-        <jersey-media-multipart>2.25.1</jersey-media-multipart>
-        <jersey-client>2.25.1</jersey-client>
-        <jersey-common>2.25.1</jersey-common>
-        <jersey-hk2>2.25.1</jersey-hk2>
-        <jersey-media-json-jackson>2.25.1</jersey-media-json-jackson>
+        <jersey-media-multipart>2.26</jersey-media-multipart>
+        <jersey-client>2.26</jersey-client>
+        <jersey-common>2.26</jersey-common>
+        <jersey-hk2>2.26</jersey-hk2>
+        <jersey-media-json-jackson>2.26</jersey-media-json-jackson>
         <jakarta.xml.bind-api>3.0.0</jakarta.xml.bind-api>
         <avro-tools>1.10.2</avro-tools>
         <maven-invoker-plugin>3.2.2</maven-invoker-plugin>
@@ -92,7 +92,7 @@
         <avro-ipc>1.10.0</avro-ipc>
         <maven-jdk-tools-wrapper>0.1</maven-jdk-tools-wrapper>
         <commons-lang3>3.5</commons-lang3>
-        <jersey-container-servlet>2.25.1</jersey-container-servlet>
+        <jersey-container-servlet>2.26</jersey-container-servlet>
         <javax.annotation-api>1.3.2</javax.annotation-api>
         <jackson-databind>2.11.1</jackson-databind>
         <guava>31.0.1-jre</guava>

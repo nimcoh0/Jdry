@@ -152,7 +152,10 @@
                             <includes>StepService.avpr</includes>
                             <template>protocolStepImpl.vm</template>
                             <outputName>Step</outputName>
-                            <classpath>/${user.home}/.m2/repository/org/softauto/jdry-tester/1.0.0/jdry-tester-1.0.0.jar</classpath>
+                            <classpath>
+                                /${user.home}/.m2/repository/org/softauto/jdry-tester/1.0.0/jdry-tester-1.0.0.jar,/${user.home}/.m2/repository/org/softauto/jdry-grpc/1.0.0/jdry-grpc-1.0.0.jar
+                            </classpath>
+
                         </configuration>
                     </execution>
                 </executions>

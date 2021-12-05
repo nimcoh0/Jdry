@@ -10,6 +10,7 @@ import org.softauto.serializer.Serializer;
 import org.softauto.serializer.service.Message;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class InvocationHandler {
 
@@ -20,6 +21,18 @@ public class InvocationHandler {
             Provider provider = ProviderManager.provider(transceiver).create();
             logger.debug("invoke method " + methodName+ " using protocol "+ transceiver);
             provider.exec( methodName, callback,null,new Object[]{args,types});
+            logger.debug("callback value "+callback.getResult()+" get error "+callback.getError());
+        } catch (Exception e) {
+            logger.error("fail invoke method "+ methodName+ " with args "+ Arrays.toString(args),e);
+        }
+
+    }
+
+    public  void invoke(String methodName, Object[] args, Class[] types, CallFuture callback, String transceiver, HashMap<String,Object> callOptions)  {
+        try {
+            Provider provider = ProviderManager.provider(transceiver).create();
+            logger.debug("invoke method " + methodName+ " using protocol "+ transceiver+ " call options "+ Arrays.toString(callOptions.entrySet().toArray()));
+            provider.exec( methodName, callback,null,new Object[]{args,types,callOptions});
             logger.debug("callback value "+callback.getResult()+" get error "+callback.getError());
         } catch (Exception e) {
             logger.error("fail invoke method "+ methodName+ " with args "+ Arrays.toString(args),e);

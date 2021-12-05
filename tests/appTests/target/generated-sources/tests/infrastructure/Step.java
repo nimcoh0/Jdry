@@ -27,9 +27,7 @@ public class Step {
 
 
 
-public static class App_example_books_BookStore_addBook {
-
-
+public static class app_example_books_BookStore_addBook {
 
     CallFuture< app.example.books.BookStore> future = new CallFuture<>();
     public app.example.books.BookStore get_Result() throws Exception{
@@ -47,13 +45,13 @@ public static class App_example_books_BookStore_addBook {
              }
         }
 
-    public  App_example_books_BookStore_addBook then(Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
+    public  app_example_books_BookStore_addBook then(Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
 
-    public  App_example_books_BookStore_addBook then(IListener o)throws Exception{
+    public  app_example_books_BookStore_addBook then(IListener o)throws Exception{
         future.handleResult(future.get());
 
         return this;
@@ -112,8 +110,6 @@ public static class App_example_books_BookStore_addBook {
  }
 
 public static class App_example_books_BookStore_updateBook {
-
-
 
     CallFuture< app.example.books.BookStore> future = new CallFuture<>();
     public app.example.books.BookStore get_Result() throws Exception{
@@ -197,8 +193,6 @@ public static class App_example_books_BookStore_updateBook {
 
 public static class App_example_books_BookStore_addAllBooks {
 
-
-
     CallFuture< app.example.books.BookStore> future = new CallFuture<>();
     public app.example.books.BookStore get_Result() throws Exception{
             try {
@@ -280,8 +274,6 @@ public static class App_example_books_BookStore_addAllBooks {
  }
 
 public static class App_example_books_BookStore_booksByAuthor {
-
-
 
     CallFuture< java.util.List<app.example.books.Book>> future = new CallFuture<>();
     public java.util.List<app.example.books.Book> get_Result() throws Exception{
@@ -365,8 +357,6 @@ public static class App_example_books_BookStore_booksByAuthor {
 
 public static class App_example_books_BookStore_bookByTitle {
 
-
-
     CallFuture< java.util.Optional<app.example.books.Book>> future = new CallFuture<>();
     public java.util.Optional<app.example.books.Book> get_Result() throws Exception{
             try {
@@ -449,8 +439,6 @@ public static class App_example_books_BookStore_bookByTitle {
 
 public static class App_example_books_BookStore_loopOverBooks {
 
-
-
     CallFuture<java.lang.Void> future = new CallFuture<>();
     public void get_Result() throws Exception{
             try {
@@ -530,8 +518,6 @@ public static class App_example_books_BookStore_loopOverBooks {
 
 public static class App_example_books_BookStore_printBooks {
 
-
-
     CallFuture<java.lang.Void> future = new CallFuture<>();
     public void get_Result() throws Exception{
             try {
@@ -610,8 +596,6 @@ public static class App_example_books_BookStore_printBooks {
  }
 
 public static class App_example_books_Book_Book {
-
-
 
     CallFuture< app.example.books.Book> future = new CallFuture<>();
     public app.example.books.Book get_Result() throws Exception{
@@ -694,8 +678,6 @@ public static class App_example_books_Book_Book {
  }
 
 public static class App_example_books_Book_hello {
-
-
 
     CallFuture< java.lang.String> future = new CallFuture<>();
     public java.lang.String get_Result() throws Exception{

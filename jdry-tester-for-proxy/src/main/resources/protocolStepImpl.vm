@@ -5,6 +5,7 @@ import java.util.function.Function;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import java.util.ArrayList;
 
 @org.apache.avro.specific.AvroGenerated
 public class Step {
@@ -17,6 +18,7 @@ public class Step {
 #set ($name = $e.getKey())
 #set ($message = $e.getValue())
 #set ($response = $message.getResponse())
+
 
 public ##
 java.lang.Object[] ${this.mangle($name)}(##

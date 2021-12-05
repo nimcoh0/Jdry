@@ -56,8 +56,8 @@ public class JaxrsProviderImpl implements Provider {
         try {
              executor.submit(()->{
                 CallbackToResponseStreamObserverAdpater observerAdpater = new CallbackToResponseStreamObserverAdpater(callback, null);
-                MethodDefinition md = serviceDefinition.getMethod(Utils.extractFullMethodName(methodName));
-                RespT res = (RespT)md.getCallerHandler().startCall(md.getMethodDescriptor(),args,md.getChannel(),md.getMethodDescriptor().getMethod().getReturnType());
+                MethodDefinition md = serviceDefinition.getMethod(org.softauto.core.Utils.extractFullMethodName(methodName));
+                RespT res = (RespT)md.getCallerHandler().startCall(md.getMethodDescriptor(),args,md.getMsg(),md.getMethodDescriptor().getMethod().getReturnType());
                 if (res != null) {
                     observerAdpater.onCompleted((RespT)res);
                 } else {
@@ -87,7 +87,7 @@ public class JaxrsProviderImpl implements Provider {
 
     @Override
     public Provider initialize() throws IOException {
-        serviceDefinition =  RestService.createServiceDefinition(Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() ,Configuration.get(Context.STEP_SERVICE_NAME).asText(),Configuration.get(Context.TEST_MACHINE).asText()));
+        serviceDefinition =  RestService.createServiceDefinition(org.softauto.core.Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() ,Configuration.get(Context.STEP_SERVICE_NAME).asText(),Configuration.get(Context.TEST_MACHINE).asText()));
         logger.debug("jaxrs plugin initialize successfully");
         return this;
     }

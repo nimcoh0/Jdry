@@ -22,7 +22,6 @@
             <artifactId>jdry-jaxrs-annotations</artifactId>
             <version>${jdry-jaxrs-annotations}</version>
         </dependency>
-
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-multipart</artifactId>

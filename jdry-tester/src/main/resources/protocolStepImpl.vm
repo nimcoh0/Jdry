@@ -15,6 +15,10 @@ import org.softauto.tester.InvocationHandler;
 import org.softauto.core.IListener;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 @org.apache.avro.specific.AvroGenerated
 public class Step {
@@ -28,124 +32,14 @@ public class Step {
 #set ($message = $e.getValue())
 #set ($response = $message.getResponse())
 
-public static class ${this.capitalizeFirstLetter(${this.mangle($name)})} {
+public static class ${this.mangle($name)} {
 
-
-#if (${this.javaUnbox($response, true)} != "void" )
-    CallFuture< $this.javaType($response,false)> future = new CallFuture<>();
-    public ${this.javaUnbox($response, true)} get_Result() throws Exception{
-            try {
-
-               if(!future.isDone()) {
-                  logger.debug("waiting to future to be done");
-                  future.await();
-               }
-                logger.debug("successfully get_Result() ");
-                return future.get();
-             }catch (Exception e){
-                 logger.error("fail get_Result() "+ e);
-                 throw new Exception("fail get_Result() "+ e);
-             }
-        }
-#else
-    CallFuture<java.lang.Void> future = new CallFuture<>();
-    public ${this.javaUnbox($response, true)} get_Result() throws Exception{
-            try {
-                 if(!future.isDone()) {
-                    logger.debug("waiting to future to be done");
-                    future.await();
-                 }
-                 logger.debug("successfully get_Result() ");
-                 future.get();
-             }catch (Exception e){
-                logger.error("fail get_Result() "+ e);
-                throw new Exception("fail get_Result() "+ e);
-             }
-        }
+#if($message.getProp("transceiver").equals("RPC"))
+#parse( "grpcStepImpl.vm" )
+#end
+#if($message.getProp("transceiver").equals("JAXRS"))
+#parse( "jaxrsStepImpl.vm" )
 #end
 
-    public  ${this.capitalizeFirstLetter(${this.mangle($name)})} then(Handler<AsyncResult<$this.javaType($response,false)>> resultHandler)throws Exception{
-        resultHandler.handle(Future.handleResult(future.get()));
-        return this;
-    }
-
-
-    public  ${this.capitalizeFirstLetter(${this.mangle($name)})} then(IListener o)throws Exception{
-#if (${this.javaUnbox($response, true)} != "void" )
-        future.handleResult(future.get());
-
-#end
-        return this;
-    }
-
-    public  ${this.capitalizeFirstLetter(${this.mangle($name)})} then(IListener o,Handler<AsyncResult<$this.javaType($response,false)>> resultHandler)throws Exception{
-        resultHandler.handle(Future.handleResult(future.get()));
-        return this;
-    }
-
-    public  ${this.capitalizeFirstLetter(${this.mangle($name)})} then(IListener o ,CallFuture<$this.javaType($response,false)> future)throws Exception{
-        future.handleResult(future.get());
-        return this;
-    }
-
-
-
-
-
-    public ${this.capitalizeFirstLetter(${this.mangle($name)})}(##
-#foreach ($p in $message.getRequest().getFields())##
-#*      *#${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.hasNext), #end
-#end
-    ){
-        try {
-            logger.debug("invoking proxy for ${this.mangle($name)}");
-            new InvocationHandler().invoke("${this.mangle($name)}",$this.getArrayNames($message.getRequest().getFields()),$this.getArrayTypes($message.getRequest().getFields()),future,"${message.getProp("transceiver")}");
-        }catch (Exception e){
-             logger.error("fail invoke for ${this.mangle($name)}"+ e);
-        }
-    }
-
-
-
-    public ${this.capitalizeFirstLetter(${this.mangle($name)})}(##
-#foreach ($p in $message.getRequest().getFields())##
-#*      *#${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.hasNext), #end
-#end
-#if($message.getRequest().getFields().size() > 0)
-,##
-#end
-CallFuture<$this.javaType($response,false)> future){
-        try {
-            logger.debug("invoking proxy for ${this.mangle($name)}");
-            new InvocationHandler().invoke("${this.mangle($name)}",$this.getArrayNames($message.getRequest().getFields()),$this.getArrayTypes($message.getRequest().getFields()),future,"${message.getProp("transceiver")}");
-        }catch (Exception e){
-             logger.error("fail invoke for ${this.mangle($name)}"+ e);
-        }
- }
-
-
-    public  ${this.capitalizeFirstLetter(${this.mangle($name)})}(##
-#foreach ($p in $message.getRequest().getFields())##
-#*      *#${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.hasNext), #end
-#end
-#if($message.getRequest().getFields().size() > 0)
-,##
-#end
-Handler<AsyncResult<$this.javaType($response,false)>> resultHandler  )throws Exception{
-        try {
-            CallFuture<$this.javaType($response,false)> future = new CallFuture<>();
-            logger.debug("invoking proxy for ${this.mangle($name)}");
-            new InvocationHandler().invoke("${this.mangle($name)}",$this.getArrayNames($message.getRequest().getFields()),$this.getArrayTypes($message.getRequest().getFields()),future,"${message.getProp("transceiver")}");
-            resultHandler.handle(Future.handleResult(future.get()));
-       }catch (Exception e){
-          logger.error("fail invoke for ${this.mangle($name)}"+ e);
-          resultHandler.handle(Future.handleError(e));
-       }
-    }
-
-
-
-
- }
 #end## (requests)
 }## End of protocol interface
