@@ -1,0 +1,144 @@
+{
+  "protocol" : "ListenerService",
+  "version" : "1.0",
+  "namespace" : "tests.infrastructure",
+  "types" : [ {
+    "name" : "javax.ws.rs.core.Response",
+    "type" : "external"
+  }, {
+    "name" : "java.lang.Object[]",
+    "type" : "external"
+  }, {
+    "name" : "void",
+    "type" : "external"
+  }, {
+    "name" : "javax.ws.rs.sse.InboundSseEvent",
+    "type" : "external"
+  }, {
+    "name" : "com.baeldung.jersey.server.model.Fruit",
+    "type" : "external"
+  }, {
+    "name" : "javax.ws.rs.container.ResourceInfo",
+    "type" : "external"
+  }, {
+    "name" : "javax.ws.rs.core.FeatureContext",
+    "type" : "external"
+  } ],
+  "messages" : {
+    "com_baeldung_jersey_client_JerseyClientHeaders_simpleHeader" : {
+      "request" : [ {
+        "name" : "headerKey",
+        "type" : "string"
+      }, {
+        "name" : "headerValue",
+        "type" : "string"
+      } ],
+      "method" : "simpleHeader",
+      "transceiver" : "RPC",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.client.JerseyClientHeaders"
+    },
+    "com_baeldung_jersey_client_JerseyClientHeaders_simpleHeaderFluently" : {
+      "request" : [ {
+        "name" : "headerKey",
+        "type" : "string"
+      }, {
+        "name" : "headerValue",
+        "type" : "string"
+      } ],
+      "method" : "simpleHeaderFluently",
+      "transceiver" : "RPC",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.client.JerseyClientHeaders"
+    },
+    "com_baeldung_jersey_client_JerseyClientHeaders_digestAuthenticationAtClientLevel" : {
+      "request" : [ {
+        "name" : "username",
+        "type" : "string"
+      }, {
+        "name" : "password",
+        "type" : "string"
+      } ],
+      "method" : "digestAuthenticationAtClientLevel",
+      "transceiver" : "RPC",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.client.JerseyClientHeaders"
+    },
+    "com_baeldung_jersey_client_JerseyClientHeaders_digestAuthenticationAtRequestLevel" : {
+      "request" : [ {
+        "name" : "username",
+        "type" : "string"
+      }, {
+        "name" : "password",
+        "type" : "string"
+      } ],
+      "method" : "digestAuthenticationAtRequestLevel",
+      "transceiver" : "RPC",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.client.JerseyClientHeaders"
+    },
+    "com_baeldung_jersey_client_JerseyClientHeaders_bearerAuthenticationWithOAuth1AtClientLevel" : {
+      "request" : [ {
+        "name" : "token",
+        "type" : "string"
+      }, {
+        "name" : "consumerKey",
+        "type" : "string"
+      } ],
+      "method" : "bearerAuthenticationWithOAuth1AtClientLevel",
+      "transceiver" : "RPC",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.client.JerseyClientHeaders"
+    },
+    "com_baeldung_jersey_client_JerseyClientHeaders_simpleSSEHeader" : {
+      "request" : [ ],
+      "method" : "simpleSSEHeader",
+      "transceiver" : "RPC",
+      "response" : "string",
+      "namespace" : "com.baeldung.jersey.client.JerseyClientHeaders"
+    },
+    "com_baeldung_jersey_client_JerseyClientHeaders_receiveEvent" : {
+      "request" : [ {
+        "name" : "event",
+        "type" : "javax.ws.rs.sse.InboundSseEvent"
+      } ],
+      "method" : "receiveEvent",
+      "transceiver" : "RPC",
+      "response" : "void",
+      "namespace" : "com.baeldung.jersey.client.JerseyClientHeaders"
+    },
+    "com_baeldung_jersey_service_SimpleStorageService_storeFruit" : {
+      "request" : [ {
+        "name" : "fruit",
+        "type" : "com.baeldung.jersey.server.model.Fruit"
+      } ],
+      "method" : "storeFruit",
+      "transceiver" : "RPC",
+      "response" : "void",
+      "namespace" : "com.baeldung.jersey.service.SimpleStorageService"
+    },
+    "com_baeldung_jersey_service_SimpleStorageService_findByName" : {
+      "request" : [ {
+        "name" : "name",
+        "type" : "string"
+      } ],
+      "method" : "findByName",
+      "transceiver" : "RPC",
+      "response" : "com.baeldung.jersey.server.model.Fruit",
+      "namespace" : "com.baeldung.jersey.service.SimpleStorageService"
+    },
+    "com_baeldung_jersey_server_config_HelloDynamicBinding_configure" : {
+      "request" : [ {
+        "name" : "resourceInfo",
+        "type" : "javax.ws.rs.container.ResourceInfo"
+      }, {
+        "name" : "context",
+        "type" : "javax.ws.rs.core.FeatureContext"
+      } ],
+      "method" : "configure",
+      "transceiver" : "RPC",
+      "response" : "void",
+      "namespace" : "com.baeldung.jersey.server.config.HelloDynamicBinding"
+    }
+  }
+}

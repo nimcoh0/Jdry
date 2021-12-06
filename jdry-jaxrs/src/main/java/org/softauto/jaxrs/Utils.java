@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.avro.Protocol;
 import org.apache.avro.Schema;
 
+import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
@@ -41,5 +43,12 @@ public class Utils {
         return entity;
     }
 
+
+    public static void addProperties(HashMap<String,Object> properties, Client client){
+        properties.forEach((k,v)->{
+            client.property(k,v);
+        });
+
+    }
 
 }

@@ -2,6 +2,7 @@ package org.softauto.jaxrs.service;
 
 
 import org.apache.avro.Protocol;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.softauto.core.Configuration;
 import org.softauto.core.Utils;
 import org.softauto.jaxrs.JerseyClientFactory;
@@ -9,6 +10,7 @@ import org.softauto.jaxrs.JerseyHelper;
 import org.softauto.jaxrs.Options;
 
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriBuilder;
@@ -77,8 +79,15 @@ public class RestService {
         @Override
         public <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,Map<String, Object> msg,Class<T> res) {
             try {
-                Client client = new JerseyClientFactory().getClient();
+                //Client client = new JerseyClientFactory().getClient();
                 HashMap<String,Object> callOptions = (HashMap<String, Object>) args[2];
+                Client client = null;
+                if(callOptions.get("feature") != null) {
+                    client = ClientBuilder.newBuilder().register((HttpAuthenticationFeature) callOptions.get("feature")).build();
+                }else {
+                    client = ClientBuilder.newBuilder().build();
+                }
+                org.softauto.jaxrs.Utils.addProperties((HashMap<String, Object>) callOptions.get("properties"),client);
                 //Class[] types = (Class[])args[1];
                 //Object[] arguments = (Object[])args[0];
                 MultivaluedMap<String, Object> headers = (MultivaluedMap<String, Object>)callOptions.get(Options.headers.name());
@@ -110,8 +119,16 @@ public class RestService {
         @Override
         public <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,Map<String, Object> msg,Class<T> res) {
             try {
-                Client client = new JerseyClientFactory().getClient();
+
                 HashMap<String,Object> callOptions = (HashMap<String, Object>) args[2];
+                Client client = null;
+                if(callOptions.get("feature") != null) {
+                    client = ClientBuilder.newBuilder().register((HttpAuthenticationFeature) callOptions.get("feature")).build();
+                }else {
+                    client = ClientBuilder.newBuilder().build();
+                }
+                org.softauto.jaxrs.Utils.addProperties((HashMap<String, Object>) callOptions.get("properties"),client);
+                        //new JerseyClientFactory().getClient().register((HttpAuthenticationFeature)callOptions.get("feature"));
                 //Class[] types = (Class[])args[1];
                 //Object[] arguments = (Object[])args[0];
                 MultivaluedMap<String, Object> headers = (MultivaluedMap<String, Object>)callOptions.get(Options.headers.name());
@@ -144,8 +161,15 @@ public class RestService {
         @Override
         public <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,Map<String, Object> msg,Class<T> res ){
             try {
-                Client client = new JerseyClientFactory().getClient();
+                //Client client = new JerseyClientFactory().getClient();
                 HashMap<String,Object> callOptions = (HashMap<String, Object>) args[2];
+                Client client = null;
+                if(callOptions.get("feature") != null) {
+                    client = ClientBuilder.newBuilder().register((HttpAuthenticationFeature) callOptions.get("feature")).build();
+                }else {
+                    client = ClientBuilder.newBuilder().build();
+                }
+                org.softauto.jaxrs.Utils.addProperties((HashMap<String, Object>) callOptions.get("properties"),client);
                 Class[] types = (Class[])args[1];
                 Object[] arguments = (Object[])args[0];
                 MultivaluedMap<String, Object> headers = (MultivaluedMap<String, Object>)callOptions.get(Options.headers.name());
@@ -178,8 +202,15 @@ public class RestService {
         @Override
         public <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,Map<String, Object> msg,Class<T> res) {
             try {
-                Client client = new JerseyClientFactory().getClient();
+                //Client client = new JerseyClientFactory().getClient();
                 HashMap<String,Object> callOptions = (HashMap<String, Object>) args[2];
+                Client client = null;
+                if(callOptions.get("feature") != null) {
+                    client = ClientBuilder.newBuilder().register((HttpAuthenticationFeature) callOptions.get("feature")).build();
+                }else {
+                    client = ClientBuilder.newBuilder().build();
+                }
+                org.softauto.jaxrs.Utils.addProperties((HashMap<String, Object>) callOptions.get("properties"),client);
                 //Class[] types = (Class[])args[1];
                 //Object[] arguments = (Object[])args[0];
                 MultivaluedMap<String, Object> headers = (MultivaluedMap<String, Object>)callOptions.get(Options.headers.name());

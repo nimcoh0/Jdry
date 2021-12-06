@@ -1,0 +1,13 @@
+---
+#load_weaver: "false"
+jaxrs:
+  host: "localhost"
+  port: "8082"
+  protocol: "HTTP"
+  #base_url:
+
+
+
+
+
+

@@ -1,0 +1,8 @@
+<aspectj>
+    <aspects>
+        <weaver options="-verbose ">
+            <include within="com.baeldung.jersey..*"/>
+        </weaver>
+    </aspects>
+
+</aspectj>

@@ -1,0 +1,659 @@
+{
+  "protocol" : "StepService",
+  "version" : "1.0",
+  "namespace" : "tests.infrastructure",
+  "types" : [ {
+    "name" : "javax.ws.rs.core.Response",
+    "type" : "external"
+  }, {
+    "name" : "javax.ws.rs.client.Client",
+    "type" : "external"
+  }, {
+    "name" : "java.util.Map<java.lang.String,java.lang.Object>",
+    "type" : "external"
+  }, {
+    "name" : "void",
+    "type" : "external"
+  }, {
+    "name" : "com.baeldung.jersey.server.model.Fruit",
+    "type" : "external"
+  }, {
+    "name" : "com.baeldung.jersey.server.ItemParam",
+    "type" : "external"
+  }, {
+    "name" : "com.baeldung.jersey.server.model.Person",
+    "type" : "external"
+  } ],
+  "messages" : {
+    "com_baeldung_jersey_client_JerseyClient_getHelloGreeting" : {
+      "request" : [ ],
+      "method" : "getHelloGreeting",
+      "transceiver" : "RPC",
+      "response" : "string",
+      "namespace" : "com.baeldung.jersey.client.JerseyClient",
+      "type" : "static",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.client.JerseyClient",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_client_JerseyClient_getHiGreeting" : {
+      "request" : [ ],
+      "method" : "getHiGreeting",
+      "transceiver" : "RPC",
+      "response" : "string",
+      "namespace" : "com.baeldung.jersey.client.JerseyClient",
+      "type" : "static",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.client.JerseyClient",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_client_JerseyClient_getCustomGreeting" : {
+      "request" : [ ],
+      "method" : "getCustomGreeting",
+      "transceiver" : "RPC",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.client.JerseyClient",
+      "type" : "static",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.client.JerseyClient",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_client_JerseyClient_createClient" : {
+      "request" : [ ],
+      "method" : "createClient",
+      "transceiver" : "RPC",
+      "response" : "javax.ws.rs.client.Client",
+      "namespace" : "com.baeldung.jersey.client.JerseyClient",
+      "type" : "static",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.client.JerseyClient",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Greetings_getHelloGreeting" : {
+      "request" : [ ],
+      "jaxrs" : {
+        "Path" : "/greetings",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "getHelloGreeting",
+      "transceiver" : "JAXRS",
+      "response" : "string",
+      "namespace" : "com.baeldung.jersey.server.Greetings",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Greetings",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Greetings_getHiGreeting" : {
+      "request" : [ ],
+      "jaxrs" : {
+        "Path" : "/greetings/hi",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "getHiGreeting",
+      "transceiver" : "JAXRS",
+      "response" : "string",
+      "namespace" : "com.baeldung.jersey.server.Greetings",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Greetings",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Greetings_getCustomGreeting" : {
+      "request" : [ {
+        "name" : "name",
+        "type" : "string"
+      } ],
+      "jaxrs" : {
+        "Path" : "/greetings/custom",
+        "HttpMethod" : "POST",
+        "content" : [ "name" ]
+      },
+      "method" : "getCustomGreeting",
+      "transceiver" : "JAXRS",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.server.Greetings",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Greetings",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_client_JerseyClientHeaders_basicAuthenticationAtClientLevel" : {
+      "request" : [ {
+        "name" : "username",
+        "type" : "string"
+      }, {
+        "name" : "password",
+        "type" : "string"
+      } ],
+      "method" : "basicAuthenticationAtClientLevel",
+      "transceiver" : "RPC",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.client.JerseyClientHeaders",
+      "type" : "static",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.client.JerseyClientHeaders",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_client_JerseyClientHeaders_basicAuthenticationAtRequestLevel" : {
+      "request" : [ {
+        "name" : "username",
+        "type" : "string"
+      }, {
+        "name" : "password",
+        "type" : "string"
+      } ],
+      "method" : "basicAuthenticationAtRequestLevel",
+      "transceiver" : "RPC",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.client.JerseyClientHeaders",
+      "type" : "static",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.client.JerseyClientHeaders",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Responder_getOkResponse" : {
+      "request" : [ ],
+      "jaxrs" : {
+        "Path" : "/response/ok",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "getOkResponse",
+      "transceiver" : "JAXRS",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.server.Responder",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Responder",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Responder_getNOkTextResponse" : {
+      "request" : [ ],
+      "jaxrs" : {
+        "Path" : "/response/not_ok",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "getNOkTextResponse",
+      "transceiver" : "JAXRS",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.server.Responder",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Responder",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Responder_getTextResponseTypeDefined" : {
+      "request" : [ ],
+      "jaxrs" : {
+        "Path" : "/response/text_plain",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "getTextResponseTypeDefined",
+      "transceiver" : "JAXRS",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.server.Responder",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Responder",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Responder_getTextResponseTypeAnnotated" : {
+      "request" : [ ],
+      "jaxrs" : {
+        "Path" : "/response/text_plain_annotation",
+        "Produces" : "text/plain",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "getTextResponseTypeAnnotated",
+      "transceiver" : "JAXRS",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.server.Responder",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Responder",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Responder_getPojoResponse" : {
+      "request" : [ ],
+      "jaxrs" : {
+        "Path" : "/response/pojo",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "getPojoResponse",
+      "transceiver" : "JAXRS",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.server.Responder",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Responder",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Responder_getJsonResponse" : {
+      "request" : [ ],
+      "jaxrs" : {
+        "Path" : "/response/json",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "getJsonResponse",
+      "transceiver" : "JAXRS",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.server.Responder",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Responder",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Responder_sayXMLHello" : {
+      "request" : [ ],
+      "jaxrs" : {
+        "Path" : "/response/xml",
+        "Produces" : "text/xml",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "sayXMLHello",
+      "transceiver" : "JAXRS",
+      "response" : "string",
+      "namespace" : "com.baeldung.jersey.server.Responder",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Responder",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Responder_sayHtmlHello" : {
+      "request" : [ ],
+      "jaxrs" : {
+        "Path" : "/response/html",
+        "Produces" : "text/html",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "sayHtmlHello",
+      "transceiver" : "JAXRS",
+      "response" : "string",
+      "namespace" : "com.baeldung.jersey.server.Responder",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Responder",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_rest_FruitResource_getAllFruit" : {
+      "request" : [ ],
+      "jaxrs" : {
+        "Path" : "/fruit/all",
+        "Produces" : "text/html",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "getAllFruit",
+      "transceiver" : "JAXRS",
+      "response" : "java.util.Map<java.lang.String,java.lang.Object>",
+      "namespace" : "com.baeldung.jersey.server.rest.FruitResource",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.rest.FruitResource",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_rest_FruitResource_getFruitByName" : {
+      "request" : [ {
+        "name" : "name",
+        "type" : "string"
+      } ],
+      "jaxrs" : {
+        "Path" : "/fruit{name}",
+        "Produces" : "text/html",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "getFruitByName",
+      "transceiver" : "JAXRS",
+      "response" : "string",
+      "namespace" : "com.baeldung.jersey.server.rest.FruitResource",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.rest.FruitResource",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_rest_FruitResource_createFruit" : {
+      "request" : [ {
+        "name" : "fruit",
+        "type" : "com.baeldung.jersey.server.model.Fruit"
+      } ],
+      "jaxrs" : {
+        "Path" : "/fruit/create",
+        "Consumes" : "application/json",
+        "HttpMethod" : "POST",
+        "content" : [ "fruit" ]
+      },
+      "method" : "createFruit",
+      "transceiver" : "JAXRS",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.server.rest.FruitResource",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.rest.FruitResource",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_rest_FruitResource_updateFruit" : {
+      "request" : [ {
+        "name" : "serial",
+        "type" : "string"
+      } ],
+      "jaxrs" : {
+        "Path" : "/fruit/update",
+        "Consumes" : "application/x-www-form-urlencoded",
+        "HttpMethod" : "PUT",
+        "content" : [ "serial" ]
+      },
+      "method" : "updateFruit",
+      "transceiver" : "JAXRS",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.server.rest.FruitResource",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.rest.FruitResource",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_rest_FruitResource_createNewFruit" : {
+      "request" : [ {
+        "name" : "fruit",
+        "type" : "com.baeldung.jersey.server.model.Fruit"
+      } ],
+      "jaxrs" : {
+        "Path" : "/fruit/created",
+        "Consumes" : "application/json",
+        "HttpMethod" : "POST",
+        "content" : [ "fruit" ]
+      },
+      "method" : "createNewFruit",
+      "transceiver" : "JAXRS",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.server.rest.FruitResource",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.rest.FruitResource",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_rest_FruitResource_findFruitByName" : {
+      "request" : [ {
+        "name" : "name",
+        "type" : "string"
+      } ],
+      "jaxrs" : {
+        "Path" : "/fruit/search/{name}",
+        "Produces" : "application/json",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "findFruitByName",
+      "transceiver" : "JAXRS",
+      "response" : "com.baeldung.jersey.server.model.Fruit",
+      "namespace" : "com.baeldung.jersey.server.rest.FruitResource",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.rest.FruitResource",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_rest_FruitResource_exception" : {
+      "request" : [ ],
+      "jaxrs" : {
+        "Path" : "/fruit/exception",
+        "Produces" : "text/html",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "exception",
+      "transceiver" : "JAXRS",
+      "response" : "com.baeldung.jersey.server.model.Fruit",
+      "namespace" : "com.baeldung.jersey.server.rest.FruitResource",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.rest.FruitResource",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_EchoHeaders_getHeadersBack" : {
+      "request" : [ ],
+      "jaxrs" : {
+        "Path" : "/echo-headers",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "getHeadersBack",
+      "transceiver" : "JAXRS",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.server.EchoHeaders",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.EchoHeaders",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_EchoHeaders_getHeadersBackFromDigestAuthentication" : {
+      "request" : [ ],
+      "jaxrs" : {
+        "Path" : "/echo-headers/digest",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "getHeadersBackFromDigestAuthentication",
+      "transceiver" : "JAXRS",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.server.EchoHeaders",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.EchoHeaders",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_EchoHeaders_getServerSentEvents" : {
+      "request" : [ ],
+      "jaxrs" : {
+        "Path" : "/echo-headers/events",
+        "Produces" : "text/event-stream",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "getServerSentEvents",
+      "transceiver" : "JAXRS",
+      "response" : "javax.ws.rs.core.Response",
+      "namespace" : "com.baeldung.jersey.server.EchoHeaders",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.EchoHeaders",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Items_readCookieParam" : {
+      "request" : [ {
+        "name" : "cookieParamToRead",
+        "type" : "string"
+      } ],
+      "jaxrs" : {
+        "Path" : "items/cookie",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "readCookieParam",
+      "transceiver" : "JAXRS",
+      "response" : "string",
+      "namespace" : "com.baeldung.jersey.server.Items",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Items",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Items_readHeaderParam" : {
+      "request" : [ {
+        "name" : "headerParamToRead",
+        "type" : "string"
+      } ],
+      "jaxrs" : {
+        "Path" : "items/header",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "readHeaderParam",
+      "transceiver" : "JAXRS",
+      "response" : "string",
+      "namespace" : "com.baeldung.jersey.server.Items",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Items",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Items_readPathParam" : {
+      "request" : [ {
+        "name" : "pathParamToRead",
+        "type" : "string"
+      } ],
+      "jaxrs" : {
+        "Path" : "items/path/{pathParamToRead}",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "readPathParam",
+      "transceiver" : "JAXRS",
+      "response" : "string",
+      "namespace" : "com.baeldung.jersey.server.Items",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Items",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Items_readQueryParam" : {
+      "request" : [ {
+        "name" : "queryParamToRead",
+        "type" : "string"
+      } ],
+      "jaxrs" : {
+        "Path" : "items/query",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "readQueryParam",
+      "transceiver" : "JAXRS",
+      "response" : "string",
+      "namespace" : "com.baeldung.jersey.server.Items",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Items",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Items_readFormParam" : {
+      "request" : [ {
+        "name" : "formParamToRead",
+        "type" : "string"
+      } ],
+      "jaxrs" : {
+        "Path" : "items/form",
+        "HttpMethod" : "POST",
+        "content" : [ "formParamToRead" ]
+      },
+      "method" : "readFormParam",
+      "transceiver" : "JAXRS",
+      "response" : "string",
+      "namespace" : "com.baeldung.jersey.server.Items",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Items",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Items_readMatrixParam" : {
+      "request" : [ {
+        "name" : "matrixParamToRead",
+        "type" : "string"
+      } ],
+      "jaxrs" : {
+        "Path" : "items/matrix",
+        "HttpMethod" : "GET",
+        "content" : [ ]
+      },
+      "method" : "readMatrixParam",
+      "transceiver" : "JAXRS",
+      "response" : "string",
+      "namespace" : "com.baeldung.jersey.server.Items",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Items",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_Items_readBeanParam" : {
+      "request" : [ {
+        "name" : "itemParam",
+        "type" : "com.baeldung.jersey.server.ItemParam"
+      } ],
+      "jaxrs" : {
+        "Path" : "items/bean/{pathParam}",
+        "HttpMethod" : "POST",
+        "content" : [ "itemParam" ]
+      },
+      "method" : "readBeanParam",
+      "transceiver" : "JAXRS",
+      "response" : "string",
+      "namespace" : "com.baeldung.jersey.server.Items",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.Items",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "com_baeldung_jersey_server_model_Person_Person" : {
+      "request" : [ {
+        "default" : "Abh",
+        "name" : "name",
+        "type" : "string"
+      }, {
+        "default" : "Nepal",
+        "name" : "address",
+        "type" : "string"
+      } ],
+      "method" : "Person",
+      "transceiver" : "RPC",
+      "response" : "com.baeldung.jersey.server.model.Person",
+      "namespace" : "com.baeldung.jersey.server.model.Person",
+      "type" : "constructor",
+      "class" : {
+        "fullClassName" : "com.baeldung.jersey.server.model.Person",
+        "initialize" : "INITIALIZE"
+      }
+    }
+  }
+}

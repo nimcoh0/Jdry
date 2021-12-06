@@ -1,0 +1,5 @@
+com\baeldung\jersey\server\EchoHeadersUnitTest.class
+com\baeldung\jersey\server\ItemsUnitTest.class
+com\baeldung\jersey\client\JerseyClientIntegrationTest.class
+com\baeldung\jersey\server\rest\FruitResourceIntegrationTest.class
+com\baeldung\jersey\server\GreetingsResourceIntegrationTest.class

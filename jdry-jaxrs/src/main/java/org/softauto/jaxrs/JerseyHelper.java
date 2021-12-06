@@ -1,10 +1,13 @@
 package org.softauto.jaxrs;
 
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import java.util.HashMap;
 
 
 /**
@@ -27,13 +30,13 @@ public class JerseyHelper {
         T t = null;
         Response res = null;
         try{
-            WebTarget webTarget = client.target(url);
-            res = webTarget.request(mediaType).headers(headers).get();
+            //WebTarget webTarget = client.target(url);
+            res = client.target(url).request(mediaType).headers(headers).get();
             if (Response.Status.fromStatusCode(res.getStatus()).getFamily() == Response.Status.Family.SUCCESSFUL) {
                 logger.debug("get request successfully for url "+ url + " status "+ res.getStatusInfo());
                 if(res.hasEntity()) {
                     if(response.getTypeName().equals(Response.class.getTypeName()) ){
-                        t = (T) res.getEntity();
+                        t = (T) res;
                     }else {
                         t = (T) res.readEntity(response);
                     }
@@ -60,7 +63,7 @@ public class JerseyHelper {
                 logger.debug("put request successfully for url "+ url + " status "+ res.getStatusInfo());
                 if(res.hasEntity()) {
                     if(response.getTypeName().equals(Response.class.getTypeName()) ){
-                        t = (T) res.getEntity();
+                        t = (T) res;
                     }else {
                         t = (T) res.readEntity(response);
                     }
@@ -88,15 +91,15 @@ public class JerseyHelper {
                 logger.debug("post request successfully for url "+ url + " status "+ res.getStatusInfo());
                 if(res.hasEntity()) {
                     if(response.getTypeName().equals(Response.class.getTypeName()) ){
-                        t = (T) res.getEntity();
+                        t = (T) res;
                     }else {
                         t = (T) res.readEntity(response);
                     }
                 }else {
-                    t = (T) res;
+                    t = (T)res;
                 }
             }else {
-                t = (T) res;
+                t = (T)res;
             }
         }catch(Exception e){
             logger.error("post request fail for url "+ url + " status "+ res.getStatusInfo(),e);
@@ -115,7 +118,7 @@ public class JerseyHelper {
                 logger.debug("delete request successfully for url "+ url + " status "+ res.getStatusInfo());
                 if(res.hasEntity()) {
                     if(response.getTypeName().equals(Response.class.getTypeName()) ){
-                        t = (T) res.getEntity();
+                        t = (T) res;
                     }else {
                         t = (T) res.readEntity(response);
                     }

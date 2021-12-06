@@ -1727,12 +1727,19 @@ public abstract class Schema extends JsonProperties implements Serializable {
 
   private static class ObjectSchema extends Schema {
     public ObjectSchema(String o) {
-      super(Type.OBJECT);
+      super(Type.valueOf(getOwnerTypeName(o).substring(getOwnerTypeName(o).lastIndexOf(".")+1).toUpperCase()));
       this.setName(o);
     }
   }
 
 
+  public static String getOwnerTypeName(String name){
+    if(name.contains("<")) {
+      int i = name.split(">").length;
+      return name.substring(0,name.indexOf("<"));
+    }
+    return name;
+  }
 
   private static class BytesSchema extends Schema {
     public BytesSchema() {
