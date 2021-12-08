@@ -40,6 +40,8 @@ public static class ${this.mangle($name)} {
 #if($message.getProp("transceiver").equals("JAXRS"))
 #parse( "jaxrsStepImpl.vm" )
 #end
-
+#if($message.getProp("transceiver").equals("LOCAL"))
+#parse( "localStepImpl.vm" )
+#end
 #end## (requests)
 }## End of protocol interface

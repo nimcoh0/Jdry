@@ -91,6 +91,8 @@ public  class DefaultMethodVistor implements ElementVisitor {
                     typeBuilder.addType(e.asType().toString(),"generic");
                 }else {
                     if(!Utils.isSchemaType(e.asType().toString()))
+                    //String s = e.asType().toString();
+                    //if(!Schema.isPrimitive(s.substring(s.lastIndexOf(".")+1).toLowerCase()))
                     //typeBuilder.addType(e.asType().toString(),Utils.getSchemaType(e.asType().toString()));
                     typeBuilder.addType(e.asType().toString(),"external");
                 }
@@ -99,8 +101,11 @@ public  class DefaultMethodVistor implements ElementVisitor {
                 typeBuilder.addType(e.asType().toString(),"generic");
             } else {
                 if(!Utils.isSchemaType(e.asType().toString()))
-                //typeBuilder.addType(e.asType().toString(),Utils.getSchemaType(e.asType().toString()));
-                typeBuilder.addType(e.asType().toString(),"external");
+                //String s = e.asType().toString();
+                //if(!Schema.isPrimitive(s.substring(s.lastIndexOf(".")+1).toLowerCase()))
+                    //typeBuilder.addType(e.asType().toString(),Utils.getSchemaType(e.asType().toString()));
+                typeBuilder.addType(e.asType().toString(), "external");
+
             }
         }
         return o;
@@ -168,13 +173,15 @@ public  class DefaultMethodVistor implements ElementVisitor {
         }else {
             messageBuilder.setResponse(Utils.getSchemaType(e.getReturnType().toString()));
             if(!Utils.isSchemaType(((Type.MethodType)e.asType()).getReturnType().toString()))
-            typeBuilder.addType(Utils.getSchemaType(e.getReturnType().toString()),"external");
+            //if(!Schema.isPrimitive(((Type.MethodType)e.asType()).getReturnType().toString()))
+            typeBuilder.addType(e.getReturnType().toString(),"external");
         }
 
         if (e.getReturnType().getKind().equals(TypeKind.TYPEVAR) ) {
             typeBuilder.addType(e.getReturnType().toString(),"generic");
         } else {
             if(!Utils.isSchemaType(((Type.MethodType)e.asType()).getReturnType().toString()))
+            //if(!Schema.isPrimitive(((Type.MethodType)e.asType()).getReturnType().toString()))
             typeBuilder.addType(e.getReturnType().toString(),"external");
         }
      }

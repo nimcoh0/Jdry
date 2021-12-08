@@ -517,6 +517,13 @@ public abstract class Schema extends JsonProperties implements Serializable {
     return false;
   }
 
+  public static boolean isPrimitive(String name){
+    if(PRIMITIVES.containsKey(name.toLowerCase())){
+      return true;
+    }
+    return false;
+  }
+
   public boolean isExternal(){
     if(this.getType().equals("external")){
       return true;

@@ -39,7 +39,7 @@ public class JdryTestListener implements ITestListener {
 
     @Override
     public void onTestFailure(ITestResult result) {
-        logger.debug(result.getName()+" fail");
+        logger.debug(result.getName()+" fail",result.getThrowable());
     }
 
     @Override

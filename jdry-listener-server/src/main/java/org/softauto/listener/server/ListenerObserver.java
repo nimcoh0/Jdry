@@ -55,6 +55,7 @@ public class ListenerObserver {
             if(k.equals(key)){
                 v = null;
                 i.put(k,v);
+                logger.debug("ListenerObserver unregister " + key);
             }
           });
         });
@@ -91,7 +92,8 @@ public class ListenerObserver {
         try {
             for (HashMap<String, Object> chanel : channels) {
                 if (chanel.containsKey(key)) {
-                    l.add(chanel.get(key));
+                    if(chanel.get(key) != null)
+                        l.add(chanel.get(key));
                 }
             }
             logger.debug("observer channel for " + key + " found " + l.size());

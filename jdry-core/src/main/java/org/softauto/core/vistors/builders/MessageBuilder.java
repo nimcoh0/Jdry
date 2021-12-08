@@ -1,5 +1,8 @@
 package org.softauto.core.vistors.builders;
 
+import org.apache.avro.Schema;
+import org.softauto.core.Utils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -113,8 +116,8 @@ public class MessageBuilder {
         }
 
         public Builder setResponse(String response) {
-            this.response = response;
-            return this;
+              this.response = response;
+              return this;
         }
 
         public HashMap<String,Object> build(){

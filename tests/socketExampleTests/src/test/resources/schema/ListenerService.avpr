@@ -1,0 +1,21 @@
+{
+  "protocol" : "ListenerService",
+  "version" : "1.0",
+  "namespace" : "tests.infrastructure",
+  "types" : [ {
+    "name" : "java.lang.Object[]",
+    "type" : "external"
+  } ],
+  "messages" : {
+    "com_baeldung_socket_EchoMultiServer_echo" : {
+      "request" : [ {
+        "name" : "message",
+        "type" : "string"
+      } ],
+      "method" : "echo",
+      "transceiver" : "RPC",
+      "response" : "void",
+      "namespace" : "com.baeldung.socket.EchoMultiServer"
+    }
+  }
+}

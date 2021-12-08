@@ -1011,6 +1011,37 @@ public class Compiler {
     return str.toLowerCase().charAt(0)+str.substring(1,str.length());
   }
 
+  public String javaType(Schema.Type type) {
+    switch (type) {
+      case ARRAY:
+        return "java.util.List";
+      case MAP:
+        return "java.util.Map";
+      case OBJECT:
+        return "java.lang.Object";
+      case STRING:
+        return "java.lang.String";
+      case BYTES:
+        return "java.nio.ByteBuffer";
+      case INT:
+        return "java.lang.Integer";
+      case LONG:
+        return "java.lang.Long";
+      case FLOAT:
+        return "java.lang.Float";
+      case DOUBLE:
+        return "java.lang.Double";
+      case BOOLEAN:
+        return "java.lang.Boolean";
+      case NULL:
+        return "java.lang.Void";
+      case VOID:
+        return "java.lang.Void";
+      default:
+        throw new RuntimeException("Unknown type: " + type);
+    }
+  }
+
   public String javaType(Schema schema, boolean checkConvertedLogicalType) {
     if (checkConvertedLogicalType) {
       String convertedLogicalType = getConvertedLogicalType(schema);

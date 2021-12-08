@@ -1,0 +1,23 @@
+{
+  "protocol" : "StepService",
+  "version" : "1.0",
+  "namespace" : "tests.infrastructure",
+  "types" : [ ],
+  "messages" : {
+    "helper_Sock_send" : {
+      "request" : [ {
+        "name" : "message",
+        "type" : "string"
+      } ],
+      "method" : "send",
+      "transceiver" : "LOCAL",
+      "response" : "java.lang.Object",
+      "namespace" : "helper.Sock",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "helper.Sock",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    }
+  }
+}

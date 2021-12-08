@@ -9,6 +9,7 @@ import javax.lang.model.element.Element;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -71,11 +72,13 @@ public class LocalProviderImpl implements Provider {
                     Object o = Utils.findClass(fullClassName).newInstance();
                     Method method = Utils.getMethod(o,methodName, (Class[]) args[1]);
                     method.setAccessible(true);
+                    logger.debug("invoking "+ methodName+ " with " + Arrays.toString(args));
                     if (Modifier.isStatic(method.getModifiers())) {
                         methodResponse = method.invoke(null, (Object[])args[0]);
                     } else {
                         methodResponse = method.invoke(o, (Object[])args[0]);
                     }
+                    logger.debug("got result "+methodResponse);
                     callback.handleResult((RespT) methodResponse);
                     //new LocalClient().setServiceImpl(o).setMethod(method).setArgs((Object[]) args[0]).call(callback);
                     logger.debug("successfully exec Local call  " + methodName);
@@ -86,6 +89,7 @@ public class LocalProviderImpl implements Provider {
             });
 
     }
+
 
 
 

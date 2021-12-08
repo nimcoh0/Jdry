@@ -3,6 +3,7 @@ package org.softauto.core;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.TextNode;
+import org.apache.avro.Compiler;
 import org.apache.avro.Protocol;
 import org.apache.avro.Schema;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -606,7 +607,11 @@ public class Utils {
         String tt = t.startsWith("java") ? t.substring(t.lastIndexOf(".")+1) : t;
         for(Schema.Type type : types){
             if(tt.toLowerCase().equals(type.getName().toLowerCase())){
-                return type.getName();
+                if(Schema.isPrimitive(type.getName())){
+                    return type.getName();
+                }else {
+                    return new Compiler().javaType(type);
+                }
             }
         }
         return t;

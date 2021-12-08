@@ -89,7 +89,7 @@
                         </goals>
                         <configuration>
 
-                            <finalName>jdry-socket-nio2-beta-1.0</finalName>
+                            <finalName>jdry-socket-1.0.0</finalName>
 
                         </configuration>
                     </execution>

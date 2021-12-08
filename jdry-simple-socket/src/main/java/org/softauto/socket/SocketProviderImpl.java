@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
 public class SocketProviderImpl implements Provider {
 
     private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(SocketProviderImpl.class);
-
+    SocketClient socketClient = null;
 
     /**
      * this provider name
@@ -64,6 +64,7 @@ public class SocketProviderImpl implements Provider {
     @Override
     public Provider initialize() throws IOException {
         logger.info("sock plugin initialize");
+        socketClient = new SocketClient();
         return this;
     }
 
@@ -115,19 +116,26 @@ public class SocketProviderImpl implements Provider {
             executor.submit(()->{
                 String host = Configuration.get("socket/host").asText();
                 int port = Configuration.get("socket/port").asInt();
-                StreamObserver<Object> observerAdpater = new CallbackToResponseStreamObserverAdpater<>(callback, null);
-                byte[] b = new ClientCallImpl(host, port).sendMessage(args[0].toString(), (Integer) args[1]);
-                if (b.length == (Integer) args[1]) {
-                    observerAdpater.onCompleted();
+                logger.debug("execute "+ methodName + "with args "+Arrays.toString(args)+ " on " + host+":"+port);
+                CallbackToResponseStreamObserverAdpater observerAdpater = new CallbackToResponseStreamObserverAdpater<>(callback, null);
+                String result = socketClient.startConnection(host, port).sendMessage(args[0].toString());
+                if (result != null) {
+                    logger.debug("got result "+result);
+                    //callback.handleResult((RespT) result);
+                    observerAdpater.onCompleted((RespT)result);
                 } else {
+                    logger.error("got result null");
                     observerAdpater.onError(new RuntimeException("Stream got cancelled"));
                 }
+                socketClient.stopConnection();
                 logger.debug("exec socket request " + methodName  + "with args "+ Arrays.toString(args) + " successfully");
             });
         }catch (Exception e){
             logger.error("exec socket request " + methodName + " fail" + "with args "+ Arrays.toString(args) ,e);
         }
     }
+
+
 
 
 }

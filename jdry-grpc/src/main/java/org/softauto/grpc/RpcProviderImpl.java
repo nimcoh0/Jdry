@@ -74,50 +74,8 @@ public class RpcProviderImpl implements Provider {
     }
 
 
-    /*
-    @Override
-    public Provider initilize() throws IOException {
-        try {
-            LogManager.setStatus(true);
-            logger.info("starting System server ....");
-            server = ServerBuilder.forPort(systemPort)
-                   //.addService(SystemServer.createServiceDefinition(SystemService.class,SystemServiceImpl.getInstance()))
-                   .addService(org.softauto.serializer.SoftautoGrpcServer.createServiceDefinition(SerializerService.class, new org.softauto.grpc.SerializerServiceImpl()))
-                   .build();
-            server.start();
-            logger.info("System server started on port : "+ port);
+   
 
-        }catch (Exception e){
-            logger.fatal("fail to start System server ", e);
-            System.exit(1);
-        }finally {
-
-        }
-        return this;
-    }
-*/
-    /**
-     * load the grpc server
-     * @return
-     * @throws IOException
-     */
-    /*
-    public Provider initilizeSerializer() throws IOException {
-        try {
-            logger.info("starting Serializer server ....");
-            server = ServerBuilder.forPort(port)
-                    .addService(SoftautoGrpcServer.createServiceDefinition(Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() ,Context.STEP_SERVICE,Configuration.get(Context.TEST_MACHINE).asText())))
-                    .build();
-            server.start();
-            logger.info("Serializer server started on port : "+ port);
-        }catch (Exception e){
-            logger.fatal("fail to start Serializer server ", e);
-            System.exit(1);
-        }
-        return this;
-    }
-
-     */
     @Override
     public Provider initialize() throws IOException {
         try {
@@ -141,23 +99,7 @@ public class RpcProviderImpl implements Provider {
         ServiceLocator.getInstance().register(type,this);
     }
 
-    /*
-    @Override
-    public <RespT> void exec(String methodName, Object[] args, CallFuture<RespT> callback,ManagedChannel channel){
-        try {
-            logger.debug("exec rpc call "+ methodName);
-            MethodDescriptor<Object[], Object> m = ServiceDescriptor.create(iface).getMethod(methodName, MethodDescriptor.MethodType.UNARY);
-            if(channel == null) {
-                channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
-            }
-            StreamObserver<Object> observerAdpater = new CallbackToResponseStreamObserverAdpater<>(callback, channel);
-            ClientCalls.asyncUnaryCall(channel.newCall(m, CallOptions.DEFAULT), args, observerAdpater);
-        }catch (Exception e){
-           logger.error("fail exec rpc call "+ methodName, e);
-        }
-    }
 
-     */
 
     @Override
     public <RespT> void exec(String methodName,  CallFuture<RespT> callback,ManagedChannel channel,Object...args){
