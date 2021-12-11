@@ -21,6 +21,7 @@
             <groupId>org.softauto</groupId>
             <artifactId>jdry-core</artifactId>
             <version>${jdry-core}</version>
+
             <scope>compile</scope>
         </dependency>
         <dependency>

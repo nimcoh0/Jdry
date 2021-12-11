@@ -48,7 +48,7 @@ public class ExampleTests extends AbstractTesterImpl {
      */
     @Test
     public void call_method()throws Exception{
-        BookStore bookStore =  new Step.App_example_books_BookStore_addAllBooks(books).get_Result();
+        BookStore bookStore =  new Step.app_example_books_BookStore_addAllBooks(books).get_Result();
         Assert.assertTrue(bookStore.getBooks().size() >= 2);
     }
 
@@ -62,8 +62,8 @@ public class ExampleTests extends AbstractTesterImpl {
     public void listen_for_method_after()throws Exception{
         try {
             CallFuture<String> future = new CallFuture<>();
-            BookStore bookStore =  new Step.App_example_books_BookStore_addAllBooks(books).get_Result();
-            new Step.App_example_books_BookStore_loopOverBooks().then(
+            BookStore bookStore =  new Step.app_example_books_BookStore_addAllBooks(books).get_Result();
+            new Step.app_example_books_BookStore_loopOverBooks().then(
                     Listener.app_example_books_Book_getTitle.waitToResult(future));
             Assert.assertTrue(future.getResult() != null);
         }catch (Exception e){
@@ -79,8 +79,8 @@ public class ExampleTests extends AbstractTesterImpl {
     @Test
     public void get_step_result()throws Exception{
         try {
-            BookStore bookStore =  new Step.App_example_books_BookStore_addAllBooks(books).get_Result();
-            new Step.App_example_books_BookStore_booksByAuthor("a1").then(res ->{
+            BookStore bookStore =  new Step.app_example_books_BookStore_addAllBooks(books).get_Result();
+            new Step.app_example_books_BookStore_booksByAuthor("a1").then(res ->{
                 ((Book)res.result().get(0)).getTitle().equals("t1");
             });
 
@@ -100,9 +100,9 @@ public class ExampleTests extends AbstractTesterImpl {
     @Test
     public void listen_for_method_before_first()throws Exception{
         try {
-            //BookStore bookStore =  new Step.App_example_books_BookStore_addAllBooks(books).get_Result();
+            //BookStore bookStore =  new Step.app_example_books_BookStore_addAllBooks(books).get_Result();
             //CallFuture<Object[]> future = new CallFuture<>();
-            new Step.App_example_books_BookStore_printBooks(books).then(
+            new Step.app_example_books_BookStore_printBooks(books).then(
                 Listener.app_example_books_BookCatalog_printBook.waitTo().getBook(res->{
                         System.out.println(res.result().getId());
                     }));
@@ -122,8 +122,8 @@ public class ExampleTests extends AbstractTesterImpl {
     public void listen_for_method_before_until()throws Exception{
         try {
             CallFuture<Object[]> future = new CallFuture<>();
-            //BookStore bookStore =  new Step.App_example_books_BookStore_addAllBooks(books).get_Result();
-            new Step.App_example_books_BookStore_printBooks(books).then(
+            //BookStore bookStore =  new Step.app_example_books_BookStore_addAllBooks(books).get_Result();
+            new Step.app_example_books_BookStore_printBooks(books).then(
                   Listener.app_example_books_BookCatalog_printBook.waitUntil(new ExpressionBuilder().newExpression("book.getAuthor().equals('a1')").build(),future));
             Assert.assertTrue(((Book)future.getResult()[0]).getTitle().equals("t1"));
 
@@ -142,8 +142,8 @@ public class ExampleTests extends AbstractTesterImpl {
     public void listen_for_method_before_until1()throws Exception{
         try {
             CallFuture<Object[]> future = new CallFuture<>();
-            BookStore bookStore =  new Step.App_example_books_BookStore_addAllBooks(books).get_Result();
-            new Step.App_example_books_BookStore_printBooks(books).then(
+            BookStore bookStore =  new Step.app_example_books_BookStore_addAllBooks(books).get_Result();
+            new Step.app_example_books_BookStore_printBooks(books).then(
                     Listener.app_example_books_BookCatalog_printBook.waitUntil(new ExpressionBuilder().newExpression().setContext("book").setStatement("getId()").build()
                                                                                                 .setOperator("==")
                                                                                                 .newExpression().setContext(bookStore).setStatement("bookByTitle('t1').get().getId()").build()
@@ -164,8 +164,8 @@ public class ExampleTests extends AbstractTesterImpl {
     public void listen_for_method_before_until2()throws Exception{
         try {
             CallFuture<Object[]> future = new CallFuture<>();
-            BookStore bookStore =  new Step.App_example_books_BookStore_addAllBooks(books).get_Result();
-            new Step.App_example_books_BookStore_printBooks(books).then(
+            BookStore bookStore =  new Step.app_example_books_BookStore_addAllBooks(books).get_Result();
+            new Step.app_example_books_BookStore_printBooks(books).then(
                     Listener.app_example_books_BookCatalog_printBook.waitUntil(new ExpressionBuilder().newExpression("book.getAuthor().equals('a1')").build()
                             .setOperator(" and ")
                             .newExpression().setContext(bookStore).setStatement("bookByTitle('t1').get().getAuthor().equals('a1')").build()
@@ -183,7 +183,7 @@ public class ExampleTests extends AbstractTesterImpl {
      */
    @Test
    public void auto_initialize_class()throws Exception{
-       String msg = new Step.App_example_books_Book_hello().get_Result();
+       String msg = new Step.app_example_books_Book_hello().get_Result();
        logger.debug("msg "+ msg);
        Assert.assertTrue(msg.equals("hello"));
    }
@@ -194,8 +194,8 @@ public class ExampleTests extends AbstractTesterImpl {
      */
     @Test
     public void manually_initialize_class()throws Exception{
-       Book book = new Step.App_example_books_Book_Book("blabla","nim").get_Result();
-                new Step.App_example_books_Book_hello(res ->{
+       Book book = new Step.app_example_books_Book_Book("blabla","nim").get_Result();
+                new Step.app_example_books_Book_hello(res ->{
                     Assert.assertTrue(res.result().equals("hello"));
                 }
         );
@@ -207,8 +207,8 @@ public class ExampleTests extends AbstractTesterImpl {
      */
     @Test
     public void check_session()throws Exception{
-        new Step.App_example_books_BookStore_addAllBooks(books).get_Result();
-        Book book = new Step.App_example_books_BookStore_bookByTitle("t1").get_Result().get();
+        new Step.app_example_books_BookStore_addAllBooks(books).get_Result();
+        Book book = new Step.app_example_books_BookStore_bookByTitle("t1").get_Result().get();
         Assert.assertTrue(book.getTitle().equals("t1"));
     }
 

@@ -195,11 +195,6 @@ ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
-                         future.handleResult(new Object[]{##
-#foreach ($p in $message.getRequest().getFields())##
-${this.mangle($p.name())}#if($foreach.hasNext),#end##
-#end
-});
                         return new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
 ${this.mangle($p.name())}#if($foreach.hasNext),#end##

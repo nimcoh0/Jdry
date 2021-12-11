@@ -74,4 +74,12 @@ public class BookStore {
             new BookCatalog().printBook(book);
         }
     }
+
+    @RPC
+    @ExposedForTesting
+    public void printBooks(List<Book> books){
+        for(Book book : books){
+            new BookCatalog().printBook(book);
+        }
+    }
 }

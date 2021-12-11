@@ -74,14 +74,14 @@ public class RpcProviderImpl implements Provider {
     }
 
 
-   
+
 
     @Override
     public Provider initialize() throws IOException {
         try {
             org.softauto.serializer.SoftautoGrpcServer.setSerializationEngine(org.softauto.serializer.kryo.KryoSerialization.getInstance());
             server = ServerBuilder.forPort(port)
-                    .addService(org.softauto.serializer.SoftautoGrpcServer.createServiceDefinition(SerializerService.class, org.softauto.grpc.SerializerServiceImpl.class))
+                    .addService(org.softauto.serializer.SoftautoGrpcServer.createServiceDefinition(SerializerService.class, new org.softauto.grpc.SerializerServiceImpl()))
                     .build();
             server.start();
             logger.info("Grpc Server load successfully on port "+port);

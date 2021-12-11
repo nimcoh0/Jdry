@@ -48,7 +48,7 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
-        <pluginManagement>
+
             <plugins>
 
                 <plugin>
@@ -81,6 +81,6 @@
 
 
             </plugins>
-        </pluginManagement>
+
     </build>
 </project>

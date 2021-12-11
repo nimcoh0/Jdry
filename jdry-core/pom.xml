@@ -103,11 +103,11 @@
             <version>${jackson-databind}</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>org.apache.avro</groupId>
             <artifactId>avro-ipc</artifactId>
             <version>${avro-ipc}</version>
-        </dependency>
+        </dependency-->
 
         <dependency>
             <groupId>com.github.olivergondza</groupId>

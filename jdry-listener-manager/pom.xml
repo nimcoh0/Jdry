@@ -17,7 +17,12 @@
             <groupId>org.softauto</groupId>
             <artifactId>jdry-core</artifactId>
             <version>${jdry-core}</version>
-
+            <exclusions>
+                <exclusion>
+                    <groupId>org.softauto</groupId>
+                    <artifactId>jdry-avro</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>

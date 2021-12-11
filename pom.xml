@@ -33,6 +33,7 @@
         <module>jdry-testng-for-proxy-plugin</module>
 
 
+
     </modules>
 
     <properties>
@@ -88,7 +89,7 @@
         <maven-core>3.8.1</maven-core>
         <maven-plugin-annotations>3.5</maven-plugin-annotations>
         <version.roaster>2.22.3.Final</version.roaster>
-        <avro-ipc-netty>1.9.1</avro-ipc-netty>
+        <avro-ipc-netty>1.10.0</avro-ipc-netty>
         <avro-ipc>1.10.0</avro-ipc>
         <maven-jdk-tools-wrapper>0.1</maven-jdk-tools-wrapper>
         <commons-lang3>3.5</commons-lang3>

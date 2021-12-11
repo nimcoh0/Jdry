@@ -18,7 +18,7 @@
 
 package org.softauto.core;
 
-import org.apache.avro.ipc.Callback;
+//import org.apache.avro.ipc.Callback;
 
 //import java.util.concurrent.Future;
 import java.util.concurrent.*;

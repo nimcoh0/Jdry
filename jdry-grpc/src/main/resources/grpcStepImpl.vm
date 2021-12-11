@@ -41,6 +41,8 @@
 #if (${this.javaUnbox($response, true)} != "void" )
         future.handleResult(future.get());
 
+#else
+        future.get();
 #end
         return this;
     }

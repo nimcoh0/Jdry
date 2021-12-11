@@ -135,7 +135,6 @@ public static class app_example_books_BookCatalog_addBook implements IListener{
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
-                         future.handleResult(new Object[]{book});
                         return new Object[]{book};
                     }
                 };
@@ -445,7 +444,6 @@ public static class app_example_books_BookCatalog_getBooks implements IListener{
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
-                         future.handleResult(new Object[]{});
                         return new Object[]{};
                     }
                 };
@@ -860,7 +858,6 @@ public static class app_example_books_BookCatalog_printBook implements IListener
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
-                         future.handleResult(new Object[]{book});
                         return new Object[]{book};
                     }
                 };
@@ -1170,7 +1167,6 @@ public static class app_example_books_Book_getTitle implements IListener{
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
-                         future.handleResult(new Object[]{});
                         return new Object[]{};
                     }
                 };
@@ -1585,7 +1581,6 @@ public static class app_example_books_Book_setTitle implements IListener{
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
-                         future.handleResult(new Object[]{title});
                         return new Object[]{title};
                     }
                 };
@@ -1895,7 +1890,6 @@ public static class app_example_books_Book_getAuthor implements IListener{
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
-                         future.handleResult(new Object[]{});
                         return new Object[]{};
                     }
                 };
@@ -2310,7 +2304,6 @@ public static class app_example_books_Book_setAuthor implements IListener{
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
-                         future.handleResult(new Object[]{author});
                         return new Object[]{author};
                     }
                 };
@@ -2620,7 +2613,6 @@ public static class app_example_books_Book_getId implements IListener{
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
-                         future.handleResult(new Object[]{});
                         return new Object[]{};
                     }
                 };
@@ -3035,7 +3027,6 @@ public static class app_example_books_Book_setId implements IListener{
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
-                         future.handleResult(new Object[]{id});
                         return new Object[]{id};
                     }
                 };

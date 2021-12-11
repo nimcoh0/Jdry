@@ -122,7 +122,7 @@ public abstract class Schema extends JsonProperties implements Serializable {
   };
 
 
-  private Type type;
+  protected Type type;
   private LogicalType logicalType = null;
 
   Schema(Type type) {
@@ -1734,7 +1734,8 @@ public abstract class Schema extends JsonProperties implements Serializable {
 
   private static class ObjectSchema extends Schema {
     public ObjectSchema(String o) {
-      super(Type.valueOf(getOwnerTypeName(o).substring(getOwnerTypeName(o).lastIndexOf(".")+1).toUpperCase()));
+      //super(Type.valueOf(getOwnerTypeName(o).substring(getOwnerTypeName(o).lastIndexOf(".")+1).toUpperCase()));
+      super(Type.EXTERNAL);
       this.setName(o);
     }
   }
@@ -1998,7 +1999,7 @@ public abstract class Schema extends JsonProperties implements Serializable {
 
     public boolean isGeneric(Name name){
       Schema s = super.get(name);
-      if(s != null && s.getType().name.equals("generic")){
+      if(s != null && s.getType().equals("generic".toUpperCase())){
         return true;
       }
       return false;

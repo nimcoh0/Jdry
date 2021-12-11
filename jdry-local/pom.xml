@@ -16,6 +16,12 @@
         <groupId>org.softauto</groupId>
         <artifactId>jdry-core</artifactId>
         <version>${jdry-core}</version>
+        <exclusions>
+            <exclusion>
+                <groupId>org.softauto</groupId>
+                <artifactId>jdry-avro</artifactId>
+            </exclusion>
+         </exclusions>
     </dependency>
 
     <dependency>
@@ -29,11 +35,11 @@
         <version>${jdry-annotations}</version>
         <scope>compile</scope>
     </dependency>
-    <dependency>
+    <!--dependency>
         <groupId>org.apache.avro</groupId>
         <artifactId>avro-ipc-netty</artifactId>
         <version>${avro-ipc-netty}</version>
-    </dependency>
+    </dependency-->
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-grpc</artifactId>

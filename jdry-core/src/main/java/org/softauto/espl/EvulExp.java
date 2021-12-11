@@ -74,8 +74,11 @@ public class EvulExp {
                     logger.debug("evaluate expression " + exp.getExpressions().get(0).toString()+ "result: "+ objects.get(0));
                     return (Boolean) objects.get(0);
                 }
+                logger.error("no Objects to evaluate ");
+                return false;
             }else{
                 logger.error("number of expressions > 2 not supported ");
+                return false;
             }
         }catch (Exception e){
             logger.error("fail evaluate expression ", e);

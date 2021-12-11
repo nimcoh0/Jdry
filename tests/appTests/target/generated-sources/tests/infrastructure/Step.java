@@ -18,6 +18,10 @@ import org.softauto.tester.InvocationHandler;
 import org.softauto.core.IListener;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 @org.apache.avro.specific.AvroGenerated
 public class Step {
@@ -57,12 +61,12 @@ public static class app_example_books_BookStore_addBook {
         return this;
     }
 
-    public  App_example_books_BookStore_addBook then(IListener o,Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
+    public  app_example_books_BookStore_addBook then(IListener o,Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_BookStore_addBook then(IListener o ,CallFuture<app.example.books.BookStore> future)throws Exception{
+    public  app_example_books_BookStore_addBook then(IListener o ,CallFuture<app.example.books.BookStore> future)throws Exception{
         future.handleResult(future.get());
         return this;
     }
@@ -71,7 +75,7 @@ public static class app_example_books_BookStore_addBook {
 
 
 
-    public App_example_books_BookStore_addBook(app.example.books.Book book    ){
+    public app_example_books_BookStore_addBook(app.example.books.Book book    ){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_addBook");
             new InvocationHandler().invoke("app_example_books_BookStore_addBook",new Object[]{book},new Class[]{app.example.books.Book.class},future,"RPC");
@@ -82,7 +86,7 @@ public static class app_example_books_BookStore_addBook {
 
 
 
-    public App_example_books_BookStore_addBook(app.example.books.Book book,CallFuture<app.example.books.BookStore> future){
+    public app_example_books_BookStore_addBook(app.example.books.Book book,CallFuture<app.example.books.BookStore> future){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_addBook");
             new InvocationHandler().invoke("app_example_books_BookStore_addBook",new Object[]{book},new Class[]{app.example.books.Book.class},future,"RPC");
@@ -92,7 +96,7 @@ public static class app_example_books_BookStore_addBook {
  }
 
 
-    public  App_example_books_BookStore_addBook(app.example.books.Book book,Handler<AsyncResult<app.example.books.BookStore>> resultHandler  )throws Exception{
+    public  app_example_books_BookStore_addBook(app.example.books.Book book,Handler<AsyncResult<app.example.books.BookStore>> resultHandler  )throws Exception{
         try {
             CallFuture<app.example.books.BookStore> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_BookStore_addBook");
@@ -108,8 +112,7 @@ public static class app_example_books_BookStore_addBook {
 
 
  }
-
-public static class App_example_books_BookStore_updateBook {
+public static class app_example_books_BookStore_updateBook {
 
     CallFuture< app.example.books.BookStore> future = new CallFuture<>();
     public app.example.books.BookStore get_Result() throws Exception{
@@ -127,24 +130,24 @@ public static class App_example_books_BookStore_updateBook {
              }
         }
 
-    public  App_example_books_BookStore_updateBook then(Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
+    public  app_example_books_BookStore_updateBook then(Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
 
-    public  App_example_books_BookStore_updateBook then(IListener o)throws Exception{
+    public  app_example_books_BookStore_updateBook then(IListener o)throws Exception{
         future.handleResult(future.get());
 
         return this;
     }
 
-    public  App_example_books_BookStore_updateBook then(IListener o,Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
+    public  app_example_books_BookStore_updateBook then(IListener o,Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_BookStore_updateBook then(IListener o ,CallFuture<app.example.books.BookStore> future)throws Exception{
+    public  app_example_books_BookStore_updateBook then(IListener o ,CallFuture<app.example.books.BookStore> future)throws Exception{
         future.handleResult(future.get());
         return this;
     }
@@ -153,7 +156,7 @@ public static class App_example_books_BookStore_updateBook {
 
 
 
-    public App_example_books_BookStore_updateBook(app.example.books.Book book, java.lang.String newTitle    ){
+    public app_example_books_BookStore_updateBook(app.example.books.Book book, java.lang.String newTitle    ){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_updateBook");
             new InvocationHandler().invoke("app_example_books_BookStore_updateBook",new Object[]{book,newTitle},new Class[]{app.example.books.Book.class,java.lang.String.class},future,"RPC");
@@ -164,7 +167,7 @@ public static class App_example_books_BookStore_updateBook {
 
 
 
-    public App_example_books_BookStore_updateBook(app.example.books.Book book, java.lang.String newTitle,CallFuture<app.example.books.BookStore> future){
+    public app_example_books_BookStore_updateBook(app.example.books.Book book, java.lang.String newTitle,CallFuture<app.example.books.BookStore> future){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_updateBook");
             new InvocationHandler().invoke("app_example_books_BookStore_updateBook",new Object[]{book,newTitle},new Class[]{app.example.books.Book.class,java.lang.String.class},future,"RPC");
@@ -174,7 +177,7 @@ public static class App_example_books_BookStore_updateBook {
  }
 
 
-    public  App_example_books_BookStore_updateBook(app.example.books.Book book, java.lang.String newTitle,Handler<AsyncResult<app.example.books.BookStore>> resultHandler  )throws Exception{
+    public  app_example_books_BookStore_updateBook(app.example.books.Book book, java.lang.String newTitle,Handler<AsyncResult<app.example.books.BookStore>> resultHandler  )throws Exception{
         try {
             CallFuture<app.example.books.BookStore> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_BookStore_updateBook");
@@ -190,8 +193,7 @@ public static class App_example_books_BookStore_updateBook {
 
 
  }
-
-public static class App_example_books_BookStore_addAllBooks {
+public static class app_example_books_BookStore_addAllBooks {
 
     CallFuture< app.example.books.BookStore> future = new CallFuture<>();
     public app.example.books.BookStore get_Result() throws Exception{
@@ -209,24 +211,24 @@ public static class App_example_books_BookStore_addAllBooks {
              }
         }
 
-    public  App_example_books_BookStore_addAllBooks then(Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
+    public  app_example_books_BookStore_addAllBooks then(Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
 
-    public  App_example_books_BookStore_addAllBooks then(IListener o)throws Exception{
+    public  app_example_books_BookStore_addAllBooks then(IListener o)throws Exception{
         future.handleResult(future.get());
 
         return this;
     }
 
-    public  App_example_books_BookStore_addAllBooks then(IListener o,Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
+    public  app_example_books_BookStore_addAllBooks then(IListener o,Handler<AsyncResult<app.example.books.BookStore>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_BookStore_addAllBooks then(IListener o ,CallFuture<app.example.books.BookStore> future)throws Exception{
+    public  app_example_books_BookStore_addAllBooks then(IListener o ,CallFuture<app.example.books.BookStore> future)throws Exception{
         future.handleResult(future.get());
         return this;
     }
@@ -235,7 +237,7 @@ public static class App_example_books_BookStore_addAllBooks {
 
 
 
-    public App_example_books_BookStore_addAllBooks(java.util.Collection<app.example.books.Book> books    ){
+    public app_example_books_BookStore_addAllBooks(java.util.Collection<app.example.books.Book> books    ){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_addAllBooks");
             new InvocationHandler().invoke("app_example_books_BookStore_addAllBooks",new Object[]{books},new Class[]{java.util.Collection.class},future,"RPC");
@@ -246,7 +248,7 @@ public static class App_example_books_BookStore_addAllBooks {
 
 
 
-    public App_example_books_BookStore_addAllBooks(java.util.Collection<app.example.books.Book> books,CallFuture<app.example.books.BookStore> future){
+    public app_example_books_BookStore_addAllBooks(java.util.Collection<app.example.books.Book> books,CallFuture<app.example.books.BookStore> future){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_addAllBooks");
             new InvocationHandler().invoke("app_example_books_BookStore_addAllBooks",new Object[]{books},new Class[]{java.util.Collection.class},future,"RPC");
@@ -256,7 +258,7 @@ public static class App_example_books_BookStore_addAllBooks {
  }
 
 
-    public  App_example_books_BookStore_addAllBooks(java.util.Collection<app.example.books.Book> books,Handler<AsyncResult<app.example.books.BookStore>> resultHandler  )throws Exception{
+    public  app_example_books_BookStore_addAllBooks(java.util.Collection<app.example.books.Book> books,Handler<AsyncResult<app.example.books.BookStore>> resultHandler  )throws Exception{
         try {
             CallFuture<app.example.books.BookStore> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_BookStore_addAllBooks");
@@ -272,8 +274,7 @@ public static class App_example_books_BookStore_addAllBooks {
 
 
  }
-
-public static class App_example_books_BookStore_booksByAuthor {
+public static class app_example_books_BookStore_booksByAuthor {
 
     CallFuture< java.util.List<app.example.books.Book>> future = new CallFuture<>();
     public java.util.List<app.example.books.Book> get_Result() throws Exception{
@@ -291,24 +292,24 @@ public static class App_example_books_BookStore_booksByAuthor {
              }
         }
 
-    public  App_example_books_BookStore_booksByAuthor then(Handler<AsyncResult<java.util.List<app.example.books.Book>>> resultHandler)throws Exception{
+    public  app_example_books_BookStore_booksByAuthor then(Handler<AsyncResult<java.util.List<app.example.books.Book>>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
 
-    public  App_example_books_BookStore_booksByAuthor then(IListener o)throws Exception{
+    public  app_example_books_BookStore_booksByAuthor then(IListener o)throws Exception{
         future.handleResult(future.get());
 
         return this;
     }
 
-    public  App_example_books_BookStore_booksByAuthor then(IListener o,Handler<AsyncResult<java.util.List<app.example.books.Book>>> resultHandler)throws Exception{
+    public  app_example_books_BookStore_booksByAuthor then(IListener o,Handler<AsyncResult<java.util.List<app.example.books.Book>>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_BookStore_booksByAuthor then(IListener o ,CallFuture<java.util.List<app.example.books.Book>> future)throws Exception{
+    public  app_example_books_BookStore_booksByAuthor then(IListener o ,CallFuture<java.util.List<app.example.books.Book>> future)throws Exception{
         future.handleResult(future.get());
         return this;
     }
@@ -317,7 +318,7 @@ public static class App_example_books_BookStore_booksByAuthor {
 
 
 
-    public App_example_books_BookStore_booksByAuthor(java.lang.String author    ){
+    public app_example_books_BookStore_booksByAuthor(java.lang.String author    ){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_booksByAuthor");
             new InvocationHandler().invoke("app_example_books_BookStore_booksByAuthor",new Object[]{author},new Class[]{java.lang.String.class},future,"RPC");
@@ -328,7 +329,7 @@ public static class App_example_books_BookStore_booksByAuthor {
 
 
 
-    public App_example_books_BookStore_booksByAuthor(java.lang.String author,CallFuture<java.util.List<app.example.books.Book>> future){
+    public app_example_books_BookStore_booksByAuthor(java.lang.String author,CallFuture<java.util.List<app.example.books.Book>> future){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_booksByAuthor");
             new InvocationHandler().invoke("app_example_books_BookStore_booksByAuthor",new Object[]{author},new Class[]{java.lang.String.class},future,"RPC");
@@ -338,7 +339,7 @@ public static class App_example_books_BookStore_booksByAuthor {
  }
 
 
-    public  App_example_books_BookStore_booksByAuthor(java.lang.String author,Handler<AsyncResult<java.util.List<app.example.books.Book>>> resultHandler  )throws Exception{
+    public  app_example_books_BookStore_booksByAuthor(java.lang.String author,Handler<AsyncResult<java.util.List<app.example.books.Book>>> resultHandler  )throws Exception{
         try {
             CallFuture<java.util.List<app.example.books.Book>> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_BookStore_booksByAuthor");
@@ -354,8 +355,7 @@ public static class App_example_books_BookStore_booksByAuthor {
 
 
  }
-
-public static class App_example_books_BookStore_bookByTitle {
+public static class app_example_books_BookStore_bookByTitle {
 
     CallFuture< java.util.Optional<app.example.books.Book>> future = new CallFuture<>();
     public java.util.Optional<app.example.books.Book> get_Result() throws Exception{
@@ -373,24 +373,24 @@ public static class App_example_books_BookStore_bookByTitle {
              }
         }
 
-    public  App_example_books_BookStore_bookByTitle then(Handler<AsyncResult<java.util.Optional<app.example.books.Book>>> resultHandler)throws Exception{
+    public  app_example_books_BookStore_bookByTitle then(Handler<AsyncResult<java.util.Optional<app.example.books.Book>>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
 
-    public  App_example_books_BookStore_bookByTitle then(IListener o)throws Exception{
+    public  app_example_books_BookStore_bookByTitle then(IListener o)throws Exception{
         future.handleResult(future.get());
 
         return this;
     }
 
-    public  App_example_books_BookStore_bookByTitle then(IListener o,Handler<AsyncResult<java.util.Optional<app.example.books.Book>>> resultHandler)throws Exception{
+    public  app_example_books_BookStore_bookByTitle then(IListener o,Handler<AsyncResult<java.util.Optional<app.example.books.Book>>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_BookStore_bookByTitle then(IListener o ,CallFuture<java.util.Optional<app.example.books.Book>> future)throws Exception{
+    public  app_example_books_BookStore_bookByTitle then(IListener o ,CallFuture<java.util.Optional<app.example.books.Book>> future)throws Exception{
         future.handleResult(future.get());
         return this;
     }
@@ -399,7 +399,7 @@ public static class App_example_books_BookStore_bookByTitle {
 
 
 
-    public App_example_books_BookStore_bookByTitle(java.lang.String title    ){
+    public app_example_books_BookStore_bookByTitle(java.lang.String title    ){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_bookByTitle");
             new InvocationHandler().invoke("app_example_books_BookStore_bookByTitle",new Object[]{title},new Class[]{java.lang.String.class},future,"RPC");
@@ -410,7 +410,7 @@ public static class App_example_books_BookStore_bookByTitle {
 
 
 
-    public App_example_books_BookStore_bookByTitle(java.lang.String title,CallFuture<java.util.Optional<app.example.books.Book>> future){
+    public app_example_books_BookStore_bookByTitle(java.lang.String title,CallFuture<java.util.Optional<app.example.books.Book>> future){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_bookByTitle");
             new InvocationHandler().invoke("app_example_books_BookStore_bookByTitle",new Object[]{title},new Class[]{java.lang.String.class},future,"RPC");
@@ -420,7 +420,7 @@ public static class App_example_books_BookStore_bookByTitle {
  }
 
 
-    public  App_example_books_BookStore_bookByTitle(java.lang.String title,Handler<AsyncResult<java.util.Optional<app.example.books.Book>>> resultHandler  )throws Exception{
+    public  app_example_books_BookStore_bookByTitle(java.lang.String title,Handler<AsyncResult<java.util.Optional<app.example.books.Book>>> resultHandler  )throws Exception{
         try {
             CallFuture<java.util.Optional<app.example.books.Book>> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_BookStore_bookByTitle");
@@ -436,8 +436,7 @@ public static class App_example_books_BookStore_bookByTitle {
 
 
  }
-
-public static class App_example_books_BookStore_loopOverBooks {
+public static class app_example_books_BookStore_loopOverBooks {
 
     CallFuture<java.lang.Void> future = new CallFuture<>();
     public void get_Result() throws Exception{
@@ -454,22 +453,23 @@ public static class App_example_books_BookStore_loopOverBooks {
              }
         }
 
-    public  App_example_books_BookStore_loopOverBooks then(Handler<AsyncResult<java.lang.Void>> resultHandler)throws Exception{
+    public  app_example_books_BookStore_loopOverBooks then(Handler<AsyncResult<java.lang.Void>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
 
-    public  App_example_books_BookStore_loopOverBooks then(IListener o)throws Exception{
+    public  app_example_books_BookStore_loopOverBooks then(IListener o)throws Exception{
+        future.get();
         return this;
     }
 
-    public  App_example_books_BookStore_loopOverBooks then(IListener o,Handler<AsyncResult<java.lang.Void>> resultHandler)throws Exception{
+    public  app_example_books_BookStore_loopOverBooks then(IListener o,Handler<AsyncResult<java.lang.Void>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_BookStore_loopOverBooks then(IListener o ,CallFuture<java.lang.Void> future)throws Exception{
+    public  app_example_books_BookStore_loopOverBooks then(IListener o ,CallFuture<java.lang.Void> future)throws Exception{
         future.handleResult(future.get());
         return this;
     }
@@ -478,7 +478,7 @@ public static class App_example_books_BookStore_loopOverBooks {
 
 
 
-    public App_example_books_BookStore_loopOverBooks(    ){
+    public app_example_books_BookStore_loopOverBooks(    ){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_loopOverBooks");
             new InvocationHandler().invoke("app_example_books_BookStore_loopOverBooks",new Object[]{},new Class[]{},future,"RPC");
@@ -489,7 +489,7 @@ public static class App_example_books_BookStore_loopOverBooks {
 
 
 
-    public App_example_books_BookStore_loopOverBooks(CallFuture<java.lang.Void> future){
+    public app_example_books_BookStore_loopOverBooks(CallFuture<java.lang.Void> future){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_loopOverBooks");
             new InvocationHandler().invoke("app_example_books_BookStore_loopOverBooks",new Object[]{},new Class[]{},future,"RPC");
@@ -499,7 +499,7 @@ public static class App_example_books_BookStore_loopOverBooks {
  }
 
 
-    public  App_example_books_BookStore_loopOverBooks(Handler<AsyncResult<java.lang.Void>> resultHandler  )throws Exception{
+    public  app_example_books_BookStore_loopOverBooks(Handler<AsyncResult<java.lang.Void>> resultHandler  )throws Exception{
         try {
             CallFuture<java.lang.Void> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_BookStore_loopOverBooks");
@@ -515,8 +515,7 @@ public static class App_example_books_BookStore_loopOverBooks {
 
 
  }
-
-public static class App_example_books_BookStore_printBooks {
+public static class app_example_books_BookStore_printBooks {
 
     CallFuture<java.lang.Void> future = new CallFuture<>();
     public void get_Result() throws Exception{
@@ -533,22 +532,23 @@ public static class App_example_books_BookStore_printBooks {
              }
         }
 
-    public  App_example_books_BookStore_printBooks then(Handler<AsyncResult<java.lang.Void>> resultHandler)throws Exception{
+    public  app_example_books_BookStore_printBooks then(Handler<AsyncResult<java.lang.Void>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
 
-    public  App_example_books_BookStore_printBooks then(IListener o)throws Exception{
+    public  app_example_books_BookStore_printBooks then(IListener o)throws Exception{
+        future.get();
         return this;
     }
 
-    public  App_example_books_BookStore_printBooks then(IListener o,Handler<AsyncResult<java.lang.Void>> resultHandler)throws Exception{
+    public  app_example_books_BookStore_printBooks then(IListener o,Handler<AsyncResult<java.lang.Void>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_BookStore_printBooks then(IListener o ,CallFuture<java.lang.Void> future)throws Exception{
+    public  app_example_books_BookStore_printBooks then(IListener o ,CallFuture<java.lang.Void> future)throws Exception{
         future.handleResult(future.get());
         return this;
     }
@@ -557,7 +557,7 @@ public static class App_example_books_BookStore_printBooks {
 
 
 
-    public App_example_books_BookStore_printBooks(java.util.List<app.example.books.Book> books    ){
+    public app_example_books_BookStore_printBooks(java.util.List<app.example.books.Book> books    ){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_printBooks");
             new InvocationHandler().invoke("app_example_books_BookStore_printBooks",new Object[]{books},new Class[]{java.util.List.class},future,"RPC");
@@ -568,7 +568,7 @@ public static class App_example_books_BookStore_printBooks {
 
 
 
-    public App_example_books_BookStore_printBooks(java.util.List<app.example.books.Book> books,CallFuture<java.lang.Void> future){
+    public app_example_books_BookStore_printBooks(java.util.List<app.example.books.Book> books,CallFuture<java.lang.Void> future){
         try {
             logger.debug("invoking proxy for app_example_books_BookStore_printBooks");
             new InvocationHandler().invoke("app_example_books_BookStore_printBooks",new Object[]{books},new Class[]{java.util.List.class},future,"RPC");
@@ -578,7 +578,7 @@ public static class App_example_books_BookStore_printBooks {
  }
 
 
-    public  App_example_books_BookStore_printBooks(java.util.List<app.example.books.Book> books,Handler<AsyncResult<java.lang.Void>> resultHandler  )throws Exception{
+    public  app_example_books_BookStore_printBooks(java.util.List<app.example.books.Book> books,Handler<AsyncResult<java.lang.Void>> resultHandler  )throws Exception{
         try {
             CallFuture<java.lang.Void> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_BookStore_printBooks");
@@ -594,8 +594,7 @@ public static class App_example_books_BookStore_printBooks {
 
 
  }
-
-public static class App_example_books_Book_Book {
+public static class app_example_books_Book_Book {
 
     CallFuture< app.example.books.Book> future = new CallFuture<>();
     public app.example.books.Book get_Result() throws Exception{
@@ -613,24 +612,24 @@ public static class App_example_books_Book_Book {
              }
         }
 
-    public  App_example_books_Book_Book then(Handler<AsyncResult<app.example.books.Book>> resultHandler)throws Exception{
+    public  app_example_books_Book_Book then(Handler<AsyncResult<app.example.books.Book>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
 
-    public  App_example_books_Book_Book then(IListener o)throws Exception{
+    public  app_example_books_Book_Book then(IListener o)throws Exception{
         future.handleResult(future.get());
 
         return this;
     }
 
-    public  App_example_books_Book_Book then(IListener o,Handler<AsyncResult<app.example.books.Book>> resultHandler)throws Exception{
+    public  app_example_books_Book_Book then(IListener o,Handler<AsyncResult<app.example.books.Book>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_Book_Book then(IListener o ,CallFuture<app.example.books.Book> future)throws Exception{
+    public  app_example_books_Book_Book then(IListener o ,CallFuture<app.example.books.Book> future)throws Exception{
         future.handleResult(future.get());
         return this;
     }
@@ -639,7 +638,7 @@ public static class App_example_books_Book_Book {
 
 
 
-    public App_example_books_Book_Book(java.lang.String title, java.lang.String author    ){
+    public app_example_books_Book_Book(java.lang.String title, java.lang.String author    ){
         try {
             logger.debug("invoking proxy for app_example_books_Book_Book");
             new InvocationHandler().invoke("app_example_books_Book_Book",new Object[]{title,author},new Class[]{java.lang.String.class,java.lang.String.class},future,"RPC");
@@ -650,7 +649,7 @@ public static class App_example_books_Book_Book {
 
 
 
-    public App_example_books_Book_Book(java.lang.String title, java.lang.String author,CallFuture<app.example.books.Book> future){
+    public app_example_books_Book_Book(java.lang.String title, java.lang.String author,CallFuture<app.example.books.Book> future){
         try {
             logger.debug("invoking proxy for app_example_books_Book_Book");
             new InvocationHandler().invoke("app_example_books_Book_Book",new Object[]{title,author},new Class[]{java.lang.String.class,java.lang.String.class},future,"RPC");
@@ -660,7 +659,7 @@ public static class App_example_books_Book_Book {
  }
 
 
-    public  App_example_books_Book_Book(java.lang.String title, java.lang.String author,Handler<AsyncResult<app.example.books.Book>> resultHandler  )throws Exception{
+    public  app_example_books_Book_Book(java.lang.String title, java.lang.String author,Handler<AsyncResult<app.example.books.Book>> resultHandler  )throws Exception{
         try {
             CallFuture<app.example.books.Book> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_Book_Book");
@@ -676,8 +675,7 @@ public static class App_example_books_Book_Book {
 
 
  }
-
-public static class App_example_books_Book_hello {
+public static class app_example_books_Book_hello {
 
     CallFuture< java.lang.String> future = new CallFuture<>();
     public java.lang.String get_Result() throws Exception{
@@ -695,24 +693,24 @@ public static class App_example_books_Book_hello {
              }
         }
 
-    public  App_example_books_Book_hello then(Handler<AsyncResult<java.lang.String>> resultHandler)throws Exception{
+    public  app_example_books_Book_hello then(Handler<AsyncResult<java.lang.String>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
 
-    public  App_example_books_Book_hello then(IListener o)throws Exception{
+    public  app_example_books_Book_hello then(IListener o)throws Exception{
         future.handleResult(future.get());
 
         return this;
     }
 
-    public  App_example_books_Book_hello then(IListener o,Handler<AsyncResult<java.lang.String>> resultHandler)throws Exception{
+    public  app_example_books_Book_hello then(IListener o,Handler<AsyncResult<java.lang.String>> resultHandler)throws Exception{
         resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
-    public  App_example_books_Book_hello then(IListener o ,CallFuture<java.lang.String> future)throws Exception{
+    public  app_example_books_Book_hello then(IListener o ,CallFuture<java.lang.String> future)throws Exception{
         future.handleResult(future.get());
         return this;
     }
@@ -721,7 +719,7 @@ public static class App_example_books_Book_hello {
 
 
 
-    public App_example_books_Book_hello(    ){
+    public app_example_books_Book_hello(    ){
         try {
             logger.debug("invoking proxy for app_example_books_Book_hello");
             new InvocationHandler().invoke("app_example_books_Book_hello",new Object[]{},new Class[]{},future,"RPC");
@@ -732,7 +730,7 @@ public static class App_example_books_Book_hello {
 
 
 
-    public App_example_books_Book_hello(CallFuture<java.lang.String> future){
+    public app_example_books_Book_hello(CallFuture<java.lang.String> future){
         try {
             logger.debug("invoking proxy for app_example_books_Book_hello");
             new InvocationHandler().invoke("app_example_books_Book_hello",new Object[]{},new Class[]{},future,"RPC");
@@ -742,7 +740,7 @@ public static class App_example_books_Book_hello {
  }
 
 
-    public  App_example_books_Book_hello(Handler<AsyncResult<java.lang.String>> resultHandler  )throws Exception{
+    public  app_example_books_Book_hello(Handler<AsyncResult<java.lang.String>> resultHandler  )throws Exception{
         try {
             CallFuture<java.lang.String> future = new CallFuture<>();
             logger.debug("invoking proxy for app_example_books_Book_hello");
@@ -757,5 +755,4 @@ public static class App_example_books_Book_hello {
 
 
 
- }
-}
+ }}
