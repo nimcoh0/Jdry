@@ -4,6 +4,7 @@ package org.softauto.injector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.softauto.core.AbstractInjector;
+import org.softauto.core.ClassType;
 import org.softauto.core.Utils;
 
 /**
@@ -37,15 +38,27 @@ public class Injector implements AbstractInjector {
      * @return
      */
     public  Object[] inject(String fullClassName){
+        Object[] objs = null;
         try {
-            ClassDefinition md = service.getClazz(fullClassName);
-            Object[] objs = md.getCallHandler().startCall(md.getClassDescriptor());
-            logger.debug("successfully inject "+ fullClassName);
-            return objs;
-        }catch (Exception e){
+            if(service != null && service.isExist(fullClassName)) {
+                ClassDefinition md = service.getClazz(fullClassName);
+                if (md != null) {
+                    objs = md.getCallHandler().startCall(md.getClassDescriptor());
+                    logger.debug("successfully inject " + fullClassName);
+                }
+            }else {
+                logger.warn("Class Definition for " + fullClassName + " not found . using temporary service with INITIALIZE_NO_PARAM");
+                ServiceDefinition serviceDefinition = ServerService.createServiceDefinition(fullClassName);
+                ClassDefinition md1 =  serviceDefinition.getClazz(fullClassName);
+                if(md1 != null) {
+                    objs = md1.getCallHandler().startCall(md1.getClassDescriptor());
+                    logger.debug("successfully inject " + fullClassName);
+                }
+            }
+         }catch (Exception e){
             logger.error("fail inject "+ fullClassName,e);
         }
-        return null;
+        return objs;
     }
 
     public  Object[] inject(String fullClassName,Object[] args){

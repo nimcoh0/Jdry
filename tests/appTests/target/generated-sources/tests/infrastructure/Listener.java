@@ -4,6 +4,7 @@
  * DO NOT EDIT DIRECTLY
  */
 package tests.infrastructure;
+import java.util.*;
 import java.util.function.Function;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 import org.softauto.core.AsyncResult;
 import org.softauto.core.Handler;
 import org.softauto.core.Future;
-import org.softauto.serializer.CallFuture;
+import org.softauto.core.*;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -24,35 +25,47 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.LinkedHashMap;
+import org.softauto.tester.SystemState;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.HashMap;
 import org.softauto.espl.ExpressionBuilder;
 import org.softauto.espl.EvulExp;
 import org.softauto.core.IListener;
+import org.softauto.listener.server.ListenerObserver;
 
 @org.apache.avro.specific.AvroGenerated
-public class Listener {
+public class Listener extends org.softauto.tester.Listener implements IListener{
 
-    private static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Listener.class);
-    public static long timeOutInMin = 1;
-    static Map<String, Object> map = null;
+        private static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Listener.class);
+        public static long timeOutInMin = 1;
+        static Map<String, Object> map = null;
+        static boolean seen = false;
 
-    public static void setTimeOut(long min){
-        timeOutInMin = min;
+
+    public static Listener addListener(String fqmn, Class...types)throws Exception{
+        org.softauto.tester.Listener.addListener(fqmn,types);
+        return new Listener();
     }
 
+    public static Listener resetListeners()throws Exception{
+        org.softauto.tester.Listener.resetListeners();
+        return new Listener();
+    }
 
-
+    public static Listener removeListener(String fqmn, Class...types)throws Exception{
+        org.softauto.tester.Listener.removeListener(fqmn,types);
+        return new Listener();
+    }
 
 
 public static class app_example_books_BookCatalog_addBook implements IListener{
     private static app_example_books_BookCatalog_addBook app_example_books_BookCatalog_addBook= null;
-    static boolean seen = false;
-    static Map<String, Object> map = null;
+    boolean seen = false;
+    Map<String, Object> map = null;
     static CountDownLatch lock = new CountDownLatch(0);
     static CountDownLatch lockForResult = new CountDownLatch(0);
-    static app.example.books.Book book = null;
+    app.example.books.Book book = null;
 
     public     java.lang.Object[] app_example_books_BookCatalog_addBook(app.example.books.Book book    ){
      LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_example_books_BookCatalog_addBook args :"  +" book:" + book       );
@@ -77,14 +90,14 @@ public static class app_example_books_BookCatalog_addBook implements IListener{
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(1);
                         params.put("book", book);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_BookCatalog_addBook");
-                            seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_addBook seen:"+seen);
-                            app_example_books_BookCatalog_addBook.book = app_example_books_BookCatalog_addBook.book == null ? book : app_example_books_BookCatalog_addBook.book;
+                            seen = true;
+                            this.book = this.book == null ? book : this.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_addBook");
                             lock.countDown();
-                            return new Object[]{app_example_books_BookCatalog_addBook.book};
+                            return new Object[]{this.book};
                         }
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -122,15 +135,15 @@ public static class app_example_books_BookCatalog_addBook implements IListener{
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(1);
                         params.put("book", book);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_BookCatalog_addBook");
-                            seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_addBook seen:"+seen);
-                            app_example_books_BookCatalog_addBook.book = app_example_books_BookCatalog_addBook.book == null ? book : app_example_books_BookCatalog_addBook.book;
+                            seen = true;
+                            this.book = this.book == null ? book : this.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_addBook");
-                            future.handleResult(new Object[]{app_example_books_BookCatalog_addBook.book});
+                            future.handleResult(new Object[]{this.book});
                              lock.countDown();
-                             return new Object[]{app_example_books_BookCatalog_addBook.book};
+                             return new Object[]{this.book};
                         }
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -168,14 +181,14 @@ public static class app_example_books_BookCatalog_addBook implements IListener{
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(1);
                         params.put("book", book);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_BookCatalog_addBook");
-                            seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_addBook seen:"+seen);
-                            app_example_books_BookCatalog_addBook.book = app_example_books_BookCatalog_addBook.book == null ? book : app_example_books_BookCatalog_addBook.book;
+                            seen = true;
+                           this.book = this.book == null ? book : this.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_addBook");
                             lock.countDown();
-                            return new Object[]{app_example_books_BookCatalog_addBook.book};
+                            return new Object[]{this.book};
                         }
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -213,13 +226,13 @@ public static class app_example_books_BookCatalog_addBook implements IListener{
                         public Object[] app_example_books_BookCatalog_addBook(app.example.books.Book book){
                         try{
                             logger.debug("done waiting for app_example_books_BookCatalog_addBook");
-                            seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_addBook seen:"+seen);
-                            app_example_books_BookCatalog_addBook.book = app_example_books_BookCatalog_addBook.book == null ? book : app_example_books_BookCatalog_addBook.book;
+                            seen = true;
+                            this.book = this.book == null ? book : this.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_addBook");
-                            future.handleResult(new Object[]{app_example_books_BookCatalog_addBook.book});
+                            future.handleResult(new Object[]{this.book});
                             lock.countDown();
-                            return new Object[]{app_example_books_BookCatalog_addBook.book};
+                            return new Object[]{this.book};
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
@@ -255,12 +268,12 @@ public static class app_example_books_BookCatalog_addBook implements IListener{
                         public Object[] app_example_books_BookCatalog_addBook(app.example.books.Book book){
                         try{
                             logger.debug("done waiting for app_example_books_BookCatalog_addBook");
-                            seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_addBook seen:"+seen);
-                            app_example_books_BookCatalog_addBook.book = app_example_books_BookCatalog_addBook.book == null ? book : app_example_books_BookCatalog_addBook.book;
+                            seen = true;
+                            this.book = this.book == null ? book : this.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_addBook");
                             lock.countDown();
-                            return new Object[]{app_example_books_BookCatalog_addBook.book            };
+                            return new Object[]{this.book            };
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
@@ -295,12 +308,12 @@ public static class app_example_books_BookCatalog_addBook implements IListener{
                      public Object[] app_example_books_BookCatalog_addBook(                        app.example.books.Book book){
                     try{
                         logger.debug("done waiting for app_example_books_BookCatalog_addBook");
-                        seen = true;
                         logger.debug("got call for app_example_books_BookCatalog_addBook seen:"+seen);
-                         app_example_books_BookCatalog_addBook.book = app_example_books_BookCatalog_addBook.book == null ? book : app_example_books_BookCatalog_addBook.book;
+                        seen = true;
+                         this.book = this.book == null ? book : this.book;
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_addBook");
                          lock.countDown();
-                         return new Object[]{app_example_books_BookCatalog_addBook.book                            };
+                         return new Object[]{this.book                            };
                          }catch (Exception e){
                                logger.error("fail waitTo ",e);
                          }
@@ -329,21 +342,21 @@ public static class app_example_books_BookCatalog_addBook implements IListener{
 
 
     public app.example.books.Book getBook()throws Exception{
-        return app_example_books_BookCatalog_addBook.book;
+        return this.book;
     }
 
     public app_example_books_BookCatalog_addBook getBook(Handler<AsyncResult<app.example.books.Book>> resultHandler)throws Exception{
-        resultHandler.handle(Future.handleResult(app_example_books_BookCatalog_addBook.book));
+        resultHandler.handle(Future.handleResult(this.book));
         return this;
     }
 
     public app_example_books_BookCatalog_addBook getBook(CallFuture<app.example.books.Book> future)throws Exception{
-       future.handleResult(app_example_books_BookCatalog_addBook.book);
+       future.handleResult(this.book);
        return this;
     }
 
     public app_example_books_BookCatalog_addBook setBook(app.example.books.Book book)throws Exception{
-        app_example_books_BookCatalog_addBook.book = book;
+        this.book = book;
         return this;
     }
 
@@ -356,8 +369,8 @@ public static class app_example_books_BookCatalog_addBook implements IListener{
 
 public static class app_example_books_BookCatalog_getBooks implements IListener{
     private static app_example_books_BookCatalog_getBooks app_example_books_BookCatalog_getBooks= null;
-    static boolean seen = false;
-    static Map<String, Object> map = null;
+    boolean seen = false;
+    Map<String, Object> map = null;
     static CountDownLatch lock = new CountDownLatch(0);
     static CountDownLatch lockForResult = new CountDownLatch(0);
     java.util.List<app.example.books.Book> _result;
@@ -389,10 +402,10 @@ public static class app_example_books_BookCatalog_getBooks implements IListener{
                         public synchronized Object[] app_example_books_BookCatalog_getBooks(){
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_BookCatalog_getBooks");
-                            seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_getBooks seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_getBooks");
                             lock.countDown();
                             return new Object[]{};
@@ -432,10 +445,10 @@ public static class app_example_books_BookCatalog_getBooks implements IListener{
                         public synchronized Object[] app_example_books_BookCatalog_getBooks(){
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_BookCatalog_getBooks");
-                            seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_getBooks seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_getBooks");
                             future.handleResult(new Object[]{});
                              lock.countDown();
@@ -476,10 +489,10 @@ public static class app_example_books_BookCatalog_getBooks implements IListener{
                         public synchronized Object[] app_example_books_BookCatalog_getBooks(){
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_BookCatalog_getBooks");
-                            seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_getBooks seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_getBooks");
                             lock.countDown();
                             return new Object[]{};
@@ -520,8 +533,8 @@ public static class app_example_books_BookCatalog_getBooks implements IListener{
                         public Object[] app_example_books_BookCatalog_getBooks(){
                         try{
                             logger.debug("done waiting for app_example_books_BookCatalog_getBooks");
-                            seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_getBooks seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_getBooks");
                             future.handleResult(new Object[]{});
                             lock.countDown();
@@ -561,8 +574,8 @@ public static class app_example_books_BookCatalog_getBooks implements IListener{
                         public Object[] app_example_books_BookCatalog_getBooks(){
                         try{
                             logger.debug("done waiting for app_example_books_BookCatalog_getBooks");
-                            seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_getBooks seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_getBooks");
                             lock.countDown();
                             return new Object[]{            };
@@ -600,8 +613,8 @@ public static class app_example_books_BookCatalog_getBooks implements IListener{
                      public Object[] app_example_books_BookCatalog_getBooks(){
                     try{
                         logger.debug("done waiting for app_example_books_BookCatalog_getBooks");
-                        seen = true;
                         logger.debug("got call for app_example_books_BookCatalog_getBooks seen:"+seen);
+                        seen = true;
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_getBooks");
                          lock.countDown();
                          return new Object[]{                            };
@@ -771,11 +784,11 @@ public static app_example_books_BookCatalog_getBooks waitToResult(CallFuture<jav
 
 public static class app_example_books_BookCatalog_printBook implements IListener{
     private static app_example_books_BookCatalog_printBook app_example_books_BookCatalog_printBook= null;
-    static boolean seen = false;
-    static Map<String, Object> map = null;
+    boolean seen = false;
+    Map<String, Object> map = null;
     static CountDownLatch lock = new CountDownLatch(0);
     static CountDownLatch lockForResult = new CountDownLatch(0);
-    static app.example.books.Book book = null;
+    app.example.books.Book book = null;
 
     public     java.lang.Object[] app_example_books_BookCatalog_printBook(app.example.books.Book book    ){
      LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_example_books_BookCatalog_printBook args :"  +" book:" + book       );
@@ -800,14 +813,14 @@ public static class app_example_books_BookCatalog_printBook implements IListener
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(1);
                         params.put("book", book);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_BookCatalog_printBook");
-                            seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_printBook seen:"+seen);
-                            app_example_books_BookCatalog_printBook.book = app_example_books_BookCatalog_printBook.book == null ? book : app_example_books_BookCatalog_printBook.book;
+                            seen = true;
+                            this.book = this.book == null ? book : this.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_printBook");
                             lock.countDown();
-                            return new Object[]{app_example_books_BookCatalog_printBook.book};
+                            return new Object[]{this.book};
                         }
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -845,15 +858,15 @@ public static class app_example_books_BookCatalog_printBook implements IListener
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(1);
                         params.put("book", book);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_BookCatalog_printBook");
-                            seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_printBook seen:"+seen);
-                            app_example_books_BookCatalog_printBook.book = app_example_books_BookCatalog_printBook.book == null ? book : app_example_books_BookCatalog_printBook.book;
+                            seen = true;
+                            this.book = this.book == null ? book : this.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_printBook");
-                            future.handleResult(new Object[]{app_example_books_BookCatalog_printBook.book});
+                            future.handleResult(new Object[]{this.book});
                              lock.countDown();
-                             return new Object[]{app_example_books_BookCatalog_printBook.book};
+                             return new Object[]{this.book};
                         }
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -891,14 +904,14 @@ public static class app_example_books_BookCatalog_printBook implements IListener
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(1);
                         params.put("book", book);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_BookCatalog_printBook");
-                            seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_printBook seen:"+seen);
-                            app_example_books_BookCatalog_printBook.book = app_example_books_BookCatalog_printBook.book == null ? book : app_example_books_BookCatalog_printBook.book;
+                            seen = true;
+                           this.book = this.book == null ? book : this.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_printBook");
                             lock.countDown();
-                            return new Object[]{app_example_books_BookCatalog_printBook.book};
+                            return new Object[]{this.book};
                         }
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -936,13 +949,13 @@ public static class app_example_books_BookCatalog_printBook implements IListener
                         public Object[] app_example_books_BookCatalog_printBook(app.example.books.Book book){
                         try{
                             logger.debug("done waiting for app_example_books_BookCatalog_printBook");
-                            seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_printBook seen:"+seen);
-                            app_example_books_BookCatalog_printBook.book = app_example_books_BookCatalog_printBook.book == null ? book : app_example_books_BookCatalog_printBook.book;
+                            seen = true;
+                            this.book = this.book == null ? book : this.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_printBook");
-                            future.handleResult(new Object[]{app_example_books_BookCatalog_printBook.book});
+                            future.handleResult(new Object[]{this.book});
                             lock.countDown();
-                            return new Object[]{app_example_books_BookCatalog_printBook.book};
+                            return new Object[]{this.book};
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
@@ -978,12 +991,12 @@ public static class app_example_books_BookCatalog_printBook implements IListener
                         public Object[] app_example_books_BookCatalog_printBook(app.example.books.Book book){
                         try{
                             logger.debug("done waiting for app_example_books_BookCatalog_printBook");
-                            seen = true;
                             logger.debug("got call for app_example_books_BookCatalog_printBook seen:"+seen);
-                            app_example_books_BookCatalog_printBook.book = app_example_books_BookCatalog_printBook.book == null ? book : app_example_books_BookCatalog_printBook.book;
+                            seen = true;
+                            this.book = this.book == null ? book : this.book;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_printBook");
                             lock.countDown();
-                            return new Object[]{app_example_books_BookCatalog_printBook.book            };
+                            return new Object[]{this.book            };
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
@@ -1018,12 +1031,12 @@ public static class app_example_books_BookCatalog_printBook implements IListener
                      public Object[] app_example_books_BookCatalog_printBook(                        app.example.books.Book book){
                     try{
                         logger.debug("done waiting for app_example_books_BookCatalog_printBook");
-                        seen = true;
                         logger.debug("got call for app_example_books_BookCatalog_printBook seen:"+seen);
-                         app_example_books_BookCatalog_printBook.book = app_example_books_BookCatalog_printBook.book == null ? book : app_example_books_BookCatalog_printBook.book;
+                        seen = true;
+                         this.book = this.book == null ? book : this.book;
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_BookCatalog_printBook");
                          lock.countDown();
-                         return new Object[]{app_example_books_BookCatalog_printBook.book                            };
+                         return new Object[]{this.book                            };
                          }catch (Exception e){
                                logger.error("fail waitTo ",e);
                          }
@@ -1052,21 +1065,21 @@ public static class app_example_books_BookCatalog_printBook implements IListener
 
 
     public app.example.books.Book getBook()throws Exception{
-        return app_example_books_BookCatalog_printBook.book;
+        return this.book;
     }
 
     public app_example_books_BookCatalog_printBook getBook(Handler<AsyncResult<app.example.books.Book>> resultHandler)throws Exception{
-        resultHandler.handle(Future.handleResult(app_example_books_BookCatalog_printBook.book));
+        resultHandler.handle(Future.handleResult(this.book));
         return this;
     }
 
     public app_example_books_BookCatalog_printBook getBook(CallFuture<app.example.books.Book> future)throws Exception{
-       future.handleResult(app_example_books_BookCatalog_printBook.book);
+       future.handleResult(this.book);
        return this;
     }
 
     public app_example_books_BookCatalog_printBook setBook(app.example.books.Book book)throws Exception{
-        app_example_books_BookCatalog_printBook.book = book;
+        this.book = book;
         return this;
     }
 
@@ -1079,8 +1092,8 @@ public static class app_example_books_BookCatalog_printBook implements IListener
 
 public static class app_example_books_Book_getTitle implements IListener{
     private static app_example_books_Book_getTitle app_example_books_Book_getTitle= null;
-    static boolean seen = false;
-    static Map<String, Object> map = null;
+    boolean seen = false;
+    Map<String, Object> map = null;
     static CountDownLatch lock = new CountDownLatch(0);
     static CountDownLatch lockForResult = new CountDownLatch(0);
     java.lang.String _result;
@@ -1112,10 +1125,10 @@ public static class app_example_books_Book_getTitle implements IListener{
                         public synchronized Object[] app_example_books_Book_getTitle(){
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_getTitle");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_getTitle seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getTitle");
                             lock.countDown();
                             return new Object[]{};
@@ -1155,10 +1168,10 @@ public static class app_example_books_Book_getTitle implements IListener{
                         public synchronized Object[] app_example_books_Book_getTitle(){
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_getTitle");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_getTitle seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getTitle");
                             future.handleResult(new Object[]{});
                              lock.countDown();
@@ -1199,10 +1212,10 @@ public static class app_example_books_Book_getTitle implements IListener{
                         public synchronized Object[] app_example_books_Book_getTitle(){
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_getTitle");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_getTitle seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getTitle");
                             lock.countDown();
                             return new Object[]{};
@@ -1243,8 +1256,8 @@ public static class app_example_books_Book_getTitle implements IListener{
                         public Object[] app_example_books_Book_getTitle(){
                         try{
                             logger.debug("done waiting for app_example_books_Book_getTitle");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_getTitle seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getTitle");
                             future.handleResult(new Object[]{});
                             lock.countDown();
@@ -1284,8 +1297,8 @@ public static class app_example_books_Book_getTitle implements IListener{
                         public Object[] app_example_books_Book_getTitle(){
                         try{
                             logger.debug("done waiting for app_example_books_Book_getTitle");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_getTitle seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getTitle");
                             lock.countDown();
                             return new Object[]{            };
@@ -1323,8 +1336,8 @@ public static class app_example_books_Book_getTitle implements IListener{
                      public Object[] app_example_books_Book_getTitle(){
                     try{
                         logger.debug("done waiting for app_example_books_Book_getTitle");
-                        seen = true;
                         logger.debug("got call for app_example_books_Book_getTitle seen:"+seen);
+                        seen = true;
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getTitle");
                          lock.countDown();
                          return new Object[]{                            };
@@ -1494,11 +1507,11 @@ public static app_example_books_Book_getTitle waitToResult(CallFuture<java.lang.
 
 public static class app_example_books_Book_setTitle implements IListener{
     private static app_example_books_Book_setTitle app_example_books_Book_setTitle= null;
-    static boolean seen = false;
-    static Map<String, Object> map = null;
+    boolean seen = false;
+    Map<String, Object> map = null;
     static CountDownLatch lock = new CountDownLatch(0);
     static CountDownLatch lockForResult = new CountDownLatch(0);
-    static java.lang.String title = null;
+    java.lang.String title = null;
 
     public     java.lang.Object[] app_example_books_Book_setTitle(java.lang.String title    ){
      LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_example_books_Book_setTitle args :"  +" title:" + title       );
@@ -1523,14 +1536,14 @@ public static class app_example_books_Book_setTitle implements IListener{
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(1);
                         params.put("title", title);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_setTitle");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_setTitle seen:"+seen);
-                            app_example_books_Book_setTitle.title = app_example_books_Book_setTitle.title == null ? title : app_example_books_Book_setTitle.title;
+                            seen = true;
+                            this.title = this.title == null ? title : this.title;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setTitle");
                             lock.countDown();
-                            return new Object[]{app_example_books_Book_setTitle.title};
+                            return new Object[]{this.title};
                         }
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -1568,15 +1581,15 @@ public static class app_example_books_Book_setTitle implements IListener{
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(1);
                         params.put("title", title);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_setTitle");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_setTitle seen:"+seen);
-                            app_example_books_Book_setTitle.title = app_example_books_Book_setTitle.title == null ? title : app_example_books_Book_setTitle.title;
+                            seen = true;
+                            this.title = this.title == null ? title : this.title;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setTitle");
-                            future.handleResult(new Object[]{app_example_books_Book_setTitle.title});
+                            future.handleResult(new Object[]{this.title});
                              lock.countDown();
-                             return new Object[]{app_example_books_Book_setTitle.title};
+                             return new Object[]{this.title};
                         }
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -1614,14 +1627,14 @@ public static class app_example_books_Book_setTitle implements IListener{
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(1);
                         params.put("title", title);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_setTitle");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_setTitle seen:"+seen);
-                            app_example_books_Book_setTitle.title = app_example_books_Book_setTitle.title == null ? title : app_example_books_Book_setTitle.title;
+                            seen = true;
+                           this.title = this.title == null ? title : this.title;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setTitle");
                             lock.countDown();
-                            return new Object[]{app_example_books_Book_setTitle.title};
+                            return new Object[]{this.title};
                         }
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -1659,13 +1672,13 @@ public static class app_example_books_Book_setTitle implements IListener{
                         public Object[] app_example_books_Book_setTitle(java.lang.String title){
                         try{
                             logger.debug("done waiting for app_example_books_Book_setTitle");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_setTitle seen:"+seen);
-                            app_example_books_Book_setTitle.title = app_example_books_Book_setTitle.title == null ? title : app_example_books_Book_setTitle.title;
+                            seen = true;
+                            this.title = this.title == null ? title : this.title;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setTitle");
-                            future.handleResult(new Object[]{app_example_books_Book_setTitle.title});
+                            future.handleResult(new Object[]{this.title});
                             lock.countDown();
-                            return new Object[]{app_example_books_Book_setTitle.title};
+                            return new Object[]{this.title};
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
@@ -1701,12 +1714,12 @@ public static class app_example_books_Book_setTitle implements IListener{
                         public Object[] app_example_books_Book_setTitle(java.lang.String title){
                         try{
                             logger.debug("done waiting for app_example_books_Book_setTitle");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_setTitle seen:"+seen);
-                            app_example_books_Book_setTitle.title = app_example_books_Book_setTitle.title == null ? title : app_example_books_Book_setTitle.title;
+                            seen = true;
+                            this.title = this.title == null ? title : this.title;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setTitle");
                             lock.countDown();
-                            return new Object[]{app_example_books_Book_setTitle.title            };
+                            return new Object[]{this.title            };
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
@@ -1741,12 +1754,12 @@ public static class app_example_books_Book_setTitle implements IListener{
                      public Object[] app_example_books_Book_setTitle(                        java.lang.String title){
                     try{
                         logger.debug("done waiting for app_example_books_Book_setTitle");
-                        seen = true;
                         logger.debug("got call for app_example_books_Book_setTitle seen:"+seen);
-                         app_example_books_Book_setTitle.title = app_example_books_Book_setTitle.title == null ? title : app_example_books_Book_setTitle.title;
+                        seen = true;
+                         this.title = this.title == null ? title : this.title;
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setTitle");
                          lock.countDown();
-                         return new Object[]{app_example_books_Book_setTitle.title                            };
+                         return new Object[]{this.title                            };
                          }catch (Exception e){
                                logger.error("fail waitTo ",e);
                          }
@@ -1775,21 +1788,21 @@ public static class app_example_books_Book_setTitle implements IListener{
 
 
     public java.lang.String getTitle()throws Exception{
-        return app_example_books_Book_setTitle.title;
+        return this.title;
     }
 
     public app_example_books_Book_setTitle getTitle(Handler<AsyncResult<java.lang.String>> resultHandler)throws Exception{
-        resultHandler.handle(Future.handleResult(app_example_books_Book_setTitle.title));
+        resultHandler.handle(Future.handleResult(this.title));
         return this;
     }
 
     public app_example_books_Book_setTitle getTitle(CallFuture<java.lang.String> future)throws Exception{
-       future.handleResult(app_example_books_Book_setTitle.title);
+       future.handleResult(this.title);
        return this;
     }
 
     public app_example_books_Book_setTitle setTitle(java.lang.String title)throws Exception{
-        app_example_books_Book_setTitle.title = title;
+        this.title = title;
         return this;
     }
 
@@ -1802,8 +1815,8 @@ public static class app_example_books_Book_setTitle implements IListener{
 
 public static class app_example_books_Book_getAuthor implements IListener{
     private static app_example_books_Book_getAuthor app_example_books_Book_getAuthor= null;
-    static boolean seen = false;
-    static Map<String, Object> map = null;
+    boolean seen = false;
+    Map<String, Object> map = null;
     static CountDownLatch lock = new CountDownLatch(0);
     static CountDownLatch lockForResult = new CountDownLatch(0);
     java.lang.String _result;
@@ -1835,10 +1848,10 @@ public static class app_example_books_Book_getAuthor implements IListener{
                         public synchronized Object[] app_example_books_Book_getAuthor(){
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_getAuthor");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_getAuthor seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getAuthor");
                             lock.countDown();
                             return new Object[]{};
@@ -1878,10 +1891,10 @@ public static class app_example_books_Book_getAuthor implements IListener{
                         public synchronized Object[] app_example_books_Book_getAuthor(){
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_getAuthor");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_getAuthor seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getAuthor");
                             future.handleResult(new Object[]{});
                              lock.countDown();
@@ -1922,10 +1935,10 @@ public static class app_example_books_Book_getAuthor implements IListener{
                         public synchronized Object[] app_example_books_Book_getAuthor(){
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_getAuthor");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_getAuthor seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getAuthor");
                             lock.countDown();
                             return new Object[]{};
@@ -1966,8 +1979,8 @@ public static class app_example_books_Book_getAuthor implements IListener{
                         public Object[] app_example_books_Book_getAuthor(){
                         try{
                             logger.debug("done waiting for app_example_books_Book_getAuthor");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_getAuthor seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getAuthor");
                             future.handleResult(new Object[]{});
                             lock.countDown();
@@ -2007,8 +2020,8 @@ public static class app_example_books_Book_getAuthor implements IListener{
                         public Object[] app_example_books_Book_getAuthor(){
                         try{
                             logger.debug("done waiting for app_example_books_Book_getAuthor");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_getAuthor seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getAuthor");
                             lock.countDown();
                             return new Object[]{            };
@@ -2046,8 +2059,8 @@ public static class app_example_books_Book_getAuthor implements IListener{
                      public Object[] app_example_books_Book_getAuthor(){
                     try{
                         logger.debug("done waiting for app_example_books_Book_getAuthor");
-                        seen = true;
                         logger.debug("got call for app_example_books_Book_getAuthor seen:"+seen);
+                        seen = true;
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getAuthor");
                          lock.countDown();
                          return new Object[]{                            };
@@ -2217,11 +2230,11 @@ public static app_example_books_Book_getAuthor waitToResult(CallFuture<java.lang
 
 public static class app_example_books_Book_setAuthor implements IListener{
     private static app_example_books_Book_setAuthor app_example_books_Book_setAuthor= null;
-    static boolean seen = false;
-    static Map<String, Object> map = null;
+    boolean seen = false;
+    Map<String, Object> map = null;
     static CountDownLatch lock = new CountDownLatch(0);
     static CountDownLatch lockForResult = new CountDownLatch(0);
-    static java.lang.String author = null;
+    java.lang.String author = null;
 
     public     java.lang.Object[] app_example_books_Book_setAuthor(java.lang.String author    ){
      LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_example_books_Book_setAuthor args :"  +" author:" + author       );
@@ -2246,14 +2259,14 @@ public static class app_example_books_Book_setAuthor implements IListener{
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(1);
                         params.put("author", author);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_setAuthor");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_setAuthor seen:"+seen);
-                            app_example_books_Book_setAuthor.author = app_example_books_Book_setAuthor.author == null ? author : app_example_books_Book_setAuthor.author;
+                            seen = true;
+                            this.author = this.author == null ? author : this.author;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setAuthor");
                             lock.countDown();
-                            return new Object[]{app_example_books_Book_setAuthor.author};
+                            return new Object[]{this.author};
                         }
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -2291,15 +2304,15 @@ public static class app_example_books_Book_setAuthor implements IListener{
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(1);
                         params.put("author", author);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_setAuthor");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_setAuthor seen:"+seen);
-                            app_example_books_Book_setAuthor.author = app_example_books_Book_setAuthor.author == null ? author : app_example_books_Book_setAuthor.author;
+                            seen = true;
+                            this.author = this.author == null ? author : this.author;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setAuthor");
-                            future.handleResult(new Object[]{app_example_books_Book_setAuthor.author});
+                            future.handleResult(new Object[]{this.author});
                              lock.countDown();
-                             return new Object[]{app_example_books_Book_setAuthor.author};
+                             return new Object[]{this.author};
                         }
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -2337,14 +2350,14 @@ public static class app_example_books_Book_setAuthor implements IListener{
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(1);
                         params.put("author", author);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_setAuthor");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_setAuthor seen:"+seen);
-                            app_example_books_Book_setAuthor.author = app_example_books_Book_setAuthor.author == null ? author : app_example_books_Book_setAuthor.author;
+                            seen = true;
+                           this.author = this.author == null ? author : this.author;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setAuthor");
                             lock.countDown();
-                            return new Object[]{app_example_books_Book_setAuthor.author};
+                            return new Object[]{this.author};
                         }
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -2382,13 +2395,13 @@ public static class app_example_books_Book_setAuthor implements IListener{
                         public Object[] app_example_books_Book_setAuthor(java.lang.String author){
                         try{
                             logger.debug("done waiting for app_example_books_Book_setAuthor");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_setAuthor seen:"+seen);
-                            app_example_books_Book_setAuthor.author = app_example_books_Book_setAuthor.author == null ? author : app_example_books_Book_setAuthor.author;
+                            seen = true;
+                            this.author = this.author == null ? author : this.author;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setAuthor");
-                            future.handleResult(new Object[]{app_example_books_Book_setAuthor.author});
+                            future.handleResult(new Object[]{this.author});
                             lock.countDown();
-                            return new Object[]{app_example_books_Book_setAuthor.author};
+                            return new Object[]{this.author};
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
@@ -2424,12 +2437,12 @@ public static class app_example_books_Book_setAuthor implements IListener{
                         public Object[] app_example_books_Book_setAuthor(java.lang.String author){
                         try{
                             logger.debug("done waiting for app_example_books_Book_setAuthor");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_setAuthor seen:"+seen);
-                            app_example_books_Book_setAuthor.author = app_example_books_Book_setAuthor.author == null ? author : app_example_books_Book_setAuthor.author;
+                            seen = true;
+                            this.author = this.author == null ? author : this.author;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setAuthor");
                             lock.countDown();
-                            return new Object[]{app_example_books_Book_setAuthor.author            };
+                            return new Object[]{this.author            };
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
@@ -2464,12 +2477,12 @@ public static class app_example_books_Book_setAuthor implements IListener{
                      public Object[] app_example_books_Book_setAuthor(                        java.lang.String author){
                     try{
                         logger.debug("done waiting for app_example_books_Book_setAuthor");
-                        seen = true;
                         logger.debug("got call for app_example_books_Book_setAuthor seen:"+seen);
-                         app_example_books_Book_setAuthor.author = app_example_books_Book_setAuthor.author == null ? author : app_example_books_Book_setAuthor.author;
+                        seen = true;
+                         this.author = this.author == null ? author : this.author;
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setAuthor");
                          lock.countDown();
-                         return new Object[]{app_example_books_Book_setAuthor.author                            };
+                         return new Object[]{this.author                            };
                          }catch (Exception e){
                                logger.error("fail waitTo ",e);
                          }
@@ -2498,21 +2511,21 @@ public static class app_example_books_Book_setAuthor implements IListener{
 
 
     public java.lang.String getAuthor()throws Exception{
-        return app_example_books_Book_setAuthor.author;
+        return this.author;
     }
 
     public app_example_books_Book_setAuthor getAuthor(Handler<AsyncResult<java.lang.String>> resultHandler)throws Exception{
-        resultHandler.handle(Future.handleResult(app_example_books_Book_setAuthor.author));
+        resultHandler.handle(Future.handleResult(this.author));
         return this;
     }
 
     public app_example_books_Book_setAuthor getAuthor(CallFuture<java.lang.String> future)throws Exception{
-       future.handleResult(app_example_books_Book_setAuthor.author);
+       future.handleResult(this.author);
        return this;
     }
 
     public app_example_books_Book_setAuthor setAuthor(java.lang.String author)throws Exception{
-        app_example_books_Book_setAuthor.author = author;
+        this.author = author;
         return this;
     }
 
@@ -2525,8 +2538,8 @@ public static class app_example_books_Book_setAuthor implements IListener{
 
 public static class app_example_books_Book_getId implements IListener{
     private static app_example_books_Book_getId app_example_books_Book_getId= null;
-    static boolean seen = false;
-    static Map<String, Object> map = null;
+    boolean seen = false;
+    Map<String, Object> map = null;
     static CountDownLatch lock = new CountDownLatch(0);
     static CountDownLatch lockForResult = new CountDownLatch(0);
     int _result;
@@ -2558,10 +2571,10 @@ public static class app_example_books_Book_getId implements IListener{
                         public synchronized Object[] app_example_books_Book_getId(){
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_getId");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_getId seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getId");
                             lock.countDown();
                             return new Object[]{};
@@ -2601,10 +2614,10 @@ public static class app_example_books_Book_getId implements IListener{
                         public synchronized Object[] app_example_books_Book_getId(){
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_getId");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_getId seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getId");
                             future.handleResult(new Object[]{});
                              lock.countDown();
@@ -2645,10 +2658,10 @@ public static class app_example_books_Book_getId implements IListener{
                         public synchronized Object[] app_example_books_Book_getId(){
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(0);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_getId");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_getId seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getId");
                             lock.countDown();
                             return new Object[]{};
@@ -2689,8 +2702,8 @@ public static class app_example_books_Book_getId implements IListener{
                         public Object[] app_example_books_Book_getId(){
                         try{
                             logger.debug("done waiting for app_example_books_Book_getId");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_getId seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getId");
                             future.handleResult(new Object[]{});
                             lock.countDown();
@@ -2730,8 +2743,8 @@ public static class app_example_books_Book_getId implements IListener{
                         public Object[] app_example_books_Book_getId(){
                         try{
                             logger.debug("done waiting for app_example_books_Book_getId");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_getId seen:"+seen);
+                            seen = true;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getId");
                             lock.countDown();
                             return new Object[]{            };
@@ -2769,8 +2782,8 @@ public static class app_example_books_Book_getId implements IListener{
                      public Object[] app_example_books_Book_getId(){
                     try{
                         logger.debug("done waiting for app_example_books_Book_getId");
-                        seen = true;
                         logger.debug("got call for app_example_books_Book_getId seen:"+seen);
+                        seen = true;
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_getId");
                          lock.countDown();
                          return new Object[]{                            };
@@ -2940,11 +2953,11 @@ public static app_example_books_Book_getId waitToResult(CallFuture<java.lang.Int
 
 public static class app_example_books_Book_setId implements IListener{
     private static app_example_books_Book_setId app_example_books_Book_setId= null;
-    static boolean seen = false;
-    static Map<String, Object> map = null;
+    boolean seen = false;
+    Map<String, Object> map = null;
     static CountDownLatch lock = new CountDownLatch(0);
     static CountDownLatch lockForResult = new CountDownLatch(0);
-    static int id = -1;
+    int id = -1;
 
     public     java.lang.Object[] app_example_books_Book_setId(int id    ){
      LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_example_books_Book_setId args :"  +" id:" + id       );
@@ -2969,14 +2982,14 @@ public static class app_example_books_Book_setId implements IListener{
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(1);
                         params.put("id", id);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_setId");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_setId seen:"+seen);
-                            app_example_books_Book_setId.id = app_example_books_Book_setId.id == -1 ? id : app_example_books_Book_setId.id;
+                            seen = true;
+                            this.id = this.id == -1 ? id : this.id;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setId");
                             lock.countDown();
-                            return new Object[]{app_example_books_Book_setId.id};
+                            return new Object[]{this.id};
                         }
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -3014,15 +3027,15 @@ public static class app_example_books_Book_setId implements IListener{
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(1);
                         params.put("id", id);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_setId");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_setId seen:"+seen);
-                            app_example_books_Book_setId.id = app_example_books_Book_setId.id == -1 ? id : app_example_books_Book_setId.id;
+                            seen = true;
+                            this.id = this.id == -1 ? id : this.id;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setId");
-                            future.handleResult(new Object[]{app_example_books_Book_setId.id});
+                            future.handleResult(new Object[]{this.id});
                              lock.countDown();
-                             return new Object[]{app_example_books_Book_setId.id};
+                             return new Object[]{this.id};
                         }
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -3060,14 +3073,14 @@ public static class app_example_books_Book_setId implements IListener{
                         try{
                         Map<String, Object> params = new LinkedHashMap<String, Object>(1);
                         params.put("id", id);
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for app_example_books_Book_setId");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_setId seen:"+seen);
-                            app_example_books_Book_setId.id = app_example_books_Book_setId.id == -1 ? id : app_example_books_Book_setId.id;
+                            seen = true;
+                           this.id = this.id == -1 ? id : this.id;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setId");
                             lock.countDown();
-                            return new Object[]{app_example_books_Book_setId.id};
+                            return new Object[]{this.id};
                         }
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
@@ -3105,13 +3118,13 @@ public static class app_example_books_Book_setId implements IListener{
                         public Object[] app_example_books_Book_setId(int id){
                         try{
                             logger.debug("done waiting for app_example_books_Book_setId");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_setId seen:"+seen);
-                            app_example_books_Book_setId.id = app_example_books_Book_setId.id == -1 ? id : app_example_books_Book_setId.id;
+                            seen = true;
+                            this.id = this.id == -1 ? id : this.id;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setId");
-                            future.handleResult(new Object[]{app_example_books_Book_setId.id});
+                            future.handleResult(new Object[]{this.id});
                             lock.countDown();
-                            return new Object[]{app_example_books_Book_setId.id};
+                            return new Object[]{this.id};
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
@@ -3147,12 +3160,12 @@ public static class app_example_books_Book_setId implements IListener{
                         public Object[] app_example_books_Book_setId(int id){
                         try{
                             logger.debug("done waiting for app_example_books_Book_setId");
-                            seen = true;
                             logger.debug("got call for app_example_books_Book_setId seen:"+seen);
-                            app_example_books_Book_setId.id = app_example_books_Book_setId.id == -1 ? id : app_example_books_Book_setId.id;
+                            seen = true;
+                            this.id = this.id == -1 ? id : this.id;
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setId");
                             lock.countDown();
-                            return new Object[]{app_example_books_Book_setId.id            };
+                            return new Object[]{this.id            };
                         }catch (Exception e){
                                  logger.error("fail waitTo ",e);
                         }
@@ -3187,12 +3200,12 @@ public static class app_example_books_Book_setId implements IListener{
                      public Object[] app_example_books_Book_setId(                        int id){
                     try{
                         logger.debug("done waiting for app_example_books_Book_setId");
-                        seen = true;
                         logger.debug("got call for app_example_books_Book_setId seen:"+seen);
-                         app_example_books_Book_setId.id = app_example_books_Book_setId.id == -1 ? id : app_example_books_Book_setId.id;
+                        seen = true;
+                         this.id = this.id == -1 ? id : this.id;
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("app_example_books_Book_setId");
                          lock.countDown();
-                         return new Object[]{app_example_books_Book_setId.id                            };
+                         return new Object[]{this.id                            };
                          }catch (Exception e){
                                logger.error("fail waitTo ",e);
                          }
@@ -3221,21 +3234,21 @@ public static class app_example_books_Book_setId implements IListener{
 
 
     public int getId()throws Exception{
-        return app_example_books_Book_setId.id;
+        return this.id;
     }
 
     public app_example_books_Book_setId getId(Handler<AsyncResult<java.lang.Integer>> resultHandler)throws Exception{
-        resultHandler.handle(Future.handleResult(app_example_books_Book_setId.id));
+        resultHandler.handle(Future.handleResult(this.id));
         return this;
     }
 
     public app_example_books_Book_setId getId(CallFuture<java.lang.Integer> future)throws Exception{
-       future.handleResult(app_example_books_Book_setId.id);
+       future.handleResult(this.id);
        return this;
     }
 
     public app_example_books_Book_setId setId(int id)throws Exception{
-        app_example_books_Book_setId.id = id;
+        this.id = id;
         return this;
     }
 

@@ -8,6 +8,8 @@ import org.softauto.core.Context;
 import org.softauto.core.TestLifeCycle;
 import org.softauto.injector.InjectorProviderImpl;
 import org.softauto.jvm.JvmProviderImpl;
+import org.softauto.listener.Listeners;
+import org.softauto.listener.impl.Listener;
 import org.softauto.listener.manager.ListenerClientProviderImpl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -109,6 +111,15 @@ public class SystemServiceImpl {
         }
     }
 
+    public void addListener(String fqmn,Class...types){
+        Listeners.addListener(fqmn,types);
+    }
 
+    public void resetListeners(){
+        Listeners.resetListener();
+    }
 
+    public void removeListener(String fqmn){
+        Listeners.removeListener(fqmn);
+    }
 }

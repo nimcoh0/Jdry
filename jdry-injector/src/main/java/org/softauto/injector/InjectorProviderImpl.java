@@ -13,6 +13,7 @@ import org.softauto.plugin.api.Provider;
 import org.softauto.serializer.CallFuture;
 
 import javax.lang.model.element.Element;
+import java.io.File;
 import java.io.IOException;
 
 
@@ -44,9 +45,16 @@ public class InjectorProviderImpl implements Provider {
 
     public InjectorProviderImpl initialize() throws IOException {
         try {
-            this.iface =  Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , Configuration.get(Context.STEP_SERVICE_NAME).asText(), Configuration.get(Context.TEST_MACHINE).asText());
-            injector = new Injector().createServiceDefinition(iface);
-            logger.info("Injector successfully initilize");
+            //if(new File(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() + Configuration.get(Context.STEP_SERVICE_NAME).asText()+ Configuration.get(Context.TEST_MACHINE).asText()).isFile()) {
+            this.iface = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Configuration.get(Context.STEP_SERVICE_NAME).asText(), Configuration.get(Context.TEST_MACHINE).asText());
+            if(iface != null){
+                injector = new Injector().createServiceDefinition(iface);
+                logger.info("Injector successfully initialize");
+            }else {
+                logger.warn("service file "+Context.STEP_SERVICE_NAME + " not found. initialize without it" );
+                injector = new Injector();
+                logger.info("Injector successfully initialize");
+            }
         }catch (Throwable e){
             logger.fatal("fail to load injector ", e);
             System.exit(1);

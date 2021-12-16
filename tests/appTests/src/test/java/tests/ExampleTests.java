@@ -3,18 +3,23 @@ package tests;
 
 import app.example.books.Book;
 import app.example.books.BookStore;
+import org.softauto.core.AsyncResult;
+import org.softauto.core.CallFuture;
+import org.softauto.core.Handler;
 import org.softauto.espl.ExpressionBuilder;
-import org.softauto.serializer.CallFuture;
+//import org.softauto.serializer.CallFuture;
+import org.softauto.tester.AbstractTesterImpl;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import tests.infrastructure.AbstractTesterImpl;
 import tests.infrastructure.Listener;
 import tests.infrastructure.Step;
 import org.junit.Assert;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+
 
 @Listeners(org.softauto.testng.JdryTestListener.class)
 public class ExampleTests extends AbstractTesterImpl {
@@ -41,6 +46,9 @@ public class ExampleTests extends AbstractTesterImpl {
     public void finish(){
         logger.info("end test");
     }
+
+
+
 
     /**
      * the tests invoke a grpc call and get the result
@@ -80,10 +88,12 @@ public class ExampleTests extends AbstractTesterImpl {
     public void get_step_result()throws Exception{
         try {
             BookStore bookStore =  new Step.app_example_books_BookStore_addAllBooks(books).get_Result();
-            new Step.app_example_books_BookStore_booksByAuthor("a1").then(res ->{
-                ((Book)res.result().get(0)).getTitle().equals("t1");
-            });
-
+            java.util.List<app.example.books.Book> results = new Step.app_example_books_BookStore_booksByAuthor("a1").then(res ->{
+                if(res.succeeded()) {
+                    System.out.print(res.result());
+                }
+            }).get_Result();
+            Assert.assertTrue(((Book)results.get(0)).getTitle().equals("t1"));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -144,11 +154,10 @@ public class ExampleTests extends AbstractTesterImpl {
             CallFuture<Object[]> future = new CallFuture<>();
             BookStore bookStore =  new Step.app_example_books_BookStore_addAllBooks(books).get_Result();
             new Step.app_example_books_BookStore_printBooks(books).then(
-                    Listener.app_example_books_BookCatalog_printBook.waitUntil(new ExpressionBuilder().newExpression().setContext("book").setStatement("getId()").build()
-                                                                                                .setOperator("==")
-                                                                                                .newExpression().setContext(bookStore).setStatement("bookByTitle('t1').get().getId()").build()
+                    Listener.app_example_books_BookCatalog_printBook.waitUntil(new ExpressionBuilder().newExpression().setContext("book").setStatement("getTitle()").build()
+                                                                                                .newExpression().setContext(bookStore).setStatement("getBookById(0).getTitle()").build()
                                                                                                 .build(),future));
-            Assert.assertTrue(((Book)future.getResult()[0]).getTitle().equals("t1"));
+            Assert.assertTrue(((Book)((Object[])future.getResult())[0]).getTitle() != null);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -167,8 +176,7 @@ public class ExampleTests extends AbstractTesterImpl {
             BookStore bookStore =  new Step.app_example_books_BookStore_addAllBooks(books).get_Result();
             new Step.app_example_books_BookStore_printBooks(books).then(
                     Listener.app_example_books_BookCatalog_printBook.waitUntil(new ExpressionBuilder().newExpression("book.getAuthor().equals('a1')").build()
-                            .setOperator(" and ")
-                            .newExpression().setContext(bookStore).setStatement("bookByTitle('t1').get().getAuthor().equals('a1')").build()
+                             .newExpression().setContext(bookStore).setStatement("bookByTitle('t1').get().getAuthor().equals('a1')").build()
                             .build(),future));
             Assert.assertTrue(((Book)future.getResult()[0]).getTitle().equals("t1"));
         }catch (Exception e){
@@ -210,6 +218,50 @@ public class ExampleTests extends AbstractTesterImpl {
         new Step.app_example_books_BookStore_addAllBooks(books).get_Result();
         Book book = new Step.app_example_books_BookStore_bookByTitle("t1").get_Result().get();
         Assert.assertTrue(book.getTitle().equals("t1"));
+    }
+
+    /**
+     * a mix call . add new listener and call annotation method
+     * the tests first load a data to the SUT (addAllBooks)
+     * then start a process on the SUT (loopOverBooks) by invoking an grpc call  and then wait to a result of a method in the
+     * process flow (getTitle) .
+     * @throws Exception
+     */
+    @Test
+    public void add_listen_for_method_after()throws Exception{
+        try {
+            CallFuture<Object> future = new CallFuture<>();
+            Listener listener =  Listener.addListener("app_example_books_Book_getTitle",new Class[]{});
+            BookStore bookStore =  new Step.app_example_books_BookStore_addAllBooks(books).get_Result();
+            new Step.app_example_books_BookStore_loopOverBooks().then(
+                    listener.waitToResult("app_example_books_Book_getTitle",ff(), future));
+            Assert.assertTrue(future.getResult() != null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public Function ff()throws Exception{
+        return new Function() {
+            @Override
+            public Object apply(Object o) {
+                return o;
+            }
+        };
+    }
+
+    @Test
+    public void add_listen_for_method_after1()throws Exception{
+        try {
+            CallFuture<Object> future = new CallFuture<>();
+            Listener listener =  Listener.addListener("app_example_books_Book_getTitle",new Class[]{});
+            BookStore bookStore =  new Step.app_example_books_BookStore_addAllBooks(books).get_Result();
+            new Step.app_example_books_BookStore_loopOverBooks().then(
+                    listener.waitToResult("app_example_books_Book_getTitle", future));
+            Assert.assertTrue(future.getResult() != null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

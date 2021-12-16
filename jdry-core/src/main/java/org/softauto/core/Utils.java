@@ -208,7 +208,7 @@ public class Utils {
             }else {
                 return getRemoteClazz(path,clazzName,testMachine);
             }
-         }catch (Exception e){
+        }catch (Exception e){
             logger.error("fail get class "+ clazzName,e);
         }
         return null;
@@ -228,6 +228,8 @@ public class Utils {
             URLClassLoader sysloader = (URLClassLoader)ClassLoader.getSystemClassLoader();
             addURL(new File(localPath).toURL(),sysloader);
             c = (Class) sysloader.loadClass(clazz );
+        }catch (ClassNotFoundException e){
+            logger.warn("class not found"+ path+"/"+clazzName);
         }catch (Exception e){
             logger.error("fail get class "+ path+"/"+clazzName,e);
         }
@@ -253,6 +255,8 @@ public class Utils {
             URLClassLoader sysloader = (URLClassLoader)ClassLoader.getSystemClassLoader();
             addURL(f.toURL(),sysloader);
             c = (Class) sysloader.loadClass(clazz );
+        }catch (ClassNotFoundException e){
+            logger.warn("class not found"+ path+"/"+clazzName);
         }catch (Exception e){
             logger.error("fail get class "+ path+"/"+clazzName,e);
         }

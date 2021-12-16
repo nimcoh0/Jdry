@@ -1,6 +1,7 @@
 #if ($protocol.getNamespace())
 package $this.mangle($protocol.getNamespace());
 #end
+import java.util.*;
 import java.util.function.Function;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -10,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 import org.softauto.core.AsyncResult;
 import org.softauto.core.Handler;
 import org.softauto.core.Future;
-import org.softauto.serializer.CallFuture;
+import org.softauto.core.*;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -21,26 +22,38 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.LinkedHashMap;
+import org.softauto.tester.SystemState;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.HashMap;
 import org.softauto.espl.ExpressionBuilder;
 import org.softauto.espl.EvulExp;
 import org.softauto.core.IListener;
+import org.softauto.listener.server.ListenerObserver;
 
 @org.apache.avro.specific.AvroGenerated
-public class Listener {
+public class Listener extends org.softauto.tester.Listener implements IListener{
 
-    private static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Listener.class);
-    public static long timeOutInMin = 1;
-    static Map<String, Object> map = null;
+        private static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Listener.class);
+        public static long timeOutInMin = 1;
+        static Map<String, Object> map = null;
+        static boolean seen = false;
 
-    public static void setTimeOut(long min){
-        timeOutInMin = min;
+
+    public static Listener addListener(String fqmn, Class...types)throws Exception{
+        org.softauto.tester.Listener.addListener(fqmn,types);
+        return new Listener();
     }
 
+    public static Listener resetListeners()throws Exception{
+        org.softauto.tester.Listener.resetListeners();
+        return new Listener();
+    }
 
-
+    public static Listener removeListener(String fqmn, Class...types)throws Exception{
+        org.softauto.tester.Listener.removeListener(fqmn,types);
+        return new Listener();
+    }
 
 #foreach ($e in $protocol.getMessages().entrySet())
 #set ($name = $e.getKey())
@@ -49,15 +62,15 @@ public class Listener {
 
 public static class ${this.mangle($name)} implements IListener{
     private static ${this.mangle($name)} ${this.unCapitalizeFirstLetter(${this.mangle($name)})}= null;
-    static boolean seen = false;
-    static Map<String, Object> map = null;
+    boolean seen = false;
+    Map<String, Object> map = null;
     static CountDownLatch lock = new CountDownLatch(0);
     static CountDownLatch lockForResult = new CountDownLatch(0);
 #if (${this.javaUnbox($response, true)} != "void" )
     ${this.javaUnbox($response, true)} _result;
 #end
 #foreach ($p in $message.getRequest().getFields())##
-    static ${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())} = $this.getDefaultValue($p.schema().getName());
+    ${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())} = $this.getDefaultValue($p.schema().getName());
 #end
 
     public ##
@@ -111,18 +124,18 @@ ${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.has
 #foreach ($p in $message.getRequest().getFields())##
                         params.put("$p.name()", $p.name());
 #end
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for ${this.mangle($name)}");
-                            seen = true;
                             logger.debug("got call for ${this.mangle($name)} seen:"+seen);
+                            seen = true;
 #foreach ($p in $message.getRequest().getFields())##
-                            ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($name)}.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : ${this.mangle($name)}.${this.mangle($p.name())};
+                            this.${this.mangle($p.name())} = this.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : this.${this.mangle($p.name())};
 #end
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("${this.mangle($name)}");
                             lock.countDown();
                             return new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
-${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
+this.${this.mangle($p.name())}#if($foreach.hasNext),#end##
 #end
 };
                         }
@@ -172,23 +185,23 @@ ${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.has
 #foreach ($p in $message.getRequest().getFields())##
                         params.put("$p.name()", $p.name());
 #end
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for ${this.mangle($name)}");
-                            seen = true;
                             logger.debug("got call for ${this.mangle($name)} seen:"+seen);
+                            seen = true;
 #foreach ($p in $message.getRequest().getFields())##
-                            ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($name)}.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : ${this.mangle($name)}.${this.mangle($p.name())};
+                            this.${this.mangle($p.name())} = this.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : this.${this.mangle($p.name())};
 #end
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("${this.mangle($name)}");
                             future.handleResult(new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
-${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
+this.${this.mangle($p.name())}#if($foreach.hasNext),#end##
 #end
 });
                              lock.countDown();
                              return new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
-${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
+this.${this.mangle($p.name())}#if($foreach.hasNext),#end##
 #end
 };
                         }
@@ -238,18 +251,18 @@ ${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.has
 #foreach ($p in $message.getRequest().getFields())##
                         params.put("$p.name()", $p.name());
 #end
-                        if(new EvulExp().setExp(exp).setLocalParams(params).evaluate()) {
+                        if(new EvulExp().setExp(exp).seContexts(params).evaluate()) {
                             logger.debug("done waiting for ${this.mangle($name)}");
-                            seen = true;
                             logger.debug("got call for ${this.mangle($name)} seen:"+seen);
+                            seen = true;
 #foreach ($p in $message.getRequest().getFields())##
-                            ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($name)}.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : ${this.mangle($name)}.${this.mangle($p.name())};
+                           this.${this.mangle($p.name())} = this.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : this.${this.mangle($p.name())};
 #end
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("${this.mangle($name)}");
                             lock.countDown();
                             return new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
-${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
+this.${this.mangle($p.name())}#if($foreach.hasNext),#end##
 #end
 };
                         }
@@ -297,21 +310,21 @@ ${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.has
 ){
                         try{
                             logger.debug("done waiting for ${this.mangle($name)}");
-                            seen = true;
                             logger.debug("got call for ${this.mangle($name)} seen:"+seen);
+                            seen = true;
 #foreach ($p in $message.getRequest().getFields())##
-                            ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($name)}.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : ${this.mangle($name)}.${this.mangle($p.name())};
+                            this.${this.mangle($p.name())} = this.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : this.${this.mangle($p.name())};
 #end
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("${this.mangle($name)}");
                             future.handleResult(new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
-${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
+this.${this.mangle($p.name())}#if($foreach.hasNext),#end##
 #end
 });
                             lock.countDown();
                             return new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
-${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
+this.${this.mangle($p.name())}#if($foreach.hasNext),#end##
 #end
 };
                         }catch (Exception e){
@@ -353,16 +366,16 @@ ${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())}#if ($foreach.has
 ){
                         try{
                             logger.debug("done waiting for ${this.mangle($name)}");
-                            seen = true;
                             logger.debug("got call for ${this.mangle($name)} seen:"+seen);
+                            seen = true;
 #foreach ($p in $message.getRequest().getFields())##
-                            ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($name)}.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : ${this.mangle($name)}.${this.mangle($p.name())};
+                            this.${this.mangle($p.name())} = this.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : this.${this.mangle($p.name())};
 #end
                             org.softauto.listener.server.ListenerObserver.getInstance().unRegister("${this.mangle($name)}");
                             lock.countDown();
                             return new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
-${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
+this.${this.mangle($p.name())}#if($foreach.hasNext),#end##
 #end
             };
                         }catch (Exception e){
@@ -403,16 +416,16 @@ ${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
 ){
                     try{
                         logger.debug("done waiting for ${this.mangle($name)}");
-                        seen = true;
                         logger.debug("got call for ${this.mangle($name)} seen:"+seen);
+                        seen = true;
 #foreach ($p in $message.getRequest().getFields())##
-                         ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($name)}.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : ${this.mangle($name)}.${this.mangle($p.name())};
+                         this.${this.mangle($p.name())} = this.${this.mangle($p.name())} == $this.getDefaultValue($p.schema().getName()) ? ${this.mangle($p.name())} : this.${this.mangle($p.name())};
 #end
                          org.softauto.listener.server.ListenerObserver.getInstance().unRegister("${this.mangle($name)}");
                          lock.countDown();
                          return new Object[]{##
 #foreach ($p in $message.getRequest().getFields())##
-${this.mangle($name)}.${this.mangle($p.name())}#if($foreach.hasNext),#end##
+this.${this.mangle($p.name())}#if($foreach.hasNext),#end##
 #end
                             };
                          }catch (Exception e){
@@ -578,21 +591,21 @@ public static ${this.mangle($name)} waitToResult(CallFuture<$this.javaType($resp
 
 #foreach ($p in $message.getRequest().getFields())##
     public ${this.javaUnbox($p.schema(), false)} get${this.capitalizeFirstLetter(${this.mangle($p.name())})}()throws Exception{
-        return ${this.mangle($name)}.${this.mangle($p.name())};
+        return this.${this.mangle($p.name())};
     }
 
     public ${this.mangle($name)} get${this.capitalizeFirstLetter(${this.mangle($p.name())})}(Handler<AsyncResult<$this.javaType($p.schema(),false)>> resultHandler)throws Exception{
-        resultHandler.handle(Future.handleResult(${this.mangle($name)}.${this.mangle($p.name())}));
+        resultHandler.handle(Future.handleResult(this.${this.mangle($p.name())}));
         return this;
     }
 
     public ${this.mangle($name)} get${this.capitalizeFirstLetter(${this.mangle($p.name())})}(CallFuture<$this.javaType($p.schema(), false)> future)throws Exception{
-       future.handleResult(${this.mangle($name)}.${this.mangle($p.name())});
+       future.handleResult(this.${this.mangle($p.name())});
        return this;
     }
 
     public ${this.unCapitalizeFirstLetter(${this.mangle($name)})} set${this.capitalizeFirstLetter(${this.mangle($p.name())})}(${this.javaUnbox($p.schema(), false)} ${this.mangle($p.name())})throws Exception{
-        ${this.mangle($name)}.${this.mangle($p.name())} = ${this.mangle($p.name())};
+        this.${this.mangle($p.name())} = ${this.mangle($p.name())};
         return this;
     }
 

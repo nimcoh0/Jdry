@@ -80,7 +80,6 @@ public class LocalProviderImpl implements Provider {
                     }
                     logger.debug("got result "+methodResponse);
                     callback.handleResult((RespT) methodResponse);
-                    //new LocalClient().setServiceImpl(o).setMethod(method).setArgs((Object[]) args[0]).call(callback);
                     logger.debug("successfully exec Local call  " + methodName);
                 }catch (Exception e){
                     logger.error("fail execute local call "+ methodName,e);

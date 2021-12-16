@@ -13,20 +13,20 @@ public class Listener {
 
     public Listener(){
           try {
-             if( Class.forName("org.softauto.listener.server.ListenerObserver", false, this.getClass().getClassLoader())!= null){
-                 org.softauto.listener.server.ListenerObserver.getInstance().register("tests.infrastructure.Listener", this);
-                 logger.debug("successfully register tests.infrastructure.Listener to observer ");
+             if( Class.forName("org.softauto.genericListener.server.ListenerObserver", false, this.getClass().getClassLoader())!= null){
+                 org.softauto.genericListener.server.ListenerObserver.getInstance().register("tests.infrastructure.GenericListener", this);
+                 logger.debug("successfully register tests.infrastructure.GenericListener to observer ");
              }
          }catch (Exception e){
-           logger.error("fail register tests.infrastructure.Listener to observer ", e);
+           logger.error("fail register tests.infrastructure.GenericListener to observer ", e);
          }
     }
 
     public Listener(String name){
           try {
-             if( Class.forName("org.softauto.listener.server.ListenerObserver", false, this.getClass().getClassLoader())!= null){
-                 org.softauto.listener.server.ListenerObserver.getInstance().register(name, this);
-                 logger.debug("successfully register tests.infrastructure.Listener to observer ");
+             if( Class.forName("org.softauto.genericListener.server.ListenerObserver", false, this.getClass().getClassLoader())!= null){
+                 org.softauto.genericListener.server.ListenerObserver.getInstance().register(name, this);
+                 logger.debug("successfully register tests.infrastructure.GenericListener to observer ");
              }
          }catch (Exception e){
            logger.error("fail register "+name+" to observer ", e);

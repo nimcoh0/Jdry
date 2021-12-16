@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.softauto.core.*;
+import org.softauto.listener.server.ListenerObserver;
 import org.softauto.listener.server.ListenerServerProviderImpl;
 
 import java.io.File;
@@ -81,6 +82,7 @@ public class SystemState {
     }
 
     public void startTest(String testname,Handler<AsyncResult<Boolean>> resultHandler)throws Exception{
+        ListenerObserver.getInstance().reset();
         new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_startTest", new Object[]{testname}, new Class[]{String.class});
         Context.setTestState(TestLifeCycle.START);
         resultHandler.handle(Future.handleResult(true));
@@ -114,6 +116,21 @@ public class SystemState {
         }catch(Exception e){
             logger.error("fail load listener configuration ",e);
         }
+        return this;
+    }
+
+    public SystemState addListener(String fqmn,Class...types)throws Exception{
+        new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_addListener", new Object[]{fqmn,types}, new Class[]{String.class,Class[].class});
+        return this;
+    }
+
+    public SystemState resetListeners()throws Exception{
+        new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_resetListeners", new Object[]{}, new Class[]{});
+        return this;
+    }
+
+    public SystemState removeListener(String fqmn,Class...types)throws Exception{
+        new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_removeListener", new Object[]{fqmn,types}, new Class[]{String.class,Class[].class});
         return this;
     }
 }

@@ -33,6 +33,13 @@ public class ServiceDefinition {
     }
 
 
+    public boolean isExist(String className){
+        if(classes != null && classes.containsKey(className)){
+            return true;
+        }
+        return false;
+    }
+
     public ClassDefinition getClazz(String className) {
         return (ClassDefinition)this.classes.get(className);
     }

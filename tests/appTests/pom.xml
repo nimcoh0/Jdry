@@ -107,7 +107,7 @@
                             <template>protocol.vm</template>
                         </configuration>
                     </execution>
-                         <execution>
+                         <!--execution>
                             <id>tester</id>
                             <phase>generate-sources</phase>
                             <goals>
@@ -122,7 +122,7 @@
                                 <outputName>AbstractTesterImpl</outputName>
                                 <classpath>/${user.home}/.m2/repository/org/softauto/jdry-testng-plugin/1.0.0/jdry-testng-plugin-1.0.0.jar</classpath>
                             </configuration>
-                        </execution>
+                        </execution-->
                      <execution>
                         <id>ListenerImpl</id>
                         <phase>generate-sources</phase>

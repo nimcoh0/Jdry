@@ -67,10 +67,26 @@ public class ServerService {
         return serviceDefinitionBuilder.build();
     }
 
+    public static ServiceDefinition createServiceDefinition(String fullClassName) {
+        ServiceDefinition.Builder serviceDefinitionBuilder = null;
+        try {
+            ServiceDescriptor serviceDescriptor = ServiceDescriptor.create();
+            serviceDefinitionBuilder = ServiceDefinition.builder(serviceDescriptor);
+            serviceDefinitionBuilder.addClass(serviceDescriptor.getClasses(ClassType.INITIALIZE_NO_PARAM, fullClassName),
+                                    ServiceCaller.call(new InitializeNoParamClassHandler()));
+
+        }catch (Throwable e){
+            logger.error("fail create serviceDefinitionBuilder ",e);
+        }
+        return serviceDefinitionBuilder.build();
+    }
+
+
+
     /**
      * Handler for class that we don't know how to load it
      */
-    private static class NoneHandler implements ServiceCaller.UnaryClass  {
+    public static class NoneHandler implements ServiceCaller.UnaryClass  {
         @Override
         public Object[] invoke(ClassDescriptor classDescriptor) {
             try {
@@ -100,7 +116,7 @@ public class ServerService {
     /**
      * Handler for Singleton class
      */
-    private static class SingletonClassHandler implements ServiceCaller.UnaryClass  {
+    public static class SingletonClassHandler implements ServiceCaller.UnaryClass  {
 
         @Override
         public Object[] invoke(ClassDescriptor classDescriptor) {
@@ -136,7 +152,7 @@ public class ServerService {
     /**
      * Handler for class with arg in the constructor
      */
-    private static class InitializeClassHandler implements ServiceCaller.UnaryClass  {
+    public static class InitializeClassHandler implements ServiceCaller.UnaryClass  {
 
         @Override
         public Object[] invoke(ClassDescriptor classDescriptor) {
@@ -188,7 +204,7 @@ public class ServerService {
     /**
      * Handler for class with no arg in the constructor
      */
-    private static class InitializeNoParamClassHandler implements ServiceCaller.UnaryClass  {
+    public static class InitializeNoParamClassHandler implements ServiceCaller.UnaryClass  {
 
         @Override
         public Object[] invoke(ClassDescriptor classDescriptor) {

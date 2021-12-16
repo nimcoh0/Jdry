@@ -24,10 +24,18 @@ import java.util.List;
 import java.util.ArrayList;
 
 @org.apache.avro.specific.AvroGenerated
-public class Step {
+public class Step extends org.softauto.tester.Step{
 
     private static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Step.class);
+    CallFuture<Object> future = new CallFuture<>();
 
+    public Step(){
+        super();
+    }
+
+    public Step(String fqmn, Object[] args, Class[] types, String transceiver)throws Exception{
+        super(fqmn,args,types,transceiver);
+    }
 
 
 

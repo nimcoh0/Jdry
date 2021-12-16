@@ -40,6 +40,11 @@ class ServiceDescriptor {
 
   }
 
+  public ServiceDescriptor(String serviceName){
+    this.serviceName = serviceName;
+
+  }
+
   /**
    * Creates a Service Descriptor.
    *
@@ -48,6 +53,11 @@ class ServiceDescriptor {
   public static ServiceDescriptor create(Class iface) {
     String serviceName = SoftautoGrpcUtils.getServiceName(iface);
     return SERVICE_DESCRIPTORS.computeIfAbsent(serviceName, key -> new ServiceDescriptor(iface, serviceName));
+  }
+
+  public static ServiceDescriptor create() {
+    String serviceName = "temp";
+    return SERVICE_DESCRIPTORS.computeIfAbsent(serviceName, key -> new ServiceDescriptor( serviceName));
   }
 
   /**
@@ -75,6 +85,15 @@ class ServiceDescriptor {
 
   }
 
+
+  public ClassDescriptor getClasses(ClassType classType,String className) {
+    return classes.computeIfAbsent(className,
+            key -> ClassDescriptor.<Object[], Object>newBuilder()
+                    .setFullClassName(className)
+                    .setType(classType)
+                    .build());
+
+  }
 
   public ClassDescriptor getClasses(Protocol.Message msg, ClassType classType) {
     String className = ((HashMap)msg.getObjectProp("class")).get("fullClassName").toString();

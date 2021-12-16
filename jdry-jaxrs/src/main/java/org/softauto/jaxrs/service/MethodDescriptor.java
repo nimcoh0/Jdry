@@ -2,11 +2,7 @@ package org.softauto.jaxrs.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.avro.Protocol;
-import org.apache.avro.Schema;
-
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
 import java.lang.reflect.Method;
 import java.util.*;
 

@@ -29,7 +29,7 @@
         </RollingFile>
 
         <Console name="console" target="SYSTEM_OUT" follow="true">
-            <PatternLayout  disableAnsi="false" pattern="%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} %-6notEmpty{[%marker]} -  %highlight{${LOG_LEVEL_PATTERN:-%5p}}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green,  bold,DEBUG=green bold, TRACE=blue}   [%15.15t] %style{%logger}{cyan} : %msg%n"/>
+            <PatternLayout  disableAnsi="false" pattern="%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} %-6notEmpty{[%marker]} -%tid-  %highlight{${LOG_LEVEL_PATTERN:-%5p}}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green,  bold,DEBUG=green bold, TRACE=blue}   [%15.15t] %style{%logger}{cyan} : %msg%n"/>
 
         </Console>
 

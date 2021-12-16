@@ -43,8 +43,10 @@ public class ListenerClientProviderImpl implements Provider {
     public Provider initialize() throws IOException {
         try {
             Class iface = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Configuration.get(Context.LISTENER_SERVICE_NAME).asText(), Configuration.get(Context.TEST_MACHINE).asText());
+            if(iface != null){
+                Listener.addSchema(iface);
+            }
             ListenerServiceImpl listenerServiceImpl = new ListenerServiceImpl();
-            Listener.addSchema(iface);
             Listener.init(listenerServiceImpl);
             logger.info("successfully load listener manager");
         }catch (Exception e){

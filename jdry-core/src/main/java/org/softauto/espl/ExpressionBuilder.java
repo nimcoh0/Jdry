@@ -38,6 +38,10 @@ public class ExpressionBuilder {
         return this;
     }
 
+    public String toJson()throws Exception{
+        return new ObjectMapper().writeValueAsString(this);
+    }
+
     public String getOperator() {
         return operator;
     }

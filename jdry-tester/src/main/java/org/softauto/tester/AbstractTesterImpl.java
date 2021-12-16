@@ -3,41 +3,27 @@
  *
  * DO NOT EDIT DIRECTLY
  */
-package tests.infrastructure;
+package org.softauto.tester;
 
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-//import org.softauto.tester.Client;
 import org.softauto.plugin.ProviderManager;
-import org.softauto.plugin.spi.PluginProvider;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.ITestContext;
-import java.lang.reflect.Method;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import org.softauto.core.Utils;
-import com.esotericsoftware.minlog.Log;
-import static com.esotericsoftware.minlog.Log.*;
-import org.softauto.tester.SystemState;
 import org.softauto.plugin.ProviderScope;
+import org.softauto.plugin.spi.PluginProvider;
 
 
 @org.apache.avro.specific.AvroGenerated
 public class AbstractTesterImpl {
 
-    private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(AbstractTesterImpl.class);
+    private static final Logger logger = LogManager.getLogger(AbstractTesterImpl.class);
 
 
 
 
 
-    @BeforeSuite
-    public void start(){
+
+    public AbstractTesterImpl(){
         try {
            //Log.set(LEVEL_TRACE);
            SystemState.getInstance().initialize();

@@ -30,7 +30,4 @@ public class MethodDefinition {
         return msg;
     }
 
-    //public ChannelDescriptor getChannel() {
-       // return channel;
-    //}
 }

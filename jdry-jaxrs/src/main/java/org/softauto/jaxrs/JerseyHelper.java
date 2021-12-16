@@ -30,7 +30,6 @@ public class JerseyHelper {
         T t = null;
         Response res = null;
         try{
-            //WebTarget webTarget = client.target(url);
             res = client.target(url).request(mediaType).headers(headers).get();
             if (Response.Status.fromStatusCode(res.getStatus()).getFamily() == Response.Status.Family.SUCCESSFUL) {
                 logger.debug("get request successfully for url "+ url + " status "+ res.getStatusInfo());
