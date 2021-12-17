@@ -4,7 +4,7 @@ import com.baeldung.jersey.server.model.Fruit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.Assert;
-import org.softauto.serializer.CallFuture;
+import org.softauto.core.CallFuture;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.infrastructure.AbstractTesterImpl;

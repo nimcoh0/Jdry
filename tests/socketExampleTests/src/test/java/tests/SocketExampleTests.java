@@ -1,7 +1,7 @@
 package tests;
 
 import org.junit.Assert;
-import org.softauto.serializer.CallFuture;
+import org.softauto.core.CallFuture;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import tests.infrastructure.AbstractTesterImpl;
