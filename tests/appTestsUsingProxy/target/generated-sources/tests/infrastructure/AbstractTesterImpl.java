@@ -50,7 +50,7 @@ public class AbstractTesterImpl {
             loadPlugins();
            }
         }catch (Exception e){
-            logger.error("fail start listener ",e);
+            logger.error("fail start genericListener ",e);
         }
     }
 

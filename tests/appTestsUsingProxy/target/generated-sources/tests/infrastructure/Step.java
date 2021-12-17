@@ -8,11 +8,13 @@ import java.util.function.Function;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import java.util.ArrayList;
 
 @org.apache.avro.specific.AvroGenerated
 public class Step {
 
     private static org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Step.class);
+
 
 
 
@@ -23,6 +25,7 @@ public java.lang.Object[] app_example_books_BookStore_addBook(app.example.books.
       return new Object[]{                    book                };
    
 }
+
 
 
 
@@ -39,12 +42,14 @@ public void app_example_books_BookStore_updateBook(app.example.books.BookStore r
 }
 
 
+
 public java.lang.Object[] app_example_books_BookStore_addAllBooks(java.util.Collection<app.example.books.Book> books){
  LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_example_books_BookStore_addAllBooks args :"        +" books:" + books      );
 
       return new Object[]{                    books                };
    
 }
+
 
 
 
@@ -61,6 +66,7 @@ public void app_example_books_BookStore_booksByAuthor(java.util.List<app.example
 }
 
 
+
 public java.lang.Object[] app_example_books_BookStore_bookByTitle(java.lang.String title){
  LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_example_books_BookStore_bookByTitle args :"        +" title:" + title      );
 
@@ -74,6 +80,7 @@ public void app_example_books_BookStore_bookByTitle(java.util.Optional<app.examp
 }
 
 
+
 public java.lang.Object[] app_example_books_BookStore_loopOverBooks(){
  LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_example_books_BookStore_loopOverBooks args :"       );
 
@@ -83,12 +90,14 @@ public java.lang.Object[] app_example_books_BookStore_loopOverBooks(){
 
 
 
+
 public java.lang.Object[] app_example_books_BookStore_printBooks(java.util.List<app.example.books.Book> books){
  LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_example_books_BookStore_printBooks args :"        +" books:" + books      );
 
       return new Object[]{};
    
 }
+
 
 
 
@@ -103,6 +112,7 @@ public void app_example_books_Book_Book(app.example.books.Book result){
  LogManager.getLogger().log(Level.getLevel("INFO [SUT]"), " app_example_books_Book_Book args :app.example.books.Book " + result);
 
 }
+
 
 
 public java.lang.Object[] app_example_books_Book_hello(){
