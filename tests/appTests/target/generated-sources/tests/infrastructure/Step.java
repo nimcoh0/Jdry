@@ -49,8 +49,11 @@ public static class app_example_books_BookStore_addBook {
                   logger.debug("waiting to future to be done");
                   future.await();
                }
-                logger.debug("successfully get_Result() ");
-                return future.get();
+               if(!future.isDone()){
+                    return future.get();
+                }else {
+                    return future.getResult();
+                }
              }catch (Exception e){
                  logger.error("fail get_Result() "+ e);
                  throw new Exception("fail get_Result() "+ e);
@@ -130,8 +133,11 @@ public static class app_example_books_BookStore_updateBook {
                   logger.debug("waiting to future to be done");
                   future.await();
                }
-                logger.debug("successfully get_Result() ");
-                return future.get();
+               if(!future.isDone()){
+                    return future.get();
+                }else {
+                    return future.getResult();
+                }
              }catch (Exception e){
                  logger.error("fail get_Result() "+ e);
                  throw new Exception("fail get_Result() "+ e);
@@ -211,8 +217,11 @@ public static class app_example_books_BookStore_addAllBooks {
                   logger.debug("waiting to future to be done");
                   future.await();
                }
-                logger.debug("successfully get_Result() ");
-                return future.get();
+               if(!future.isDone()){
+                    return future.get();
+                }else {
+                    return future.getResult();
+                }
              }catch (Exception e){
                  logger.error("fail get_Result() "+ e);
                  throw new Exception("fail get_Result() "+ e);
@@ -292,8 +301,11 @@ public static class app_example_books_BookStore_booksByAuthor {
                   logger.debug("waiting to future to be done");
                   future.await();
                }
-                logger.debug("successfully get_Result() ");
-                return future.get();
+               if(!future.isDone()){
+                    return future.get();
+                }else {
+                    return future.getResult();
+                }
              }catch (Exception e){
                  logger.error("fail get_Result() "+ e);
                  throw new Exception("fail get_Result() "+ e);
@@ -373,8 +385,11 @@ public static class app_example_books_BookStore_bookByTitle {
                   logger.debug("waiting to future to be done");
                   future.await();
                }
-                logger.debug("successfully get_Result() ");
-                return future.get();
+               if(!future.isDone()){
+                    return future.get();
+                }else {
+                    return future.getResult();
+                }
              }catch (Exception e){
                  logger.error("fail get_Result() "+ e);
                  throw new Exception("fail get_Result() "+ e);
@@ -612,8 +627,11 @@ public static class app_example_books_Book_Book {
                   logger.debug("waiting to future to be done");
                   future.await();
                }
-                logger.debug("successfully get_Result() ");
-                return future.get();
+               if(!future.isDone()){
+                    return future.get();
+                }else {
+                    return future.getResult();
+                }
              }catch (Exception e){
                  logger.error("fail get_Result() "+ e);
                  throw new Exception("fail get_Result() "+ e);
@@ -693,8 +711,11 @@ public static class app_example_books_Book_hello {
                   logger.debug("waiting to future to be done");
                   future.await();
                }
-                logger.debug("successfully get_Result() ");
-                return future.get();
+               if(!future.isDone()){
+                    return future.get();
+                }else {
+                    return future.getResult();
+                }
              }catch (Exception e){
                  logger.error("fail get_Result() "+ e);
                  throw new Exception("fail get_Result() "+ e);

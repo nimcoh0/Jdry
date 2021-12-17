@@ -15,12 +15,7 @@
             <groupId>org.softauto</groupId>
             <artifactId>jdry-listener-server</artifactId>
             <version>${jdry-listener-server}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.softauto</groupId>
-                    <artifactId>jdry-grpc</artifactId>
-                </exclusion>
-            </exclusions>
+
         </dependency>
 
         <dependency>
@@ -28,23 +23,13 @@
             <artifactId>jdry-core</artifactId>
             <version>${jdry-core}</version>
             <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.softauto</groupId>
-                    <artifactId>jdry-grpc</artifactId>
-                </exclusion>
-            </exclusions>
+
         </dependency>
         <dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-local</artifactId>
             <version>${jdry-local}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.softauto</groupId>
-                    <artifactId>jdry-grpc</artifactId>
-                </exclusion>
-            </exclusions>
+
         </dependency>
 
 
@@ -52,12 +37,7 @@
             <groupId>org.softauto</groupId>
             <artifactId>jdry-avro</artifactId>
             <version>${jdry-avro}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.softauto</groupId>
-                    <artifactId>jdry-grpc</artifactId>
-                </exclusion>
-            </exclusions>
+
         </dependency>
 
         <dependency>
@@ -79,12 +59,13 @@
             <groupId>org.softauto</groupId>
             <artifactId>jdry-serializer</artifactId>
             <version>${jdry-serializer}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.softauto</groupId>
-                    <artifactId>jdry-grpc</artifactId>
-                </exclusion>
-            </exclusions>
+
+        </dependency>
+        <dependency>
+            <groupId>org.softauto</groupId>
+            <artifactId>jdry-grpc</artifactId>
+            <version>${jdry-grpc}</version>
+
         </dependency>
     </dependencies>
 

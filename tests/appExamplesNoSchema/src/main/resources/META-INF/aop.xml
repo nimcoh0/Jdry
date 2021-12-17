@@ -1,0 +1,8 @@
+<aspectj>
+    <aspects>
+        <weaver options="-verbose ">
+            <include within="app.example.books..*"/>
+        </weaver>
+    </aspects>
+
+</aspectj>

@@ -41,13 +41,21 @@ public class ListenerServiceImpl implements SerializerService{
                 Object o = ListenerObserver.getInstance().getLastChannel(message.getDescriptor());
                 if (o == null) {
                     logger.debug(message.getDescriptor() + " not found in Observer . using " + message.getDescriptor());
-                    o = Utils.getSubClass(listener.getDeclaredClasses(), "tests.infrastructure.Listener$" + message.getDescriptor()).newInstance();
-                    if (o == null) {
+                    if(listener != null) {
+                        Class c = Utils.getSubClass(listener.getDeclaredClasses(), "tests.infrastructure.Listener$" + message.getDescriptor());
+                        if (c == null) {
+                            logger.warn("class not found" + message.getDescriptor());
+                            return message.getArgs();
+                            //throw new Exception("fail getting class " + message.getDescriptor());
+                        } else {
+                            o = c.newInstance();
+                        }
+                    }else {
                         logger.warn("class not found" + message.getDescriptor());
                         return message.getArgs();
-                        //throw new Exception("fail getting class " + message.getDescriptor());
                     }
-                }else if (o instanceof Function) {
+                }
+                if (o instanceof Function) {
                     return handleFunction(o,message);
                 }else {
                     Method method = Utils.getMethod2(o, message.getDescriptor(), message.getTypes());
