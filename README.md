@@ -160,6 +160,10 @@ for example
      <version>1.0-SNAPSHOT</version>  
     </dependency>
 
+> your test project should extends AbstractTesterImpl
+
+for more details see [Using in a simple way](https://github.com/nimcoh0/Jdry/wiki/Using-in-a-simple-way)
+
 for list of current limitations see https://github.com/nimcoh0/Jdry/wiki/limitations
 
 # Contact
