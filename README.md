@@ -38,32 +38,86 @@ depended on your need and  the SUT code it can reduce by significantly the time 
 
  
 
+
+ 
+
 # How IT Works
-Jdry works as client server architecture . it uses the SUT code impl as the building blocks for the testing . a java agent is loaded in the SUT that get the request and execute it on the SUT and actually publish all the annotated methods as Dynamic Api  .  Methods annotated as Listener  are capture and send to the Listener Server running on the Tester .
-to be examine or update and can serve as verify point or data set . method annotated as ExportForTesting are serve as proxy at the Tester so no impl is needed . any java type can be Serialize so the proxy  methods are serve as is without the need of Protobuf like solutions  
+Jdry works as client server architecture . it uses the SUT code impl as the building blocks for the testing . a java agent is loaded in the SUT that get the request and execute it on the SUT  .  Listener define methods are capture and send to the Listener Server running on the Tester . to be examine or update and can serve as verify point or data set .  any java type can be Serialize so the methods are serve as is without the need of Protobuf like solutions  
+
+**Jdry can be use in three ways** 
+
+## simple
+the listeners and the request methods declarer as part of the  test . beside loading the agent on the SUT
+no more configuration is needed   
+
+    @Test  
+    public void add_listener()throws Exception{  
+        Listener listener =  Listener.addListener("app_example_books_BookCatalog_printBook",new Class[]{Book.class});  
+        new Step("app_example_books_BookStore_printBooks",new Object[]{books},new Class[]{List.class},"RPC").then(  
+                listener.waitTo("app_example_books_BookCatalog_printBook"));  
+        Assert.assertTrue(listener.getResult() != null);  
+    }
+see more examples at tests *appTestsNoSchema*
+
+## using annotations
+in this mode the configuration is more complex  . but the tester has no need of detail knowledge about the SUT architecture
+and less configuration / setup at the test . 
+
+    @Test  
+    public void listen_for_method_before_first()throws Exception{  
+        try {  
+            new Step.app_example_books_BookStore_printBooks(books).then(  
+                Listener.app_example_books_BookCatalog_printBook.waitTo().getBook(res->{  
+                        System.out.println(res.result().getId());  
+      }));  
+      }catch (Exception e){  
+            e.printStackTrace();  
+      }  
+    }
+for more details see [Getting Started with annotations](https://github.com/nimcoh0/Jdry/wiki/Getting-Started-with-annotations)
+ 
+
+## loosely
+this mode use annotation but give the tester more control on tests request and listeners 
+
+    @Test  
+    public void listen_for_method_after( )throws Exception{  
+        try {  
+            CallFuture<Void> future = new CallFuture<>();  
+	        CountDownLatch lock = new CountDownLatch(1);  
+            AtomicReference<java.lang.String> ref = new AtomicReference();  
+            tests.app_example_books_BookStore_addAllBooks(books);  
+            asyncTests.app_example_books_BookStore_loopOverBooks(future);  
+		    new Listener() {  
+                @Override  
+                public void app_example_books_Book_getTitle(java.lang.String result){  
+                    ref.set(result);  
+		            lock.countDown();  
+				    logger.info("got Title "+ result);  
+		      }  
+            };  
+		      lock.await(10, TimeUnit.MINUTES);  
+		      Assert.assertTrue(ref.get() != null);  
+      }catch (Exception e){  
+            e.printStackTrace();  
+      }  
+    }
+
+for more details see [Using Proxy](https://github.com/nimcoh0/Jdry/wiki/Using-Proxy)
+
 
 # Getting Started
 download the project and run "mvn clean install"
 Jdry build of two parts  SUT - the developing application &  Tester - the test project
 
-> you also need jdry-serializer , jdry-maven-plugin and
-> jdry-velocity-maven-plugin
+> you also need jdry-serializer &  jdry-listener
+
 
 ## SUT
 
- set the requirement dependency in the SUT pom file and the pom profile - see [SUT setup ](https://github.com/nimcoh0/Jdry/wiki/SUT-pom-setup) 
- annotate any method in the SUT code that you want to invoke as @ExportForTesting
-and set the correct protocol you want to use @RPC for grpc ,@JXRS for jax-rs and @SOCKET for socket
- annotate any method in the SUT code that you want to Listen as @ListenerForTesting and @RPC 
-
-> step on the SUT should be done by the developers 
-
- run mvn clean install -P schema 
-> that will create the schema files . TestService.avpr for ExportForTesting & ListenerService.avpr for ListenerForTesting under  target\generated-sources\annotations\tests\infrastructure
-
- add  the Java agent (loader)  to the SUT project vm options . download from templates or download the project and compile it 
+add  the Java agent (loader)  to the SUT project vm options . download from templates or download the project and compile it 
  
-    -javaagent:<path>/jdry-agent-beta-1.0.jar
+    -javaagent:<path>/jdry-loader-1.0.0-jar-with-dependencies.jar
 
 
 
@@ -78,60 +132,39 @@ and set the correct protocol you want to use @RPC for grpc ,@JXRS for jax-rs and
      </aspects>
     </aspectj>
 
-add 
-
-	<dependency>
-            <groupId>org.softauto</groupId>
-            <artifactId>jdry-annotations</artifactId>
-            <version>beta-1.0</version>
-        </dependency>
 	
 ## Tester
-the simple why is [quick start ](https://github.com/nimcoh0/Jdry/wiki/Quick-Start)
-or for more details read the rest of the file .
 
-the setting depend on the kind of Test framework you are using . in this example we use testNG
-for tester setup see [Tester setup](https://github.com/nimcoh0/Jdry/wiki/Tester-pom-setup)
-copy the * avpr files to src\test\resources\schema in the Tester project
-run mvn clean install
-  
+    <dependency>  
+     <groupId>org.softauto</groupId>  
+     <artifactId>jdry-tester</artifactId>  
+     <version>1.0.0</version>  
+    </dependency>
 
-> a list of classes are generated at target\generated-sources\tests\infrastructure
-> that include the schema interfaces ,the schema impl and the AbstractTesterImpl
+you also need the relevant  plugin according to your test framework 
 
-set your tests suite class to extend AbstractTesterImpl 
+> currently only testNG is supported
 
-> The current impl testng.vm build the tester to be compitable with TestNg.
-    you can replace it with a custom vm that suited your test framework 
-    
-create configuration file `<tester project root>/Configuration.yaml`
-for configuration detail see [configuration](https://github.com/nimcoh0/Jdry/wiki/configuration.yaml)	
- 
+    <dependency>  
+     <groupId>org.softauto</groupId>  
+     <artifactId>jdry-testng-plugin</artifactId>  
+     <version>1.0.0</version>  
+    </dependency>
 
+and your SUT data model .
+for example 
 
+    <dependency>  
+     <groupId>org.example</groupId>  
+     <artifactId>appExamplesNoSchema</artifactId>  
+     <version>1.0-SNAPSHOT</version>  
+    </dependency>
 
+for list of current limitations see https://github.com/nimcoh0/Jdry/wiki/limitations
 
-## command line setup
-create a new folder lib at the Tester project \lib
-copy the Tester jar , any more protocol jar you need , the test framework jar (for example testng.jar)
-and your SUT jar to the lib folder 
+# Contact
+[Project Home](https://softauto.org)
 
-    <your tester project path>\target\test-classes> java  -cp "..\..\lib\*;" org.testng.TestNG <path to the testng xml >UserTests.xml  
-
-# Helper classes
-
-## How To Use It
-
-same as in SUT you can annotaed your local method in the helper classes with ExportForTesting . 
-
-> ListenerForTesting is not supported in the local helper classes . (no need)
-
-set the tester pom file according to tester setup and run
-mvn clean install -P schema ,
-it will produce   TestService.avpr for ExportForTesting . for marge the local tests service with the SUT tests service 
-just put the SUT tests service avpr file  in the tests.infrastructure and run the  `mvn clean install -P schema`
-
-for tests examples see [tests](https://github.com/nimcoh0/Jdry/blob/master/tests/appTests/src/test/java/tests/ExampleTests.java) 
 
 
 for list of current limitations see https://github.com/nimcoh0/Jdry/wiki/limitations
