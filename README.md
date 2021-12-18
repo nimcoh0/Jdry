@@ -42,7 +42,8 @@ depended on your need and  the SUT code it can reduce by significantly the time 
  
 
 # How IT Works
-Jdry works as client server architecture . it uses the SUT code impl as the building blocks for the testing . a java agent is loaded in the SUT that get the request and execute it on the SUT  .  Listener define methods are capture and send to the Listener Server running on the Tester . to be examine or update and can serve as verify point or data set .  any java type can be Serialize so the methods are serve as is without the need of Protobuf like solutions  
+Jdry works as client server architecture . it uses the SUT code impl as the building blocks for the testing . a java agent is loaded in the SUT that get the request and execute it on the SUT  .  Listener define methods are capture and send to the Listener Server running on the Tester . to be examine or update and can serve as verify point or data set .  any java type can be Serialize so the methods are serve as is without the need of Protobuf like solutions  . it uses grpc as the basic protocol
+but other protocols can be add using plugin mechanism (grpc ,socket and jaxrs are currently supported ) 
 
 **Jdry can be use in three ways** 
 
