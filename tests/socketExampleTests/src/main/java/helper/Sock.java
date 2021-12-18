@@ -6,7 +6,7 @@ import org.softauto.core.ServiceLocator;
 import org.softauto.local.annotations.LOCAL;
 import org.softauto.plugin.api.Provider;
 import org.softauto.serializer.CallFuture;
-import tests.infrastructure.AbstractTesterImpl;
+import org.softauto.tester.AbstractTesterImpl;
 
 
 public class Sock {

@@ -107,22 +107,7 @@
                             <template>protocol.vm</template>
                         </configuration>
                     </execution>
-                         <execution>
-                            <id>tester</id>
-                            <phase>generate-sources</phase>
-                            <goals>
-                                <goal>protocol</goal>
-                            </goals>
-                            <configuration>
-                                <stringType>String</stringType>
-                                <outputDirectory>${basedir}/target/generated-sources</outputDirectory>
-                                <fieldVisibility>private</fieldVisibility>
-                                <template>testng.vm</template>
-                                <namespace>tests.infrastructure</namespace>
-                                <outputName>AbstractTesterImpl</outputName>
-                                <classpath>/${user.home}/.m2/repository/org/softauto/jdry-testng-plugin/1.0.0/jdry-testng-plugin-1.0.0.jar</classpath>
-                            </configuration>
-                        </execution>
+
                      <execution>
                         <id>ListenerImpl</id>
                         <phase>generate-sources</phase>

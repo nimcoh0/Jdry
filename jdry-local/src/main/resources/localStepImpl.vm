@@ -7,8 +7,11 @@
                   logger.debug("waiting to future to be done");
                   future.await();
                }
-                logger.debug("successfully get_Result() ");
-                return future.get();
+                if(!future.isDone()){
+                   return future.get();
+                }else {
+                   return future.getResult();
+                }
              }catch (Exception e){
                  logger.error("fail get_Result() "+ e);
                  throw new Exception("fail get_Result() "+ e);
@@ -32,26 +35,26 @@
 #end
 
     public  ${this.mangle($name)} then(Handler<AsyncResult<$this.javaType($response,false)>> resultHandler)throws Exception{
-        resultHandler.handle(Future.handleResult(future.getResult()));
+        resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
 
     public  ${this.mangle($name)} then(IListener o)throws Exception{
 #if (${this.javaUnbox($response, true)} != "void" )
-        future.handleResult(future.getResult());
+        future.handleResult(future.get());
 
 #end
         return this;
     }
 
     public  ${this.mangle($name)} then(IListener o,Handler<AsyncResult<$this.javaType($response,false)>> resultHandler)throws Exception{
-        resultHandler.handle(Future.handleResult(future.getResult()));
+        resultHandler.handle(Future.handleResult(future.get()));
         return this;
     }
 
     public  ${this.mangle($name)} then(IListener o ,CallFuture<$this.javaType($response,false)> future)throws Exception{
-        future.handleResult(future.getResult());
+        future.handleResult(future.get());
         return this;
     }
 
