@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.softauto.core.AsyncResult;
+import org.softauto.core.CallOptions;
 import org.softauto.core.Handler;
 import org.softauto.core.Future;
 import org.softauto.serializer.CallFuture;
@@ -30,9 +31,42 @@ public class Step extends org.softauto.tester.Step{
         super();
     }
 
-    public Step(String fqmn, Object[] args, Class[] types, String transceiver)throws Exception{
-        super(fqmn,args,types,transceiver);
-    }
+        public Step(String fqmn, Object[] args, Class[] types, String transceiver)throws Exception{
+            future = new CallFuture<>();
+            logger.debug("invoking " +fqmn);
+            new InvocationHandler().invoke(fqmn,args,types,future,transceiver);
+        }
+
+        public Step(String fqmn, Object[] args, Class[] types, String transceiver,CallOptions callOptions)throws Exception{
+            future = new CallFuture<>();
+            logger.debug("invoking " +fqmn);
+            new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions.getOptions());
+        }
+
+
+        public <T> Step(String fqmn, Object[] args, Class[] types, String transceiver, CallFuture<T> future)throws Exception{
+            logger.debug("invoking " +fqmn);
+            new InvocationHandler().invoke(fqmn,args,types,future,transceiver);
+        }
+
+        public <T> Step(String fqmn, Object[] args, Class[] types, String transceiver, CallFuture<T> future,CallOptions callOptions)throws Exception{
+            logger.debug("invoking " +fqmn);
+            new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions.getOptions());
+        }
+
+        public <T>Step(String fqmn, Object[] args, Class[] types, String transceiver, Handler<AsyncResult<T>> resultHandler)throws Exception{
+            CallFuture<Object> future = new CallFuture<>();
+            logger.debug("invoking " +fqmn);
+            new InvocationHandler().invoke(fqmn,args,types,future,transceiver);
+            resultHandler.handle(Future.handleResult((T)future.get()));
+        }
+
+        public <T>Step(String fqmn, Object[] args, Class[] types, String transceiver, Handler<AsyncResult<T>> resultHandler,CallOptions callOptions)throws Exception{
+            CallFuture<Object> future = new CallFuture<>();
+            logger.debug("invoking " +fqmn);
+            new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions.getOptions());
+            resultHandler.handle(Future.handleResult((T)future.get()));
+        }
 
 
 #foreach ($e in $protocol.getMessages().entrySet())

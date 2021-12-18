@@ -110,7 +110,11 @@ public class ListenerServiceImpl implements SerializerService{
             } else if (o instanceof FunctionAfter) {
                 if (message.getState().equals(ListenerType.AFTER.name())) {
                     logger.debug("got message After " + message.toJson());
-                    methodResponse = ((FunctionAfter) o).apply(message.getArgs());
+                    if(message.getArgs().length == 1){
+                        methodResponse = ((FunctionAfter) o).apply(message.getArgs()[0]);
+                    }else {
+                        methodResponse = ((FunctionAfter) o).apply(message.getArgs());
+                    }
                     logger.debug("result of function After " + methodResponse);
                 }
             }

@@ -112,10 +112,11 @@ public class FruitResource {
     @Path("/created")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createNewFruit(@Valid Fruit fruit) {
+        SimpleStorageService.storeFruit(fruit);
         String result = "Fruit saved : " + fruit;
         return Response.status(Status.CREATED.getStatusCode())
-            .entity(result)
-            .build();
+           .entity(result)
+           .build();
     }
 
     @PermitAll

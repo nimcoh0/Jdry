@@ -7,20 +7,25 @@ package org.softauto.tester;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.softauto.core.AsyncResult;
-import org.softauto.core.Future;
-import org.softauto.core.Handler;
-import org.softauto.core.IListener;
+import org.softauto.core.*;
 import org.softauto.serializer.CallFuture;
+
+import java.util.HashMap;
 
 @org.apache.avro.specific.AvroGenerated
 public class Step {
 
     private static Logger logger = LogManager.getLogger(Step.class);
     CallFuture<Object> future = null;
+    protected HashMap<String,Object> callOptions = null;
+
     public Step(){};
 
-    public Object get_Result() throws Exception{
+    public Step(CallOptions callOptions){
+        this.callOptions = callOptions.getOptions();
+    }
+
+    public <T> T get_Result() throws Exception{
             try {
 
                if(!future.isDone()) {
@@ -28,7 +33,7 @@ public class Step {
                   future.await();
                }
                 logger.debug("successfully get_Result() ");
-                return future.get();
+                return (T)future.get();
              }catch (Exception e){
                  logger.error("fail get_Result() "+ e);
                  throw new Exception("fail get_Result() "+ e);
@@ -42,9 +47,21 @@ public class Step {
         new InvocationHandler().invoke(fqmn,args,types,future,transceiver);
     }
 
+    public Step(String fqmn, Object[] args, Class[] types, String transceiver,CallOptions callOptions)throws Exception{
+        future = new CallFuture<>();
+        logger.debug("invoking " +fqmn);
+        new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions.getOptions());
+    }
+
+
     public <T> Step(String fqmn, Object[] args, Class[] types, String transceiver, CallFuture<T> future)throws Exception{
         logger.debug("invoking " +fqmn);
         new InvocationHandler().invoke(fqmn,args,types,future,transceiver);
+    }
+
+    public <T> Step(String fqmn, Object[] args, Class[] types, String transceiver, CallFuture<T> future,CallOptions callOptions)throws Exception{
+        logger.debug("invoking " +fqmn);
+        new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions.getOptions());
     }
 
     public <T>Step(String fqmn, Object[] args, Class[] types, String transceiver, Handler<AsyncResult<T>> resultHandler)throws Exception{
@@ -54,6 +71,12 @@ public class Step {
         resultHandler.handle(Future.handleResult((T)future.get()));
     }
 
+    public <T>Step(String fqmn, Object[] args, Class[] types, String transceiver, Handler<AsyncResult<T>> resultHandler,CallOptions callOptions)throws Exception{
+        CallFuture<Object> future = new CallFuture<>();
+        logger.debug("invoking " +fqmn);
+        new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions.getOptions());
+        resultHandler.handle(Future.handleResult((T)future.get()));
+    }
 
         public <T> Step then(Handler<AsyncResult<T>> resultHandler)throws Exception{
             resultHandler.handle(Future.handleResult((T)future.getResult()));
