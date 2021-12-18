@@ -58,7 +58,7 @@ no more configuration is needed
                 listener.waitTo("app_example_books_BookCatalog_printBook"));  
         Assert.assertTrue(listener.getResult() != null);  
     }
-see more examples at tests *appTestsNoSchema*
+see more examples at tests *appTestsNoSchema* and https://github.com/nimcoh0/Jdry/wiki/Using-in-a-simple-way
 
 ## using annotations
 in this mode the configuration is more complex  . but the tester has no need of detail knowledge about the SUT architecture
