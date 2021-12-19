@@ -5,7 +5,7 @@
 # Jdry - Java Don't repeat yourself 
 
 
-Jdry framework is a test automation tool that will save you time writing and Maintenance tests automation code by simplify  the code  and reduce duplication between the test framework and the SUT ,It aim to integrate with existing Test automation framework’s  like TestNg ,Cucumber .. and more . 
+Jdry framework is a test automation tool that will save you time writing and Maintenance tests automation code by simplify  the code  and reduce duplication between the test framework and the SUT combine black box and white box approach ,It aim to integrate with existing Test automation framework’s  like TestNg ,Cucumber .. and more . 
 
 depended on your need and  the SUT code it can reduce by significantly the time it take to write tests and  reduce significantly the amount of code you need  to support this tests . It can be use for e2e, functional ,component ,regression... testing .  
  
