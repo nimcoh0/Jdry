@@ -24,6 +24,7 @@ import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.net.Inet4Address;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
@@ -230,9 +231,12 @@ public class Utils {
         try{
             String localPath = path.substring(0,path.lastIndexOf("classes")+8);
             String clazz = path.substring(path.lastIndexOf("classes") + 8, path.length()).replace("/", ".")+"."+clazzName;
-            URLClassLoader sysloader = (URLClassLoader)ClassLoader.getSystemClassLoader();
-            addURL(new File(localPath).toURL(),sysloader);
-            c = (Class) sysloader.loadClass(clazz );
+            //URLClassLoader sysloader = (URLClassLoader)ClassLoader.getSystemClassLoader();
+            URL[] urls = new URL[1];
+            urls[0] =(new File(localPath.trim()).toURL());
+            URLClassLoader urlClassLoader = createClassLoader(urls );
+            //addURL(new File(localPath).toURL(),sysloader);
+            c = (Class) urlClassLoader.loadClass(clazz );
         }catch (ClassNotFoundException e){
             logger.warn("class not found"+ path+"/"+clazzName);
         }catch (Exception e){
@@ -242,6 +246,13 @@ public class Utils {
     }
 
 
+    protected static URLClassLoader createClassLoader(URL[] _urls ) throws Exception {
+        List<URL> urls = new ArrayList<>();
+        urls.addAll(Arrays.asList(_urls));
+        URLClassLoader uRLClassLoader =  new URLClassLoader(urls.toArray(new URL[0]), Thread.currentThread().getContextClassLoader());
+        Thread.currentThread().setContextClassLoader(uRLClassLoader);
+        return uRLClassLoader;
+    }
 
 
     /**

@@ -121,7 +121,7 @@ public class RpcProviderImpl implements Provider {
             }
             ClassType classType = Utils.getClassType(name,(Class[]) args[1]);
             MessageType messageType = Utils.getMessageType(name,(Class[]) args[1]);
-            if(args[2] != null){
+            if(args.length > 2 && args[2] != null){
                 HashMap<String,Object> callOptions = (HashMap<String,Object>)args[2];
                 if(callOptions.get("classType")!= null){
                     classType = ClassType.fromString(callOptions.get("classType").toString());
