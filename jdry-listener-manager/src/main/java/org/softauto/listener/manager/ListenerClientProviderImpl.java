@@ -14,6 +14,7 @@ import org.softauto.serializer.CallFuture;
 import javax.lang.model.element.Element;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.util.HashMap;
 
 public class ListenerClientProviderImpl implements Provider {
 
@@ -42,9 +43,10 @@ public class ListenerClientProviderImpl implements Provider {
     @Override
     public Provider initialize() throws IOException {
         try {
-            Class iface = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Configuration.get(Context.LISTENER_SERVICE_NAME).asText(), Configuration.get(Context.TEST_MACHINE).asText());
-            if(iface != null){
-                Listener.addSchema(iface);
+            HashMap<String, Object> hm = (HashMap<String, Object>)Configuration.get(Context.LISTENERS);
+            //Class iface = Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText(), Configuration.get(Context.LISTENER_SERVICE_NAME).asText(), Configuration.get(Context.TEST_MACHINE).asText());
+            if(hm != null){
+                Listener.addSchema(hm);
             }
             ListenerServiceImpl listenerServiceImpl = new ListenerServiceImpl();
             Listener.init(listenerServiceImpl);

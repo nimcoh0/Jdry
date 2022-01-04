@@ -49,11 +49,11 @@ public interface Provider {
 
      /**
       * execute this plugin protocol request
-      * @param methodName
+      * @param name
       * @param args
       * @param callback
       * @param <RespT>
       */
-     <RespT> void exec(String methodName, org.softauto.serializer.CallFuture<RespT> callback, ManagedChannel channel,Object...args);
+     <RespT> void exec(String name, org.softauto.serializer.CallFuture<RespT> callback, ManagedChannel channel,Object...args);
 
 }

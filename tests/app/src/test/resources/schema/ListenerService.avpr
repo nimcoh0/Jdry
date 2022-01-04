@@ -3,31 +3,51 @@
   "version" : "1.0",
   "namespace" : "tests.infrastructure",
   "types" : [ {
-    "name" : "app.books.Book",
+    "name" : "app.example.books.Book",
     "type" : "external"
   }, {
     "name" : "java.lang.Object[]",
     "type" : "external"
+  }, {
+    "name" : "java.util.List<app.example.books.Book>",
+    "type" : "external"
   } ],
   "messages" : {
-    "app_books_BookCatalog_addBook" : {
+    "app_example_books_BookCatalog_addBook" : {
       "request" : [ {
         "name" : "book",
-        "type" : "app.books.Book"
+        "type" : "app.example.books.Book"
       } ],
       "method" : "addBook",
       "transceiver" : "RPC",
       "response" : "void",
-      "namespace" : "app.books.BookCatalog"
+      "namespace" : "app.example.books.BookCatalog"
     },
-    "app_books_Book_getTitle" : {
+    "app_example_books_BookCatalog_getBooks" : {
+      "request" : [ ],
+      "method" : "getBooks",
+      "transceiver" : "RPC",
+      "response" : "java.util.List<app.example.books.Book>",
+      "namespace" : "app.example.books.BookCatalog"
+    },
+    "app_example_books_BookCatalog_printBook" : {
+      "request" : [ {
+        "name" : "book",
+        "type" : "app.example.books.Book"
+      } ],
+      "method" : "printBook",
+      "transceiver" : "RPC",
+      "response" : "void",
+      "namespace" : "app.example.books.BookCatalog"
+    },
+    "app_example_books_Book_getTitle" : {
       "request" : [ ],
       "method" : "getTitle",
       "transceiver" : "RPC",
       "response" : "string",
-      "namespace" : "app.books.Book"
+      "namespace" : "app.example.books.Book"
     },
-    "app_books_Book_setTitle" : {
+    "app_example_books_Book_setTitle" : {
       "request" : [ {
         "name" : "title",
         "type" : "string"
@@ -35,16 +55,16 @@
       "method" : "setTitle",
       "transceiver" : "RPC",
       "response" : "void",
-      "namespace" : "app.books.Book"
+      "namespace" : "app.example.books.Book"
     },
-    "app_books_Book_getAuthor" : {
+    "app_example_books_Book_getAuthor" : {
       "request" : [ ],
       "method" : "getAuthor",
       "transceiver" : "RPC",
       "response" : "string",
-      "namespace" : "app.books.Book"
+      "namespace" : "app.example.books.Book"
     },
-    "app_books_Book_setAuthor" : {
+    "app_example_books_Book_setAuthor" : {
       "request" : [ {
         "name" : "author",
         "type" : "string"
@@ -52,16 +72,16 @@
       "method" : "setAuthor",
       "transceiver" : "RPC",
       "response" : "void",
-      "namespace" : "app.books.Book"
+      "namespace" : "app.example.books.Book"
     },
-    "app_books_Book_getId" : {
+    "app_example_books_Book_getId" : {
       "request" : [ ],
       "method" : "getId",
       "transceiver" : "RPC",
       "response" : "int",
-      "namespace" : "app.books.Book"
+      "namespace" : "app.example.books.Book"
     },
-    "app_books_Book_setId" : {
+    "app_example_books_Book_setId" : {
       "request" : [ {
         "name" : "id",
         "type" : "int"
@@ -69,7 +89,7 @@
       "method" : "setId",
       "transceiver" : "RPC",
       "response" : "void",
-      "namespace" : "app.books.Book"
+      "namespace" : "app.example.books.Book"
     }
   }
 }

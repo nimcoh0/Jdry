@@ -6,11 +6,19 @@ import org.softauto.annotations.ExposedForTesting;
 import org.softauto.annotations.ListenerForTesting;
 import org.softauto.annotations.RPC;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Book {
 
     private String title;
     private String author;
     private int id;
+    List<String> list = new ArrayList<>();
+
+    public Book(){
+
+    }
 
 
     @RPC
@@ -18,7 +26,8 @@ public class Book {
     public Book(@DefaultValue("blabla") String title, @DefaultValue("Nim") String author) {
         this.title = title;
         this.author = author;
-
+        id = 1;
+        String b = "";
     }
 
     @RPC
@@ -31,6 +40,7 @@ public class Book {
     @ListenerForTesting
     public void setTitle(String title) {
         this.title = title;
+        list.add(title);
     }
 
     @RPC

@@ -2,6 +2,7 @@ package tests;
 
 
 import app.example.books.Book;
+import app.example.books.BookCatalog;
 import app.example.books.BookStore;
 import org.softauto.core.AsyncResult;
 import org.softauto.core.CallFuture;
@@ -9,6 +10,7 @@ import org.softauto.core.Handler;
 import org.softauto.espl.ExpressionBuilder;
 //import org.softauto.serializer.CallFuture;
 import org.softauto.tester.AbstractTesterImpl;
+import org.softauto.tester.InvocationHandler;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Listeners;
@@ -58,6 +60,15 @@ public class ExampleTests extends AbstractTesterImpl {
     public void call_method()throws Exception{
         BookStore bookStore =  new Step.app_example_books_BookStore_addAllBooks(books).get_Result();
         Assert.assertTrue(bookStore.getBooks().size() >= 2);
+    }
+
+    @Test
+    public void setFieldValue()throws Exception{
+        try {
+            new Step.app_example_books_BookStore_bookCatalog(new BookCatalog());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**

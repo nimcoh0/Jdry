@@ -32,6 +32,12 @@ public class ServiceDescriptor {
         this.iface = iface;
     }
 
+    private ServiceDescriptor(Protocol protocol, String serviceName) {
+        this.serviceName = serviceName;
+        this.protocol = protocol;
+
+    }
+
     public ServiceDescriptor(String serviceName, List<MethodDescriptor> methodDescriptors){
         this.serviceName = serviceName;
 
@@ -45,6 +51,11 @@ public class ServiceDescriptor {
     public static ServiceDescriptor create(Class iface) {
         String serviceName = Utils.getServiceName(iface);
         return SERVICE_DESCRIPTORS.computeIfAbsent(serviceName, key -> new ServiceDescriptor(iface, serviceName));
+    }
+
+    public static ServiceDescriptor create(Protocol protocol) {
+        String serviceName = Utils.getServiceName(protocol);
+        return SERVICE_DESCRIPTORS.computeIfAbsent(serviceName, key -> new ServiceDescriptor(protocol, serviceName));
     }
 
     /**

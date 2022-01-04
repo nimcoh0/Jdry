@@ -12,7 +12,7 @@
         <module>jdry-tester</module>
         <module>jdry-grpc</module>
         <module>jdry-core</module>
-        <module>jdry-kryo-serialization</module>
+        <!--module>jdry-kryo-serialization</module-->
         <module>jdry-loader</module>
         <module>jdry-avro</module>
         <module>jdry-annotations</module>
@@ -26,8 +26,8 @@
         <module>jdry-local</module>
         <module>jdry-listener-manager</module>
         <module>jdry-listener-server</module>
-        <module>jdry-injector</module>
-        <module>jdry-jvmTool</module>
+        <!--module>jdry-injector</module-->
+        <!--module>jdry-jvmTool</module-->
         <module>jdry-tester-for-proxy</module>
         <module>jdry-listener-server-for-proxy</module>
         <module>jdry-testng-for-proxy-plugin</module>
@@ -190,7 +190,11 @@
             <artifactId>json</artifactId>
             <version>20201115</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.30</version>
+        </dependency>
     </dependencies>
 
     <build>

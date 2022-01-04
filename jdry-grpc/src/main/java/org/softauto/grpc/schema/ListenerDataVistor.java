@@ -1,6 +1,8 @@
 package org.softauto.grpc.schema;
 
-import com.sun.tools.javac.code.Type;
+//import com.sun.tools.javac.code.Type;
+//import com.sun.tools.javac.code.Type;
+//import com.sun.tools.classfile.Type;
 import org.softauto.annotations.ExposedForTesting;
 import org.softauto.annotations.ListenerForTesting;
 import org.softauto.core.AbstractMessage;
@@ -111,8 +113,8 @@ public  class ListenerDataVistor implements ElementVisitor {
 
     public void visitReturnType(ExecutableElement e) {
         message.put("response", Utils.getSchemaType(e.getReturnType().toString()));
-       // if(!Utils.isSchemaType(e.asType().toString()))
-        if(!Utils.isSchemaType(((Type.MethodType)e.asType()).getReturnType().toString()))
+        //if(!Utils.isSchemaType(((Type.MethodType)e.asType()).getReturnType().toString()))
+        if(!Utils.isSchemaType(e.getReturnType().toString()))
         types.add(getType(e.getReturnType().toString(),"external"));
     }
 

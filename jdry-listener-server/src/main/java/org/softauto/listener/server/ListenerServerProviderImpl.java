@@ -67,11 +67,11 @@ public class ListenerServerProviderImpl implements Provider {
 
     public ListenerServerProviderImpl initialize()  {
         try {
-            server = ServerBuilder.forPort(Configuration.get(Context.LISTENER_PORT).asInt())
+            server = ServerBuilder.forPort(Integer.valueOf(Configuration.get(Context.LISTENER_PORT)))
                     .addService(org.softauto.serializer.SoftautoGrpcServer.createServiceDefinition(SerializerService.class, new ListenerServiceImpl()))
                     .build();
             server.start();
-            logger.info("listener server load successfully on port "+ Configuration.get(Context.LISTENER_PORT).asInt());
+            logger.info("listener server load successfully on port "+ Configuration.get(Context.LISTENER_PORT));
         }catch (Exception e) {
             logger.error("start Listener server fail  ", e);
         }

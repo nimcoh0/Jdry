@@ -3,10 +3,19 @@
   "version" : "1.0",
   "namespace" : "tests.infrastructure",
   "types" : [ {
+    "name" : "app.example.books.BookCatalog",
+    "type" : "external"
+  }, {
     "name" : "app.example.books.BookStore",
     "type" : "external"
   }, {
     "name" : "app.example.books.Book",
+    "type" : "external"
+  }, {
+    "name" : "int",
+    "type" : "external"
+  }, {
+    "name" : "java.lang.String",
     "type" : "external"
   }, {
     "name" : "java.util.Collection<app.example.books.Book>",
@@ -19,6 +28,21 @@
     "type" : "external"
   } ],
   "messages" : {
+    "app_example_books_BookStore_bookCatalog" : {
+      "request" : [ {
+        "name" : "bookCatalog",
+        "type" : "app.example.books.BookCatalog"
+      } ],
+      "method" : "bookCatalog",
+      "transceiver" : "RPC",
+      "response" : "void",
+      "namespace" : "app.example.books.BookStore",
+      "type" : "variable",
+      "class" : {
+        "fullClassName" : "app.example.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
     "app_example_books_BookStore_addBook" : {
       "request" : [ {
         "name" : "book",
@@ -27,6 +51,21 @@
       "method" : "addBook",
       "transceiver" : "RPC",
       "response" : "app.example.books.BookStore",
+      "namespace" : "app.example.books.BookStore",
+      "type" : "method",
+      "class" : {
+        "fullClassName" : "app.example.books.BookStore",
+        "initialize" : "INITIALIZE_NO_PARAM"
+      }
+    },
+    "app_example_books_BookStore_getBookById" : {
+      "request" : [ {
+        "name" : "id",
+        "type" : "int"
+      } ],
+      "method" : "getBookById",
+      "transceiver" : "RPC",
+      "response" : "app.example.books.Book",
       "namespace" : "app.example.books.BookStore",
       "type" : "method",
       "class" : {
@@ -153,7 +192,7 @@
       "type" : "method",
       "class" : {
         "fullClassName" : "app.example.books.Book",
-        "initialize" : "INITIALIZE"
+        "initialize" : "INITIALIZE_NO_PARAM"
       }
     }
   }

@@ -13,6 +13,7 @@ import org.softauto.socket.schema.MessageHandler;
 import javax.lang.model.element.Element;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -114,8 +115,8 @@ public class SocketProviderImpl implements Provider {
     public <RespT> void exec(String methodName,  CallFuture<RespT> callback, ManagedChannel channel,Object...args) {
         try{
             executor.submit(()->{
-                String host = Configuration.get("socket/host").asText();
-                int port = Configuration.get("socket/port").asInt();
+                String host = ((HashMap<String,Object>)Configuration.get("socket")).get("host").toString();
+                int port =Integer.valueOf(((HashMap<String,Object>)Configuration.get("socket")).get("port").toString());
                 logger.debug("execute "+ methodName + "with args "+Arrays.toString(args)+ " on " + host+":"+port);
                 CallbackToResponseStreamObserverAdpater observerAdpater = new CallbackToResponseStreamObserverAdpater<>(callback, null);
                 String result = socketClient.startConnection(host, port).sendMessage(args[0].toString());
@@ -134,7 +135,6 @@ public class SocketProviderImpl implements Provider {
             logger.error("exec socket request " + methodName + " fail" + "with args "+ Arrays.toString(args) ,e);
         }
     }
-
 
 
 

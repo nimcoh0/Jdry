@@ -3,9 +3,11 @@ package org.softauto.core;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.util.HashMap;
+
 public class DefaultConfiguration {
 
-    static ObjectNode  configuration = new ObjectMapper().createObjectNode();
+    static HashMap<String,Object> configuration = new HashMap<>();
 
     static{
         configuration.put(Context.LOAD_WEAVER,"true");
@@ -28,7 +30,7 @@ public class DefaultConfiguration {
         configuration.put(Context.TEST_MACHINE_NAME,Utils.getMachineName());
     }
 
-    public static ObjectNode getConfiguration() {
+    public static HashMap<String,Object> getConfiguration() {
         return configuration;
     }
 }

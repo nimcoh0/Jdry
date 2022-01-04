@@ -6,9 +6,12 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.softauto.core.*;
 import org.softauto.listener.server.ListenerServerProviderImpl;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 
 public class SystemState {
@@ -18,7 +21,7 @@ public class SystemState {
     private static SystemState systemState = null;
 
     private SystemState(){};
-
+    Yaml yaml = new Yaml();
     static ObjectMapper objectMapper;
 
     public static SystemState getInstance(){
@@ -107,8 +110,14 @@ public class SystemState {
     public SystemState loadConfiguration()  {
         try {
             if(new File(System.getProperty("user.dir")+ "/Configuration.yaml").isFile()) {
-                JsonNode userConfiguration = objectMapper.readTree(new File(System.getProperty("user.dir") + "/Configuration.yaml"));
-                Configuration.setConfiguration(new MargeJsonNode().mergeNode((ObjectNode) Configuration.getConfiguration(),(ObjectNode) userConfiguration));
+                HashMap<String, Object> map = (HashMap<String, Object>) yaml.load(new FileReader(System.getProperty("user.dir") + "/Configuration.yaml"));
+                //JsonNode userConfiguration = objectMapper.readTree(new File(System.getProperty("user.dir") + "/Configuration.yaml"));
+                HashMap<String,Object> defaultConfiguration = Configuration.getConfiguration();
+                defaultConfiguration.putAll(map);
+                Configuration.setConfiguration(defaultConfiguration);
+                //defaultConfiguration.forEach((key, value) -> map.merge(key, value, (v1, v2) -> defaultConfiguration.put(v1.getId(),v2.getName())));
+                // Configuration.setConfiguration(map);
+                // Configuration.setConfiguration(new MargeJsonNode().mergeNode((ObjectNode) Configuration.getConfiguration(),(ObjectNode) userConfiguration));
             }
             logger.debug("configuration load successfully " + Configuration.getConfiguration());
         }catch(Exception e){

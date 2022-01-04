@@ -6,13 +6,13 @@ import org.apache.logging.log4j.MarkerManager;
 import org.softauto.core.Configuration;
 import org.softauto.core.Context;
 import org.softauto.core.TestLifeCycle;
-import org.softauto.injector.InjectorProviderImpl;
-import org.softauto.jvm.JvmProviderImpl;
+import org.softauto.injector.InjectorInitializer;
+//import org.softauto.jvm.JvmProviderImpl;
 import org.softauto.listener.Listeners;
-import org.softauto.listener.impl.Listener;
 import org.softauto.listener.manager.ListenerClientProviderImpl;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * System service for internal messages between the listener server and the grpc server
@@ -81,7 +81,7 @@ public class SystemServiceImpl {
      * @param configuration
      * @return
      */
-    public int configuration(JsonNode configuration) {
+    public int configuration(HashMap<String,Object> configuration) {
         try {
             Context.setTestState(TestLifeCycle.INITIALIZE);
             Configuration.setConfiguration(configuration);
@@ -102,9 +102,9 @@ public class SystemServiceImpl {
 
     private  void load()  {
         try {
-            InjectorProviderImpl.getInstance().initialize().register();
+            InjectorInitializer.getInstance().initialize();
             ListenerClientProviderImpl.getInstance().initialize().register();
-            JvmProviderImpl.getInstance().initialize().register();
+            //JvmProviderImpl.getInstance().initialize().register();
         }catch(Exception e){
             logger.fatal("init fail ",e);
             System.exit(1);

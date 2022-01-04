@@ -67,6 +67,11 @@
             <version>${jdry-grpc}</version>
 
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-cbor</artifactId>
+            <version>2.12.3</version>
+        </dependency>
     </dependencies>
 
     <build>

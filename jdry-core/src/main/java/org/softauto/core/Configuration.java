@@ -5,17 +5,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
+import java.io.DataInput;
+import java.util.HashMap;
+
 /**
  * generic class that hold the configuration
- * support json query
+ *
  */
 public class Configuration {
 
     private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(Configuration.class);
-    static JsonNode configuration = new ObjectMapper().createObjectNode();
+    static HashMap<String,Object> configuration = new HashMap<>();
 
 
-    public static void setConfiguration(JsonNode configuration){
+    public static void setConfiguration(HashMap<String,Object> configuration){
         try {
             Configuration.configuration = configuration;
         }catch (Exception e){
@@ -23,24 +26,25 @@ public class Configuration {
         }
     }
 
-    public static JsonNode getConfiguration() {
+    public static HashMap<String,Object> getConfiguration() {
         return configuration;
     }
 
-    public static JsonNode get(String path){
-        if(configuration.at("/"+path) != null && !configuration.at("/"+path).toString().isEmpty()){
-                return configuration.at("/"+path);
-         }
 
+
+    public  static <T> T get(String key){
+        try {
+            if (configuration.containsKey(key)) {
+                return (T)configuration.get(key);
+             }
+        }catch (Exception e){
+            logger.error(e);
+        }
         return null;
     }
 
-    public static void put(String key,String value){
-        ((ObjectNode)configuration).put(key,value);
-    }
-
-    public static void put(String key,Boolean value){
-        ((ObjectNode)configuration).put(key,value);
+    public static void put(String key,Object value){
+        configuration.put(key,value);
     }
 
 

@@ -1,15 +1,22 @@
 package org.softauto.tester;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.dataformat.cbor.databind.CBORMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.softauto.core.*;
 import org.softauto.listener.server.ListenerObserver;
 import org.softauto.listener.server.ListenerServerProviderImpl;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class SystemState {
@@ -19,7 +26,7 @@ public class SystemState {
     private static SystemState systemState = null;
 
     private SystemState(){};
-
+    Yaml yaml = new Yaml();
     static ObjectMapper objectMapper;
 
     public static SystemState getInstance(){
@@ -66,7 +73,7 @@ public class SystemState {
     public void sendConfiguration(Handler<AsyncResult<Integer>> resultHandler){
         try {
             Context.setTestState(TestLifeCycle.INITIALIZE);
-            int result = new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_configuration", new Object[]{Configuration.getConfiguration()}, new Class[]{JsonNode.class});
+            int result = new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_configuration", new Object[]{Configuration.getConfiguration()}, new Class[]{HashMap.class});
             if (Integer.valueOf(result) == 0) {
                 resultHandler.handle(Future.handleResult(Integer.valueOf(result)));
             } else
@@ -109,9 +116,36 @@ public class SystemState {
     public SystemState loadConfiguration()  {
         try {
             if(new File(System.getProperty("user.dir")+ "/Configuration.yaml").isFile()) {
-                JsonNode userConfiguration = objectMapper.readTree(new File(System.getProperty("user.dir") + "/Configuration.yaml"));
-                Configuration.setConfiguration(new MargeJsonNode().mergeNode((ObjectNode) Configuration.getConfiguration(),(ObjectNode) userConfiguration));
+                HashMap<String, Object> map = (HashMap<String, Object>) yaml.load(new FileReader(System.getProperty("user.dir") + "/Configuration.yaml"));
+                //JsonNode userConfiguration = objectMapper.readTree(new File(System.getProperty("user.dir") + "/Configuration.yaml"));
+                HashMap<String,Object> defaultConfiguration = Configuration.getConfiguration();
+                defaultConfiguration.putAll(map);
+                Configuration.setConfiguration(defaultConfiguration);
+                //defaultConfiguration.forEach((key, value) -> map.merge(key, value, (v1, v2) -> defaultConfiguration.put(v1.getId(),v2.getName())));
+               // Configuration.setConfiguration(map);
+               // Configuration.setConfiguration(new MargeJsonNode().mergeNode((ObjectNode) Configuration.getConfiguration(),(ObjectNode) userConfiguration));
             }
+            if(new File(System.getProperty("user.dir")+ "/src/test/resources/schema/StepService.avpr").isFile()) {
+                JsonNode stepService = new ObjectMapper().readTree(new File(System.getProperty("user.dir") + "/src/test/resources/schema/StepService.avpr"));
+                String json = new ObjectMapper().writeValueAsString(stepService);
+                Configuration.put(Context.STEP_SERVICE, json);
+            }
+            if(new File(System.getProperty("user.dir")+ "/src/test/resources/schema/ListenerService.avpr").isFile()) {
+                File listenerService =  new File(System.getProperty("user.dir")+ "/src/test/resources/schema/ListenerService.avpr");
+                //JsonNode listenerService = new ObjectMapper().configure(JsonParser.Feature.ALLOW_COMMENTS, true).readTree(new File(System.getProperty("user.dir") + "/src/test/resources/schema/ListenerService.avpr"));
+                //String json = new ObjectMapper().writeValueAsString(listenerService);
+                Configuration.put(Context.LISTENER_SERVICE, listenerService);
+            }
+            if(new File(System.getProperty("user.dir")+ "/target/generated-sources/tests/infrastructure/ListenerService.java").isFile()) {
+                Class listenerService = Class.forName("tests.infrastructure.ListenerService");
+                HashMap<String,Object> listeners = new HashMap<>();
+                Method[] methods = listenerService.getDeclaredMethods();
+                for(Method method : methods){
+                    listeners.put(method.getName(),method.getParameterTypes());
+                }
+                Configuration.put(Context.LISTENERS, listeners);
+            }
+
             logger.debug("configuration load successfully " + Configuration.getConfiguration());
         }catch(Exception e){
             logger.error("fail load listener configuration ",e);

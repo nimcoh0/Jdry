@@ -1,6 +1,7 @@
 package org.softauto.tester;
 
 import org.softauto.core.Configuration;
+import org.softauto.core.Context;
 import org.softauto.plugin.ProviderManager;
 import org.softauto.plugin.api.Provider;
 import org.softauto.serializer.CallFuture;
@@ -29,8 +30,8 @@ public class InvocationHandler {
         CallFuture<T> future = new CallFuture<>();
         T t = null;
         try {
-            String host = Configuration.get("serializer_host").asText();
-            int port = Configuration.get("serializer_port").asInt();
+            String host = Configuration.get(Context.SERIALIZER_HOST);
+            int port = Integer.valueOf(Configuration.get(Context.SERIALIZER_PORT));
             Serializer serializer = new Serializer().setHost(host).setPort(port).build();
             Message message = Message.newBuilder().setDescriptor(methodName).setArgs(args).setTypes(types).build();
             t = serializer.write(message);

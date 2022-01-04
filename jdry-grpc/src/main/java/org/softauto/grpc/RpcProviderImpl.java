@@ -1,7 +1,10 @@
 package org.softauto.grpc;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.grpc.*;
+import org.apache.avro.Protocol;
+import org.apache.avro.Schema;
 import org.softauto.core.*;
 import org.softauto.core.Context;
 import org.softauto.grpc.schema.MessageHandler;
@@ -9,9 +12,12 @@ import org.softauto.plugin.api.Provider;
 import org.softauto.serializer.CallFuture;
 import org.softauto.serializer.Serializer;
 import org.softauto.serializer.service.Message;
+import org.softauto.serializer.service.MessageType;
 import org.softauto.serializer.service.SerializerService;
 import javax.lang.model.element.Element;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * grpc server impl
@@ -101,22 +107,27 @@ public class RpcProviderImpl implements Provider {
 
 
 
+
     @Override
-    public <RespT> void exec(String methodName,  CallFuture<RespT> callback,ManagedChannel channel,Object...args){
+    public <RespT> void exec(String name,  CallFuture<RespT> callback,ManagedChannel channel,Object...args){
         try {
-            logger.debug("exec rpc call "+ methodName);
+            logger.debug("exec rpc call "+ name);
             Serializer serializer;
             if(channel != null) {
                 serializer = new Serializer().setChannel(channel);
             }else {
                 serializer = new Serializer().setHost(host).setPort(port).build();
             }
-            Message message = Message.newBuilder().setDescriptor(methodName).setArgs((Object[]) args[0]).setTypes((Class[]) args[1]).build();
+            ClassType classType = Utils.getClassType(name,(Class[]) args[1]);
+            MessageType messageType = Utils.getMessageType(name,(Class[]) args[1]);
+            Message message = Message.newBuilder().setDescriptor(name).setType(messageType).setArgs((Object[]) args[0]).setTypes((Class[]) args[1]).addData("classType",classType.name()).build();
             serializer.write(message,callback);
             logger.debug("callback value "+callback.getResult()+" get error "+callback.getError());
         }catch (Exception e){
-            logger.error("fail exec rpc call "+ methodName, e);
+            logger.error("fail exec rpc call "+ name, e);
         }
     }
+
+
 
 }

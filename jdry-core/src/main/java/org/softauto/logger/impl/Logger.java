@@ -23,7 +23,7 @@ public class Logger {
 
     static void init(){
         try {
-            serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE).asText()).setPort(Configuration.get(Context.LISTENER_PORT).asInt()).build();
+            serializer = new Serializer().setHost(Configuration.get(Context.TEST_MACHINE)).setPort(Integer.valueOf(Configuration.get(Context.LISTENER_PORT))).build();
 
         }catch (Exception e){
             logger.error("ServiceImpl not found ",e);
@@ -69,8 +69,8 @@ public class Logger {
                 isInit = true;
             }
             try {
-                if (Configuration.get(Context.SEND_LOG_TO_TESTER).asBoolean() && serializer != null) {
-                    if (clazz.contains("org.softauto") && !Configuration.get(Context.SEND_JDRY_LOG_TO_TESTER).asBoolean()) {
+                if (Boolean.valueOf(Configuration.get(Context.SEND_LOG_TO_TESTER)) && serializer != null) {
+                    if (clazz.contains("org.softauto") && !Boolean.valueOf(Configuration.get(Context.SEND_JDRY_LOG_TO_TESTER))) {
                         return;
                     }
                     if (ex == null) {

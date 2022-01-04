@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.softauto.core.AsyncResult;
+import org.softauto.core.CallOptions;
 import org.softauto.core.Handler;
 import org.softauto.core.Future;
 import org.softauto.serializer.CallFuture;
@@ -33,12 +34,124 @@ public class Step extends org.softauto.tester.Step{
         super();
     }
 
-    public Step(String fqmn, Object[] args, Class[] types, String transceiver)throws Exception{
-        super(fqmn,args,types,transceiver);
+        public Step(String fqmn, Object[] args, Class[] types, String transceiver)throws Exception{
+            future = new CallFuture<>();
+            logger.debug("invoking " +fqmn);
+            new InvocationHandler().invoke(fqmn,args,types,future,transceiver);
+        }
+
+        public Step(String fqmn, Object[] args, Class[] types, String transceiver,CallOptions callOptions)throws Exception{
+            future = new CallFuture<>();
+            logger.debug("invoking " +fqmn);
+            new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions.getOptions());
+        }
+
+
+        public <T> Step(String fqmn, Object[] args, Class[] types, String transceiver, CallFuture<T> future)throws Exception{
+            logger.debug("invoking " +fqmn);
+            new InvocationHandler().invoke(fqmn,args,types,future,transceiver);
+        }
+
+        public <T> Step(String fqmn, Object[] args, Class[] types, String transceiver, CallFuture<T> future,CallOptions callOptions)throws Exception{
+            logger.debug("invoking " +fqmn);
+            new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions.getOptions());
+        }
+
+        public <T>Step(String fqmn, Object[] args, Class[] types, String transceiver, Handler<AsyncResult<T>> resultHandler)throws Exception{
+            CallFuture<Object> future = new CallFuture<>();
+            logger.debug("invoking " +fqmn);
+            new InvocationHandler().invoke(fqmn,args,types,future,transceiver);
+            resultHandler.handle(Future.handleResult((T)future.get()));
+        }
+
+        public <T>Step(String fqmn, Object[] args, Class[] types, String transceiver, Handler<AsyncResult<T>> resultHandler,CallOptions callOptions)throws Exception{
+            CallFuture<Object> future = new CallFuture<>();
+            logger.debug("invoking " +fqmn);
+            new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions.getOptions());
+            resultHandler.handle(Future.handleResult((T)future.get()));
+        }
+
+
+
+public static class app_example_books_BookStore_bookCatalog {
+
+    CallFuture<java.lang.Void> future = new CallFuture<>();
+    public void get_Result() throws Exception{
+            try {
+                 if(!future.isDone()) {
+                    logger.debug("waiting to future to be done");
+                    future.await();
+                 }
+                 logger.debug("successfully get_Result() ");
+                 future.get();
+             }catch (Exception e){
+                logger.error("fail get_Result() "+ e);
+                throw new Exception("fail get_Result() "+ e);
+             }
+        }
+
+    public  app_example_books_BookStore_bookCatalog then(Handler<AsyncResult<java.lang.Void>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
+        return this;
+    }
+
+
+    public  app_example_books_BookStore_bookCatalog then(IListener o)throws Exception{
+        future.get();
+        return this;
+    }
+
+    public  app_example_books_BookStore_bookCatalog then(IListener o,Handler<AsyncResult<java.lang.Void>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
+        return this;
+    }
+
+    public  app_example_books_BookStore_bookCatalog then(IListener o ,CallFuture<java.lang.Void> future)throws Exception{
+        future.handleResult(future.get());
+        return this;
     }
 
 
 
+
+
+    public app_example_books_BookStore_bookCatalog(app.example.books.BookCatalog bookCatalog    ){
+        try {
+            logger.debug("invoking proxy for app_example_books_BookStore_bookCatalog");
+            new InvocationHandler().invoke("app_example_books_BookStore_bookCatalog",new Object[]{bookCatalog},new Class[]{app.example.books.BookCatalog.class},future,"RPC");
+        }catch (Exception e){
+             logger.error("fail invoke for app_example_books_BookStore_bookCatalog"+ e);
+        }
+    }
+
+
+
+    public app_example_books_BookStore_bookCatalog(app.example.books.BookCatalog bookCatalog,CallFuture<java.lang.Void> future){
+        try {
+            logger.debug("invoking proxy for app_example_books_BookStore_bookCatalog");
+            new InvocationHandler().invoke("app_example_books_BookStore_bookCatalog",new Object[]{bookCatalog},new Class[]{app.example.books.BookCatalog.class},future,"RPC");
+        }catch (Exception e){
+             logger.error("fail invoke for app_example_books_BookStore_bookCatalog"+ e);
+        }
+ }
+
+
+    public  app_example_books_BookStore_bookCatalog(app.example.books.BookCatalog bookCatalog,Handler<AsyncResult<java.lang.Void>> resultHandler  )throws Exception{
+        try {
+            CallFuture<java.lang.Void> future = new CallFuture<>();
+            logger.debug("invoking proxy for app_example_books_BookStore_bookCatalog");
+            new InvocationHandler().invoke("app_example_books_BookStore_bookCatalog",new Object[]{bookCatalog},new Class[]{app.example.books.BookCatalog.class},future,"RPC");
+            resultHandler.handle(Future.handleResult(future.get()));
+       }catch (Exception e){
+          logger.error("fail invoke for app_example_books_BookStore_bookCatalog"+ e);
+          resultHandler.handle(Future.handleError(e));
+       }
+    }
+
+
+
+
+ }
 public static class app_example_books_BookStore_addBook {
 
     CallFuture< app.example.books.BookStore> future = new CallFuture<>();
@@ -115,6 +228,90 @@ public static class app_example_books_BookStore_addBook {
             resultHandler.handle(Future.handleResult(future.get()));
        }catch (Exception e){
           logger.error("fail invoke for app_example_books_BookStore_addBook"+ e);
+          resultHandler.handle(Future.handleError(e));
+       }
+    }
+
+
+
+
+ }
+public static class app_example_books_BookStore_getBookById {
+
+    CallFuture< app.example.books.Book> future = new CallFuture<>();
+    public app.example.books.Book get_Result() throws Exception{
+            try {
+
+               if(!future.isDone()) {
+                  logger.debug("waiting to future to be done");
+                  future.await();
+               }
+               if(!future.isDone()){
+                    return future.get();
+                }else {
+                    return future.getResult();
+                }
+             }catch (Exception e){
+                 logger.error("fail get_Result() "+ e);
+                 throw new Exception("fail get_Result() "+ e);
+             }
+        }
+
+    public  app_example_books_BookStore_getBookById then(Handler<AsyncResult<app.example.books.Book>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
+        return this;
+    }
+
+
+    public  app_example_books_BookStore_getBookById then(IListener o)throws Exception{
+        future.handleResult(future.get());
+
+        return this;
+    }
+
+    public  app_example_books_BookStore_getBookById then(IListener o,Handler<AsyncResult<app.example.books.Book>> resultHandler)throws Exception{
+        resultHandler.handle(Future.handleResult(future.get()));
+        return this;
+    }
+
+    public  app_example_books_BookStore_getBookById then(IListener o ,CallFuture<app.example.books.Book> future)throws Exception{
+        future.handleResult(future.get());
+        return this;
+    }
+
+
+
+
+
+    public app_example_books_BookStore_getBookById(int id    ){
+        try {
+            logger.debug("invoking proxy for app_example_books_BookStore_getBookById");
+            new InvocationHandler().invoke("app_example_books_BookStore_getBookById",new Object[]{id},new Class[]{int.class},future,"RPC");
+        }catch (Exception e){
+             logger.error("fail invoke for app_example_books_BookStore_getBookById"+ e);
+        }
+    }
+
+
+
+    public app_example_books_BookStore_getBookById(int id,CallFuture<app.example.books.Book> future){
+        try {
+            logger.debug("invoking proxy for app_example_books_BookStore_getBookById");
+            new InvocationHandler().invoke("app_example_books_BookStore_getBookById",new Object[]{id},new Class[]{int.class},future,"RPC");
+        }catch (Exception e){
+             logger.error("fail invoke for app_example_books_BookStore_getBookById"+ e);
+        }
+ }
+
+
+    public  app_example_books_BookStore_getBookById(int id,Handler<AsyncResult<app.example.books.Book>> resultHandler  )throws Exception{
+        try {
+            CallFuture<app.example.books.Book> future = new CallFuture<>();
+            logger.debug("invoking proxy for app_example_books_BookStore_getBookById");
+            new InvocationHandler().invoke("app_example_books_BookStore_getBookById",new Object[]{id},new Class[]{int.class},future,"RPC");
+            resultHandler.handle(Future.handleResult(future.get()));
+       }catch (Exception e){
+          logger.error("fail invoke for app_example_books_BookStore_getBookById"+ e);
           resultHandler.handle(Future.handleError(e));
        }
     }

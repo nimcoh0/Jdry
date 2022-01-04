@@ -14,6 +14,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.softauto.annotations.DefaultValue;
 import org.softauto.espl.ExpressionBuilder;
 import org.softauto.serializer.CallFuture;
+import org.softauto.serializer.service.MessageType;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -173,6 +174,10 @@ public class Utils {
      * @return
      */
     public static String getMethodName(String descriptor){
+        return descriptor.substring(descriptor.lastIndexOf("_")+1,descriptor.length());
+    }
+
+    public static String getVariableName(String descriptor){
         return descriptor.substring(descriptor.lastIndexOf("_")+1,descriptor.length());
     }
 
@@ -403,6 +408,9 @@ public class Utils {
         return protocol.getNamespace() + "." + protocol.getName();
     }
 
+    public static String getServiceName(Protocol protocol) {
+       return protocol.getNamespace() + "." + protocol.getName();
+    }
 
     /**
      * get parameter from JsonNode
@@ -469,6 +477,8 @@ public class Utils {
         }
         return null;
     }
+
+
 
     /**
      * get Constructor Default Values
@@ -691,6 +701,14 @@ public class Utils {
         return null;
     }
 
+    public static String getAttributeFromSchema(Protocol.Message msg,String attribute){
+        if(msg.getObjectProp(attribute) != null){
+           return msg.getObjectProp(attribute).toString();
+        }
+        return null;
+    }
+
+
     public static Method getMethodByNameAndTypeNames(String methodName,Class clazz,Protocol.Message msg){
         Schema request = msg.getRequest();
         List<String> t = getTypesNameFromSchema(request.getFields());
@@ -750,8 +768,63 @@ public class Utils {
 
 
 
+    public static Protocol getProtocol(String ctx){
+        if(Configuration.getConfiguration().containsKey(ctx)) {
+            String json = Configuration.get(ctx);
+            return Protocol.parse(json);
+        }
+        return null;
+    }
+
+    public static Protocol.Message getMsg(String methodName,Class[] types){
+        Protocol protocol = getProtocol(Context.STEP_SERVICE);
+        if(protocol != null){
+            boolean find = false;
+            for(Map.Entry<String, Protocol.Message> msg : protocol.getMessages().entrySet() ){
+                if(msg.getKey().equals(methodName)){
+                    List<Schema.Field> fields =  msg.getValue().getRequest().getFields();
+                    for(Schema.Field field : fields){
+                        String type = field.schema().getNamespace()+"."+field.schema().getName();
+                        for(Class t : types){
+                            if(t.getTypeName().equals(type)){
+                                find = true;
+                            }
+                        }
+                    }
+                    if(find){
+                        return msg.getValue();
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
 
+    public static ClassType getClassType(String methodName, Class[] types){
+        try{
+            Protocol.Message msg = getMsg(methodName,types);
+            if(msg != null) {
+                String initialize = msg.getJsonProp("class").get("initialize").asText();
+                return ClassType.fromString(initialize);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return ClassType.NONE;
+    }
 
+    public static MessageType getMessageType(String methodName,Class[] types){
+        try{
+            Protocol.Message msg = getMsg(methodName,types);
+            if(msg != null) {
+                String type = msg.getProp("type");
+                return MessageType.fromString(type);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return MessageType.NONE;
+    }
 
 }

@@ -21,7 +21,7 @@ public class ListenerServiceImpl implements SerializerService{
     private Class listener = null;
 
     public ListenerServiceImpl(){
-        this.listener =  Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() , "Listener", Configuration.get(Context.TEST_MACHINE).asText());
+        this.listener =  Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH) , "Listener", Configuration.get(Context.TEST_MACHINE));
     }
 
 
@@ -36,7 +36,7 @@ public class ListenerServiceImpl implements SerializerService{
             if (Context.getTestState().equals(TestLifeCycle.START)) {
 
                 logger.debug("execute message " + message.toJson());
-                String fullClassName = Configuration.get(Context.LISTENER_SERVICE_IMPL_FOR_PROXY).asText();
+                String fullClassName = Configuration.get(Context.LISTENER_SERVICE_IMPL_FOR_PROXY);
                 //String fullServiceClassName = message.getService();
                 Object o = ListenerObserver.getInstance().getLastChannel(fullClassName);
                 Method method = Utils.getMethod2(o, message.getDescriptor(), message.getTypes());

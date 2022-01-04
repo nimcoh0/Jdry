@@ -88,8 +88,13 @@ public class JaxrsProviderImpl implements Provider {
 
     @Override
     public Provider initialize() throws IOException {
-        serviceDefinition =  RestService.createServiceDefinition(org.softauto.core.Utils.getRemoteOrLocalClass(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH).asText() ,Configuration.get(Context.STEP_SERVICE_NAME).asText(),Configuration.get(Context.TEST_MACHINE).asText()));
-        logger.debug("jaxrs plugin initialize successfully");
+        try {
+            Class listenerService = Class.forName("tests.infrastructure.StepService");
+            serviceDefinition = RestService.createServiceDefinition(listenerService);
+            logger.debug("jaxrs plugin initialize successfully");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return this;
     }
 

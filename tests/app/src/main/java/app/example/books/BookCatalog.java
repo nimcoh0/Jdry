@@ -26,6 +26,12 @@ public class BookCatalog {
     @ListenerForTesting
     public void printBook(Book book){
         System.out.print(book.getTitle());
+        if(book.getTitle().equals("t1")) {
+            printBook1(book);
+        }else {
+            System.out.print(book.getTitle());
+            book.setTitle("t2");
+        }
     }
 
 

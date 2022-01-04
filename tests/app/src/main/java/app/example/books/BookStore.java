@@ -1,5 +1,6 @@
 package app.example.books;
 
+
 import org.softauto.annotations.ExposedForTesting;
 import org.softauto.annotations.RPC;
 
@@ -12,6 +13,11 @@ public class BookStore {
     private static final org.apache.log4j.Logger logger = org.apache.log4j.LogManager.getLogger(BookStore.class);
     private List<Book> books = new ArrayList<>();
     int counter = 0;
+
+
+    @RPC
+    @ExposedForTesting
+    BookCatalog bookCatalog = new BookCatalog();
 
     @RPC
     @ExposedForTesting
@@ -80,7 +86,6 @@ public class BookStore {
         }
     }
 
-
     @RPC
     @ExposedForTesting
     public void printBooks(){
@@ -98,9 +103,4 @@ public class BookStore {
     }
 
 
-    public void printBooks1(List<Book> books){
-        for(Book book : books){
-            new BookCatalog().printBook1(book);
-        }
-    }
 }

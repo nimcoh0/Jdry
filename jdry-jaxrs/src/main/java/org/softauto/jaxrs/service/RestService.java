@@ -83,9 +83,9 @@ public class RestService {
                 String produces = callOptions.get(Options.produce.name()).toString();
                 Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
                 ChannelDescriptor channel = ChannelDescriptor.newBuilder()
-                        .setHost(Configuration.get("jaxrs/host").asText())
-                        .setPort(Configuration.get("jaxrs/port").asInt())
-                        .setProtocol(Configuration.get("jaxrs/protocol").asText())
+                        .setHost(((HashMap<String,Object>)Configuration.get("jaxrs")).get("host").toString())
+                        .setPort(Integer.valueOf(((HashMap<String,Object>)Configuration.get("jaxrs")).get("port").toString()))
+                        .setProtocol(((HashMap<String,Object>)Configuration.get("jaxrs")).get("protocol").toString())
                         .setPath(jaxrs.get("base_url")== null ? jaxrs.get("Path").toString():jaxrs.get("base_url").toString()+jaxrs.get("Path").toString() )
                         .build((Object[]) args[0]);
                 URI uri =  channel.getUri();
@@ -116,9 +116,9 @@ public class RestService {
                 String produces = callOptions.get(Options.produce.name()).toString();
                 Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
                 ChannelDescriptor channel = ChannelDescriptor.newBuilder()
-                        .setHost(Configuration.get("jaxrs/host").asText())
-                        .setPort(Configuration.get("jaxrs/port").asInt())
-                        .setProtocol(Configuration.get("jaxrs/protocol").asText())
+                        .setHost(((HashMap<String,Object>)Configuration.get("jaxrs")).get("host").toString())
+                        .setPort(Integer.valueOf(((HashMap<String,Object>)Configuration.get("jaxrs")).get("port").toString()))
+                        .setProtocol(((HashMap<String,Object>)Configuration.get("jaxrs")).get("protocol").toString())
                         .setPath(jaxrs.get("Path").toString())
                         .build((Object[]) args[0]);
                 URI uri =  channel.getUri();
@@ -152,9 +152,9 @@ public class RestService {
                 String produces = callOptions.get(Options.produce.name()).toString();
                 Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
                 ChannelDescriptor channel = ChannelDescriptor.newBuilder()
-                        .setHost(Configuration.get("jaxrs/host").asText())
-                        .setPort(Configuration.get("jaxrs/port").asInt())
-                        .setProtocol(Configuration.get("jaxrs/protocol").asText())
+                        .setHost(((HashMap<String,Object>)Configuration.get("jaxrs")).get("host").toString())
+                        .setPort(Integer.valueOf(((HashMap<String,Object>)Configuration.get("jaxrs")).get("port").toString()))
+                        .setProtocol(((HashMap<String,Object>)Configuration.get("jaxrs")).get("protocol").toString())
                         .setPath(jaxrs.get("Path").toString())
                         .build((Object[]) args[0]);
                 URI uri =  channel.getUri();
@@ -185,9 +185,9 @@ public class RestService {
                 String produces = callOptions.get(Options.produce.name()).toString();
                 Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
                 ChannelDescriptor channel = ChannelDescriptor.newBuilder()
-                        .setHost(Configuration.get("jaxrs/host").asText())
-                        .setPort(Configuration.get("jaxrs/port").asInt())
-                        .setProtocol(Configuration.get("jaxrs/protocol").asText())
+                        .setHost(((HashMap<String,Object>)Configuration.get("jaxrs")).get("host").toString())
+                        .setPort(Integer.valueOf(((HashMap<String,Object>)Configuration.get("jaxrs")).get("port").toString()))
+                        .setProtocol(((HashMap<String,Object>)Configuration.get("jaxrs")).get("protocol").toString())
                         .setPath(jaxrs.get("Path").toString())
                         .build((Object[]) args[0]);
                 URI uri =  channel.getUri();

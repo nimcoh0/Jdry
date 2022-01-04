@@ -21,14 +21,12 @@ package org.apache.avro;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
-import jdk.nashorn.internal.ir.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
+
 
 /**
  * A set of messages forming an application protocol base on Avro .
