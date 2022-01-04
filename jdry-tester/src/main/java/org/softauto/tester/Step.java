@@ -47,10 +47,10 @@ public class Step {
         new InvocationHandler().invoke(fqmn,args,types,future,transceiver);
     }
 
-    public Step(String fqmn, Object[] args, Class[] types, String transceiver,CallOptions callOptions)throws Exception{
+    public Step(String fqmn, Object[] args, Class[] types, String transceiver,HashMap<String, Object> callOptions)throws Exception{
         future = new CallFuture<>();
         logger.debug("invoking " +fqmn);
-        new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions.getOptions());
+        new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions);
     }
 
 
@@ -59,9 +59,9 @@ public class Step {
         new InvocationHandler().invoke(fqmn,args,types,future,transceiver);
     }
 
-    public <T> Step(String fqmn, Object[] args, Class[] types, String transceiver, CallFuture<T> future,CallOptions callOptions)throws Exception{
+    public <T> Step(String fqmn, Object[] args, Class[] types, String transceiver, CallFuture<T> future,HashMap<String, Object> callOptions)throws Exception{
         logger.debug("invoking " +fqmn);
-        new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions.getOptions());
+        new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions);
     }
 
     public <T>Step(String fqmn, Object[] args, Class[] types, String transceiver, Handler<AsyncResult<T>> resultHandler)throws Exception{
@@ -71,10 +71,10 @@ public class Step {
         resultHandler.handle(Future.handleResult((T)future.get()));
     }
 
-    public <T>Step(String fqmn, Object[] args, Class[] types, String transceiver, Handler<AsyncResult<T>> resultHandler,CallOptions callOptions)throws Exception{
+    public <T>Step(String fqmn, Object[] args, Class[] types, String transceiver, Handler<AsyncResult<T>> resultHandler,HashMap<String, Object> callOptions)throws Exception{
         CallFuture<Object> future = new CallFuture<>();
         logger.debug("invoking " +fqmn);
-        new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions.getOptions());
+        new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions);
         resultHandler.handle(Future.handleResult((T)future.get()));
     }
 

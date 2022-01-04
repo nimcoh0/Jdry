@@ -16,6 +16,7 @@ import org.softauto.serializer.service.MessageType;
 import org.softauto.serializer.service.SerializerService;
 import javax.lang.model.element.Element;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -120,6 +121,15 @@ public class RpcProviderImpl implements Provider {
             }
             ClassType classType = Utils.getClassType(name,(Class[]) args[1]);
             MessageType messageType = Utils.getMessageType(name,(Class[]) args[1]);
+            if(args[2] != null){
+                HashMap<String,Object> callOptions = (HashMap<String,Object>)args[2];
+                if(callOptions.get("classType")!= null){
+                    classType = ClassType.fromString(callOptions.get("classType").toString());
+                }
+                if(callOptions.get("messageType")!= null){
+                    messageType = MessageType.fromString(callOptions.get("messageType").toString());
+                }
+            }
             Message message = Message.newBuilder().setDescriptor(name).setType(messageType).setArgs((Object[]) args[0]).setTypes((Class[]) args[1]).addData("classType",classType.name()).build();
             serializer.write(message,callback);
             logger.debug("callback value "+callback.getResult()+" get error "+callback.getError());

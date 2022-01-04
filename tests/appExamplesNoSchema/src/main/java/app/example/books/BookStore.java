@@ -11,6 +11,9 @@ public class BookStore {
     int counter = 0;
 
 
+    BookCatalog bookCatalog = new BookCatalog();
+
+
     public BookStore addBook(Book book) {
         books.add(book);
         return this;

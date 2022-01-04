@@ -1,9 +1,11 @@
 package tests;
 
 import app.example.books.Book;
+import app.example.books.BookCatalog;
 import app.example.books.BookStore;
 import org.junit.Assert;
 import org.softauto.core.CallFuture;
+import org.softauto.core.CallOptions;
 import org.softauto.espl.ExpressionBuilder;
 import org.softauto.tester.AbstractTesterImpl;
 import org.softauto.tester.Listener;
@@ -14,6 +16,7 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.Function;
 
@@ -149,6 +152,16 @@ public class ExampleTestsNoSchema extends AbstractTesterImpl {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void set_filed_value()throws Exception{
+        BookCatalog bookCatalog = new BookCatalog();
+        HashMap<String, Object> callOption = new HashMap<>();
+        callOption.put("classType","INITIALIZE_NO_PARAM");
+        callOption.put("messageType","VARIABLE");
+        new Step("app_example_books_BookStore_bookCatalog",new Object[]{bookCatalog},new Class[]{BookCatalog.class},"RPC",callOption);
+
     }
 
 }
