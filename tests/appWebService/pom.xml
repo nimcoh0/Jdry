@@ -92,8 +92,24 @@
             <groupId>org.softauto</groupId>
             <artifactId>jdry-local</artifactId>
             <version>1.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache</groupId>
+                    <artifactId>avro</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>3.0.0</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -168,17 +184,15 @@
                     <groupId>org.softauto</groupId>
                     <artifactId>jdry-grpc</artifactId>
                     <version>1.0.0</version>
+
                 </dependency>
                 <dependency>
                     <groupId>org.softauto</groupId>
                     <artifactId>jdry-jaxrs</artifactId>
                     <version>1.0.0</version>
+
                 </dependency>
-                <dependency>
-                    <groupId>org.softauto</groupId>
-                    <artifactId>jdry-local</artifactId>
-                    <version>1.0.0</version>
-                </dependency>
+
             </dependencies>
         </profile>
     </profiles>

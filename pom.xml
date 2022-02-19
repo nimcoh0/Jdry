@@ -56,9 +56,9 @@
         <jdry-avro>1.0.0</jdry-avro>
         <jdry-listener>1.0.0</jdry-listener>
         <commons-codec>1.13</commons-codec>
-        <jdry-annotations>beta-1.0</jdry-annotations>
-        <jdry-annotation-discovery>beta-1.0</jdry-annotation-discovery>
-        <jdry-socket-annotations>beta-1.0</jdry-socket-annotations>
+        <jdry-annotations>1.0.0</jdry-annotations>
+        <jdry-annotation-discovery>1.0.0</jdry-annotation-discovery>
+        <jdry-socket-annotations>1.0.0</jdry-socket-annotations>
         <log4j-api>2.14.1</log4j-api>
         <log4j-core>2.14.1</log4j-core>
         <jdry-injector>1.0.0</jdry-injector>

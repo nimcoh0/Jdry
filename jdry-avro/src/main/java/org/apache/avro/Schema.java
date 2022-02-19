@@ -153,11 +153,11 @@ public abstract class Schema extends JsonProperties implements Serializable {
       return new NullSchema();
     case VOID:
       return new VoidSchema();
-    case OBJECT:
+    //case OBJECT:
         //return new ObjectSchema(o);
     default:
-      return new ObjectSchema(type.name);
-      //throw new AvroRuntimeException("Can't create a: " + type);
+      //return new ObjectSchema(type.name);
+      throw new AvroRuntimeException("Can't create a: " + type);
     }
   }
 
@@ -237,6 +237,13 @@ public abstract class Schema extends JsonProperties implements Serializable {
   /** Create a named record schema with fields already set. */
   public static Schema createRecord(String name, String doc, String namespace, boolean isError, List<Field> fields) {
     return new RecordSchema(new Name(name, namespace), doc, isError, fields);
+  }
+
+
+
+  /** Create a named record schema. */
+  public static Schema createExternal(String name, String doc, String namespace, boolean isError) {
+    return new ExternalSchema(new Name(name, namespace), doc, isError);
   }
 
   /** Create an enum schema. */
@@ -1125,6 +1132,9 @@ public abstract class Schema extends JsonProperties implements Serializable {
     }
   }
 
+
+
+
   public static class ExternalSchema extends NamedSchema {
     private List<Field> fields;
     private Map<String, Field> fieldMap;
@@ -1134,6 +1144,7 @@ public abstract class Schema extends JsonProperties implements Serializable {
       super(Type.EXTERNAL, name, doc);
       this.isError = isError;
     }
+
 
     public ExternalSchema(Name name, String doc, boolean isError, List<Field> fields) {
       super(Type.EXTERNAL, name, doc);
@@ -1175,6 +1186,173 @@ public abstract class Schema extends JsonProperties implements Serializable {
       for (Field f : fields) {
         //if (f.position != -1) {
          // throw new AvroRuntimeException("Field already used: " + f);
+        //}
+        f.position = i++;
+        final Field existingField = fieldMap.put(f.name(), f);
+        if (existingField != null) {
+          throw new AvroRuntimeException(
+                  String.format("Duplicate field %s in record %s: %s and %s.", f.name(), name, f, existingField));
+        }
+        ff.add(f);
+      }
+      this.fields = ff.lock();
+      this.hashCode = NO_HASHCODE;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+      if (o == this)
+        return true;
+      if (!(o instanceof RecordSchema))
+        return false;
+      RecordSchema that = (RecordSchema) o;
+      if (!equalCachedHash(that))
+        return false;
+      if (!equalNames(that))
+        return false;
+      if (!propsEqual(that))
+        return false;
+      Set seen = SEEN_EQUALS.get();
+      SeenPair here = new SeenPair(this, o);
+      if (seen.contains(here))
+        return true; // prevent stack overflow
+      boolean first = seen.isEmpty();
+      try {
+        seen.add(here);
+        return Objects.equals(fields, that.fields);
+      } finally {
+        if (first)
+          seen.clear();
+      }
+    }
+
+    @Override
+    int computeHash() {
+      Map seen = SEEN_HASHCODE.get();
+      if (seen.containsKey(this))
+        return 0; // prevent stack overflow
+      boolean first = seen.isEmpty();
+      try {
+        seen.put(this, this);
+        if (fields != null) {
+          return super.computeHash() + fields.hashCode();
+        } else {
+          return super.computeHash();
+        }
+      } finally {
+        if (first)
+          seen.clear();
+      }
+    }
+
+    @Override
+    void toJson(Names names, JsonGenerator gen) throws IOException {
+      if (writeNameRef(names, gen))
+        return;
+      String savedSpace = names.space; // save namespace
+      gen.writeStartObject();
+      gen.writeStringField("type", isError ? "error" : "external");
+      writeName(names, gen);
+      names.space = name.space; // set default namespace
+      if (getDoc() != null)
+        gen.writeStringField("doc", getDoc());
+
+      if (fields != null) {
+        gen.writeFieldName("fields");
+        fieldsToJson(names, gen);
+      }
+
+      writeProps(gen);
+      aliasesToJson(gen);
+      gen.writeEndObject();
+      names.space = savedSpace; // restore namespace
+    }
+
+
+    void fieldsToJson(Names names, JsonGenerator gen) throws IOException {
+      gen.writeStartArray();
+      for (Field f : fields) {
+        //System.out.println(f.toString());
+        gen.writeStartObject();
+        gen.writeStringField("name", f.name());
+        gen.writeFieldName("type");
+        f.schema().toJson(names, gen);
+        if (f.doc() != null)
+          gen.writeStringField("doc", f.doc());
+        if (f.hasDefaultValue()) {
+          gen.writeFieldName("default");
+          gen.writeTree(f.defaultValue());
+        }
+        if (f.order() != Field.Order.ASCENDING)
+          gen.writeStringField("order", f.order().name);
+        if (f.aliases != null && f.aliases.size() != 0) {
+          gen.writeFieldName("aliases");
+          gen.writeStartArray();
+          for (String alias : f.aliases)
+            gen.writeString(alias);
+          gen.writeEndArray();
+        }
+        f.writeProps(gen);
+        gen.writeEndObject();
+      }
+      gen.writeEndArray();
+    }
+
+
+  }
+
+  public static class ObjectSchema extends NamedSchema {
+    private List<Field> fields;
+    private Map<String, Field> fieldMap;
+    private final boolean isError;
+
+    public ObjectSchema(Name name, String doc, boolean isError) {
+      super(Type.EXTERNAL, name, doc);
+      this.isError = isError;
+    }
+
+
+    public ObjectSchema(Name name, String doc, boolean isError, List<Field> fields) {
+      super(Type.EXTERNAL, name, doc);
+      this.isError = isError;
+      setFields(fields);
+    }
+
+    @Override
+    public boolean isError() {
+      return isError;
+    }
+
+
+    @Override
+    public Field getField(String fieldname) {
+      if (fieldMap == null)
+        throw new AvroRuntimeException("Schema fields not set yet");
+      return fieldMap.get(fieldname);
+    }
+
+
+    @Override
+    public List<Field> getFields() {
+      if (fields == null)
+        return null;
+      //throw new AvroRuntimeException("Schema fields not set yet");
+      return fields;
+    }
+
+
+    @Override
+    public void setFields(List<Field> fields) {
+      if (this.fields != null) {
+        this.fields = new ArrayList<>();
+      }
+      int i = 0;
+      fieldMap = new HashMap<>(Math.multiplyExact(2, fields.size()));
+      LockableArrayList<Field> ff = new LockableArrayList<>(fields.size());
+      for (Field f : fields) {
+        //if (f.position != -1) {
+        // throw new AvroRuntimeException("Field already used: " + f);
         //}
         f.position = i++;
         final Field existingField = fieldMap.put(f.name(), f);
@@ -1732,6 +1910,7 @@ public abstract class Schema extends JsonProperties implements Serializable {
     }
   }
 
+  /*
   private static class ObjectSchema extends Schema {
     public ObjectSchema(String o) {
       //super(Type.valueOf(getOwnerTypeName(o).substring(getOwnerTypeName(o).lastIndexOf(".")+1).toUpperCase()));
@@ -1739,6 +1918,8 @@ public abstract class Schema extends JsonProperties implements Serializable {
       this.setName(o);
     }
   }
+*/
+
 
 
   public static String getOwnerTypeName(String name){
@@ -2014,7 +2195,7 @@ public abstract class Schema extends JsonProperties implements Serializable {
       Name name = new Name(o, "");
       if (!containsKey(name)) {
         // if not in default try anonymous
-        return new ObjectSchema(o);
+        return new ObjectSchema(name,null,false);
         //return Schema.create(Type.OBJECT);
         //name = new Name(o, "");
       }
@@ -2029,7 +2210,7 @@ public abstract class Schema extends JsonProperties implements Serializable {
       Name name = new Name(o, space);
       if (!containsKey(name)) {
         // if not in default try anonymous
-        return new ObjectSchema(o);
+        return new ObjectSchema(name,null,false);
         //return Schema.create(Type.OBJECT);
         //name = new Name(o, "");
       }
@@ -2046,9 +2227,10 @@ public abstract class Schema extends JsonProperties implements Serializable {
 
     @Override
     public Schema put(Name name, Schema schema) {
-     if (containsKey(name))
-         throw new SchemaParseException("Can't redefine: " + name);
+     if (!containsKey(name))
+        // throw new SchemaParseException("Can't redefine: " + name);
        return super.put(name, schema);
+     return schema;
     }
   }
 
@@ -2259,6 +2441,7 @@ public abstract class Schema extends JsonProperties implements Serializable {
             fields.add(f);
           }
         result.setFields(fields);
+
       }
       else if (type.equals("generic")) { // record
         //List<Field> fields = new ArrayList<>();

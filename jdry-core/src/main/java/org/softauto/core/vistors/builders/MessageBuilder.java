@@ -1,9 +1,11 @@
 package org.softauto.core.vistors.builders;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.avro.Schema;
 import org.softauto.core.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,10 +27,44 @@ public class MessageBuilder {
         String type;
         String transceiver;
         String description;
+        String annotations;
+        String args;
+        String result;
+
+        public String getArgs() {
+            return args;
+        }
+
+        public Builder setArgs(String args) throws Exception{
+             this.args = args;
+             return this;
+        }
+
+        public String getResult() {
+            return result;
+        }
+
+        public Builder setResult(String result) throws Exception{
+            this.result = result;
+            return this;
+        }
 
         public Builder(){
             request = new ArrayList<>();
             clazz = new HashMap<>();
+        }
+
+        public String getAnnotations() {
+            return annotations;
+        }
+
+        public Builder setAnnotations(List<String> annotations) {
+            try {
+                this.annotations = Arrays.toString(annotations.toArray());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return this;
         }
 
         public String getDescription() {
@@ -130,6 +166,9 @@ public class MessageBuilder {
             message.put("transceiver", transceiver);
             message.put("type", type);
             message.put("description",description);
+            message.put("args",args);
+            message.put("result",result);
+            message.put("annotations",annotations);
             return message;
         }
     }

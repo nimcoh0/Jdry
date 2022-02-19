@@ -500,7 +500,10 @@ public class Compiler {
     }
   }
 
-
+  public static void compileProtocol(Protocol protocol, File dest,String template,String name) throws IOException {
+      Compiler compiler = new Compiler(protocol,template,name);
+      compiler.compileProtocolToDestination( dest);
+  }
 
   /** Generates Java classes for a schema. */
   public static void compileSchema(File src, File dest) throws IOException {
@@ -616,6 +619,18 @@ public class Compiler {
     }
     if (protocol != null) {
       compile(protocol,template,name).writeToDestination(src, dst);
+    }
+  }
+
+  public void compileProtocolToDestination( File dst) throws IOException {
+    for (Schema schema : queue) {
+      if(schema.getType() != (Schema.Type.EXTERNAL) && schema.getType() != (Schema.Type.GENERIC)) {
+        OutputFile o = compile(schema);
+        o.writeToDestination( dst);
+      }
+    }
+    if (protocol != null) {
+      compile(protocol,template,name).writeToDestination( dst);
     }
   }
 

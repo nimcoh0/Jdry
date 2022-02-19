@@ -1,10 +1,7 @@
 package app.example.books;
 
 
-import org.softauto.annotations.DefaultValue;
-import org.softauto.annotations.ExposedForTesting;
-import org.softauto.annotations.ListenerForTesting;
-import org.softauto.annotations.RPC;
+import org.softauto.annotations.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +18,8 @@ public class Book {
     }
 
 
-    @RPC
-    @ExposedForTesting
+
+    @ExposedForTesting(protocol = "RPC")
     public Book(@DefaultValue("blabla") String title, @DefaultValue("Nim") String author) {
         this.title = title;
         this.author = author;

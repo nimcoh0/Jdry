@@ -60,12 +60,12 @@
             <version>${jdry-serializer}</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>org.softauto</groupId>
             <artifactId>jdry-listener</artifactId>
             <version>${jdry-listener}</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency-->
 
         <dependency>
             <groupId>log4j</groupId>

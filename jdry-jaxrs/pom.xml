@@ -51,6 +51,7 @@
             <version>${jdry-jaxrs-annotations}</version>
             <scope>compile</scope>
         </dependency>
+
     </dependencies>
 
     <build>

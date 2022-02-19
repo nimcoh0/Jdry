@@ -1,6 +1,7 @@
 package org.softauto.socket.schema;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.softauto.annotations.ExposedForTesting;
 import org.softauto.core.AbstractMessage;
 import org.softauto.core.vistors.DefaultMethodVistor;
 import org.softauto.socket.annotations.SOCKET;
@@ -17,7 +18,7 @@ public class MessageHandler extends AbstractMessage {
     @Override
     public JsonNode parser(Element element) {
         try {
-            if (element.getAnnotation(SOCKET.class) != null) {
+            if (element.getAnnotation(ExposedForTesting.class).protocol().equals("SOCKET") ) {
                 return super.parseElement(element,new DefaultMethodVistor("SOCKET"));
             }
         }catch (Exception e){

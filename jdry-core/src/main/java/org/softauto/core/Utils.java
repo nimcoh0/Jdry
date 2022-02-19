@@ -617,11 +617,13 @@ public class Utils {
     }
 
     public static boolean isSchemaType(String t){
-        Schema.Type[] types = Schema.Type.values();
-        String  tt =  t.startsWith("java") ? t.substring(t.lastIndexOf(".") + 1): t;
-        for(Schema.Type type : types){
-            if(tt.toLowerCase().equals(type.getName().toLowerCase())){
-                return true;
+        if(t != null) {
+            Schema.Type[] types = Schema.Type.values();
+            String tt = t.startsWith("java") ? t.substring(t.lastIndexOf(".") + 1) : t;
+            for (Schema.Type type : types) {
+                if (tt.toLowerCase().equals(type.getName().toLowerCase())) {
+                    return true;
+                }
             }
         }
         return false;
