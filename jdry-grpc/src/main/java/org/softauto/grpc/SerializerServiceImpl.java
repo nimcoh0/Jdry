@@ -33,7 +33,7 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
             String fullClassName = Utils.getFullClassName(message.getDescriptor());
             String methodName = Utils.getMethodName(message.getDescriptor());
             Object serviceImpl;
-            String classType = ClassType.NONE.name();
+            String classType = ClassType.INITIALIZE_NO_PARAM.name();
             if(message.getData().get("classType") != null) {
                 classType = message.getData().get("classType").toString();
             }
@@ -85,7 +85,7 @@ public class SerializerServiceImpl implements SerializerService,SerializerServic
             String fullClassName = Utils.getFullClassName(message.getDescriptor());
             Object serviceImpl;
             //AbstractInjector injector = (AbstractInjector)ServiceLocator.getInstance().getService("INJECTOR");
-            String classType = ClassType.NONE.name();
+            String classType = ClassType.INITIALIZE_NO_PARAM.name();
             if(message.getData().get("classType") != null) {
                classType = message.getData().get("classType").toString();
             }

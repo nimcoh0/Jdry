@@ -824,7 +824,7 @@ public class Utils {
         }catch (Exception e){
             e.printStackTrace();
         }
-        return ClassType.NONE;
+        return ClassType.INITIALIZE_NO_PARAM;
     }
 
     public static MessageType getMessageType(String methodName,Class[] types){
