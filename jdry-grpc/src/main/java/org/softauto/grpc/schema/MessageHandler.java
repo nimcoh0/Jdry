@@ -1,6 +1,7 @@
 package org.softauto.grpc.schema;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.softauto.annotations.Api;
 import org.softauto.annotations.ExposedForTesting;
 import org.softauto.annotations.ListenerForTesting;
 import org.softauto.annotations.RPC;
@@ -25,7 +26,7 @@ public class MessageHandler extends AbstractMessage {
                     JsonNode  listenerData = super.parseElement(element, new ListenerDataVistor("RPC"));
                     return listenerData;
                 }else {
-                    if (element.getAnnotation(ExposedForTesting.class).protocol().equals("RPC")) {
+                    if (element.getAnnotation(ExposedForTesting.class).protocol().equals("RPC") || element.getAnnotation(Api.class).protocol().equals("RPC")) {
                         return super.parseElement(element, new DefaultMethodVistor("RPC"));
                     }
                 }

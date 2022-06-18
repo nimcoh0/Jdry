@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 /**
  * annotation processing for schema building
  */
-@SupportedAnnotationTypes({"org.softauto.annotations.ExposedForTesting","org.softauto.annotations.ListenerForTesting"})
+@SupportedAnnotationTypes({"org.softauto.annotations.ExposedForTesting","org.softauto.annotations.ListenerForTesting","org.softauto.annotations.Api"})
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @AutoService(Processor.class)
 public class BuilderProcessor extends AbstractProcessor {
@@ -130,6 +130,9 @@ public class BuilderProcessor extends AbstractProcessor {
             return LISTENER_PROTOCOL_NAME;
         }
         if(annotation.getSimpleName().toString().equals("ExposedForTesting")){
+            return STEP_PROTOCOL_NAME;
+        }
+        if(annotation.getSimpleName().toString().equals("Api")){
             return STEP_PROTOCOL_NAME;
         }
         return null;
