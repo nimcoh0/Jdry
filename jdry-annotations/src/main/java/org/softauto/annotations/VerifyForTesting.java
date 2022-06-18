@@ -10,5 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface VerifyForTesting {
 
+    String description() default "";
 
+    String assertType() default "none";
 }

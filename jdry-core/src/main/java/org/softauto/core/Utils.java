@@ -840,4 +840,19 @@ public class Utils {
         return MessageType.NONE;
     }
 
+    public static Object getFieldValue(Object c,String key)  {
+        try {
+            ((Class)c).getFields();
+            ((Class)c).getDeclaredFields();
+            ((Class)c).getDeclaredMethods()[0].getDefaultValue();
+            Field f1 = ((Annotation)c).annotationType().getField(key);
+            ((Class)c).getMethods();
+            Field f = ((Class)c).getField(key);
+            return f.get(c);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

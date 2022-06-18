@@ -11,5 +11,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ListenerForTesting {
     String description() default "";
+    ListenerMode mode() default ListenerMode.NONE;
+    String[] value() default "";
+    String result() default "";
 
 }

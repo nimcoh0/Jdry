@@ -103,6 +103,12 @@ public  class Listener implements IListener{
                 };
             }
 
+            public Listener mock(Object result)throws Exception{
+                logger.debug("mock "+ this.fqmn);
+                this.result = result;
+                return this;
+            }
+
             public Listener waitTo(String fqmn)throws Exception{
                 return waitTo(fqmn,ff());
             }
