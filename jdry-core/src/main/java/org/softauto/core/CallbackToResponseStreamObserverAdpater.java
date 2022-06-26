@@ -17,6 +17,8 @@ public class CallbackToResponseStreamObserverAdpater<T> implements StreamObserve
         this.channel = channel;
     }
 
+    
+
     @Override
     public void onNext(Object value) {
         if(value instanceof Byte[] && ((Byte[]) value).length == 1){

@@ -43,6 +43,20 @@ public class InvocationHandler {
 
     }
 
+
+    public  void invoke(String methodName, Object[] args, Class[] types, CallFuture callback, String transceiver, HashMap<String,Object> callOptions,Class<?> returnType)  {
+        try {
+            Provider provider = ProviderManager.provider(transceiver).create();
+            logger.debug("invoke method " + methodName+ " using protocol "+ transceiver+ " call options "+ Arrays.toString(callOptions.entrySet().toArray()));
+            provider.exec( methodName, callback,null,new Object[]{args,types,callOptions,returnType});
+            logger.debug("callback value "+callback.getResult()+" get error "+callback.getError());
+        } catch (Exception e) {
+            logger.error("fail invoke method "+ methodName+ " with args "+ Arrays.toString(args),e);
+        }
+
+    }
+
+
     public <T> T invoke(String methodName, Object[] args, Class[] types)  throws Exception{
         CallFuture<T> future = new CallFuture<>();
         T t = null;

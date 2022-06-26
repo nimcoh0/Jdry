@@ -43,9 +43,10 @@ public class ExecNoSchemaMode implements Iexec{
                 CallbackToResponseStreamObserverAdpater observerAdpater = new CallbackToResponseStreamObserverAdpater(callback, null);
                 HashMap<String,Object> callOptions = (HashMap<String, Object>) args[2];
                 Map<String, Object> msg = (Map<String, Object>) Configuration.get("jaxrs");
+                Class<?> returnType = (Class<?>) args[3];
                 ServiceDefinition serviceDefinition = RestService.createServiceDefinition(methodName,gethttpMethod(callOptions).toString(),msg,(Class[])args[1]);
                 MethodDefinition md = serviceDefinition.getMethod(org.softauto.core.Utils.extractFullMethodName(methodName));
-                RespT res = (RespT)md.getCallerHandler().startCall(md.getMethodDescriptor(),args,md.getMsg(),md.getMethodDescriptor().getMethod().getReturnType());
+                RespT res = (RespT)md.getCallerHandler().startCall(md.getMethodDescriptor(),args,md.getMsg(),returnType);
                 if (res != null) {
                     observerAdpater.onCompleted((RespT)res);
                 } else {

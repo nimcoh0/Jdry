@@ -28,7 +28,7 @@ public class DefaultConfiguration {
         configuration.put(Context.DEFUALT_DATETIME_FORMAT,"yyyy-MM-dd HH:mm:ss");
         configuration.put(Context.TEST_MACHINE,Utils.getMachineIp());
         configuration.put(Context.TEST_MACHINE_NAME,Utils.getMachineName());
-        configuration.put(Context.SERVICE_MODE,"true");
+        configuration.put(Context.SERVICE_MODE,true);
     }
 
     public static HashMap<String,Object> getConfiguration() {

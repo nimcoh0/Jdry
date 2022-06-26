@@ -66,7 +66,11 @@ public class ChannelDescriptor  {
                 if(!path.startsWith("/")){
                     path = "/" + path;
                 }
-                uri = UriBuilder.fromUri(protocol+"://"+host+":"+port+ path).build(args);
+                if(baseUrl != null){
+                    uri = UriBuilder.fromUri(protocol+"://"+host+":"+port+ baseUrl + path).build(args);
+                }else {
+                    uri = UriBuilder.fromUri(protocol + "://" + host + ":" + port + path).build(args);
+                }
             }catch (Exception e){
                 logger.error("fail create uri");
             }

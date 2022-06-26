@@ -56,7 +56,7 @@ public class JaxrsProviderImpl implements Provider {
 
     @Override
     public <RespT> void exec(String methodName, org.softauto.serializer.CallFuture<RespT> callback, ManagedChannel channel,Object...args) {
-        if(Configuration.get("schemaMode")){
+        if(Configuration.get(Context.SERVICE_MODE)){
             execSchemaMode.setServiceDefinition(serviceDefinition);
             execSchemaMode.exec(methodName,callback,channel,args);
         }else {
@@ -80,7 +80,7 @@ public class JaxrsProviderImpl implements Provider {
     @Override
     public Provider initialize() throws IOException {
         try {
-            if(Configuration.get("schemaMode")){
+            if(Configuration.get(Context.SERVICE_MODE)){
                 Class listenerService = Class.forName("tests.infrastructure.StepService");
                 serviceDefinition = RestService.createServiceDefinition(listenerService);
                 logger.debug("jaxrs plugin initialize successfully");
