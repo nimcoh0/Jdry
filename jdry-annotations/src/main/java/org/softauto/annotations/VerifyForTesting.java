@@ -12,5 +12,5 @@ public @interface VerifyForTesting {
 
     String description() default "";
 
-    String assertType() default "none";
+    AssertType assertType() default AssertType.AssertTrue;
 }

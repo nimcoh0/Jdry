@@ -1,11 +1,11 @@
-package org.softauto.core;
+package org.softauto.annotations;
 
 
 public enum AssertType {
 
-    TRUE("Assert.assertTrue"),
-    FALSE("Assert.assertFalse"),
-    Equals("Assert.assertEquals"),
+    
+    AssertTrue("Assert.assertTrue"),
+    AssertFalse("Assert.assertTrue"),
     NONE("none");
 
     private AssertType(String  value) {

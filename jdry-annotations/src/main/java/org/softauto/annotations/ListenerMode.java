@@ -4,5 +4,8 @@ public enum ListenerMode {
 
     MOCK,
     WAIT,
+    ARGS,
+    RESULT,
+    UNTIL,
     NONE;
 }

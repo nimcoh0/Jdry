@@ -51,6 +51,7 @@ public class Context {
     //public final static Marker TRACER = MarkerManager.getMarker("TRACER");
     //public final static Marker JDRY = MarkerManager.getMarker("JDRY");
     public static final String DEFUALT_DATETIME_FORMAT = "default_datatime_format";
+    public static final String SERVICE_MODE = "service_mode";
     //public final static String LOG4J2_SOCKET_TCP_SERVER_PORT = "log4j2_socket_tcp_server_port";
     public static TestLifeCycle TestState = TestLifeCycle.NONE;
 

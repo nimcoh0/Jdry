@@ -43,6 +43,11 @@ public class ServiceDescriptor {
 
     }
 
+    public ServiceDescriptor(String serviceName){
+        this.serviceName = serviceName;
+
+    }
+
     /**
      * Creates a Service Descriptor.
      *
@@ -56,6 +61,10 @@ public class ServiceDescriptor {
     public static ServiceDescriptor create(Protocol protocol) {
         String serviceName = Utils.getServiceName(protocol);
         return SERVICE_DESCRIPTORS.computeIfAbsent(serviceName, key -> new ServiceDescriptor(protocol, serviceName));
+    }
+
+    public static ServiceDescriptor create(String serviceName) {
+        return SERVICE_DESCRIPTORS.computeIfAbsent(serviceName, key -> new ServiceDescriptor(serviceName));
     }
 
     /**
@@ -76,6 +85,16 @@ public class ServiceDescriptor {
                         .setTypes(method.getParameterTypes())
                         .setMessage(msg)
                         .setMethod(method)
+                        .build());
+
+    }
+
+    public MethodDescriptor getMethods(String methodName, Class[] types, MethodDescriptor.MethodType methodType) {
+        return methods.computeIfAbsent(MethodDescriptor.extractFullMethodName(methodName),
+                key -> MethodDescriptor.<Object[], Object>newBuilder()
+                        .setFullMethodName(MethodDescriptor.extractFullMethodName(methodName))
+                        .setType(methodType)
+                        .setTypes(types)
                         .build());
 
     }

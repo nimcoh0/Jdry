@@ -27,6 +27,9 @@ public class JaxrsProviderImpl implements Provider {
     Class iface;
     ServiceDefinition serviceDefinition;
     String type = "JAXRS";
+    ExecSchemaMode execSchemaMode = new ExecSchemaMode();
+    ExecNoSchemaMode execNoSchemaMode = new ExecNoSchemaMode();
+
 
     private ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -53,23 +56,11 @@ public class JaxrsProviderImpl implements Provider {
 
     @Override
     public <RespT> void exec(String methodName, org.softauto.serializer.CallFuture<RespT> callback, ManagedChannel channel,Object...args) {
-        try {
-             executor.submit(()->{
-                CallbackToResponseStreamObserverAdpater observerAdpater = new CallbackToResponseStreamObserverAdpater(callback, null);
-                MethodDefinition md = serviceDefinition.getMethod(org.softauto.core.Utils.extractFullMethodName(methodName));
-                RespT res = (RespT)md.getCallerHandler().startCall(md.getMethodDescriptor(),args,md.getMsg(),md.getMethodDescriptor().getMethod().getReturnType());
-                if (res != null) {
-                    observerAdpater.onCompleted((RespT)res);
-                } else {
-                    observerAdpater.onError(new RuntimeException("Stream got cancelled"));
-                }
-
-
-                logger.debug("successfully exec jaxrs call  "+  methodName);
-
-            });
-        }catch (Exception e){
-            logger.error("exec jaxrs call  fail "+  methodName,e);
+        if(Configuration.get("schemaMode")){
+            execSchemaMode.setServiceDefinition(serviceDefinition);
+            execSchemaMode.exec(methodName,callback,channel,args);
+        }else {
+            execNoSchemaMode.exec(methodName,callback,channel,args);
         }
     }
 
@@ -89,9 +80,14 @@ public class JaxrsProviderImpl implements Provider {
     @Override
     public Provider initialize() throws IOException {
         try {
-            Class listenerService = Class.forName("tests.infrastructure.StepService");
-            serviceDefinition = RestService.createServiceDefinition(listenerService);
-            logger.debug("jaxrs plugin initialize successfully");
+            if(Configuration.get("schemaMode")){
+                Class listenerService = Class.forName("tests.infrastructure.StepService");
+                serviceDefinition = RestService.createServiceDefinition(listenerService);
+                logger.debug("jaxrs plugin initialize successfully");
+            }else {
+                //schemaMode = false;
+                logger.debug("StepService not found  jaxrs plugin initialize in no schema mode successfully");
+            }
         }catch (Exception e){
             e.printStackTrace();
         }

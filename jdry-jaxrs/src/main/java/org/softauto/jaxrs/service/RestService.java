@@ -66,6 +66,30 @@ public class RestService {
         return serviceDefinition = serviceDefinitionBuilder.build();
     }
 
+    public static ServiceDefinition createServiceDefinition(String methodName,String httpMethod,Map<String, Object> msg,Class[] types) {
+        ServiceDescriptor serviceDescriptor =  ServiceDescriptor.create(methodName);
+        ServiceDefinition.Builder serviceDefinitionBuilder = ServiceDefinition.builder(serviceDescriptor);
+
+        if (httpMethod.equals("GET")) {
+            serviceDefinitionBuilder.addMethod(serviceDescriptor.getMethods(methodName, types, MethodDescriptor.MethodType.GET),
+                    ServiceCaller.call(new GETMethodHandler()), msg);
+        }
+        if (httpMethod.equals("PUT")) {
+            serviceDefinitionBuilder.addMethod(serviceDescriptor.getMethods(methodName, types, MethodDescriptor.MethodType.PUT),
+                    ServiceCaller.call(new PUTMethodHandler()), msg);
+        }
+        if (httpMethod.equals("POST")) {
+            serviceDefinitionBuilder.addMethod(serviceDescriptor.getMethods(methodName, types, MethodDescriptor.MethodType.POST),
+                    ServiceCaller.call(new POSTMethodHandler()), msg);
+        }
+        if (httpMethod.equals("DELETE")) {
+            serviceDefinitionBuilder.addMethod(serviceDescriptor.getMethods(methodName, types, MethodDescriptor.MethodType.DELETE),
+                    ServiceCaller.call(new DELETEMethodHandler()), msg);
+        }
+        return serviceDefinition = serviceDefinitionBuilder.build();
+    }
+
+
     private static class GETMethodHandler implements ServiceCaller.UnaryClass  {
 
         @Override

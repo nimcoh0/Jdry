@@ -53,8 +53,8 @@ public class ExampleTestsNoSchema extends AbstractTesterImpl {
     @Test
     public void add_listener()throws Exception{
         Listener listener =  Listener.addListener("app_example_books_BookCatalog_printBook",new Class[]{Book.class});
-        new Step("app_example_books_BookStore_printBooks",new Object[]{books},new Class[]{List.class},"RPC").then(
-                listener.waitTo("app_example_books_BookCatalog_printBook",ff()));
+        new Step("app_example_books_BookStore_printBooks",new Object[]{books},new Class[]{List.class},"RPC");//.then(
+                listener.waitTo("app_example_books_BookCatalog_printBook",ff());//);
         Assert.assertTrue(listener.getResult() != null);
     }
 
