@@ -35,16 +35,19 @@ public class ListenerServiceImpl implements ListenerService {
             logger.debug("send message "+methodName+" fail  ",e );
         }
         if(result == null){
+            logger.debug("returning from rexecuteBefore" );
             return (new Object[]{});
         }
         if(result instanceof Object[]){
+            logger.debug("returning from rexecuteBefore" );
             return (Object[])result;
         }
+        logger.debug("returning from rexecuteBefore" );
         return new Object[]{result};
     }
 
     @Override
-    public  void executeAfter(String methodName, Object[] args, Class[] types) throws Exception {
+    public  Object executeAfter(String methodName, Object[] args, Class[] types) throws Exception {
         Object result = null;
         try {
             if(Context.getTestState().equals(TestLifeCycle.START)) {
@@ -60,7 +63,8 @@ public class ListenerServiceImpl implements ListenerService {
             }
             logger.debug("send message "+methodName+" fail  ",e );
         }
-
+        logger.debug("returning from executeAfter" );
+        return result;
     }
 
 

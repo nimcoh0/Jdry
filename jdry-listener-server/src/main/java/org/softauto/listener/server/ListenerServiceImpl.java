@@ -19,6 +19,7 @@ public class ListenerServiceImpl implements SerializerService{
     private Class listener = null;
 
     public ListenerServiceImpl(){
+
         //this.listener = Configuration.getAsClass(Context.LISTENER_SERVICE_IMPL,Class.class);
         this.listener = Utils.getClazz(Configuration.get(Context.TEST_INFRASTRUCTURE_PATH), Context.LISTENER_SERVICE_IMPL);
         if(listener == null) {

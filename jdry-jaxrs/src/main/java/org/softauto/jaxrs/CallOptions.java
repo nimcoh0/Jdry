@@ -1,5 +1,7 @@
 package org.softauto.jaxrs;
 
+import javax.ws.rs.HttpMethod;
+import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +30,18 @@ public class CallOptions implements org.softauto.core.CallOptions {
         javax.ws.rs.core.MediaType consume =  javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
         HashMap<String ,Object> properties = new HashMap<>();
         org.glassfish.jersey.client.authentication.HttpAuthenticationFeature feature  = null;
+        String response;
+        String path;
 
+        public Builder setPath(String path) {
+            this.path = path;
+            return this;
+        }
+
+        public Builder setResponse(String response) {
+            this.response = response;
+            return this;
+        }
 
         public Builder addParameters(javax.ws.rs.core.MultivaluedMap<String, Map<String,String>> parameters){
             this.parameters = parameters;
@@ -80,6 +93,8 @@ public class CallOptions implements org.softauto.core.CallOptions {
             callOptions.put("consume",consume);
             callOptions.put("properties",properties);
             callOptions.put("feature",feature);
+            callOptions.put("response",response);
+            callOptions.put("path",path);
             return new CallOptions(callOptions);
         }
 

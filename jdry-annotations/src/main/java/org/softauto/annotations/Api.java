@@ -12,4 +12,5 @@ public @interface Api {
     String description() default "";
     String protocol() default "RPC" ;
     String[] dependencies() default {};
+    AssertType assertType() default AssertType.AssertTrue;
 }

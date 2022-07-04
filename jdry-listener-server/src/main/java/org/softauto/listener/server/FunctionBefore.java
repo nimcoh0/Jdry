@@ -26,6 +26,15 @@ public  class FunctionBefore implements Function{
         logger.debug("init function before for "+ key);
     }
 
+
+    public FunctionBefore(String key){
+        lock = new CountDownLatch(1);
+        this.key = key;
+        seen = false;
+        logger.debug("init function before for "+ key);
+    }
+
+
     @Override
     public CountDownLatch getLock(){
         return lock;

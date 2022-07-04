@@ -187,12 +187,14 @@ public class MethodDescriptor {
 
         public void messageParser(){
             try {
-                Map<String,Object> msg = message.getObjectProps();
-                Map<String,Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
-                path = jaxrs.containsKey("Path") ? jaxrs.get("Path").toString() : null;
-                produces = jaxrs.containsKey("Produces") ?  jaxrs.get("Produces").toString() : null;
-                content = jaxrs.containsKey("content") ? Arrays.copyOf(((ArrayList<String>)jaxrs.get("content")).toArray(), ((ArrayList<String>)jaxrs.get("content")).toArray().length, String[].class)  : null;
-                response = jaxrs.containsKey("response") ?  jaxrs.get("response").toString(): null;
+                if (message != null) {
+                    Map<String, Object> msg = message.getObjectProps();
+                    Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
+                    path = jaxrs.containsKey("Path") ? jaxrs.get("Path").toString() : null;
+                    produces = jaxrs.containsKey("Produces") ? jaxrs.get("Produces").toString() : null;
+                    content = jaxrs.containsKey("content") ? Arrays.copyOf(((ArrayList<String>) jaxrs.get("content")).toArray(), ((ArrayList<String>) jaxrs.get("content")).toArray().length, String[].class) : null;
+                    response = jaxrs.containsKey("response") ? jaxrs.get("response").toString() : null;
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }

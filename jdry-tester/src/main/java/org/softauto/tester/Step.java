@@ -11,6 +11,8 @@ import org.softauto.core.*;
 import org.softauto.serializer.CallFuture;
 
 import java.util.HashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 @org.apache.avro.specific.AvroGenerated
 public class Step {
@@ -18,6 +20,8 @@ public class Step {
     private static Logger logger = LogManager.getLogger(Step.class);
     CallFuture<Object> future = null;
     protected HashMap<String,Object> callOptions = null;
+    CountDownLatch lock ;
+    public static long timeOutInMin = 1L;
 
     public Step(){};
 
@@ -67,6 +71,14 @@ public class Step {
     }
 
 
+    public Step(String fqmn, Object[] args, Class[] types, String transceiver,HashMap<String, Object> callOptions,Class<?> returnType)throws Exception{
+        future = new CallFuture<>();
+        logger.debug("invoking " +fqmn);
+        new InvocationHandler().invoke(fqmn,args,types,future,transceiver,callOptions,returnType);
+        lock = future.getLatch();
+
+    }
+
     public <T> Step(String fqmn, Object[] args, Class[] types, String transceiver, CallFuture<T> future)throws Exception{
         logger.debug("invoking " +fqmn);
         new InvocationHandler().invoke(fqmn,args,types,future,transceiver);
@@ -102,12 +114,33 @@ public class Step {
             return this;
         }
 
+        public Step then(IStep o)throws Exception{
+            future.handleResult(future.getResult());
+            return this;
+        }
+
         public <T> Step then(IListener o, Handler<AsyncResult<T>> resultHandler)throws Exception{
-            resultHandler.handle(Future.handleResult((T)future.getResult()));
+            if(!future.isDone()){
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+            }
+            resultHandler.handle(Future.handleResult((T) future.getResult()));
+            return this;
+        }
+
+        public <T> Step then(IStep o, Handler<AsyncResult<T>> resultHandler)throws Exception{
+            if(!future.isDone()){
+                lock.await(timeOutInMin, TimeUnit.MINUTES);
+            }
+            resultHandler.handle(Future.handleResult((T) future.getResult()));
             return this;
         }
 
         public <T> Step then(IListener o , CallFuture<T> future)throws Exception{
+            future.handleResult(future.getResult());
+            return this;
+        }
+
+        public <T> Step then(IStep o , CallFuture<T> future)throws Exception{
             future.handleResult(future.getResult());
             return this;
         }

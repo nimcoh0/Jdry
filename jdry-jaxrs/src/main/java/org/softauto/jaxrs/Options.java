@@ -6,6 +6,7 @@ public enum Options {
     entity,
     produce,
     consume,
+    path,
     response;
 
 }

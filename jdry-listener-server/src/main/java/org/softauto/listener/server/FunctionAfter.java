@@ -39,7 +39,7 @@ public  class FunctionAfter implements Function{
                 this.result = func.apply(o);
                 logger.debug("apply function After result  " + result);
                 seen = true;
-                return result;
+                //return result;
             }else{
                 logger.debug("message was already execute "+ key);
             }
@@ -50,7 +50,7 @@ public  class FunctionAfter implements Function{
             //ListenerObserver.getInstance().unRegister(key);
             //logger.debug("function After for "+ key + " remove");
         }
-        return null;
+        return "ok";
     }
 
 

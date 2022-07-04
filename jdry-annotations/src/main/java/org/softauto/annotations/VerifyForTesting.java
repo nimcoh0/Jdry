@@ -13,4 +13,6 @@ public @interface VerifyForTesting {
     String description() default "";
 
     AssertType assertType() default AssertType.AssertTrue;
+
+    VerifyType type() default VerifyType.RESULT;
 }
