@@ -2,13 +2,17 @@ package org.softauto.annotations;
 
 public enum VerifyType {
 
-    RESULT,
-    ARGS,
-    NONE;
+    RESULT("waitToResult"),
+    ARGS("waitTo"),
+    NONE("none");
 
-    private VerifyType() {
+    private VerifyType(String  value) {
+        this.value = value;
     }
 
+
+
+    private final String value;
 
 
     public static VerifyType fromString(String text) {
@@ -18,5 +22,13 @@ public enum VerifyType {
             }
         }
         return null;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public String toString() {
+        return this.value;
     }
 }
