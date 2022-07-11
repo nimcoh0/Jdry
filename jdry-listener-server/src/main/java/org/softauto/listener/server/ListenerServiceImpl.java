@@ -92,7 +92,7 @@ public class ListenerServiceImpl implements SerializerService{
         Object methodResponse = null;
         try {
                 logger.debug("got function of type " + message.getState());
-                methodResponse = message.toJson();
+                methodResponse = message.getArgs();
                 if (!message.getState().equals(ListenerType.BEFORE.name()) && !message.getState().equals(ListenerType.AFTER.name())) {
                     logger.error("message type not supported " + message.getState());
                     return methodResponse;

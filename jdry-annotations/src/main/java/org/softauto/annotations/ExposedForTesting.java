@@ -10,6 +10,12 @@ import java.util.List;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExposedForTesting {
         String description() default "";
+
         String protocol() default "RPC" ;
+
         String[] dependencies() default {};
+
+        String[] before() default {};
+
+        String[] after() default {};
 }

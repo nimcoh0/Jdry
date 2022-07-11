@@ -15,4 +15,10 @@ public @interface VerifyForTesting {
     AssertType assertType() default AssertType.AssertTrue;
 
     VerifyType type() default VerifyType.RESULT;
+
+    String[] before() default {};
+
+    String[] after() default {};
+
+
 }

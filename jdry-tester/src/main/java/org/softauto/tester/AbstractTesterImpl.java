@@ -20,9 +20,6 @@ public class AbstractTesterImpl {
 
 
 
-
-
-
     public AbstractTesterImpl(){
         try {
            //Log.set(LEVEL_TRACE);

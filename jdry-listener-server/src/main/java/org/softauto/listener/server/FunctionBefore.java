@@ -47,7 +47,7 @@ public  class FunctionBefore implements Function{
                 this.result = func.apply(o);
                 logger.debug("apply function before result  " + result);
                 seen = true;
-                return result;
+                //return result;
             }else{
                 logger.debug("message was already execute "+ key);
             }
@@ -58,7 +58,7 @@ public  class FunctionBefore implements Function{
             //ListenerObserver.getInstance().unRegister(key);
             //logger.debug("function before for "+ key + " remove");
         }
-        return null;
+        return result;
     }
 
 

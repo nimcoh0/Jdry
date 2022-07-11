@@ -199,6 +199,12 @@ public  class Listener implements IListener{
                 return this;
             }
 
+
+
+
+
+
+
             public <T> Listener waitTo(String fqmn,  Handler<AsyncResult<T>> resultHandler)throws Exception{
                return waitTo(fqmn,ff(),resultHandler);
             }
@@ -256,6 +262,11 @@ public  class Listener implements IListener{
                 return this;
             }
 
+
+
+
+
+
             public <T> Listener waitUntil(String fqmn ,ExpressionBuilder exp, Handler<AsyncResult<T>> resultHandler)throws Exception{
                 return waitUntil(fqmn,ff(),exp,resultHandler);
             }
@@ -300,6 +311,7 @@ public  class Listener implements IListener{
             }
 
 
+
             public <T> Listener waitToResult(String fqmn, Function function, CallFuture<T> future)throws Exception{
                 logger.debug("waitToResult "+ fqmn);
                 FunctionAfter func = new FunctionAfter(function,fqmn);
@@ -314,6 +326,10 @@ public  class Listener implements IListener{
                 }
                 return this;
             }
+
+
+
+
 
             public <T> Listener waitToResult(String fqmn, Handler<AsyncResult<T>> resultHandler)throws Exception{
                 return waitToResult(fqmn,ff(),resultHandler);
