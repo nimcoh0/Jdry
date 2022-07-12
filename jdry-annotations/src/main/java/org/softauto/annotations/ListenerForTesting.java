@@ -14,7 +14,7 @@ public @interface ListenerForTesting {
 
     ListenerMode mode() default ListenerMode.NONE;
 
-    String[] value() default "";
+    Mock mock() default @Mock;
 
     String result() default "";
 

@@ -115,6 +115,10 @@ public class SystemServiceImpl {
         Listeners.addListener(fqmn,types);
     }
 
+    public void addListenerMock(String fqmn,Class[] types,Object[] value){
+        Listeners.addMock(fqmn,types,value);
+    }
+
     public void resetListeners(){
         Listeners.resetListener();
     }

@@ -9,6 +9,7 @@ import org.softauto.plugin.ProviderManager;
 import org.softauto.plugin.api.Provider;
 import org.softauto.serializer.Serializer;
 import org.softauto.serializer.service.Message;
+import org.softauto.serializer.service.MessageType;
 
 import java.util.Arrays;
 import java.util.HashMap;

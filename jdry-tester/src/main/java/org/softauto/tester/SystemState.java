@@ -158,6 +158,11 @@ public class SystemState {
         return this;
     }
 
+    public SystemState addListener(String fqmn,Object[] value,Class...types)throws Exception{
+        new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_addListenerMock", new Object[]{fqmn,types,value}, new Class[]{String.class,Class[].class,Object[].class});
+        return this;
+    }
+
     public SystemState resetListeners()throws Exception{
         new InvocationHandler().invoke("org_softauto_system_SystemServiceImpl_resetListeners", new Object[]{}, new Class[]{});
         return this;

@@ -92,6 +92,13 @@ public  class Listener implements IListener{
                 return  new Listener();
             }
 
+
+            public static Listener addListener(String fqmn,Object[] value, Class...types)throws Exception{
+                SystemState.getInstance().addListener(fqmn,value,types);
+                logger.debug("add Listener im mock mode successfully "+ fqmn+ " types "+ Arrays.toString(types));
+                return  new Listener();
+            }
+
             /*
             public static Listener addListener(String fqmn, Class...types)throws Exception{
                // SystemState.getInstance().addListener(fqmn,types);
