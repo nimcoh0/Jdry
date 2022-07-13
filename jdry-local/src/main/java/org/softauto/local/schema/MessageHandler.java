@@ -1,10 +1,9 @@
 package org.softauto.local.schema;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.softauto.annotations.Api;
+import org.softauto.annotations.ApiForTesting;
 import org.softauto.annotations.ExposedForTesting;
 import org.softauto.core.AbstractMessage;
-import org.softauto.local.annotations.LOCAL;
 
 import javax.lang.model.element.Element;
 
@@ -18,7 +17,7 @@ public class MessageHandler extends AbstractMessage {
 
        public JsonNode parser(Element element) {
             try {
-                if (element.getAnnotation(ExposedForTesting.class).protocol().equals("LOCAL") || element.getAnnotation(Api.class).protocol().equals("LOCAL")) {
+                if (element.getAnnotation(ExposedForTesting.class).protocol().equals("LOCAL") || element.getAnnotation(ApiForTesting.class).protocol().equals("LOCAL")) {
                    JsonNode localMethod  =  super.parseElement(element,new LocalMethodVisitor());
                    logger.debug("local parse successfully");
                    return localMethod;

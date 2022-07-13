@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD,ElementType.CONSTRUCTOR,ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Api {
+public @interface ApiForTesting {
 
     String description() default "";
 

@@ -1,10 +1,9 @@
 package org.softauto.jaxrs.schema;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.softauto.annotations.Api;
+import org.softauto.annotations.ApiForTesting;
 import org.softauto.annotations.ExposedForTesting;
 import org.softauto.core.AbstractMessage;
-import org.softauto.jaxrs.annotations.JAXRS;
 
 import javax.lang.model.element.Element;
 
@@ -18,7 +17,7 @@ public class MessageHandler extends AbstractMessage {
 
        public JsonNode parser(Element element) {
             try {
-                if (element.getAnnotation(ExposedForTesting.class).protocol().equals("JAXRS") || element.getAnnotation(Api.class).protocol().equals("JAXRS")) {
+                if (element.getAnnotation(ExposedForTesting.class).protocol().equals("JAXRS") || element.getAnnotation(ApiForTesting.class).protocol().equals("JAXRS")) {
                    JsonNode jaxRSMethod  =  super.parseElement(element,new JaxRSMethodVisitor());
                    return jaxRSMethod;
                 }
