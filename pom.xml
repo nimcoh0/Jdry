@@ -19,10 +19,10 @@
         <module>jdry-annotation-discovery</module>
         <module>jdry-jaxrs</module>
         <module>jdry-testng-plugin</module>
-        <module>jdry-socket-annotations</module>
+        <!--module>jdry-socket-annotations</module-->
         <module>jdry-socket</module>
         <module>jdry-simple-socket</module>
-        <module>jdry-jaxrs-annotations</module>
+        <!--module>jdry-jaxrs-annotations</module-->
         <module>jdry-local</module>
         <module>jdry-listener-manager</module>
         <module>jdry-listener-server</module>

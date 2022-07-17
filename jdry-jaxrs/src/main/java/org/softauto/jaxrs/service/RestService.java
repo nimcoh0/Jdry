@@ -91,33 +91,26 @@ public class RestService {
     }
 
 
+
+
     private static class GETMethodHandler implements ServiceCaller.UnaryClass  {
 
         @Override
         public <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,Map<String, Object> msg,Class<T> res) {
             try {
                 HashMap<String,Object> callOptions = (HashMap<String, Object>) args[2];
-                Client client = null;
-                if(callOptions.get("feature") != null) {
-                    client = ClientBuilder.newBuilder().register((HttpAuthenticationFeature) callOptions.get("feature")).build();
-                }else {
-                    client = ClientBuilder.newBuilder().build();
+                Client client = org.softauto.jaxrs.Utils.getClient(callOptions);
+                String  path = org.softauto.jaxrs.Utils.getPath(callOptions);
+                if(callOptions.get("properties") != null) {
+                    org.softauto.jaxrs.Utils.addProperties((HashMap<String, Object>) callOptions.get("properties"), client);
                 }
-                String path = null;
-                if(callOptions.get("path") != null) {
-                    path = callOptions.get("path").toString();
+                MultivaluedMap<String, Object> headers = null;
+                if(callOptions.get(Options.headers.name()) != null) {
+                    headers = (MultivaluedMap<String, Object>) callOptions.get(Options.headers.name());
                 }
-                org.softauto.jaxrs.Utils.addProperties((HashMap<String, Object>) callOptions.get("properties"),client);
-                MultivaluedMap<String, Object> headers = (MultivaluedMap<String, Object>)callOptions.get(Options.headers.name());
-                String produces = callOptions.get(Options.produce.name()).toString();
-                Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
-                ChannelDescriptor channel = ChannelDescriptor.newBuilder()
-                        .setHost(((HashMap<String,Object>)Configuration.get("jaxrs")).get("host").toString())
-                        .setPort(Integer.valueOf(((HashMap<String,Object>)Configuration.get("jaxrs")).get("port").toString()))
-                        .setProtocol(((HashMap<String,Object>)Configuration.get("jaxrs")).get("protocol").toString())
-                        .setBaseUrl(((HashMap<String,Object>)Configuration.get("jaxrs")).get("base_url").toString())
-                        .setPath(path)
-                        .build((Object[]) args[0]);
+                String produces = org.softauto.jaxrs.Utils.getProduce(callOptions).toString();
+                //Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
+                ChannelDescriptor channel =org.softauto.jaxrs.Utils.getChannel(path,(Object[])args[0]);
                 URI uri =  channel.getUri();
                 logger.debug("invoke GET for "+ uri);
                 return new JerseyHelper(client).get(uri.toString(), produces, headers, res);
@@ -135,16 +128,12 @@ public class RestService {
             try {
 
                 HashMap<String,Object> callOptions = (HashMap<String, Object>) args[2];
-                Client client = null;
-                if(callOptions.get("feature") != null) {
-                    client = ClientBuilder.newBuilder().register((HttpAuthenticationFeature) callOptions.get("feature")).build();
-                }else {
-                    client = ClientBuilder.newBuilder().build();
-                }
-                String path = null;
-                if(callOptions.get("path") != null) {
-                    path = callOptions.get("path").toString();
-                }
+                Client client = org.softauto.jaxrs.Utils.getClient(callOptions);
+
+                //String path = null;
+                //if(org.softauto.jaxrs.Utils.getPath(callOptions) != null) {
+                String  path = org.softauto.jaxrs.Utils.getPath(callOptions);
+                //}
                 if(callOptions.get("properties") != null) {
                     org.softauto.jaxrs.Utils.addProperties((HashMap<String, Object>) callOptions.get("properties"), client);
                 }
@@ -152,18 +141,12 @@ public class RestService {
                 if(callOptions.get(Options.headers.name()) != null) {
                     headers = (MultivaluedMap<String, Object>) callOptions.get(Options.headers.name());
                 }
-                String produces = null;
-                if(callOptions.get(Options.produce.name()) != null) {
-                    produces = callOptions.get(Options.produce.name()).toString();
-                }
-                Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
-                ChannelDescriptor channel = ChannelDescriptor.newBuilder()
-                        .setHost(((HashMap<String,Object>)Configuration.get("jaxrs")).get("host").toString())
-                        .setPort(Integer.valueOf(((HashMap<String,Object>)Configuration.get("jaxrs")).get("port").toString()))
-                        .setProtocol(((HashMap<String,Object>)Configuration.get("jaxrs")).get("protocol").toString())
-                        .setBaseUrl(((HashMap<String,Object>)Configuration.get("jaxrs")).get("base_url").toString())
-                        .setPath(path)
-                        .build((Object[]) args[0]);
+                //String produces = null;
+                //if(org.softauto.jaxrs.Utils.getProduce(callOptions) != null) {
+                String produces = org.softauto.jaxrs.Utils.getProduce(callOptions).toString();
+                //}
+                //Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
+                ChannelDescriptor channel =org.softauto.jaxrs.Utils.getChannel(path,(Object[])args[0]);
                 URI uri =  channel.getUri();
                 Entity<?> entity = org.softauto.jaxrs.Utils.buildEntity(produces,(Object[])args[0]);
                 logger.debug("invoke POST for "+ uri );
@@ -182,24 +165,15 @@ public class RestService {
         public <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,Map<String, Object> msg,Class<T> res ){
             try {
                 HashMap<String,Object> callOptions = (HashMap<String, Object>) args[2];
-                Client client = null;
-                if(callOptions.get("feature") != null) {
-                    client = ClientBuilder.newBuilder().register((HttpAuthenticationFeature) callOptions.get("feature")).build();
-                }else {
-                    client = ClientBuilder.newBuilder().build();
-                }
+                Client client = org.softauto.jaxrs.Utils.getClient(callOptions);
                 org.softauto.jaxrs.Utils.addProperties((HashMap<String, Object>) callOptions.get("properties"),client);
+                String  path = org.softauto.jaxrs.Utils.getPath(callOptions);
                 Class[] types = (Class[])args[1];
                 Object[] arguments = (Object[])args[0];
                 MultivaluedMap<String, Object> headers = (MultivaluedMap<String, Object>)callOptions.get(Options.headers.name());
-                String produces = callOptions.get(Options.produce.name()).toString();
-                Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
-                ChannelDescriptor channel = ChannelDescriptor.newBuilder()
-                        .setHost(((HashMap<String,Object>)Configuration.get("jaxrs")).get("host").toString())
-                        .setPort(Integer.valueOf(((HashMap<String,Object>)Configuration.get("jaxrs")).get("port").toString()))
-                        .setProtocol(((HashMap<String,Object>)Configuration.get("jaxrs")).get("protocol").toString())
-                        .setPath(jaxrs.get("Path").toString())
-                        .build((Object[]) args[0]);
+                String produces = org.softauto.jaxrs.Utils.getProduce(callOptions).toString();
+                //Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
+                ChannelDescriptor channel =org.softauto.jaxrs.Utils.getChannel(path,(Object[])args[0]);
                 URI uri =  channel.getUri();
                 Entity<?> entity = org.softauto.jaxrs.Utils.buildEntity(produces,(Object[])args[0]);
                 logger.debug("invoke PUT for "+ uri + " with headers "+ headers.values() + " entity");
@@ -217,22 +191,13 @@ public class RestService {
         public <T> T invoke(MethodDescriptor methodDescriptor,Object[] args,Map<String, Object> msg,Class<T> res) {
             try {
                 HashMap<String,Object> callOptions = (HashMap<String, Object>) args[2];
-                Client client = null;
-                if(callOptions.get("feature") != null) {
-                    client = ClientBuilder.newBuilder().register((HttpAuthenticationFeature) callOptions.get("feature")).build();
-                }else {
-                    client = ClientBuilder.newBuilder().build();
-                }
+                Client client = org.softauto.jaxrs.Utils.getClient(callOptions);
+                String  path = org.softauto.jaxrs.Utils.getPath(callOptions);
                 org.softauto.jaxrs.Utils.addProperties((HashMap<String, Object>) callOptions.get("properties"),client);
                 MultivaluedMap<String, Object> headers = (MultivaluedMap<String, Object>)callOptions.get(Options.headers.name());
-                String produces = callOptions.get(Options.produce.name()).toString();
-                Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
-                ChannelDescriptor channel = ChannelDescriptor.newBuilder()
-                        .setHost(((HashMap<String,Object>)Configuration.get("jaxrs")).get("host").toString())
-                        .setPort(Integer.valueOf(((HashMap<String,Object>)Configuration.get("jaxrs")).get("port").toString()))
-                        .setProtocol(((HashMap<String,Object>)Configuration.get("jaxrs")).get("protocol").toString())
-                        .setPath(jaxrs.get("Path").toString())
-                        .build((Object[]) args[0]);
+                String produces = org.softauto.jaxrs.Utils.getProduce(callOptions).toString();
+                //Map<String, Object> jaxrs = (Map<String, Object>) msg.get("jaxrs");
+                ChannelDescriptor channel =org.softauto.jaxrs.Utils.getChannel(path,(Object[])args[0]);
                 URI uri =  channel.getUri();
                 logger.debug("invoke DELETE for "+ uri + " with headers "+ headers.values() );
                 return new JerseyHelper(client).delete(uri.toString(), produces, headers, res);

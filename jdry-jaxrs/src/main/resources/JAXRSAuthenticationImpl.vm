@@ -1,0 +1,6 @@
+#if($test.isAuthenticated() )
+#if($test.getAuthenticationSchema() == "Basic")
+        org.glassfish.jersey.client.authentication.HttpAuthenticationFeature feature = org.glassfish.jersey.client.authentication.HttpAuthenticationFeature.basic("$test.getAuthenticationUsername()", "$test.getAuthenticationPassword()");
+        callOptions.put("feature",feature);
+#end
+#end

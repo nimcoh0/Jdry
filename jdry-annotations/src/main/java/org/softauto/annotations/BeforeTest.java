@@ -5,7 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.METHOD,ElementType.CONSTRUCTOR,ElementType.FIELD})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RPC {
+public @interface BeforeTest {
+
+    String description() default "";
+
+    BeforeTestType type() default BeforeTestType.Authentication;
 }

@@ -7,9 +7,12 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Mock {
+public @interface Authentication {
 
-    String[] value() default {};
+    String schema() default "Basic";
 
-    String[] type() default {};
+    String userName() default "";
+
+    String password() default "";
+
 }

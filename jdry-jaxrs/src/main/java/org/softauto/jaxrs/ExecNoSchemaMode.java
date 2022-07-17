@@ -13,6 +13,7 @@ import org.softauto.jaxrs.service.ServiceDescriptor;
 
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -23,7 +24,7 @@ public class ExecNoSchemaMode implements Iexec{
     private static final org.apache.logging.log4j.Logger logger = org.apache.logging.log4j.LogManager.getLogger(ExecNoSchemaMode.class);
     private ExecutorService executor = Executors.newSingleThreadExecutor();
 
-
+/*
     private String gethttpMethod(JsonNode node){
         JsonNode n = node.get("annotations");
         if(n.has("javax.ws.rs.POST")){
@@ -41,6 +42,12 @@ public class ExecNoSchemaMode implements Iexec{
         return null;
     }
 
+ */
+
+
+
+
+    /*
     private String getPath(JsonNode node){
         try {
             JsonNode n = node.get("annotations");
@@ -52,6 +59,11 @@ public class ExecNoSchemaMode implements Iexec{
         return null;
     }
 
+
+     */
+
+
+    /*
     private javax.ws.rs.core.MediaType getProduce(JsonNode node){
         try {
             JsonNode n = node.get("annotations");
@@ -63,6 +75,9 @@ public class ExecNoSchemaMode implements Iexec{
         return null;
     }
 
+
+     */
+    /*
     public CallOptions callOptionsConverter(HashMap<String,Object> props){
         CallOptions.Builder builder = CallOptions.newBuilder();
         try {
@@ -77,17 +92,19 @@ public class ExecNoSchemaMode implements Iexec{
         return builder.build();
     }
 
+     */
+
     @Override
     public <RespT> void exec(String methodName, org.softauto.serializer.CallFuture<RespT> callback, ManagedChannel channel, Object...args) {
         try {
             executor.submit(()->{
                 CallbackToResponseStreamObserverAdpater observerAdpater = new CallbackToResponseStreamObserverAdpater(callback, null);
                 HashMap<String,Object> props = (HashMap<String, Object>) args[2];
-                HashMap<String,Object> callOptions = callOptionsConverter(props).getOptions();
+                //HashMap<String,Object> callOptions = callOptionsConverter(props).getOptions();
                 Map<String, Object> msg = (Map<String, Object>) Configuration.get("jaxrs");
                 Class<?> returnType = (Class<?>) args[3];
-                args[2] = callOptions;
-                ServiceDefinition serviceDefinition = RestService.createServiceDefinition(methodName,callOptions.get("response").toString(),msg,(Class[])args[1]);
+                //args[2] = callOptions;
+                ServiceDefinition serviceDefinition = RestService.createServiceDefinition(methodName,Utils.gethttpMethod(props),msg,(Class[])args[1]);
                 MethodDefinition md = serviceDefinition.getMethod(org.softauto.core.Utils.extractFullMethodName(methodName));
                 RespT res = (RespT)md.getCallerHandler().startCall(md.getMethodDescriptor(),args,md.getMsg(),returnType);
                 if (res != null) {
