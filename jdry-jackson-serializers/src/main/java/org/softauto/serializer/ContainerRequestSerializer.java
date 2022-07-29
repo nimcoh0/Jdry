@@ -1,20 +1,15 @@
-package org.softauto.core.jackson.serializer;
+package org.softauto.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import org.apache.commons.codec.binary.Base64;
-//import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpContainer;
-//import org.glassfish.jersey.oauth1.signature.Base64;
 import org.glassfish.jersey.server.ContainerRequest;
 
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 public class ContainerRequestSerializer extends StdSerializer<ContainerRequest> {

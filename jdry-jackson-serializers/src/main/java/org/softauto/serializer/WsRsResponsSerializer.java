@@ -1,4 +1,4 @@
-package org.softauto.core.jackson.serializer;
+package org.softauto.serializer;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
